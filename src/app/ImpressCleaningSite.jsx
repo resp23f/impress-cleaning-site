@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 
-// Impress Cleaning — Starter Site (React + Tailwind)
+// Impress Cleaning Services — Starter Site (React + Tailwind)
 // Fixed: restored full file; added working DropdownMenu component; desktop dropdowns for Residential/Commercial
 // Sections: Hero, Credibility, Services, Why, Industries, CTA, Process, Reviews, FAQs, Service Area, About, Quote, Footer
 
@@ -60,7 +60,7 @@ export default function ImpressCleaningSite() {
   className="h-8 w-auto md:h-10"
 />
             <div className="leading-tight">
-              <span className="block font-semibold tracking-tight">Impress Cleaning</span>
+              <span className="block font-semibold tracking-tight">Impress Cleaning Services LLC</span>
               <span className="block text-xs text-slate-500">Commercial & Office Cleaning</span>
             </div>
           </a>
@@ -251,7 +251,7 @@ export default function ImpressCleaningSite() {
       <section id="about" className="mx-auto max-w-7xl px-4 pb-8">
         <h3 className="text-xl md:text-2xl font-semibold">About Us</h3>
         <p className="text-slate-600 mt-2 max-w-prose">
-          Impress Cleaning is a locally‑owned team focused on consistent, reliable office cleaning. We combine franchise‑level systems with boutique attention to detail.
+          Impress Cleaning Services is a locally‑owned team focused on consistent, reliable office cleaning. We combine franchise‑level systems with boutique attention to detail.
         </p>
       </section>
 
@@ -307,7 +307,7 @@ export default function ImpressCleaningSite() {
           <div>
             <div className="flex items-center gap-2">
               <Logo size={18} />
-              <span className="font-semibold">Impress Cleaning</span>
+              <span className="font-semibold">Impress Cleaning Services</span>
             </div>
             <p className="mt-2 text-slate-600 max-w-xs">Professional office cleaning. Locally owned. Detail‑driven.</p>
           </div>
