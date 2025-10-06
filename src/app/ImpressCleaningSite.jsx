@@ -292,7 +292,7 @@ export default function ImpressCleaningSite() {
                 <Field label="Notes / Access Details" id="notes" as="textarea" rows={4} placeholder="Alarms, after‑hours, special areas…" />
                 <div className="flex items-center gap-3">
                   <button type="submit" disabled={sending} className="rounded-2xl px-5 py-3 font-semibold bg-slate-900 text-white shadow hover:shadow-md disabled:opacity-60">{sending ? "Sending…" : "Send Request"}</button>
-                  <span className="text-xs text-slate-500">o <a href="mailto:hello@impresscleaning.com" className="underline">enviar por correo</a></span>
+                  <span className="text-xs text-slate-500">o <a href="mailto:admin@impressyoucleaning.com" className="underline">enviar por correo</a></span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1">By submitting, you agree to be contacted about your request. No spam.</p>
               </form>
@@ -314,7 +314,7 @@ export default function ImpressCleaningSite() {
           <div>
             <div className="font-semibold">Contact</div>
             <ul className="mt-2 text-slate-600 space-y-1">
-              <li>Email: <a className="underline" href="mailto:hello@impresscleaning.com">hello@impresscleaning.com</a></li>
+              <li>Email: <a className="underline" href="mailto:admin@impressyoucleaning.com">admin@impressyoucleaning.com</a></li>
               <li>Phone: <a className="underline" href="tel:+1-555-555-5555">(555) 555‑5555</a></li>
               <li>PO Box 123, Your City, ST</li>
             </ul>
