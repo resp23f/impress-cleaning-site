@@ -24,7 +24,7 @@ export default function ImpressCleaningSite() {
           .map(([k, v]) => `${k}: ${v}`)
           .join("\n")
       );
-      window.location.href = `mailto:hello@impresscleaning.com?subject=Quote%20Request&body=${body}`;
+      window.location.href = `mailto:admin@impressyoucleaning.com?subject=Quote%20Request&body=${body}`;
       setSending(false);
       setSent(true);
       form.reset();
@@ -54,7 +54,11 @@ export default function ImpressCleaningSite() {
       <header className="sticky top-0 z-40 backdrop-blur bg-white/75 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <a href="#home" className="flex items-center gap-2">
-            <Logo />
+            <img
+  src="/logo.png"
+  alt="Impress Cleaning Services"
+  className="h-8 w-auto md:h-10"
+/>
             <div className="leading-tight">
               <span className="block font-semibold tracking-tight">Impress Cleaning</span>
               <span className="block text-xs text-slate-500">Commercial & Office Cleaning</span>
