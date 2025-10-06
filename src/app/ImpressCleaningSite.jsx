@@ -55,7 +55,7 @@ export default function ImpressCleaningSite() {
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <a href="#home" className="flex items-center gap-2">
             <img
-  src="/logo.png"
+  src="/ImpressLogo.png"
   alt="Impress Cleaning Services"
   className="h-8 w-auto md:h-10"
 />
