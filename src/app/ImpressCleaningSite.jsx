@@ -95,7 +95,7 @@ export default function ImpressCleaningSite() {
               href="#quote"
               className="rounded-2xl px-4 py-2 text-sm font-medium shadow-sm border border-slate-200 hover:border-slate-300 hover:shadow"
             >
-              Get a Quote · <span className="text-slate-500">Cotización</span>
+              Get a Quote · <span className="text-slate-500"></span>
             </a>
             <a
               href="tel:+1-555-555-5555"
