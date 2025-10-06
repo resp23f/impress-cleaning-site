@@ -1,4 +1,6 @@
+'use client';
 import React, { useState } from "react";
+
 
 // Impress Cleaning — Starter Site (React + Tailwind)
 // Fixed: restored full file; added working DropdownMenu component; desktop dropdowns for Residential/Commercial
