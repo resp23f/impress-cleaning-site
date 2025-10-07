@@ -5,19 +5,6 @@ import React, { useState } from "react";
 // Impress Cleaning Services — Starter Site (React + Tailwind)
 // Fixed: restored full file; added working DropdownMenu component; desktop dropdowns for Residential/Commercial
 // Sections: Hero, Credibility, Services, Why, Industries, CTA, Process, Reviews, FAQ, Service Area, About, Quote, Footer
-// tailwind.config.js
-theme: {
-  extend: {
-    fontFamily: {
-      sans: ["Nunito Sans", "ui-sans-serif", "system-ui"],
-    },
-    lineHeight: {
-      tight: "1.2",
-      snug: "1.3",
-    },
-  },
-},
-
 
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);

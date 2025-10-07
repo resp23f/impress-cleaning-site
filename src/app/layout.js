@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "House Cleaning Services | Impress Cleaning Services",
-  description: "Commercial & office cleaning. Reliable, insured, detail-driven service.",
+  description: "Locally owned residential cleaning service in Georgetown, TX. Reliable, professional, and thorough home cleaning you can count on.",
 };
 
 export default function RootLayout({ children }) {
