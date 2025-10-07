@@ -261,7 +261,20 @@ export default function ImpressCleaningSite() {
       <section className="mx-auto max-w-7xl px-4 pb-16">
         <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
         <p className="text-slate-600 mt-2 max-w-prose">Greater metro area and nearby suburbs. If you’re just outside, ask—we’re flexible for the right fit.</p>
-        <MapPlaceholder />
+        <div className="mt-6 rounded-2xl border border-slate-200 overflow-hidden">
+  <div className="aspect-[16/9]">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35685.410477753896!2d-97.75336058902573!3d30.725935029808827!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644d5693958ab55%3A0xa2ee570eaadd9735!2sSun%20City%2C%20Georgetown%2C%20TX%2078633!5e0!3m2!1sen!2sus!4v1759798997027!5m2!1sen!2sus"
+      className="w-full h-full"
+      style={{ border: 0 }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    />
+  </div>
+</div>
+
+
       </section>
 
       {/* About */}
