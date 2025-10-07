@@ -87,7 +87,7 @@ export default function ImpressCleaningSite() {
             />
             <a href="#why" className="hover:text-slate-950">Why Hire Us</a>
             <a href="#about" className="hover:text-slate-950">About Us</a>
-            <a href=" / faqs" className="hover:text-slate-950">FAQs</a>
+            <a href="/faq" className="hover:text-slate-950">FAQs</a>
           </nav>
 
           <div className="flex items-center gap-3">
