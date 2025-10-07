@@ -50,74 +50,105 @@ export default function ImpressCleaningSite() {
 
   return (
     <main id="home" className="min-h-screen text-slate-800">
-      {/* Top contact strip */}
-<div className="bg-slate-900 text-white text-sm py-1 text-center md:text-right px-4">
-  Call{" "}
-  <a href="tel:+15122775364" className="font-semibold underline">
-    (512) 277-5364
-  </a>{" "}
-  ·{" "}
-  <a href="#quote" className="ml-2 underline">
-    Get a Free Quote
-  </a>
-</div>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 backdrop-blur bg-white/75 border-b border-slate-100">
-        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2">
-            <img
-  src="/ImpressLogo.png"
-  alt="Impress Cleaning Services"
-  className="h-8 w-auto md:h-10"
-/>
-            <div className="leading-tight">
-              <span className="block font-semibold tracking-tight">Impress Cleaning Services LLC</span>
-              <span className="block text-xs text-slate-500">Because a clean home impresses.</span>
-            </div>
-          </a>
+<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
+  <div className="mx-auto max-w-7xl px-4">
 
-          {/* Desktop nav with dropdowns */}
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <DropdownMenu
-              label="Residential"
-              items={[
-                { label: "Recurring Cleaning", href: "#services" },
-                { label: "One‑Time Cleaning", href: "#services" },
-                { label: "Move‑In / Move‑Out", href: "#services" },
-                { label: "Eco‑Friendly", href: "#services" },
-              ]}
-            />
+    {/* Row 1: Brand block + utility links */}
+    <div className="flex items-center justify-between py-3">
+      {/* Brand (logo + name + tagline) */}
+      <a href="#home" className="flex items-center gap-3">
+        <img
+          src="/ImpressLogo.png"
+          alt="Impress Cleaning Services"
+          className="h-8 w-auto md:h-10"
+        />
+        <div className="leading-snug">
+          <div className="font-semibold tracking-tight">
+            Impress Cleaning Services LLC
+          </div>
+          <div className="text-xs text-slate-500">
+            A clean home is an impressive home.
+          </div>
+          {/* Optional location line (hide on mobile) */}
+          {/* <div className="hidden md:flex items-center gap-1 text-xs text-slate-500 mt-0.5">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+              <path d="M12 21s7-5.33 7-11a7 7 0 10-14 0c0 5.67 7 11 7 11z" stroke="currentColor" strokeWidth="1.5"/>
+              <circle cx="12" cy="10" r="2" fill="currentColor"/>
+            </svg>
+            Georgetown, TX
+            <a href="#" className="ml-2 underline hover:no-underline">Change</a>
+          </div> */}
+        </div>
+      </a>
+
+      {/* Utility links (desktop only) */}
+      <ul className="hidden md:flex items-center text-sm text-slate-600">
+        <li>
+          <a href="/specials" className="hover:text-slate-900">Special Offers</a>
+        </li>
+        <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li>
+          <a href="/careers" className="hover:text-slate-900">Apply</a>
+        </li>
+        <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li>
+          <a href="/aplicar" className="hover:text-slate-900">Aplicar</a>
+        </li>
+        <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li>
+          <a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a>
+        </li>
+      </ul>
+    </div>
+
+    {/* Thin divider between rows */}
+    <div className="border-t border-slate-100" />
+
+    {/* Row 2: Main nav + CTAs */}
+    <div className="flex items-center justify-between py-3">
+      {/* ↓ Move your existing nav (DropdownMenu components and links) here */}
+      <nav className="hidden md:flex items-center gap-6 text-sm">
+        <DropdownMenu
+          label="Residential"
+          items={[
+            { label: "Recurring Cleaning", href: "#services" },
+            { label: "One-Time Cleaning", href: "#services" },
+            { label: "Move-In / Move-Out", href: "#services" },
+            { label: "Eco-Friendly", href: "#services" },
+          ]}
+                      />
             <DropdownMenu
               label="Commercial"
               items={[
-                { label: "Law Firms", href: "#industries" },
-                { label: "Medical / Dental", href: "#industries" },
-                { label: "Title & Real Estate", href: "#industries" },
+                { label: "Post-Construction", href: "#industries" },
                 { label: "Professional Offices", href: "#industries" },
               ]}
-            />
-            <a href="#why" className="hover:text-slate-950">Why Hire Us</a>
-            <a href="/about" className="hover:text-slate-950">About Us</a>
-            <a href="/faq" className="hover:text-slate-950">FAQ</a>
-          </nav>
+        />
+        <a href="#why" className="hover:text-slate-950">Why Hire Us</a>
+        <a href="/about" className="hover:text-slate-950">About Us</a>
+        <a href="/faq" className="hover:text-slate-950">FAQ</a>
+      </nav>
 
-          <div className="flex items-center gap-3">
-            <a
-              href="#quote"
-              className="rounded-2xl px-4 py-2 text-sm font-medium shadow-sm border border-slate-200 hover:border-slate-300 hover:shadow"
-            >
-              Get a Quote · <span className="text-slate-500"></span>
-            </a>
-            <a
-              href="tel:+1-512-277-5364"
-              className="hidden md:inline-flex rounded-2xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white shadow hover:shadow-md"
-            >
-              Call (512) 277‑5364
-            </a>
-          </div>
-        </div>
-      </header>
+      {/* Keep your CTAs */}
+      <div className="flex items-center gap-3">
+        <a
+          href="#quote"
+          className="rounded-2xl px-4 py-2 text-sm font-medium shadow-sm border border-slate-200 hover:border-slate-300 hover:shadow"
+        >
+          Get a Free Quote
+        </a>
+        <a
+          href="tel:+1-512-277-5364"
+          className="hidden md:inline-flex rounded-2xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white shadow hover:shadow-md"
+        >
+          Call (512) 277-5364
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
 
       {/* Hero */}
 <section
