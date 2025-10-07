@@ -61,7 +61,7 @@ export default function ImpressCleaningSite() {
 />
             <div className="leading-tight">
               <span className="block font-semibold tracking-tight">Impress Cleaning Services LLC</span>
-              <span className="block text-xs text-slate-500">Commercial & Office Cleaning</span>
+              <span className="block text-xs text-slate-500">Because a clean home impresses..</span>
             </div>
           </a>
 
