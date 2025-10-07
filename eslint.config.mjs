@@ -10,16 +10,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals"),
   {
     ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
+      "node_modules/",
+      ".next/",
       "next-env.d.ts",
+      "build/",
+      "**/._*",           // ✅ ignore those macOS hidden files
     ],
   },
+  ...compat.extends("next/core-web-vitals"),
 ];
 
 export default eslintConfig;
