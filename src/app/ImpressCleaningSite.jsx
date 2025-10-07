@@ -244,19 +244,6 @@ export default function ImpressCleaningSite() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="mx-auto max-w-7xl px-4 py-16">
-        <div className="max-w-3xl">
-          <h3 className="text-2xl md:text-3xl font-bold tracking-tight">FAQ</h3>
-          <div className="mt-6 space-y-3">
-            <FAQItem q="Are you insured and can you provide a COI?" a="Yes. We’re fully insured and can send a COI with your building listed as additional insured upon request." />
-            <FAQItem q="Do you bring supplies and equipment?" a="Yes—commercial vacuums, microfiber, disinfectants, and restroom/kitchen supplies as needed." />
-            <FAQItem q="How do you price office cleaning?" a="By scope and frequency. Walk us through your space and we’ll build a fixed monthly or per‑visit rate with taxes shown up‑front." />
-            <FAQItem q="Can you start after hours?" a="Absolutely. Evenings and overnight are common. We work with alarms, fobs, and lockboxes." />
-          </div>
-        </div>
-      </section>
-
       {/* Service Area */}
       <section className="mx-auto max-w-7xl px-4 pb-16">
         <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
@@ -277,13 +264,6 @@ export default function ImpressCleaningSite() {
 
       </section>
 
-      {/* About */}
-      <section id="about" className="mx-auto max-w-7xl px-4 pb-8">
-        <h3 className="text-xl md:text-2xl font-semibold">About Us</h3>
-        <p className="text-slate-600 mt-2 max-w-prose">
-          Impress Cleaning Services is a locally‑owned team focused on consistent, reliable office cleaning. We combine franchise‑level systems with boutique attention to detail.
-        </p>
-      </section>
 
       {/* Quote Form */}
       <section id="quote" className="mx-auto max-w-7xl px-4 py-20">
