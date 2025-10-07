@@ -108,29 +108,46 @@ export default function ImpressCleaningSite() {
       </header>
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight">Sparkling offices, zero hassle.</h1>
-            <p className="mt-4 text-slate-600 max-w-prose">
-              Reliable, insured, and detail‑obsessed cleaning for law firms, clinics, startups, and professional spaces. Nightly, weekly, or on‑demand.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="#quote" className="rounded-2xl px-5 py-3 font-semibold bg-slate-900 text-white shadow hover:shadow-md">Get a Fast Quote</a>
-              <a href="#services" className="rounded-2xl px-5 py-3 font-semibold border border-slate-200 hover:border-slate-300">Explore Services</a>
-            </div>
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-600">
-              <TrustChip label="Fully Insured" />
-              <TrustChip label="Background‑Checked" />
-              <TrustChip label="Supplies Included" />
-              <TrustChip label="No Long Contracts" />
-            </div>
-          </div>
-          <div className="relative">
-            <HeroPhoto />
-          </div>
-        </div>
-      </section>
+<section
+  className="relative bg-slate-900 text-white"
+  id="home"
+>
+  {/* Background image */}
+  <img
+    src="/hero-cleaners.jpg"
+    alt="Professional cleaners from Impress Cleaning"
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+  <div className="absolute inset-0 bg-black/40" /> {/* subtle dark overlay */}
+
+  {/* Text content */}
+  <div className="relative z-10 mx-auto max-w-6xl px-6 py-32 md:py-40">
+    <div className="max-w-2xl">
+      <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+        Sparkling offices, zero hassle.
+      </h1>
+      <p className="mt-4 text-lg text-white/90 max-w-prose">
+        Reliable, insured, and detail-obsessed cleaning for law firms, clinics,
+        startups, and professional spaces. Nightly, weekly, or on-demand.
+      </p>
+      <div className="mt-8 flex flex-wrap gap-4">
+        <a
+          href="#quote"
+          className="rounded-2xl px-6 py-3 font-semibold bg-white text-slate-900 shadow hover:shadow-md"
+        >
+          Get a Fast Quote
+        </a>
+        <a
+          href="#services"
+          className="rounded-2xl px-6 py-3 font-semibold border border-white/30 text-white hover:bg-white/10"
+        >
+          Explore Services
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Credibility strip */}
       <section className="border-y border-slate-100 bg-white/60">
