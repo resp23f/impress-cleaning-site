@@ -127,7 +127,7 @@ export default function ImpressCleaningSite() {
             </div>
           </div>
           <div className="relative">
-            <HeroArt />
+            <HeroPhoto />
           </div>
         </div>
       </section>
@@ -405,18 +405,18 @@ function Logo({ size = 20 }) {
   );
 }
 
-function HeroArt() {
+function HeroPhoto() {
   return (
-    <div className="relative aspect-[4/3] rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50/70 to-white/10 rounded-3xl" />
-      <div className="relative grid grid-cols-3 gap-3 h-full">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="rounded-2xl border border-slate-200 bg-white shadow-sm" />
-        ))}
-        <div className="col-span-3 rounded-2xl border border-slate-200 bg-white shadow-sm grid place-items-center text-slate-500 text-sm">
-          Cleaning day visuals go here
-        </div>
-      </div>
+    <div className="relative aspect-[4/3] rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+      {/* photo */}
+      <img
+        src="/hero-cleaners.jpg"           // <-- drop your image in /public as hero-cleaners.jpg
+        alt="Professional cleaners from Impress Cleaning"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      {/* soft gradient + subtle frame */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-slate-900/10" />
+      <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-3xl pointer-events-none" />
     </div>
   );
 }
