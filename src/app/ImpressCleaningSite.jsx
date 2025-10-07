@@ -84,21 +84,19 @@ export default function ImpressCleaningSite() {
       </a>
 
       {/* Utility links (desktop only) */}
-      <ul className="hidden md:flex items-center text-sm text-slate-600">
-        </li>
-        <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
-        <li>
-          <a href="/careers" className="hover:text-slate-900">Apply</a>
-        </li>
-        <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
-        <li>
-          <a href="/aplicar" className="hover:text-slate-900">Aplicar</a>
-        </li>
-        <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
-        <li>
-          <a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a>
-        </li>
-      </ul>
+<ul className="hidden md:flex items-center text-sm text-slate-600">
+  <li>
+    <a href="/careers" className="hover:text-slate-900">Apply</a>
+  </li>
+  <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+  <li>
+    <a href="/aplicar" className="hover:text-slate-900">Aplicar</a>
+  </li>
+  <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+  <li>
+    <a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a>
+  </li>
+</ul>
     </div>
 
     {/* Thin divider between rows */}
