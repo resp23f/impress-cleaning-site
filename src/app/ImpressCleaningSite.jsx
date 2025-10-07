@@ -50,6 +50,18 @@ export default function ImpressCleaningSite() {
 
   return (
     <main id="home" className="min-h-screen text-slate-800">
+      {/* Top contact strip */}
+<div className="bg-slate-900 text-white text-sm py-1 text-center md:text-right px-4">
+  Call{" "}
+  <a href="tel:+15122775364" className="font-semibold underline">
+    (512) 277-5364
+  </a>{" "}
+  ·{" "}
+  <a href="#quote" className="ml-2 underline">
+    Get a Free Quote
+  </a>
+</div>
+
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur bg-white/75 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
@@ -61,7 +73,7 @@ export default function ImpressCleaningSite() {
 />
             <div className="leading-tight">
               <span className="block font-semibold tracking-tight">Impress Cleaning Services LLC</span>
-              <span className="block text-xs text-slate-500">Because a clean home impresses..</span>
+              <span className="block text-xs text-slate-500">Because a clean home impresses.</span>
             </div>
           </a>
 
