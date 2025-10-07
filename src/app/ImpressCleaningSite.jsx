@@ -98,10 +98,10 @@ export default function ImpressCleaningSite() {
               Get a Quote · <span className="text-slate-500"></span>
             </a>
             <a
-              href="tel:+1-555-555-5555"
+              href="tel:+1-512-277-5364"
               className="hidden md:inline-flex rounded-2xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white shadow hover:shadow-md"
             >
-              Call (555) 555‑5555
+              Call (512) 277‑5364
             </a>
           </div>
         </div>
@@ -345,7 +345,7 @@ export default function ImpressCleaningSite() {
             <div className="font-semibold">Contact</div>
             <ul className="mt-2 text-slate-600 space-y-1">
               <li>Email: <a className="underline" href="mailto:admin@impressyoucleaning.com">admin@impressyoucleaning.com</a></li>
-              <li>Phone: <a className="underline" href="tel:+1-555-555-5555">(555) 555‑5555</a></li>
+              <li>Phone: <a className="underline" href="tel:+1-512-277-5364">(512) 277‑5364</a></li>
               <li>PO Box 123, Your City, ST</li>
             </ul>
           </div>
@@ -483,7 +483,7 @@ function CtaBand() {
           </div>
           <div className="flex md:justify-end gap-3">
             <a href="#quote" className="rounded-2xl px-5 py-3 font-semibold bg-white text-slate-900 shadow hover:shadow-md">Get My Quote</a>
-            <a href="tel:+1-555-555-5555" className="rounded-2xl px-5 py-3 font-semibold border border-white/30">Call Now</a>
+            <a href="tel:+1-512-277-5364" className="rounded-2xl px-5 py-3 font-semibold border border-white/30">Call Now</a>
           </div>
         </div>
       </div>
