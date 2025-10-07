@@ -4,9 +4,9 @@ import React from "react";
 export default function FAQPage() {
   return (
     <main className="min-h-screen text-slate-800 bg-white">
-      <section id="faqs" className="mx-auto max-w-7xl px-4 py-20">
+      <section id="faq" className="mx-auto max-w-7xl px-4 py-20">
         <div className="max-w-3xl">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">FAQs</h1>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">FAQ</h1>
           <p className="mt-3 text-slate-600">
             Common questions about our cleaning services, insurance, and scheduling.
           </p>
