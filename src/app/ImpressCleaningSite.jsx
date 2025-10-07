@@ -5,6 +5,19 @@ import React, { useState } from "react";
 // Impress Cleaning Services — Starter Site (React + Tailwind)
 // Fixed: restored full file; added working DropdownMenu component; desktop dropdowns for Residential/Commercial
 // Sections: Hero, Credibility, Services, Why, Industries, CTA, Process, Reviews, FAQ, Service Area, About, Quote, Footer
+// tailwind.config.js
+theme: {
+  extend: {
+    fontFamily: {
+      sans: ["Nunito Sans", "ui-sans-serif", "system-ui"],
+    },
+    lineHeight: {
+      tight: "1.2",
+      snug: "1.3",
+    },
+  },
+},
+
 
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);
@@ -64,11 +77,11 @@ export default function ImpressCleaningSite() {
           alt="Impress Cleaning Services"
           className="h-8 w-auto md:h-10"
         />
-        <div className="leading-snug">
-          <div className="font-semibold tracking-tight">
+        <div className="leading-tight">
+          <div className="text-[18px] md:text-[20px] font-semibold text-slate-900">
             Impress Cleaning Services LLC
           </div>
-          <div className="text-xs text-slate-500">
+          <div className="text-[13px] text-slate-500 font-medium">
             A clean home is an impressive home.
           </div>
           {/* Optional location line (hide on mobile) */}
@@ -85,8 +98,6 @@ export default function ImpressCleaningSite() {
 
       {/* Utility links (desktop only) */}
       <ul className="hidden md:flex items-center text-sm text-slate-600">
-        <li>
-          <a href="/specials" className="hover:text-slate-900">Special Offers</a>
         </li>
         <span className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
         <li>
@@ -109,7 +120,7 @@ export default function ImpressCleaningSite() {
     {/* Row 2: Main nav + CTAs */}
     <div className="flex items-center justify-between py-3">
       {/* ↓ Move your existing nav (DropdownMenu components and links) here */}
-      <nav className="hidden md:flex items-center gap-6 text-sm">
+      <nav className="hidden md:flex items-center gap-6 text-[15px] font-medium text-slate-700">
         <DropdownMenu
           label="Residential"
           items={[

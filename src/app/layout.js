@@ -27,3 +27,23 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+import { Nunito_Sans } from "next/font/google";
+
+const nunito = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+export const metadata = {
+  title: "Impress Cleaning Services",
+  description: "A clean home is an impressive home.",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={nunito.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
