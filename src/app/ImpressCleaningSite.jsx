@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 // Impress Cleaning Services — Starter Site (React + Tailwind)
 // Fixed: restored full file; added working DropdownMenu component; desktop dropdowns for Residential/Commercial
-// Sections: Hero, Credibility, Services, Why, Industries, CTA, Process, Reviews, FAQs, Service Area, About, Quote, Footer
+// Sections: Hero, Credibility, Services, Why, Industries, CTA, Process, Reviews, FAQ, Service Area, About, Quote, Footer
 
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);
@@ -87,7 +87,7 @@ export default function ImpressCleaningSite() {
             />
             <a href="#why" className="hover:text-slate-950">Why Hire Us</a>
             <a href="#about" className="hover:text-slate-950">About Us</a>
-            <a href=" / faq" className="hover:text-slate-950">FAQs</a>
+            <a href=" / faq" className="hover:text-slate-950">FAQ</a>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -244,10 +244,10 @@ export default function ImpressCleaningSite() {
         </div>
       </section>
 
-      {/* FAQs */}
-      <section id="faqs" className="mx-auto max-w-7xl px-4 py-16">
+      {/* FAQ */}
+      <section id="faq" className="mx-auto max-w-7xl px-4 py-16">
         <div className="max-w-3xl">
-          <h3 className="text-2xl md:text-3xl font-bold tracking-tight">FAQs</h3>
+          <h3 className="text-2xl md:text-3xl font-bold tracking-tight">FAQ</h3>
           <div className="mt-6 space-y-3">
             <FAQItem q="Are you insured and can you provide a COI?" a="Yes. We’re fully insured and can send a COI with your building listed as additional insured upon request." />
             <FAQItem q="Do you bring supplies and equipment?" a="Yes—commercial vacuums, microfiber, disinfectants, and restroom/kitchen supplies as needed." />
