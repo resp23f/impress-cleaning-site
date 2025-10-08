@@ -1,7 +1,4 @@
-/* --- ✅ These three lines must be first --- */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* --- Your custom theme / colors --- */
 :root {
