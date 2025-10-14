@@ -264,14 +264,11 @@ export default function ImpressCleaningSite() {
         <h3 className="text-xl md:text-2xl font-semibold">Industries We Serve</h3>
         <ul className="mt-5 flex flex-wrap gap-2 text-sm">
           {[
-            "Law Firms",
-            "Medical / Dental",
-            "Title & Real Estate",
-            "Startups & Tech",
+            "Residential Homes",
+            "Residential Make-Ready",
             "Professional Offices",
+            "Construction Clean up",
             "Retail Suites",
-            "Common Areas",
-            "Property Management",
           ].map((i) => (
             <li key={i} className="px-3 py-1.5 rounded-full border border-slate-200 text-slate-700 whitespace-nowrap">{i}</li>
           ))}
@@ -496,8 +493,8 @@ function CtaBand() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="mt-2 rounded-3xl border border-slate-200 bg-slate-900 text-white p-6 md:p-8 shadow-sm grid md:grid-cols-2 gap-6 items-center">
           <div>
-            <h3 className="text-xl md:text-2xl font-semibold">Ready for a spotless office?</h3>
-            <p className="mt-1 text-white/80 text-sm">Get a fast, itemized quote with taxes shown up‑front.</p>
+            <h3 className="text-xl md:text-2xl font-semibold">Ready for a spotless space?</h3>
+            <p className="mt-1 text-white/80 text-sm">Get a fast quote below.</p>
           </div>
           <div className="flex md:justify-end gap-3">
             <a href="#quote" className="rounded-2xl px-5 py-3 font-semibold bg-white text-slate-900 shadow hover:shadow-md">Get My Quote</a>
