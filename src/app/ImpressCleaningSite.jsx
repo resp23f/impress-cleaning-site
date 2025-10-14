@@ -87,8 +87,9 @@ export default function ImpressCleaningSite() {
 
 {/* Row 1: Brand block + utility links */}
 <div className="flex items-center justify-between py-3">
+  {/* Brand (sparkle + wordmark) */}
   <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
-    {/* Sparkle */}
+    {/* Sparkle mark */}
     <img
       src="/sparkle.svg"
       alt=""
@@ -104,13 +105,13 @@ export default function ImpressCleaningSite() {
           Impress
         </span>
 
-        {/* CLEANING SERVICES — Nunito, uppercase */}
-        <span className="uppercase tracking-[0.08em] text-[14px] md:text-[15px] font-medium text-slate-800">
+        {/* CLEANING SERVICES — Playfair too, uppercase (slightly smaller so the line fits) */}
+        <span className="font-brand uppercase tracking-[0.06em] text-[18px] md:text-[19px] font-semibold text-slate-900">
           Cleaning Services
         </span>
 
         {/* LLC — tiny, uppercase, superscript */}
-        <span className="uppercase tracking-[0.18em] text-[10px] md:text-[11px] text-slate-500 align-super">
+        <span className="font-brand uppercase tracking-[0.18em] text-[10px] md:text-[11px] text-slate-500 align-super">
           LLC
         </span>
       </div>
