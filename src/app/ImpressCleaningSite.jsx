@@ -331,7 +331,6 @@ export default function ImpressCleaningSite() {
   </div>
 </div>
 
-
       </section>
 
 
@@ -342,8 +341,7 @@ export default function ImpressCleaningSite() {
             <h3 className="text-2xl md:text-3xl font-bold tracking-tight">Request a Quote</h3>
             <p className="mt-2 text-slate-600 max-w-prose">Tell us about your space and schedule. We’ll respond quickly with a clear, itemized estimate.</p>
             <ul className="mt-6 space-y-2 text-sm text-slate-600">
-              <li>• COI available on request</li>
-              <li>• Flexible start times (evenings / overnight)</li>
+              <li>• Flexible start times</li>
               <li>• Supplies & equipment included</li>
             </ul>
           </div>
