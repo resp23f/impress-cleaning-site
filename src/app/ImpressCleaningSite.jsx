@@ -356,7 +356,7 @@ export default function ImpressCleaningSite() {
       <section id="reviews" className="mx-auto max-w-7xl px-4 py-16 bg-slate-50 rounded-[2rem]">
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { quote: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with "our babies". Team is wonderful to work with. The whole team with her are such hard workers. Keep up the good work!", name: "Shantell R, Verified Customer" },
+            { quote: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. The whole team with her are such hard workers. Keep up the good work!", name: "Shantell R, Verified Customer" },
             { quote: "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. The did a spotless job. I would recommend them to anyone, their prices are also very fair. You can reach them at:
 admin@impressyoucleaning.com You will be very happy you called. They are awesome!", name: "Juli E, Verified Customer" },
             { quote: "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.", name: "Omally O, Verified Customer" },
