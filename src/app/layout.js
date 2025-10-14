@@ -23,7 +23,7 @@ icons: {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${nunito.variable} antialiased bg-gradient-to-b from-white to-[#fdf9f3]`}>
+    <html lang="en" className="bg-[#FFFDF8] text-slate-900 antialiased">
 <body className="min-h-screen flex flex-col bg-transparent">
   <main className="flex-1">{children}</main>
   <Footer />
