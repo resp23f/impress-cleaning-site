@@ -59,7 +59,7 @@ export default function ImpressCleaningSite() {
     <div className="flex items-center justify-between py-3">
       {/* Brand (logo + name + tagline) */}
 {/* Logo + Brand */}
-<div className="flex items-center gap-3">
+<a href="/" className="flex items-center gap-3">
   {/* Logo mark — use a transparent PNG or SVG, no dark square */}
   <img
     src="/ImpressLogo.png"
@@ -82,7 +82,6 @@ export default function ImpressCleaningSite() {
       A clean home is an impressive home.
     </p>
   </div>
-</div>
       </a>
 
       {/* Utility links (desktop only) */}
