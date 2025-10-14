@@ -246,18 +246,40 @@ export default function ImpressCleaningSite() {
   </div>
 </section>
 
-      {/* Why Us */}
-      <section id="why" className="mx-auto max-w-7xl px-4 py-16">
-        <header className="max-w-2xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Why Choose Impress</h2>
-          <p className="mt-2 text-slate-600">Franchise‑level reliability with a local, detail‑first approach.</p>
-        </header>
-        <div className="mt-8 grid md:grid-cols-3 gap-6">
-          <Pillar title="Crystal‑Clear Scope" desc="Itemized quotes with taxes shown up‑front. No surprises, ever." />
-          <Pillar title="Consistent Teams" desc="Trained pros assigned to your site so quality stays tight." />
-          <Pillar title="Proactive QA" desc="Checklists posted onsite and periodic inspections built‑in." />
+{/* Why Choose Impress Cleaning Services */}
+<section className="py-16" id="why">
+  <div className="mx-auto max-w-6xl px-6">
+    <h2 className="text-2xl font-bold text-slate-900">Why Choose Impress</h2>
+    <p className="text-slate-600 mt-2">
+      Franchise-level reliability with a local, detail-first approach.
+    </p>
+
+    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {[
+        {
+          title: "Crystal-Clear Scope",
+          desc: "Itemized quotes with taxes shown up-front. No surprises."
+        },
+        {
+          title: "Consistent Teams",
+          desc: "Trained pros assigned to your site so quality stays tight."
+        },
+        {
+          title: "Proactive QA",
+          desc: "Checklists onsite and periodic inspections built-in."
+        }
+      ].map(({ title, desc }) => (
+        <div
+          key={title}
+          className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm px-4 py-4"
+        >
+          <h3 className="font-semibold text-slate-900">{title}</h3>
+          <p className="text-slate-600 text-sm mt-1">{desc}</p>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
 {/* Who we clean for */}
 <section className="py-12" id="who-we-clean">
