@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="bg-[#FFFDF8] text-slate-900 antialiased">
       {/* expose both font variables on <body> */}
-      <body className={`${nunito.variable} ${playfair.variable} min-h-screen flex flex-col`}>
+      <body className={`${nunito.variable} ${brand.variable} min-h-screen flex flex-col`}>
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
