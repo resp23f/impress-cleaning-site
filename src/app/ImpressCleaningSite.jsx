@@ -87,41 +87,30 @@ export default function ImpressCleaningSite() {
 
 {/* Row 1: Brand block + utility links */}
 <div className="flex items-center justify-between py-3">
-  {/* Brand (sparkle + wordmark) */}
   <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
-    {/* Sparkle mark */}
     <img
       src="/sparkle.svg"
       alt=""
       aria-hidden="true"
-      className="w-8 h-8 text-emerald-600 shrink-0"
+      className="w-8 h-8 shrink-0"
     />
-
-    {/* Wordmark */}
     <div className="flex flex-col leading-tight">
       <div className="flex items-baseline gap-2">
-        {/* IMPRESS — Playfair, uppercase */}
         <span className="font-brand uppercase tracking-[0.06em] text-[22px] md:text-[24px] font-semibold text-slate-900">
           Impress
         </span>
-
-        {/* CLEANING SERVICES — Playfair too, uppercase (slightly smaller so the line fits) */}
         <span className="font-brand uppercase tracking-[0.06em] text-[18px] md:text-[19px] font-semibold text-slate-900">
           Cleaning Services
         </span>
-
-        {/* LLC — tiny, uppercase, superscript */}
         <span className="font-brand uppercase tracking-[0.18em] text-[10px] md:text-[11px] text-slate-500 align-super">
           LLC
         </span>
       </div>
-
       <p className="text-slate-500 text-sm mt-0.5">
         A clean home is an impressive home.
       </p>
     </div>
   </a>
-
       {/* Utility links (desktop only) */}
 <ul className="hidden md:flex items-center text-sm text-slate-600">
   <li>
