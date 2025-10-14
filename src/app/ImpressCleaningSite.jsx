@@ -245,7 +245,7 @@ export default function ImpressCleaningSite() {
   </div>
 </section>
 
-{/* Why Choose Impress */}
+{/* Why Choose Impress Cleaning Services */}
 <section className="py-16" id="why">
   <div className="mx-auto max-w-6xl px-6">
     <h2 className="text-2xl font-bold text-slate-900">Why Choose Impress Cleaning Services</h2>
@@ -253,20 +253,37 @@ export default function ImpressCleaningSite() {
       Franchise-level reliability with a local, detail-first approach.
     </p>
 
+    {/* Trust chips */}
+    <div className="flex flex-wrap gap-2 mt-4">
+      {[
+        { label: "Satisfaction Guarantee", icon: "✅" },
+        { label: "Locally Owned", icon: "🏡" },
+      ].map(({ label, icon }) => (
+        <span
+          key={label}
+          className="inline-flex items-center gap-1.5 rounded-full bg-white ring-1 ring-slate-200 text-slate-700 text-sm px-3 py-1"
+        >
+          <span>{icon}</span>
+          {label}
+        </span>
+      ))}
+    </div>
+
+    {/* Cards */}
     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {[
         {
           title: "Reliable Results",
-          desc: "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule."
+          desc: "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule.",
         },
         {
           title: "Clear Communication",
-          desc: "We keep you in the loop from booking to follow-up, so you always know what’s happening and when."
+          desc: "We keep you in the loop from booking to follow-up, so you always know what’s happening and when.",
         },
         {
           title: "Quality-Driven Service",
-          desc: "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent."
-        }
+          desc: "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent.",
+        },
       ].map(({ title, desc }) => (
         <div
           key={title}
