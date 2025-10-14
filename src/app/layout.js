@@ -24,10 +24,9 @@ icons: {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${nunito.variable} antialiased`}>
-      <body className="min-h-screen flex flex-col">
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
-    </html>
+<body className="min-h-screen flex flex-col bg-gradient-to-b from-white to-[#fdf9f3]">
+  <main className="flex-1">{children}</main>
+  <Footer />
+</body>    </html>
   );
 }
