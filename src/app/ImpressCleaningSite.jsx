@@ -368,31 +368,6 @@ export default function ImpressCleaningSite() {
       {/* CTA band */}
       <CtaBand />
 
-      {/* Process */}
-{/* Replace steps with trust chips */}
-<section className="py-10">
-  <div className="mx-auto max-w-6xl px-6">
-    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
-        <p className="text-sm font-semibold">Fast, Free Quotes</p>
-        <p className="text-slate-600 text-sm mt-1">Itemized, taxes included—no surprises.</p>
-      </div>
-      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
-        <p className="text-sm font-semibold">Licensed & Insured</p>
-        <p className="text-slate-600 text-sm mt-1">Professional, background-checked cleaners.</p>
-      </div>
-      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
-        <p className="text-sm font-semibold">Supplies Included</p>
-        <p className="text-slate-600 text-sm mt-1">We bring pro-grade products & equipment.</p>
-      </div>
-      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
-        <p className="text-sm font-semibold">Satisfaction Guarantee</p>
-        <p className="text-slate-600 text-sm mt-1">We make it right—every time.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
       {/* Reviews */}
 <section id="reviews" className="mx-auto max-w-7xl px-4 py-16 bg-slate-50 rounded-[2rem]">
   <div className="grid md:grid-cols-3 gap-6">
