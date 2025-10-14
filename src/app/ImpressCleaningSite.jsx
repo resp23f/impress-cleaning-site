@@ -288,7 +288,6 @@ export default function ImpressCleaningSite() {
       </div>
     </div>
   </div>
-</section>
           ].map((i) => (
             <li key={i} className="px-3 py-1.5 rounded-full border border-slate-200 text-slate-700 whitespace-nowrap">{i}</li>
           ))}
