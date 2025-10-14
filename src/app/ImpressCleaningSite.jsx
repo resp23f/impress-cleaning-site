@@ -285,13 +285,11 @@ export default function ImpressCleaningSite() {
         <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Law Firms</span>
         <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Retail Suites</span>
         <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Property Management</span>
-      </div>
-    </div>
-  </div>
           ].map((i) => (
             <li key={i} className="px-3 py-1.5 rounded-full border border-slate-200 text-slate-700 whitespace-nowrap">{i}</li>
           ))}
         </ul>
+    </div>
       </section>
 
       {/* CTA band */}
