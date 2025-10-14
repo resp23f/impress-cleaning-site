@@ -1,6 +1,6 @@
 // src/app/layout.jsx
 import "./globals.css";
-import { Nunito_Sans, Playfair_Display } from "next/font/google";
+import { Nunito_Sans, Cinzel } from "next/font/google";
 import Footer from "@/components/Footer";
 
 const nunito = Nunito_Sans({
@@ -9,9 +9,9 @@ const nunito = Nunito_Sans({
   variable: "--font-sans",
 });
 
-const playfair = Playfair_Display({
+const brand = Cinzel({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["700", "800", "900"],
   display: "swap",
   variable: "--font-brand", // we'll use this only for the logo word
 });
