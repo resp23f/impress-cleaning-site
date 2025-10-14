@@ -85,37 +85,43 @@ export default function ImpressCleaningSite() {
   return (
     <main id="home" className="min-h-screen text-slate-800">
 
-      {/* Header */}
-<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
-{/* Logo + Brand (Molly-style uppercase) */}
-<div className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
-  {/* Sparkle */}
-  <img src="/sparkle.svg" alt="" aria-hidden="true" className="w-8 h-8 text-emerald-600 shrink-0" />
+{/* Row 1: Brand block + utility links */}
+<div className="flex items-center justify-between py-3">
 
-  <div className="flex flex-col leading-tight">
-    {/* Wordmark line */}
-    <div className="flex items-baseline gap-2">
-      {/* IMPRESS — display serif, uppercase, slightly wider tracking */}
-      <span className="font-brand uppercase tracking-[0.06em] text-[22px] md:text-[24px] font-semibold text-slate-900">
-        Impress
-      </span>
+  {/* Brand (sparkle + wordmark). Wrap in <a> if you want it clickable */}
+  <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
+    {/* Sparkle */}
+    <img
+      src="/sparkle.svg"
+      alt=""
+      aria-hidden="true"
+      className="w-8 h-8 text-emerald-600 shrink-0"
+    />
 
-      {/* CLEANING SERVICES — uppercase sans, a touch smaller, medium weight */}
-      <span className="uppercase tracking-[0.08em] text-[14px] md:text-[15px] font-medium text-slate-800">
-        Cleaning Services
-      </span>
+    {/* Wordmark */}
+    <div className="flex flex-col leading-tight">
+      <div className="flex items-baseline gap-2">
+        {/* IMPRESS — Playfair, uppercase */}
+        <span className="font-brand uppercase tracking-[0.06em] text-[22px] md:text-[24px] font-semibold text-slate-900">
+          Impress
+        </span>
 
-      {/* LLC — tiny, uppercase, spaced out, lifted a hair */}
-      <span className="uppercase tracking-[0.18em] text-[10px] md:text-[11px] text-slate-500 align-super">
-        LLC
-      </span>
+        {/* CLEANING SERVICES — Nunito, uppercase */}
+        <span className="uppercase tracking-[0.08em] text-[14px] md:text-[15px] font-medium text-slate-800">
+          Cleaning Services
+        </span>
+
+        {/* LLC — tiny, uppercase, superscript */}
+        <span className="uppercase tracking-[0.18em] text-[10px] md:text-[11px] text-slate-500 align-super">
+          LLC
+        </span>
+      </div>
+
+      <p className="text-slate-500 text-sm mt-0.5">
+        A clean home is an impressive home.
+      </p>
     </div>
-
-    {/* Tagline stays sentence case for readability */}
-    <p className="text-slate-500 text-sm mt-0.5">
-      A clean home is an impressive home.
-    </p>
-  </div>
+  </a>
 </div>
 
       {/* Utility links (desktop only) */}
