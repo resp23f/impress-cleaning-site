@@ -191,28 +191,50 @@ export default function ImpressCleaningSite() {
       {/* Credibility strip */}
       <section className="border-y border-slate-100 bg-white/60">
         <div className="mx-auto max-w-7xl px-4 py-6 flex flex-wrap items-center justify-center gap-6">
-          <Badge label="Bonded & Insured" />
-          <Badge label="Background‑Checked" />
           <Badge label="Satisfaction Guarantee" />
           <Badge label="Locally Owned" />
         </div>
       </section>
 
       {/* Services (trimmed) */}
-      <section id="services" className="mx-auto max-w-7xl px-4 py-16">
-        <header className="max-w-2xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Services</h2>
-          <p className="mt-2 text-slate-600">Built for modern offices—customized to your building and schedule.</p>
-        </header>
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            { title: "Weekly / Bi‑Weekly", desc: "Flexible recurring service with checklists tuned to your space." },
-            { title: "Deep Cleaning", desc: "Top‑to‑bottom resets: vents, baseboards, appliances, and more." },
-            { title: "Move‑In / Move‑Out", desc: "Turnkey for suites and tenant flips (COI provided)." },
-          ].map((s) => (
-            <Card key={s.title} title={s.title} desc={s.desc} />
-          ))}
-        </div>
+<section id="services" className="py-20 bg-gradient-to-b from-white to-[#fdf9f3]">
+  <div className="max-w-6xl mx-auto px-6 text-center">
+    <h2 className="text-3xl font-bold text-slate-900 mb-2">Our Services</h2>
+    <p className="text-slate-600 mb-12">
+      A clean space makes a lasting impression. Choose the plan that fits your schedule.
+    </p>
+
+    <div className="grid md:grid-cols-3 gap-8">
+      {/* Service 1 */}
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8 text-left">
+        <img src="/icons/sparkle.svg" alt="" className="w-8 h-8 mb-4 opacity-80" />
+        <h3 className="text-lg font-semibold text-slate-900 mb-2">Weekly / Bi-Weekly</h3>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Keep your home fresh and spotless with our recurring cleaning plans.
+          Our team handles the details so you can enjoy the comfort.
+        </p>
+      </div>
+
+      {/* Service 2 */}
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8 text-left">
+        <img src="/icons/home.svg" alt="" className="w-8 h-8 mb-4 opacity-80" />
+        <h3 className="text-lg font-semibold text-slate-900 mb-2">Move-In / Move-Out</h3>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Whether you’re settling in or saying goodbye, we’ll leave the space sparkling clean and move-in ready.
+        </p>
+      </div>
+
+      {/* Service 3 */}
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8 text-left">
+        <img src="/icons/office.svg" alt="" className="w-8 h-8 mb-4 opacity-80" />
+        <h3 className="text-lg font-semibold text-slate-900 mb-2">Commercial Cleaning</h3>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Impress your clients and create a spotless workspace that boosts morale and productivity.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
       </section>
 
       {/* Why Us */}
