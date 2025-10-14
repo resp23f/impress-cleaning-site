@@ -163,11 +163,10 @@ export default function ImpressCleaningSite() {
   <div className="relative z-10 mx-auto max-w-6xl px-6 py-32 md:py-40">
     <div className="max-w-2xl">
       <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-        Sparkling offices, zero hassle.
+        Sparkling homes, zero hassle.
       </h1>
       <p className="mt-4 text-lg text-white/90 max-w-prose">
-        Reliable, insured, and detail-obsessed cleaning for law firms, clinics,
-        startups, and professional spaces. Nightly, weekly, or on-demand.
+        Reliable, insured, and detail-obsessed cleaning for residential homes, offices, and commercial spaces.
       </p>
       <div className="mt-8 flex flex-wrap gap-4">
         <a
