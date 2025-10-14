@@ -122,7 +122,6 @@ export default function ImpressCleaningSite() {
       </p>
     </div>
   </a>
-</div>
 
       {/* Utility links (desktop only) */}
 <ul className="hidden md:flex items-center text-sm text-slate-600">
