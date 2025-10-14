@@ -13,7 +13,13 @@ export const metadata = {
   title: "Impress Cleaning Services",
   description:
     "Locally owned residential cleaning service in Georgetown, TX. Reliable, professional, and thorough home cleaning you can count on.",
-};
+icons: {
+    icon: [
+      { url: "/favicon-v2.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-v2.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
+  };
 
 export default function RootLayout({ children }) {
   return (
