@@ -96,9 +96,9 @@ export default function ImpressCleaningSite() {
 <a href="/" className="flex items-center gap-3">
   {/* Logo mark — use a transparent PNG or SVG, no dark square */}
   <img
-    src="/ImpressLogo.png"
+    src="/sparkle.svg"
     alt="Impress Cleaning Services"
-    className="w-10 h-10 object-contain"
+    className="w-8 h-8 text-emerald-600 shrink-0"
   />
 
   <div className="flex flex-col leading-tight">
