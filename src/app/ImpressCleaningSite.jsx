@@ -84,138 +84,92 @@ export default function ImpressCleaningSite() {
 
   return (
     <main id="home" className="min-h-screen text-slate-800">
-
 {/* Header */}
 <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
   <div className="mx-auto max-w-7xl px-4">
-    {/* Row 1: Brand + utility */}
-    <div className="flex items-center justify-between py-3">
-      {/* Brand (sparkle + wordmark) */}
-      <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">    <img
-      src="/sparkle.svg"
-      alt=""
-      aria-hidden="true"
-      className="w-8 h-8 shrink-0"
-    />
-    <div className="flex flex-col leading-tight">
-      <div className="flex items-baseline gap-2">
-        <span className="font-brand uppercase tracking-[0.045em] text-[24px] md:text-[26px] font-extrabold text-[#0B2850]">
-          Impress Cleaning Services
-        </span>
-        <span className="font-brand lowercase tracking-[0.18em] text-[10px] md:text-[11px] font-extrabold text-brand align-super -ml-0.5 relative -top-[1px] text-[#0B2850]">
-          LLC
-        </span>
-      </div>
-      <p className="text-slate-500 text-sm mt-0.5 text-[#0B2850]">
-        A clean home is an impressive home.
-      </p>
-    </div>
-  </a>
 
-      {/* Utility links (desktop only) */}
-<ul className="hidden md:flex items-center text-sm text-slate-600">
-  <li>
-    <a href="/careers" className="hover:text-slate-900">Apply</a>
-  </li>
-  <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
-  <li>
-    <a href="/aplicar" className="hover:text-slate-900">Aplicar</a>
-  </li>
-  <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
-  <li>
-    <a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a>
-  </li>
-</ul>
+    {/* Row 1: Brand + utility links */}
+    <div className="flex items-center justify-between py-3">
+      {/* Brand */}
+      <a href="/" className="shrink-0 flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
+        <img src="/sparkle.svg" alt="" aria-hidden="true" className="w-7 h-7 shrink-0" />
+        <div className="leading-tight">
+          <div className="flex items-baseline gap-2">
+            <span className="font-brand uppercase tracking-[0.04em] text-[20px] md:text-[22px] font-black text-[#0B2850]">Impress</span>
+            <span className="font-brand uppercase tracking-[0.04em] text-[16px] md:text-[18px] font-bold text-[#0B2850]">Cleaning Services</span>
+            <span className="font-brand uppercase tracking-[0.14em] text-[10px] text-[#0B2850] align-super -ml-0.5">LLC</span>
+          </div>
+          <p className="text-slate-600 text-xs md:text-sm">A clean home is an impressive home.</p>
+        </div>
+      </a>
+
+      {/* Utility links (right) */}
+      <ul className="hidden md:flex items-center text-sm text-slate-600">
+        <li><a href="/careers" className="hover:text-slate-900">Apply</a></li>
+        <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li><a href="/aplicar" className="hover:text-slate-900">Aplicar</a></li>
+        <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li><a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a></li>
+      </ul>
     </div>
 
-    {/* Thin divider between rows */}
-    <div className="border-t border-slate-100" />
-
-    {/* Row 2: Main nav + CTAs */}
-    <div className="flex items-center justify-between py-3">
-      {/* ↓ Move your existing nav (DropdownMenu components and links) here */}
-      <nav className="hidden md:flex items-center gap-6 text-[15px] font-medium text-slate-700">
-        <DropdownMenu
-          label="Residential"
-          items={[
-            { label: "Recurring Cleaning", href: "#services" },
-            { label: "One-Time Cleaning", href: "#services" },
-            { label: "Move-In / Move-Out", href: "#services" },
-            { label: "Eco-Friendly", href: "#services" },
-          ]}
-                      />
-            <DropdownMenu
-              label="Commercial"
-              items={[
-                { label: "Post-Construction", href: "#industries" },
-                { label: "Professional Offices", href: "#industries" },
-              ]}
-        />
-        <a href="#why" className="hover:text-slate-950">Why Hire Us</a>
-        <a href="/about" className="hover:text-slate-950">About Us</a>
-        <a href="/faq" className="hover:text-slate-950">FAQ</a>
+    {/* Row 2: Tabs + CTAs */}
+    <div className="flex items-center gap-3 pb-3">
+      {/* Tabs (center, elastic) */}
+      <nav className="flex-1 min-w-0">
+        <ul
+          className="hide-scrollbar flex gap-2 overflow-x-auto whitespace-nowrap md:justify-center md:overflow-visible"
+          aria-label="Primary"
+        >
+          {[
+            ["Residential", "#home"],
+            ["Commercial", "#commercial"],
+            ["Why Hire Us", "#why"],
+            ["About Us", "#about"],
+            ["FAQ", "#faq"],
+          ].map(([label, href]) => (
+            <li key={label}>
+              <a
+                href={href}
+                className="inline-flex items-center rounded-full px-3 py-1.5 text-sm ring-1 ring-slate-200 bg-white text-slate-700 hover:text-slate-900 hover:shadow-sm transition"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
 
-      {/* Keep your CTAs */}
-      <div className="flex items-center gap-3">
+      {/* CTAs (right) */}
+      <div className="shrink-0 hidden sm:flex items-center gap-2">
         <a
           href="#quote"
-          className="rounded-2xl px-4 py-2 text-sm font-medium shadow-sm border border-slate-200 hover:border-slate-300 hover:shadow"
+          className="inline-flex items-center rounded-full px-3 py-1.5 text-sm ring-1 ring-slate-200 bg-white hover:shadow-sm"
         >
           Get a Free Quote
         </a>
         <a
-          href="tel:+1-512-277-5364"
-          className="hidden md:inline-flex rounded-2xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white shadow hover:shadow-md"
+          href="tel:15122775364"
+          className="inline-flex items-center rounded-full bg-[#0B2850] px-3 py-1.5 text-white text-sm hover:shadow-sm"
         >
           Call (512) 277-5364
+        </a>
+      </div>
+
+      {/* Compact CTA on very small widths */}
+      <div className="sm:hidden shrink-0">
+        <a
+          href="#quote"
+          className="inline-flex items-center rounded-full bg-[#0B2850] px-3 py-1.5 text-white text-sm"
+        >
+          Quote
         </a>
       </div>
     </div>
   </div>
 </header>
 
-      {/* Hero */}
-<section
-  className="relative bg-slate-900 text-white"
-  id="home"
->
-  {/* Background image */}
-  <img
-    src="/hero-cleaners.jpg"
-    alt="Professional cleaners from Impress Cleaning"
-    className="absolute inset-0 w-full h-full object-cover"
-  />
-  <div className="absolute inset-0 bg-black/40" /> {/* subtle dark overlay */}
-
-  {/* Text content */}
-  <div className="relative z-10 mx-auto max-w-6xl px-6 py-32 md:py-40">
-    <div className="max-w-2xl">
-      <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-        Sparkling homes, zero hassle.
-      </h1>
-      <p className="mt-4 text-lg text-white/90 max-w-prose">
-        Reliable, insured, and detail-obsessed cleaning for residential homes, offices, and commercial spaces.
-      </p>
-      <div className="mt-8 flex flex-wrap gap-4">
-        <a
-          href="#quote"
-          className="rounded-2xl px-6 py-3 font-semibold bg-white text-slate-900 shadow hover:shadow-md"
-        >
-          Get a Fast Quote
-        </a>
-        <a
-          href="#services"
-          className="rounded-2xl px-6 py-3 font-semibold border border-white/30 text-white hover:bg-white/10"
-        >
-          Explore Services
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-      {/* Services (trimmed) */}
+      {/* Services */}
 <section id="services" className="py-20 bg-[#FFFDF8]">
   <div className="max-w-6xl mx-auto px-6 text-center">
     <h2 className="text-3xl font-bold text-slate-900 mb-2">How Impress Cleaning can serve you</h2>
@@ -420,6 +374,12 @@ export default function ImpressCleaningSite() {
 
 {/* Quote Form */}
 <section id="quote" className="mx-auto max-w-7xl px-4 py-16">
+    <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
+    Request a Quote
+  </h2>
+  <p className="mt-3 md:mt-3 text-lg md:text-1xl leading-snug text-slate-600 max-w-5xl">
+    Tell us about your space and schedule. We’ll respond quickly after submitting your request.
+  </p>
   <form onSubmit={handleSubmit} className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 md:p-8">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Name */}
