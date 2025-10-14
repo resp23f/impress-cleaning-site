@@ -355,15 +355,14 @@ export default function ImpressCleaningSite() {
               <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Field label="Name" id="name" required />
-                  <Field label="Company" id="company" />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Field label="Email" id="email" type="email" required />
                   <Field label="Phone" id="phone" type="tel" required />
                 </div>
-                <Field label="Address (City, Suite)" id="address" />
+                <Field label="Address" id="address" />
                 <div className="grid sm:grid-cols-3 gap-4">
-                  <Field label="Sq Ft" id="sqft" inputMode="numeric" />
+                  <Field label="Sq. Ft." id="sqft" inputMode="numeric" />
                   <Select label="Frequency" id="frequency" options={["One‑Time", "Weekly", "Bi‑Weekly", "Monthly"]} />
                   <Select label="Start" id="start" options={["ASAP", "1‑2 Weeks", "Next Month"]} />
                 </div>
