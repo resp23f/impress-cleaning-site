@@ -85,10 +85,13 @@ export default function ImpressCleaningSite() {
   return (
     <main id="home" className="min-h-screen text-slate-800">
 
-{/* Row 1: Brand block + utility links */}
-<div className="flex items-center justify-between py-3">
-  <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
-    <img
+{/* Header */}
+<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
+  <div className="mx-auto max-w-7xl px-4">
+    {/* Row 1: Brand + utility */}
+    <div className="flex items-center justify-between py-3">
+      {/* Brand (sparkle + wordmark) */}
+      <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">    <img
       src="/sparkle.svg"
       alt=""
       aria-hidden="true"
@@ -111,7 +114,7 @@ export default function ImpressCleaningSite() {
       </p>
     </div>
   </a>
-  </div>
+
       {/* Utility links (desktop only) */}
 <ul className="hidden md:flex items-center text-sm text-slate-600">
   <li>
