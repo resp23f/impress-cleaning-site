@@ -96,7 +96,7 @@ export default function ImpressCleaningSite() {
         <div className="leading-tight">
           <div className="flex items-baseline gap-2">
             <span className="font-brand uppercase tracking-[0.04em] text-[20px] md:text-[22px] font-black text-[#0B2850]">Impress</span>
-            <span className="font-brand uppercase tracking-[0.04em] text-[16px] md:text-[18px] font-bold text-[#0B2850]">Cleaning Services</span>
+            <span className="font-brand uppercase tracking-[0.04em] text-[20px] md:text-[22px] font-black text-[#0B2850]">Cleaning Services</span>
             <span className="font-brand uppercase tracking-[0.14em] text-[10px] text-[#0B2850] align-super -ml-0.5">LLC</span>
           </div>
           <p className="text-slate-600 text-xs md:text-sm">A clean home is an impressive home.</p>
@@ -168,6 +168,46 @@ export default function ImpressCleaningSite() {
     </div>
   </div>
 </header>
+
+{/* Hero */}
+<section id="home" className="relative bg-slate-900 text-white">
+  {/* Background image */}
+  <img
+    src="/hero-cleaners.jpg"
+    alt="Professional cleaners from Impress Cleaning"
+    className="absolute inset-0 h-full w-full object-cover"
+  />
+
+  {/* Subtle dark overlay */}
+  <div className="absolute inset-0 bg-black/40" />
+
+  {/* Text content */}
+  <div className="relative z-10 mx-auto max-w-6xl px-6 py-32 md:py-40">
+    <div className="max-w-2xl">
+      <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+        Sparkling homes, zero hassle.
+      </h1>
+      <p className="mt-4 text-lg text-white/90 max-w-prose">
+        Reliable, insured, and detail-obsessed cleaning for residential homes, offices, and commercial spaces.
+      </p>
+      <div className="mt-8 flex flex-wrap gap-4">
+        <a
+          href="#quote"
+          className="rounded-2xl px-6 py-3 font-semibold bg-white text-slate-900 shadow hover:shadow-md"
+        >
+          Get a Fast Quote
+        </a>
+        <a
+          href="#services"
+          className="rounded-2xl px-6 py-3 font-semibold border border-white/30 text-white hover:bg-white/10"
+        >
+          Explore Services
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Services */}
 <section id="services" className="py-20 bg-[#FFFDF8]">
