@@ -216,7 +216,7 @@ export default function ImpressCleaningSite() {
 </section>
 
       {/* Services (trimmed) */}
-<section id="services" className="py-20 bg-gradient-to-b from-white to-[#fdf9f3]">
+<section id="services" className="py-20 bg-[#FFFDF8]">
   <div className="max-w-6xl mx-auto px-6 text-center">
     <h2 className="text-3xl font-bold text-slate-900 mb-2">How Impress Cleaning can serve you</h2>
     <p className="text-slate-600 mb-12">
@@ -362,39 +362,43 @@ export default function ImpressCleaningSite() {
       {/* CTA band */}
       <CtaBand />
 
-      {/* Reviews */}
-<section id="reviews" className="mx-auto max-w-7xl px-4 py-16 bg-slate-50 rounded-[2rem]">
-  {/* ⬇️ Add this */}
+{/* Reviews */}
+<section id="reviews" className="mx-auto max-w-7xl px-4 py-16 rounded-[2rem]">
   <div className="mb-6">
     <h2 className="text-2xl font-bold text-slate-900">Customer Reviews</h2>
     <p className="text-slate-600 mt-1">Real feedback from happy clients.</p>
-  </div>  <div className="grid md:grid-cols-3 gap-6">
+  </div>
+
+  <ul className="grid md:grid-cols-3 gap-4 list-none">
     {[
       {
-        quote:
-          "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. The whole team with her are such hard workers. Keep up the good work!",
+        quote: `House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. The whole team with her are such hard workers. Keep up the good work!`,
         name: "Shantell R, Verified Customer",
       },
       {
-        quote:
-          "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You can reach them at admin@impressyoucleaning.com. You will be very happy you called. They are awesome!",
+        quote: `I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You can reach them at admin@impressyoucleaning.com. You will be very happy you called. They are awesome!`,
         name: "Juli E, Verified Customer",
       },
       {
-        quote:
-          "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.",
+        quote: `Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.`,
         name: "Omally O, Verified Customer",
       },
-    ].map((r, idx) => (
-      <blockquote key={idx} className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <p>“{r.quote}”</p>
-        <footer className="mt-3 text-sm text-slate-600">— {r.name}</footer>
-      </blockquote>
-    ))}
-  </div>
+    ].map((r, i) => {
+      const cleaned = r.quote.replace(/(^\s*[“”"']+)|([“”"']+\s*$)/g, "");
+      return (
+        <li
+          key={i}
+          className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md"
+        >
+          <p className="text-slate-700 leading-relaxed">{`“${cleaned}”`}</p>
+          <footer className="mt-4 text-sm text-slate-600">— {r.name}</footer>
+        </li>
+      );
+    })}
+  </ul>
 </section>
 
-      {/* Service Area */}
+{/* Service Area */}
       <section className="mx-auto max-w-7xl px-4 pb-16">
         <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
         <p className="text-slate-600 mt-2 max-w-prose">Greater metro area and nearby suburbs. If you’re just outside, ask—we’re flexible for the right fit.</p>
@@ -414,49 +418,157 @@ export default function ImpressCleaningSite() {
       </section>
 
 
-      {/* Quote Form */}
-      <section id="quote" className="mx-auto max-w-7xl px-4 py-20">
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <h3 className="text-2xl md:text-3xl font-bold tracking-tight">Request a Quote</h3>
-            <p className="mt-2 text-slate-600 max-w-prose">Tell us about your space and schedule. We’ll respond quickly with a clear, itemized estimate.</p>
-            <ul className="mt-6 space-y-2 text-sm text-slate-600">
-              <li>• Flexible start times</li>
-              <li>• Supplies & equipment included</li>
-            </ul>
-          </div>
-          <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
-            {sent ? (
-              <div className="p-6 rounded-xl bg-green-50 border border-green-200 text-green-800">
-                <div className="font-semibold">Thank you! / ¡Gracias!</div>
-                <p className="text-sm mt-1">We’ll be in touch shortly with next steps.</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Field label="Name" id="name" required />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Field label="Email" id="email" type="email" required />
-                  <Field label="Phone" id="phone" type="tel" required />
-                </div>
-                <Field label="Address" id="address" required />
-                <div className="grid sm:grid-cols-3 gap-4">
-                  <Field label="Sq. Ft." id="sqft" inputMode="numeric" />
-                  <Select label="Frequency" id="frequency" options={["One‑Time", "Weekly", "Bi‑Weekly", "Monthly"]} />
-                  <Select label="Start" id="start" options={["Asap", "1‑2 Weeks", "Next Month"]} />
-                </div>
-                <Field label="Notes / Access Details" id="notes" as="textarea" rows={4} placeholder="Alarms, after‑hours, special areas…" />
-                <div className="flex items-center gap-3">
-                  <button type="submit" disabled={sending} className="rounded-2xl px-5 py-3 font-semibold bg-slate-900 text-white shadow hover:shadow-md disabled:opacity-60">{sending ? "Sending…" : "Send Request"}</button>
-                  <span className="text-xs text-slate-500">o <a href="mailto:admin@impressyoucleaning.com" className="underline">enviar por correo</a></span>
-                </div>
-                <p className="text-[11px] text-slate-500 mt-1">By submitting, you agree to be contacted about your request. No spam.</p>
-              </form>
-            )}
-          </div>
+{/* Quote Form */}
+<section id="quote" className="mx-auto max-w-7xl px-4 py-16">
+  <form onSubmit={handleSubmit} className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 md:p-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Name */}
+      <div className="col-span-1">
+        <label htmlFor="name" className="block text-sm font-medium text-slate-700">
+          Name <span className="text-rose-500">*</span>
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          placeholder="Full name"
+          className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </div>
+
+      {/* Phone */}
+      <div className="col-span-1">
+        <label htmlFor="phone" className="block text-sm font-medium text-slate-700">
+          Phone <span className="text-rose-500">*</span>
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          required
+          placeholder="(512) 555-0123"
+          className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </div>
+
+      {/* Email */}
+      <div className="col-span-1">
+        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+          Email <span className="text-rose-500">*</span>
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          placeholder="you@email.com"
+          className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </div>
+
+      {/* Address (full width on md) */}
+      <div className="md:col-span-2">
+        <label htmlFor="address" className="block text-sm font-medium text-slate-700">
+          Address <span className="text-rose-500">*</span>
+        </label>
+        <input
+          id="address"
+          name="address"
+          type="text"
+          required
+          placeholder="Street, city, ZIP"
+          className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </div>
+
+      {/* Sq. Ft. */}
+      <div className="col-span-1">
+        <label htmlFor="sqft" className="block text-sm font-medium text-slate-700">Sq. Ft.</label>
+        <input
+          id="sqft"
+          name="sqft"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          placeholder="e.g., 1800"
+          className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </div>
+
+      {/* Frequency (custom select) */}
+      <div className="col-span-1">
+        <label htmlFor="frequency" className="block text-sm font-medium text-slate-700">Frequency</label>
+        <div className="relative">
+          <select
+            id="frequency"
+            name="frequency"
+            defaultValue="One-Time"
+            className="mt-1 w-full appearance-none rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 pr-9 text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option>One-Time</option>
+            <option>Weekly</option>
+            <option>Bi-Weekly</option>
+            <option>Monthly</option>
+            <option>Move-In / Move-Out</option>
+            <option>Deep Clean</option>
+          </select>
+          <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M6 8l4 4 4-4" />
+          </svg>
         </div>
-      </section>
+      </div>
+
+      {/* Start (custom select) */}
+      <div className="col-span-1 md:col-span-2 lg:col-span-1">
+        <label htmlFor="start" className="block text-sm font-medium text-slate-700">Start</label>
+        <div className="relative">
+          <select
+            id="start"
+            name="start"
+            defaultValue="Asap"
+            className="mt-1 w-full appearance-none rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 pr-9 text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option>Asap</option>
+            <option>This Week</option>
+            <option>Next Week</option>
+            <option>Next Month</option>
+          </select>
+          <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M6 8l4 4 4-4" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Notes */}
+      <div className="md:col-span-2">
+        <label htmlFor="notes" className="block text-sm font-medium text-slate-700">Notes / Access Details</label>
+        <textarea
+          id="notes"
+          name="notes"
+          rows={4}
+          placeholder="Alarms, after-hours, special areas…"
+          className="mt-1 w-full resize-y rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </div>
+    </div>
+
+    {/* Actions */}
+    <div className="mt-6 flex items-center gap-4">
+      <button
+        type="submit"
+        className="inline-flex items-center justify-center rounded-full bg-[#0B2850] px-5 py-2.5 text-white font-semibold shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
+      >
+        Send Request
+      </button>
+      <a href="mailto:admin@impressyoucleaning.com" className="text-slate-600 hover:text-slate-900 text-sm underline-offset-2 hover:underline">
+      </a>
+    </div>
+
+    <p className="mt-4 text-xs text-slate-500">
+      By submitting, you agree to be contacted about your request. No spam.
+    </p>
+  </form>
+</section>
 
     </main>
   );
