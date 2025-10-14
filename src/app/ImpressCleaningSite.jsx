@@ -199,7 +199,7 @@ export default function ImpressCleaningSite() {
       {/* Services (trimmed) */}
 <section id="services" className="py-20 bg-gradient-to-b from-white to-[#fdf9f3]">
   <div className="max-w-6xl mx-auto px-6 text-center">
-    <h2 className="text-3xl font-bold text-slate-900 mb-2">Our Services</h2>
+    <h2 className="text-3xl font-bold text-slate-900 mb-2">How Impress Cleaning can serve you</h2>
     <p className="text-slate-600 mb-12">
       A clean space makes a lasting impression. Choose the plan that fits your schedule.
     </p>
