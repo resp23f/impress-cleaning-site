@@ -246,10 +246,10 @@ export default function ImpressCleaningSite() {
   </div>
 </section>
 
-{/* Why Choose Impress Cleaning Services */}
+{/* Why Choose Impress */}
 <section className="py-16" id="why">
   <div className="mx-auto max-w-6xl px-6">
-    <h2 className="text-2xl font-bold text-slate-900">Why Choose Impress</h2>
+    <h2 className="text-2xl font-bold text-slate-900">Why Choose Impress Cleaning Services</h2>
     <p className="text-slate-600 mt-2">
       Franchise-level reliability with a local, detail-first approach.
     </p>
@@ -257,16 +257,16 @@ export default function ImpressCleaningSite() {
     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {[
         {
-          title: "Crystal-Clear Scope",
-          desc: "Itemized quotes with taxes shown up-front. No surprises."
+          title: "Reliable Results",
+          desc: "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule."
         },
         {
-          title: "Consistent Teams",
-          desc: "Trained pros assigned to your site so quality stays tight."
+          title: "Clear Communication",
+          desc: "We keep you in the loop from booking to follow-up, so you always know what’s happening and when."
         },
         {
-          title: "Proactive QA",
-          desc: "Checklists onsite and periodic inspections built-in."
+          title: "Quality-Driven Service",
+          desc: "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent."
         }
       ].map(({ title, desc }) => (
         <div
