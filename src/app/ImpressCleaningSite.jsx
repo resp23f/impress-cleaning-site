@@ -259,16 +259,36 @@ export default function ImpressCleaningSite() {
         </div>
       </section>
 
-      {/* Industries */}
-      <section id="industries" className="mx-auto max-w-7xl px-4 py-14">
-        <h3 className="text-xl md:text-2xl font-semibold">Industries We Serve</h3>
-        <ul className="mt-5 flex flex-wrap gap-2 text-sm">
-          {[
-            "Residential Homes",
-            "Residential Make-Ready",
-            "Professional Offices",
-            "Construction Clean up",
-            "Retail Suites",
+{/* Who we clean for */}
+<section className="py-12" id="who-we-clean">
+  <div className="mx-auto max-w-6xl px-6">
+    <h3 className="text-2xl font-bold text-slate-900">Who We Clean For</h3>
+
+    {/* Residential focus */}
+    <div className="mt-4">
+      <p className="text-slate-600 text-sm mb-2 font-medium">Residential</p>
+      <div className="flex flex-wrap gap-2">
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Homes</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Apartments & Condos</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Move-In / Move-Out</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Deep Cleaning</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Recurring (Weekly/Bi-Weekly)</span>
+      </div>
+    </div>
+
+    {/* Commercial kept visible */}
+    <div className="mt-8" id="commercial">
+      <p className="text-slate-600 text-sm mb-2 font-medium">Commercial</p>
+      <div className="flex flex-wrap gap-2">
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Professional Offices</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Medical / Dental</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Law Firms</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Retail Suites</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Property Management</span>
+      </div>
+    </div>
+  </div>
+</section>
           ].map((i) => (
             <li key={i} className="px-3 py-1.5 rounded-full border border-slate-200 text-slate-700 whitespace-nowrap">{i}</li>
           ))}
@@ -279,21 +299,29 @@ export default function ImpressCleaningSite() {
       <CtaBand />
 
       {/* Process */}
-      <section id="process" className="mx-auto max-w-7xl px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            { step: 1, title: "Walkthrough", desc: "We tour your space (or video call) and align on scope, frequency, and access." },
-            { step: 2, title: "Crystal‑Clear Quote", desc: "Written scope with taxes/fees shown up‑front—no surprises." },
-            { step: 3, title: "Onboarding & Shine", desc: "Supplies stocked, checklist posted, and quality checks from day one." },
-          ].map((p) => (
-            <div key={p.step} className="p-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="text-xs text-slate-500">Step {p.step}</div>
-              <div className="mt-1 font-semibold">{p.title}</div>
-              <p className="mt-2 text-slate-600 text-sm">{p.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+{/* Replace steps with trust chips */}
+<section className="py-10">
+  <div className="mx-auto max-w-6xl px-6">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
+        <p className="text-sm font-semibold">Fast, Free Quotes</p>
+        <p className="text-slate-600 text-sm mt-1">Itemized, taxes included—no surprises.</p>
+      </div>
+      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
+        <p className="text-sm font-semibold">Licensed & Insured</p>
+        <p className="text-slate-600 text-sm mt-1">Professional, background-checked cleaners.</p>
+      </div>
+      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
+        <p className="text-sm font-semibold">Supplies Included</p>
+        <p className="text-slate-600 text-sm mt-1">We bring pro-grade products & equipment.</p>
+      </div>
+      <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200 p-4">
+        <p className="text-sm font-semibold">Satisfaction Guarantee</p>
+        <p className="text-slate-600 text-sm mt-1">We make it right—every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Reviews */}
       <section id="reviews" className="mx-auto max-w-7xl px-4 py-16 bg-slate-50 rounded-[2rem]">
