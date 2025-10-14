@@ -204,10 +204,14 @@ export default function ImpressCleaningSite() {
       A clean space makes a lasting impression. Choose the plan that fits your schedule.
     </p>
 
-    <div className="grid md:grid-cols-3 gap-8">
-      {/* Service 1 */}
-      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8 text-left">
-        <img src="/icons/sparkle.svg" alt="" className="w-8 h-8 mb-4 opacity-80" />
+    {/* GRID OPEN */}
+    <div className="grid md:grid-cols-3 gap-8 text-left">
+
+      {/* Service 1 – Weekly / Bi-Weekly */}
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-8 h-8 mb-4 text-green-600">
+          <path fill="currentColor" d="M12 2c.4 2.7 1.8 4.1 4.5 4.5C13.8 7 12.4 8.4 12 11.1 11.6 8.4 10.2 7 7.5 6.5 10.2 6.1 11.6 4.7 12 2zM12 12.9c.3 1.9 1.4 3 3.3 3.3-1.9.3-3 1.4-3.3 3.3-.3-1.9-1.4-3-3.3-3.3 1.9-.3 3-1.4 3.3-3.3z"/>
+        </svg>
         <h3 className="text-lg font-semibold text-slate-900 mb-2">Weekly / Bi-Weekly</h3>
         <p className="text-slate-600 text-sm leading-relaxed">
           Keep your home fresh and spotless with our recurring cleaning plans.
@@ -215,27 +219,32 @@ export default function ImpressCleaningSite() {
         </p>
       </div>
 
-      {/* Service 2 */}
-      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8 text-left">
-        <img src="/icons/home.svg" alt="" className="w-8 h-8 mb-4 opacity-80" />
+      {/* Service 2 – Move-In / Move-Out */}
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-8 h-8 mb-4 text-green-600">
+          <path fill="currentColor" d="M12 3 3 10v11h6v-6h6v6h6V10l-9-7z"/>
+        </svg>
         <h3 className="text-lg font-semibold text-slate-900 mb-2">Move-In / Move-Out</h3>
         <p className="text-slate-600 text-sm leading-relaxed">
           Whether you’re settling in or saying goodbye, we’ll leave the space sparkling clean and move-in ready.
         </p>
       </div>
 
-      {/* Service 3 */}
-      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8 text-left">
-        <img src="/icons/office.svg" alt="" className="w-8 h-8 mb-4 opacity-80" />
+      {/* Service 3 – Commercial */}
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-md border-t-4 border-green-500 transition-all duration-300 hover:-translate-y-1 p-8">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-8 h-8 mb-4 text-green-600">
+          <path fill="currentColor" d="M3 21V7l9-4 9 4v14h-7v-5H10v5H3zM5 19h3v-3H5v3zm11 0h3v-9h-3v9zM8 9h3V7H8v2z"/>
+        </svg>
         <h3 className="text-lg font-semibold text-slate-900 mb-2">Commercial Cleaning</h3>
         <p className="text-slate-600 text-sm leading-relaxed">
           Impress your clients and create a spotless workspace that boosts morale and productivity.
         </p>
       </div>
+
     </div>
+    {/* GRID CLOSE */}
   </div>
 </section>
-      </section>
 
       {/* Why Us */}
       <section id="why" className="mx-auto max-w-7xl px-4 py-16">
