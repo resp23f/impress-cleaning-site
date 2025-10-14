@@ -99,14 +99,14 @@ export default function ImpressCleaningSite() {
     />
     <div className="flex flex-col leading-tight">
       <div className="flex items-baseline gap-2">
-        <span className="font-brand uppercase tracking-[0.045em] text-[24px] md:text-[26px] font-extrabold text-slate-900">
+        <span className="font-brand uppercase tracking-[0.045em] text-[24px] md:text-[26px] font-extrabold text-[#0B2850]">
           Impress Cleaning Services
         </span>
-        <span className="font-brand lowercase tracking-[0.18em] text-[10px] md:text-[11px] text-slate-500 align-super">
+        <span className="font-brand lowercase tracking-[0.18em] text-[10px] md:text-[11px] font-extrabold text-brand align-super -ml-0.5 relative -top-[1px] text-[#0B2850]">
           LLC
         </span>
       </div>
-      <p className="text-slate-500 text-sm mt-0.5">
+      <p className="text-slate-500 text-sm mt-0.5 text-[#0B2850]">
         A clean home is an impressive home.
       </p>
     </div>

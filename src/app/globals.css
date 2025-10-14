@@ -1,32 +1,28 @@
 @import "tailwindcss";
-/* Brand word uses Playfair */
-.font-brand {
-  font-family: var(--font-brand), ui-serif, Georgia, "Times New Roman", serif;
-  letter-spacing: 0.2px;
-}
 
-/* for the tiny “LLC” superscript we used */
-.align-super { vertical-align: super; }
-
-
-/* --- Your custom theme / colors --- */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Theme (optional) */
+:root { --background:#ffffff; --foreground:#171717; }
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  :root { --background:#0a0a0a; --foreground:#ededed; }
 }
 
-body {
+/* Body = system font stack (SF on Apple, Segoe/Roboto elsewhere) */
+body{
   background: transparent !important;
   color: var(--foreground);
-  /* this uses the Nunito variable from next/font */
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
+
+/* Wordmark = Fraunces (keeps your header look) */
+.font-brand{
+  font-family: var(--font-brand), ui-serif, Georgia, "Times New Roman", serif;
+}
+
+/* Tiny superscript for “LLC” */
+.align-super{ vertical-align: super; }

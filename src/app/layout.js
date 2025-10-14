@@ -1,15 +1,9 @@
 // src/app/layout.jsx
 import "./globals.css";
-import { Nunito_Sans, Cinzel } from "next/font/google";
+import { Fraunces } from "next/font/google";
 import Footer from "@/components/Footer";
 
-const nunito = Nunito_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-});
-
-const brand = Cinzel({
+const brandFraunces = Fraunces({
   subsets: ["latin"],
   weight: ["700", "800", "900"],
   display: "swap",
@@ -32,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="bg-[#FFFDF8] text-slate-900 antialiased">
       {/* expose both font variables on <body> */}
-      <body className={`${nunito.variable} ${brand.variable} min-h-screen flex flex-col`}>
+      <body className={`${brandFraunces.variable} min-h-screen flex flex-col`}>
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
