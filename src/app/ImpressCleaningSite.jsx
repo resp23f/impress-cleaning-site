@@ -6,6 +6,40 @@ import React, { useState } from "react";
 // Fixed: restored full file; added working DropdownMenu component; desktop dropdowns for Residential/Commercial
 // Sections: Hero, Credibility, Services, Why, Industries, CTA, Process, Reviews, FAQ, Service Area, About, Quote, Footer
 
+// Inline SVG icons (no extra packages)
+const ShieldCheckIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" {...props}>
+    <path d="M12 3l7 3v5.5c0 4.2-2.9 8-7 9-4.1-1-7-4.8-7-9V6l7-3z" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M9.5 12.5l2 2 3.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const HomeIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" {...props}>
+    <path d="M3 10.5l9-7 9 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M5 10v9h14v-9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M9 19v-5h6v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+// Reusable chip with 3D hover + tooltip
+const Chip = ({ icon, label, detail }) => (
+  <div className="relative group">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 shadow-sm transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+      {icon}
+      <span className="whitespace-nowrap">{label}</span>
+    </span>
+
+    {/* Tooltip */}
+    {detail ? (
+      <span className="pointer-events-none absolute left-0 top-[110%] z-10 hidden w-max max-w-xs rounded-xl bg-white p-3 text-xs text-slate-600 ring-1 ring-slate-200 shadow-lg group-hover:block">
+        {detail}
+      </span>
+    ) : null}
+  </div>
+);
+
+
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -245,21 +279,19 @@ export default function ImpressCleaningSite() {
       Franchise-level reliability with a local, detail-first approach.
     </p>
 
-    {/* Trust chips */}
-    <div className="flex flex-wrap gap-2 mt-4">
-      {[
-        { label: "Satisfaction Guarantee", icon: "✅" },
-        { label: "Locally Owned", icon: "🏡" },
-      ].map(({ label, icon }) => (
-        <span
-          key={label}
-          className="inline-flex items-center gap-1.5 rounded-full bg-white ring-1 ring-slate-200 text-slate-700 text-sm px-3 py-1"
-        >
-          <span>{icon}</span>
-          {label}
-        </span>
-      ))}
-    </div>
+{/* Trust chips */}
+<div className="flex flex-wrap gap-2 mt-4">
+  <Chip
+    icon={<ShieldCheckIcon className="w-4 h-4 text-emerald-600" />}
+    label="Satisfaction Guarantee"
+    detail="If anything misses the mark, tell us within 24 hours and we’ll make it right with a free re-clean of the areas you flag."
+  />
+  <Chip
+    icon={<HomeIcon className="w-4 h-4 text-emerald-600" />}
+    label="Locally Owned"
+    detail="Austin-based ownership, local managers, and fully insured crews—your dollars stay in the community."
+  />
+</div>
 
     {/* Cards */}
     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
