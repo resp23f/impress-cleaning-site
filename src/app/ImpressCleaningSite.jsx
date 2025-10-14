@@ -87,8 +87,6 @@ export default function ImpressCleaningSite() {
 
 {/* Row 1: Brand block + utility links */}
 <div className="flex items-center justify-between py-3">
-
-  {/* Brand (sparkle + wordmark). Wrap in <a> if you want it clickable */}
   <a href="/" className="flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
     {/* Sparkle */}
     <img
