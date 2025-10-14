@@ -26,7 +26,7 @@ export default function Footer() {
             {/* Replace with your logo */}
             <div className="text-2xl font-bold">
               <span className="align-[-2px]">Impress</span>{" "}
-              <span className="text-primary">Cleaning</span>
+              <span className="text-primary">Cleaning Services LLC</span>
             </div>
 
             <a
@@ -148,7 +148,7 @@ export default function Footer() {
             <Link href="/do-not-sell" className="hover:underline">Do Not Sell My Info</Link>
             <Link href="/your-privacy-rights" className="hover:underline">Your Privacy Rights</Link>
           </div>
-          <div>© {year} Impress Cleaning LLC. All rights reserved.</div>
+          <div>© {year} Impress Cleaning Services LLC. All rights reserved.</div>
         </div>
       </div>
     </footer>
