@@ -360,11 +360,11 @@ export default function ImpressCleaningSite() {
                   <Field label="Email" id="email" type="email" required />
                   <Field label="Phone" id="phone" type="tel" required />
                 </div>
-                <Field label="Address" id="address" />
+                <Field label="Address" id="address" required />
                 <div className="grid sm:grid-cols-3 gap-4">
                   <Field label="Sq. Ft." id="sqft" inputMode="numeric" />
                   <Select label="Frequency" id="frequency" options={["One‑Time", "Weekly", "Bi‑Weekly", "Monthly"]} />
-                  <Select label="Start" id="start" options={["ASAP", "1‑2 Weeks", "Next Month"]} />
+                  <Select label="Start" id="start" options={["Asap", "1‑2 Weeks", "Next Month"]} />
                 </div>
                 <Field label="Notes / Access Details" id="notes" as="textarea" rows={4} placeholder="Alarms, after‑hours, special areas…" />
                 <div className="flex items-center gap-3">
