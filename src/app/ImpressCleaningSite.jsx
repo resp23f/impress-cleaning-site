@@ -186,15 +186,6 @@ export default function ImpressCleaningSite() {
   </div>
 </section>
 
-
-      {/* Credibility strip */}
-      <section className="border-y border-slate-100 bg-white/60">
-        <div className="mx-auto max-w-7xl px-4 py-6 flex flex-wrap items-center justify-center gap-6">
-          <Badge label="Satisfaction Guarantee" />
-          <Badge label="Locally Owned" />
-        </div>
-      </section>
-
       {/* Services (trimmed) */}
 <section id="services" className="py-20 bg-gradient-to-b from-white to-[#fdf9f3]">
   <div className="max-w-6xl mx-auto px-6 text-center">
