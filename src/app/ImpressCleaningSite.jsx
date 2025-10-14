@@ -350,35 +350,6 @@ export default function ImpressCleaningSite() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200">
-        <div className="mx-auto max-w-7xl px-4 py-10 grid md:grid-cols-3 gap-6 text-sm">
-          <div>
-            <div className="flex items-center gap-2">
-              <Logo size={18} />
-              <span className="font-semibold">Impress Cleaning Services</span>
-            </div>
-            <p className="mt-2 text-slate-600 max-w-xs">Professional office cleaning. Locally owned. Detail‑driven.</p>
-          </div>
-          <div>
-            <div className="font-semibold">Contact</div>
-            <ul className="mt-2 text-slate-600 space-y-1">
-              <li>Email: <a className="underline" href="mailto:admin@impressyoucleaning.com">admin@impressyoucleaning.com</a></li>
-              <li>Phone: <a className="underline" href="tel:+1-512-277-5364">(512) 277‑5364</a></li>
-              <li>PO Box 123, Your City, ST</li>
-            </ul>
-          </div>
-          <div>
-            <div className="font-semibold">Links</div>
-            <ul className="mt-2 text-slate-600 space-y-1">
-              <li><a className="hover:underline" href="#services">Services</a></li>
-              <li><a className="hover:underline" href="#process">Process</a></li>
-              <li><a className="hover:underline" href="#quote">Quote</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="text-xs text-slate-500 text-center pb-8">© {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.</div>
-      </footer>
     </main>
   );
 }
