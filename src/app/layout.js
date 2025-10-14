@@ -10,7 +10,7 @@ const nunito = Nunito_Sans({
 });
 
 export const metadata = {
-  title: "House Cleaning Services",
+  title: "House Cleaning Services | Impress Cleaning Services",
   description:
     "Locally owned residential cleaning service in Georgetown, TX. Reliable, professional, and thorough home cleaning you can count on.",
 icons: {

@@ -25,8 +25,8 @@ export default function Footer() {
           <div className="space-y-4">
             {/* Replace with your logo */}
             <div className="text-2xl font-bold">
-              <span className="align-[-2px]">Impress</span>{" "}
-              <span className="text-primary">Cleaning Services LLC</span>
+              <span className="align-[-2px]">Impress Cleaning Services</span>{" "}
+              <span className="text-primary">LLC</span>
             </div>
 
             <a
