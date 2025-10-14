@@ -264,48 +264,43 @@ export default function ImpressCleaningSite() {
   <div className="mx-auto max-w-6xl px-6">
     <h3 className="text-2xl font-bold text-slate-900">Who We Clean For</h3>
 
-{/* Residential focus */}
-<div className="mt-8" id="residential">
-  <p className="text-slate-600 text-sm mb-2 font-medium">Residential</p>
-  <ul className="flex flex-wrap gap-2">
-    {[
-      "Homes",
-      "Apartments & Condos",
-      "Move-In / Move-Out",
-      "Deep Cleaning",
-      "Recurring (Weekly/Bi-Weekly)"
-    ].map((i) => (
-      <li
-        key={i}
-        className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 whitespace-nowrap"
-      >
-        {i}
-      </li>
-    ))}
-  </ul>
-</div>
+    {/* Residential focus */}
+    <div className="mt-4">
+      <p className="text-slate-600 text-sm mb-2 font-medium">Residential</p>
+      <div className="flex flex-wrap gap-2">
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Homes</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Apartments & Condos</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Move-In / Move-Out</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Deep Cleaning</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Recurring (Weekly/Bi-Weekly)</span>
+      </div>
+    </div>
 
-{/* Commercial kept visible */}
-<div className="mt-8" id="commercial">
-  <p className="text-slate-600 text-sm mb-2 font-medium">Commercial</p>
-  <ul className="flex flex-wrap gap-2">
-    {[
-      "Professional Offices",
-      "Medical / Dental",
-      "Law Firms",
-      "Retail Suites",
-      "Property Management"
-    ].map((i) => (
-      <li
-        key={i}
-        className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 whitespace-nowrap"
-      >
-        {i}
-      </li>
-    ))}
-  </ul>
-</div>
+    {/* Commercial kept visible */}
+    <div className="mt-8" id="commercial">
+      <p className="text-slate-600 text-sm mb-2 font-medium">Commercial</p>
+      <div className="flex flex-wrap gap-2">
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Professional Offices</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Medical / Dental</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Law Firms</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Retail Suites</span>
+        <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Property Management</span>
 
+        {/* ✅ keep the map, but make it a proper expression that renders <span> chips */}
+        {[
+          // add anything you want here, or keep it empty if you don't need extras
+          // "Gyms", "Daycares"
+        ].map((i) => (
+          <span
+            key={i}
+            className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 whitespace-nowrap"
+          >
+            {i}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
 </section>
 
       {/* CTA band */}
