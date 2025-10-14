@@ -370,7 +370,11 @@ export default function ImpressCleaningSite() {
 
       {/* Reviews */}
 <section id="reviews" className="mx-auto max-w-7xl px-4 py-16 bg-slate-50 rounded-[2rem]">
-  <div className="grid md:grid-cols-3 gap-6">
+  {/* ⬇️ Add this */}
+  <div className="mb-6">
+    <h2 className="text-2xl font-bold text-slate-900">Customer Reviews</h2>
+    <p className="text-slate-600 mt-1">Real feedback from happy clients.</p>
+  </div>  <div className="grid md:grid-cols-3 gap-6">
     {[
       {
         quote:
