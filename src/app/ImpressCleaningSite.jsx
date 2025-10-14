@@ -58,29 +58,31 @@ export default function ImpressCleaningSite() {
     {/* Row 1: Brand block + utility links */}
     <div className="flex items-center justify-between py-3">
       {/* Brand (logo + name + tagline) */}
-      <a href="#home" className="flex items-center gap-3">
-        <img
-          src="/ImpressLogo.png"
-          alt="Impress Cleaning Services"
-          className="h-8 w-auto md:h-10"
-        />
-        <div className="leading-tight">
-          <div className="text-[18px] md:text-[20px] font-semibold text-slate-900">
-            Impress Cleaning Services LLC
-          </div>
-          <div className="text-[13px] text-slate-500 font-medium">
-            A clean home is an impressive home.
-          </div>
-          {/* Optional location line (hide on mobile) */}
-          {/* <div className="hidden md:flex items-center gap-1 text-xs text-slate-500 mt-0.5">
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
-              <path d="M12 21s7-5.33 7-11a7 7 0 10-14 0c0 5.67 7 11 7 11z" stroke="currentColor" strokeWidth="1.5"/>
-              <circle cx="12" cy="10" r="2" fill="currentColor"/>
-            </svg>
-            Georgetown, TX
-            <a href="#" className="ml-2 underline hover:no-underline">Change</a>
-          </div> */}
-        </div>
+{/* Logo + Brand */}
+<div className="flex items-center gap-3">
+  {/* Logo mark — use a transparent PNG or SVG, no dark square */}
+  <img
+    src="/ImpressLogo.png"
+    alt="Impress Cleaning Services"
+    className="w-10 h-10 object-contain"
+  />
+
+  <div className="flex flex-col leading-tight">
+    <div className="flex items-baseline gap-1">
+      <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+        Impress
+      </h1>
+      <span className="text-slate-700 text-[15px] font-medium">
+        Cleaning Services
+      </span>
+      <span className="text-slate-500 text-[11px] ml-0.5 align-super">LLC</span>
+    </div>
+
+    <p className="text-slate-500 text-sm mt-0.5">
+      A clean home is an impressive home.
+    </p>
+  </div>
+</div>
       </a>
 
       {/* Utility links (desktop only) */}
