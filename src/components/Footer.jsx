@@ -30,7 +30,7 @@ export default function Footer() {
             </div>
 
             <a
-              href="tel:(512) 277-5364"
+              href="tel:(512)277-5364"
               className="inline-flex items-center gap-2 text-lg font-semibold text-primary"
             >
               {/* phone icon (inline SVG for no extra deps) */}
@@ -43,7 +43,7 @@ export default function Footer() {
                   a16 16 0 0 0 6 6l1.47-1.13a2 2 0 0 1 2.11-.45
                   c.83.29 1.7.5 2.6.62A2 2 0 0 1 22 16.92z"/>
               </svg>
-              (833) 860-2987
+              (512) 277-5364
             </a>
 
             <div className="flex items-center gap-3 pt-2">
