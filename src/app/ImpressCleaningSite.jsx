@@ -301,30 +301,66 @@ export default function ImpressCleaningSite() {
 </div>
 
     {/* Cards */}
-    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {[
-        {
-          title: "Reliable Results",
-          desc: "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule.",
-        },
-        {
-          title: "Clear Communication",
-          desc: "We keep you in the loop from booking to follow-up, so you always know what’s happening and when.",
-        },
-        {
-          title: "Quality-Driven Service",
-          desc: "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent.",
-        },
-      ].map(({ title, desc }) => (
-        <div
-          key={title}
-          className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm px-4 py-4"
-        >
-          <h3 className="font-semibold text-slate-900">{title}</h3>
-          <p className="text-slate-600 text-sm mt-1">{desc}</p>
-        </div>
-      ))}
+<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {[
+    {
+      title: "Satisfaction Guarantee",
+      desc:  "If anything misses the mark, we’ll get it taken care of.",
+      icon: (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+          <path fill="currentColor" d="M12 2c.4 2.7 1.8 4.1 4.5 4.5C13.8 7 12.4 8.4 12 11.1 11.6 8.4 10.2 7 7.5 6.5 10.2 6.1 11.6 4.7 12 2zM12 12.9c.3 1.9 1.4 3 3.3 3.3-1.9.3-3 1.4-3.3 3.3-.3-1.9-1.4-3-3.3-3.3 1.9-.3 3-1.4 3.3-3.3z"/>
+        </svg>
+      ),
+    },
+    {
+      title: "Locally Owned",
+      desc:  "Georgetown-based team—your dollars stay in the community.",
+      icon: (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+          <path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/>
+        </svg>
+      ),
+    },
+    {
+      title: "Reliable Results",
+      desc:  "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule.",
+      icon: (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+          <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
+        </svg>
+      ),
+    },
+    {
+      title: "Clear Communication",
+      desc:  "We keep you in the loop from booking to follow-up, so you always know what’s happening and when.",
+      icon: (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+          <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
+        </svg>
+      ),
+    },
+    {
+      title: "Quality-Driven Service",
+      desc:  "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent.",
+      icon: (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+          <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
+        </svg>
+      ),
+    },      ].map(({ title, desc, icon }) => (
+    <div
+      key={title}
+      className="bg-white rounded-2xl shadow-sm hover:shadow-md ring-1 ring-slate-200
+                 border-t-4 border-emerald-500 transition p-5 md:p-6 flex gap-3"
+    >
+      <div className="shrink-0 mt-0.5">{icon}</div>
+      <div className="space-y-1">
+        <h4 className="font-semibold text-slate-900">{title}</h4>
+        <p className="text-slate-600 text-sm leading-relaxed">{desc}</p>
+      </div>
     </div>
+  ))}
+</div>
   </div>
 </section>
 
