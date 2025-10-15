@@ -119,7 +119,7 @@ export default function ImpressCleaningSite() {
   {/* Tabs (center elastic) */}
 <nav className="flex-1 min-w-0">
   <ul
-    className="hide-scrollbar flex gap-2 overflow-x-auto whitespace-nowrap md:justify-center md:overflow-visible"
+    className="hide-scrollbar flex gap-5 overflow-x-auto whitespace-nowrap md:justify-center md:overflow-visible"
     aria-label="Primary"
   >
 {[
@@ -144,7 +144,7 @@ export default function ImpressCleaningSite() {
 </nav>
 
 {/* CTAs (right) */}
-  <div className="ml-auto hidden sm:flex items-center gap-2">
+  <div className="ml-auto hidden sm:flex items-center gap-1">
     <a
       href="#quote"
       className="px-4 py-2 text-sm font-semibold text-[#0B2850]">
