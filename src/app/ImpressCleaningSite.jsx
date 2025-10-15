@@ -1,5 +1,7 @@
 'use client';
 import React, { useState } from "react";
+import Link from "next/link";
+
 
 
 // Impress Cleaning Services — Starter Site (React + Tailwind)
@@ -108,7 +110,7 @@ export default function ImpressCleaningSite() {
       <ul className="hidden md:flex items-center text-sm text-slate-600">
         <li><a href="/careers" className="hover:text-slate-900">Apply</a></li>
         <li className="mx-6 h-4 w-px bg-slate-200" aria-hidden="true" />
-        <li><a href="/aplicar" className="hover:text-slate-900">Aplicar</a></li>
+        <li><Link href="/aplicar" className="hover:text-slate-900">Aplicar</Link></li>
         <li className="mx-6 h-4 w-px bg-slate-200" aria-hidden="true" />
         <li><a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a></li>
       </ul>
@@ -288,20 +290,6 @@ export default function ImpressCleaningSite() {
     <p className="text-slate-600 mt-2">
       Franchise-level reliability with a local, detail-first approach.
     </p>
-
-{/* Trust chips */}
-<div className="flex flex-wrap gap-2 mt-4">
-  <Chip
-    icon={<ShieldCheckIcon className="w-4 h-4 text-emerald-600" />}
-    label="Satisfaction Guarantee"
-    detail="If anything misses the mark, tell us within 24 hours and we’ll make it right with a free re-clean of the areas you flag."
-  />
-  <Chip
-    icon={<HomeIcon className="w-4 h-4 text-emerald-600" />}
-    label="Locally Owned"
-    detail="Austin-based ownership, local managers, and fully insured crews—your dollars stay in the community."
-  />
-</div>
 
     {/* Why Choose Impress Grid */}
 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
