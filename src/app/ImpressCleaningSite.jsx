@@ -84,9 +84,12 @@ export default function ImpressCleaningSite() {
 
   return (
     <main id="home" className="min-h-screen text-slate-800">
+      
 {/* Header */}
 <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
   <div className="w-full px-4 md:px-8 lg:px-12">
+  </div>
+ 
 
     {/* Row 1: Brand + utility links */}
     <div className="flex items-center justify-between py-3">
@@ -113,58 +116,79 @@ export default function ImpressCleaningSite() {
       </ul>
     </div>
 
-{/* Row 2 Tabs CTAs */}
-<div className="flex items-center w-full px-4 md:px-8 lg:px-12 bg-transparent rounded-none shadow-none">
+{/* Row 2: Tabs + CTAs */}
+<div className="flex items-center w-full px-6 md:px-10 lg:px-16 bg-transparent">
+  {/* Tabs (left) */}
+  <nav className="flex-1 min-w-0">
+    <ul
+      className="hide-scrollbar flex gap-6 overflow-x-auto whitespace-nowrap justify-start md:overflow-visible"
+      aria-label="Primary"
+    >
+      {[
+        ["Residential", "#home"],
+        ["Commercial", "#commercial"],
+        ["Why Hire Us", "#why"],
+        ["About Us", "#about"],
+        ["FAQ", "#faq"],
+      ].map(([label, href]) => (
+        <li key={label}>
+          <a
+            href={href}
+            className="px-3 py-2 text-sm md:text-base font-medium text-slate-700 hover:text-slate-900 tracking-wide whitespace-nowrap"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
 
-  {/* Tabs (center elastic) */}
-<nav className="flex-1 min-w-0">
-  <ul
-    className="hide-scrollbar flex gap-30 overflow-x-auto whitespace-nowrap justify-start md:overflow-visible"
-    aria-label="Primary"
-  >
-{[
-  ["Residential", "#home"],
-  ["Commercial", "#commercial"],
-  ["Why Hire Us", "#why"],
-  ["About Us", "#about"],
-  ["FAQ", "#faq"],
-].map(([label, href]) => {
-  return (
-    <li key={label}>
-      <a
-        href={href}
-        className="px-3 py-2 text-sm md:text-base font-medium text-slate-700 hover:text-slate-900"
-      >
-        {label}
+  {/* CTAs (right) */}
+  <div className="ml-auto flex items-center gap-2 shrink-0">
+    {/* Desktop ≥1280px */}
+    <div className="hidden xl:flex items-center gap-3 shrink-0">
+      <a href="#quote" className="px-4 py-2 text-sm font-semibold text-[#0B2850] whitespace-nowrap">
+        Get a Free Quote
       </a>
-    </li>
-  );
-})}
-  </ul>
-</nav>
+      <a href="tel:15122775364" className="px-4 py-2 text-sm font-semibold text-[#0B2850] whitespace-nowrap">
+        Call (512) 277-5364
+      </a>
+    </div>
 
-{/* CTAs (right) */}
-  <div className="ml-auto hidden sm:flex items-center gap-6 shrink-0">
-    <a
-      href="#quote"
-      className="px-4 py-2 text-sm font-semibold text-[#0B2850]">
-      Get a Free Quote</a>
-    <a href="tel:15122775364"
-      className="px-4 py-7 text-md font-bold text-[#0B2850]">Call (512) 277-5364</a>
-  </div>
-</div>
+    {/* Tablet ≥768px & <1280px */}
+    <div className="hidden md:flex xl:hidden items-center gap-2 shrink-0">
+      <a href="#quote" className="px-3 py-1.5 text-sm font-semibold text-[#0B2850] whitespace-nowrap">
+        Free Quote
+      </a>
+      <a href="tel:15122775364" className="px-3 py-1.5 text-sm font-semibold text-[#0B2850] whitespace-nowrap">
+        (512) 277-5364
+      </a>
+    </div>
 
-      {/* Compact CTA on very small widths */}
-      <div className="sm:hidden shrink-0">
-        <a
-          href="#quote"
-          className="inline-flex items-center rounded-full bg-[#0B2850] px-3 py-1.5 text-white text-sm"
-        >
-          Quote
-        </a>
-      </div>
-  </div>
-</header>
+    {/* Mobile <768px */}
+    <div className="flex md:hidden items-center gap-2 shrink-0">
+      <a
+        href="#quote"
+        aria-label="Get a Free Quote"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 text-[#0B2850]"
+      >
+        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M4 7h16v10H4zM8 7v10M16 7v10M4 11h4M16 11h4" />
+        </svg>
+      </a>
+      <a
+        href="tel:15122775364"
+        aria-label="Call (512) 277-5364"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 text-[#0B2850]" >
+        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.6a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.47-1.13a2 2 0 0 1 2.11-.45c.83.29 1.7.5 2.6.62A2 2 0 0 1 22 16.92z" />
+        </svg>
+      </a>
+     </div>
+    </div>
+   </div>
+</header> 
+
 
 {/* Hero */}
 <section id="home" className="relative bg-slate-900 text-white">
