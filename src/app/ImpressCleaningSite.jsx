@@ -86,14 +86,14 @@ export default function ImpressCleaningSite() {
     <main id="home" className="min-h-screen text-slate-800">
       
 {/* Header */}
-<header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
+<header className="sticky top-0 pt-[env(safe-area-inset-top)] z-40 bg-white/90 backdrop-blur border-b border-slate-100">
   <div className="mx-auto max-w-7xl px-4 md:px-8">
   </div>
     {/* Row 1: Brand + utility links */}
     <div className="flex items-center justify-between py-4 px-2 md:px-4">
       {/* Brand */}
       <a href="/" className="shrink-0 flex items-center gap-4" aria-label="Impress Cleaning Services LLC">
-        <div className="leading-right">
+        <div className="ml-4 md:ml-0">
           <div className="flex items-baseline gap-2">
             <span className="font-brand uppercase tracking-[0.05em] text-[25px] md:text-[35px] font-black text-[#0B2850]">Impress</span>
             <span className="font-brand uppercase tracking-[0.05em] text-[25px] md:text-[35px] font-black text-[#0B2850]">Cleaning Services</span>
@@ -119,7 +119,10 @@ export default function ImpressCleaningSite() {
   {/* Tabs (left) */}
   <nav className="flex-1 min-w-0">
     <ul
-      className="hide-scrollbar flex gap-10 md:gap-14 overflow-x-auto whitespace-nowrap justify-start md:overflow-visible ml-6 md:ml-10"
+      className="hide-scrollbar flex gap-8 md:gap-10 overflow-x-auto whitespace-nowrap
+             text-[16px] md:text-[18px] font-medium text-slate-900
+             pl-4 pr-20 md:pr-0 py-3 -mx-4 md:mx-0
+             [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-32px),transparent)]"
       aria-label="Primary"
     >
       {[
@@ -300,15 +303,15 @@ export default function ImpressCleaningSite() {
   />
 </div>
 
-    {/* Cards */}
-<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {/* Why Choose Impress Grid */}
+<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
   {[
     {
       title: "Satisfaction Guarantee",
       desc:  "If anything misses the mark, we’ll get it taken care of.",
       icon: (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
-          <path fill="currentColor" d="M12 2c.4 2.7 1.8 4.1 4.5 4.5C13.8 7 12.4 8.4 12 11.1 11.6 8.4 10.2 7 7.5 6.5 10.2 6.1 11.6 4.7 12 2zM12 12.9c.3 1.9 1.4 3 3.3 3.3-1.9.3-3 1.4-3.3 3.3-.3-1.9-1.4-3-3.3-3.3 1.9-.3 3-1.4 3.3-3.3z"/>
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
+          <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
         </svg>
       ),
     },
@@ -316,7 +319,7 @@ export default function ImpressCleaningSite() {
       title: "Locally Owned",
       desc:  "Georgetown-based team—your dollars stay in the community.",
       icon: (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
           <path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/>
         </svg>
       ),
@@ -325,7 +328,7 @@ export default function ImpressCleaningSite() {
       title: "Reliable Results",
       desc:  "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule.",
       icon: (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
           <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
         </svg>
       ),
@@ -334,7 +337,7 @@ export default function ImpressCleaningSite() {
       title: "Clear Communication",
       desc:  "We keep you in the loop from booking to follow-up, so you always know what’s happening and when.",
       icon: (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
           <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
         </svg>
       ),
@@ -343,7 +346,7 @@ export default function ImpressCleaningSite() {
       title: "Quality-Driven Service",
       desc:  "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent.",
       icon: (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
           <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
         </svg>
       ),
@@ -351,10 +354,10 @@ export default function ImpressCleaningSite() {
     <div
       key={title}
       className="bg-white rounded-2xl shadow-sm hover:shadow-md ring-1 ring-slate-200
-                 border-t-4 border-emerald-500 transition p-5 md:p-6 flex gap-3"
+                 border-t-[3px] border-emerald-500 transition p-5 md:p-6 flex gap-3 h-full"
     >
       <div className="shrink-0 mt-0.5">{icon}</div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <h4 className="font-semibold text-slate-900">{title}</h4>
         <p className="text-slate-600 text-sm leading-relaxed">{desc}</p>
       </div>
