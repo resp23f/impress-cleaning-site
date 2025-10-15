@@ -17,7 +17,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t">
+    <footer className="bg-[#FFFDF8]">
       {/* Top section: brand + columns */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-8 py-10 md:grid-cols-4">
@@ -26,7 +26,7 @@ export default function Footer() {
             {/* Replace with your logo */}
             <div className="text-2xl font-bold">
               <span className="align-[-2px]">Impress Cleaning Services</span>{" "}
-              <span className="text-primary">LLC</span>
+              <span className="text-[#008250]">LLC</span>
             </div>
 
             <a
@@ -129,25 +129,24 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px w-full bg-gray-200" />
+        <div className="h-px w-full bg-[#FFFDF8]" />
 
         {/* Disclaimer */}
-        <div className="py-6 text-center text-xs leading-5 text-gray-600">
+        <div className="py-6 text-center text-xs leading-5 text-slate-600">
           This information is for general purposes only. Each location is independently owned and operated.
           Services may vary by location. Contact your local office for details.
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="bg-gray-50">
+      <div className="bg-[#FFFDF8]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-4 text-xs text-gray-600 sm:flex-row sm:px-6">
           <div className="flex flex-wrap items-center gap-4">
-            <Link href="/terms" className="hover:underline">Terms of Use</Link>
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            <Link href="/accessibility" className="hover:underline">Accessibility</Link>
-            <Link href="/do-not-sell" className="hover:underline">Do Not Sell My Info</Link>
-            <Link href="/your-privacy-rights" className="hover:underline">Your Privacy Rights</Link>
-          </div>
+<Link href="/terms" className="hover:text-slate-900">Terms of Use</Link>
+            <Link href="/privacy" className="hover:text-slate-900">Privacy Policy</Link>
+            <Link href="/accessibility" className="hover:text-slate-900">Accessibility</Link>
+            <Link href="/do-not-sell" className="hover:text-slate-900">Do Not Sell My Info</Link>
+            <Link href="/your-privacy-rights" className="hover:text-slate-900">Your Privacy Rights</Link>          </div>
           <div>© {year} Impress Cleaning Services LLC. All rights reserved.</div>
         </div>
       </div>
