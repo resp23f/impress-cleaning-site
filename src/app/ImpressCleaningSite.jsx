@@ -113,48 +113,46 @@ export default function ImpressCleaningSite() {
       </ul>
     </div>
 
-    {/* Row 2: Tabs + CTAs */}
-    <div className="flex items-center gap-3 pb-3">
-      {/* Tabs (center, elastic) */}
-      <nav className="flex-1 min-w-0">
-        <ul
-          className="hide-scrollbar flex gap-2 overflow-x-auto whitespace-nowrap md:justify-center md:overflow-visible"
-          aria-label="Primary"
-        >
-          {[
-            ["Residential", "#home"],
-            ["Commercial", "#commercial"],
-            ["Why Hire Us", "#why"],
-            ["About Us", "#about"],
-            ["FAQ", "#faq"],
-          ].map(([label, href]) => (
-            <li key={label}>
-              <a
-                href={href}
-                className="inline-flex items-center rounded-full px-3 py-1.5 text-sm ring-1 ring-slate-200 bg-white text-slate-700 hover:text-slate-900 hover:shadow-sm transition"
-              >
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+{/* Row 2 Tabs CTAs */}
+<div className="flex items-center gap-3 p-6 bg-transparent rounded-none shadow-none">
 
-      {/* CTAs (right) */}
-      <div className="shrink-0 hidden sm:flex items-center gap-2">
-        <a
-          href="#quote"
-          className="inline-flex items-center rounded-full px-3 py-1.5 text-sm ring-1 ring-slate-200 bg-white hover:shadow-sm"
-        >
-          Get a Free Quote
-        </a>
-        <a
-          href="tel:15122775364"
-          className="inline-flex items-center rounded-full bg-[#0B2850] px-3 py-1.5 text-white text-sm hover:shadow-sm"
-        >
-          Call (512) 277-5364
-        </a>
-      </div>
+  {/* Tabs (center elastic) */}
+<nav className="flex-1 min-w-0">
+  <ul
+    className="hide-scrollbar flex gap-2 overflow-x-auto whitespace-nowrap md:justify-center md:overflow-visible"
+    aria-label="Primary"
+  >
+{[
+  ["Residential", "#home"],
+  ["Commercial", "#commercial"],
+  ["Why Hire Us", "#why"],
+  ["About Us", "#about"],
+  ["FAQ", "#faq"],
+].map(([label, href]) => {
+  return (
+    <li key={label}>
+      <a
+        href={href}
+        className="px-3 py-2 text-sm md:text-base font-medium text-slate-700 hover:text-slate-900"
+      >
+        {label}
+      </a>
+    </li>
+  );
+})}
+  </ul>
+</nav>
+
+{/* CTAs (right) */}
+  <div className="ml-auto hidden sm:flex items-center gap-2">
+    <a
+      href="#quote"
+      className="px-4 py-2 text-sm font-semibold text-[#0B2850]">
+      Get a Free Quote</a>
+    <a href="tel:15122775364"
+      className="px-4 py-2 text-md font-bold text-[#0B2850]">Call (512) 277-5364</a>
+  </div>
+</div>
 
       {/* Compact CTA on very small widths */}
       <div className="sm:hidden shrink-0">
@@ -165,7 +163,6 @@ export default function ImpressCleaningSite() {
           Quote
         </a>
       </div>
-    </div>
   </div>
 </header>
 
@@ -393,25 +390,22 @@ export default function ImpressCleaningSite() {
 </section>
 
 {/* Service Area */}
-      <section className="mx-auto max-w-7xl px-4 pb-16">
-        <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
-        <p className="text-slate-600 mt-2 max-w-prose">Greater metro area and nearby suburbs. If you’re just outside, ask—we’re flexible for the right fit.</p>
-        <div className="mt-6 rounded-2xl border border-slate-200 overflow-hidden">
-  <div className="aspect-[16/9]">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35685.410477753896!2d-97.75336058902573!3d30.725935029808827!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644d5693958ab55%3A0xa2ee570eaadd9735!2sSun%20City%2C%20Georgetown%2C%20TX%2078633!5e0!3m2!1sen!2sus!4v1759798997027!5m2!1sen!2sus"
-      className="w-full h-full"
-      style={{ border: 0 }}
-      allowFullScreen
+<section className="mx-auto max-w-7xl px-4 py-16">
+  <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
+  <p className="text-slate-600 mt-2">
+    Greater metro area and nearby suburbs. If you’re just outside, ask—we’re flexible for the right fit.
+  </p>          
+<div className="mt-6 w-full h-48 md:h-64 rounded-2xl overflow-hidden bg-white shadow-sm">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54879.50592557885!2d-97.72647995000001!3d30.71926849999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644d5693958ab55%3A0xa2ee570eaadd9735!2sSun%20City%2C%20Georgetown%2C%20TX%2078633!5e0!3m2!1sen!2sus!4v1760480263582!5m2!1sen!2sus" 
+className="w-full h-full block border-none outline-none -translate-y-px"
+      style={{ border: 'none' }}
       loading="lazy"
       referrerPolicy="no-referrer-when-downgrade"
+      allowFullScreen
+      title="Service area map"
     />
   </div>
-</div>
-
-      </section>
-
-
+</section>
 {/* Quote Form */}
 <section id="quote" className="mx-auto max-w-7xl px-4 py-16">
     <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
