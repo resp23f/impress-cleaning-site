@@ -86,7 +86,7 @@ export default function ImpressCleaningSite() {
     <main id="home" className="min-h-screen text-slate-800">
 {/* Header */}
 <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
-  <div className="mx-auto max-w-7xl px-4">
+  <div className="w-full px-4 md:px-8 lg:px-12">
 
     {/* Row 1: Brand + utility links */}
     <div className="flex items-center justify-between py-3">
@@ -95,31 +95,31 @@ export default function ImpressCleaningSite() {
         <img src="/sparkle.svg" alt="" aria-hidden="true" className="w-7 h-7 shrink-0" />
         <div className="leading-tight">
           <div className="flex items-baseline gap-2">
-            <span className="font-brand uppercase tracking-[0.04em] text-[20px] md:text-[22px] font-black text-[#0B2850]">Impress</span>
-            <span className="font-brand uppercase tracking-[0.04em] text-[20px] md:text-[22px] font-black text-[#0B2850]">Cleaning Services</span>
+            <span className="font-brand uppercase tracking-[0.04em] text-[26px] md:text-[30px] font-black text-[#0B2850]">Impress</span>
+            <span className="font-brand uppercase tracking-[0.04em] text-[26px] md:text-[30px] font-black text-[#0B2850]">Cleaning Services</span>
             <span className="font-brand uppercase tracking-[0.14em] text-[10px] text-[#0B2850] align-super -ml-0.5">LLC</span>
           </div>
-          <p className="text-slate-600 text-xs md:text-sm">A clean home is an impressive home.</p>
+          <p className="text-slate-900 text-md md:text-md">A clean home is an impressive home.</p>
         </div>
       </a>
 
       {/* Utility links (right) */}
       <ul className="hidden md:flex items-center text-sm text-slate-600">
         <li><a href="/careers" className="hover:text-slate-900">Apply</a></li>
-        <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li className="mx-6 h-4 w-px bg-slate-200" aria-hidden="true" />
         <li><a href="/aplicar" className="hover:text-slate-900">Aplicar</a></li>
-        <li className="mx-4 h-4 w-px bg-slate-200" aria-hidden="true" />
+        <li className="mx-6 h-4 w-px bg-slate-200" aria-hidden="true" />
         <li><a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a></li>
       </ul>
     </div>
 
 {/* Row 2 Tabs CTAs */}
-<div className="flex items-center gap-3 p-6 bg-transparent rounded-none shadow-none">
+<div className="flex items-center w-full px-4 md:px-8 lg:px-12 bg-transparent rounded-none shadow-none">
 
   {/* Tabs (center elastic) */}
 <nav className="flex-1 min-w-0">
   <ul
-    className="hide-scrollbar flex gap-5 overflow-x-auto whitespace-nowrap md:justify-center md:overflow-visible"
+    className="hide-scrollbar flex gap-30 overflow-x-auto whitespace-nowrap justify-start md:overflow-visible"
     aria-label="Primary"
   >
 {[
@@ -144,13 +144,13 @@ export default function ImpressCleaningSite() {
 </nav>
 
 {/* CTAs (right) */}
-  <div className="ml-auto hidden sm:flex items-center gap-1">
+  <div className="ml-auto hidden sm:flex items-center gap-6 shrink-0">
     <a
       href="#quote"
       className="px-4 py-2 text-sm font-semibold text-[#0B2850]">
       Get a Free Quote</a>
     <a href="tel:15122775364"
-      className="px-4 py-2 text-md font-bold text-[#0B2850]">Call (512) 277-5364</a>
+      className="px-4 py-7 text-md font-bold text-[#0B2850]">Call (512) 277-5364</a>
   </div>
 </div>
 
@@ -172,7 +172,7 @@ export default function ImpressCleaningSite() {
   <img
     src="/hero-cleaners.jpg"
     alt="Professional cleaners from Impress Cleaning"
-    className="absolute inset-0 h-full w-full object-cover"
+    className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
   />
 
   {/* Subtle dark overlay */}
@@ -208,7 +208,7 @@ export default function ImpressCleaningSite() {
 
       {/* Services */}
 <section id="services" className="py-20 bg-[#FFFDF8]">
-  <div className="max-w-6xl mx-auto px-6 text-center">
+  <div className="w-full px-4 md:px-8 lg:px-12">
     <h2 className="text-3xl font-bold text-slate-900 mb-2">How Impress Cleaning can serve you</h2>
     <p className="text-slate-600 mb-12">
       A clean space makes a lasting impression. Choose the plan that fits your schedule.
@@ -258,7 +258,7 @@ export default function ImpressCleaningSite() {
 
 {/* Why Choose Impress Cleaning Services */}
 <section className="py-16" id="why">
-  <div className="mx-auto max-w-6xl px-6">
+  <div className="w-full px-4 md:px-8 lg:px-12">
     <h2 className="text-2xl font-bold text-slate-900">Why Choose Impress Cleaning Services</h2>
     <p className="text-slate-600 mt-2">
       Franchise-level reliability with a local, detail-first approach.
@@ -308,7 +308,7 @@ export default function ImpressCleaningSite() {
 
 {/* Who we clean for */}
 <section className="py-12" id="who-we-clean">
-  <div className="mx-auto max-w-6xl px-6">
+  <div className="w-full px-4 md:px-8 lg:px-12">
     <h3 className="text-2xl font-bold text-slate-900">Who We Clean For</h3>
 
     {/* Residential focus */}
@@ -354,7 +354,7 @@ export default function ImpressCleaningSite() {
       <CtaBand />
 
 {/* Reviews */}
-<section id="reviews" className="mx-auto max-w-7xl px-4 py-16 rounded-[2rem]">
+<section id="reviews" className="w-full px-4 md:px-8 lg:px-12 py-16 rounded-[2rem]">
   <div className="mb-6">
     <h2 className="text-2xl font-bold text-slate-900">Customer Reviews</h2>
     <p className="text-slate-600 mt-1">Real feedback from happy clients.</p>
@@ -382,7 +382,7 @@ export default function ImpressCleaningSite() {
           className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md"
         >
           <p className="text-slate-700 leading-relaxed">{`“${cleaned}”`}</p>
-          <footer className="mt-4 text-sm text-slate-600">— {r.name}</footer>
+          <footer className="w-full px-4 md:px-8 lg:px-12">— {r.name}</footer>
         </li>
       );
     })}
@@ -390,7 +390,7 @@ export default function ImpressCleaningSite() {
 </section>
 
 {/* Service Area */}
-<section className="mx-auto max-w-7xl px-4 py-16">
+<section className="w-full px-4 md:px-8 lg:px-12 py-16">
   <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
   <p className="text-slate-600 mt-2">
     Greater metro area and nearby suburbs. If you’re just outside, ask—we’re flexible for the right fit.
@@ -407,7 +407,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
   </div>
 </section>
 {/* Quote Form */}
-<section id="quote" className="mx-auto max-w-7xl px-4 py-16">
+<section id="quote" className="w-full px-4 md:px-8 lg:px-12 py-16">
     <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
     Request a Quote
   </h2>
@@ -679,7 +679,7 @@ function Pillar({ title, desc }) {
 function CtaBand() {
   return (
     <section className="relative">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="w-full px-4 md:px-8 lg:px-12">
         <div className="mt-2 rounded-3xl border border-slate-200 bg-slate-900 text-white p-6 md:p-8 shadow-sm grid md:grid-cols-2 gap-6 items-center">
           <div>
             <h3 className="text-xl md:text-2xl font-semibold">Ready for a spotless space?</h3>
