@@ -87,22 +87,20 @@ export default function ImpressCleaningSite() {
       
 {/* Header */}
 <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
-  <div className="w-full px-4 md:px-8 lg:px-12">
+  <div className="mx-auto max-w-7xl px-4 md:px-8">
   </div>
- 
-
     {/* Row 1: Brand + utility links */}
-    <div className="flex items-center justify-between py-3">
+    <div className="flex items-center justify-between py-4 px-2 md:px-4">
       {/* Brand */}
-      <a href="/" className="shrink-0 flex items-center gap-3" aria-label="Impress Cleaning Services LLC">
-        <img src="/sparkle.svg" alt="" aria-hidden="true" className="w-7 h-7 shrink-0" />
-        <div className="leading-tight">
+      <a href="/" className="shrink-0 flex items-center gap-4" aria-label="Impress Cleaning Services LLC">
+        <div className="leading-right">
           <div className="flex items-baseline gap-2">
-            <span className="font-brand uppercase tracking-[0.04em] text-[26px] md:text-[30px] font-black text-[#0B2850]">Impress</span>
-            <span className="font-brand uppercase tracking-[0.04em] text-[26px] md:text-[30px] font-black text-[#0B2850]">Cleaning Services</span>
+            <span className="font-brand uppercase tracking-[0.05em] text-[25px] md:text-[35px] font-black text-[#0B2850]">Impress</span>
+            <span className="font-brand uppercase tracking-[0.05em] text-[25px] md:text-[35px] font-black text-[#0B2850]">Cleaning Services</span>
             <span className="font-brand uppercase tracking-[0.14em] text-[10px] text-[#0B2850] align-super -ml-0.5">LLC</span>
           </div>
           <p className="text-slate-900 text-md md:text-md">A clean home is an impressive home.</p>
+           {/* swoosh */}
         </div>
       </a>
 
@@ -117,11 +115,11 @@ export default function ImpressCleaningSite() {
     </div>
 
 {/* Row 2: Tabs + CTAs */}
-<div className="flex items-center w-full px-6 md:px-10 lg:px-16 bg-transparent">
+<div className="flex items-center justify-between pb-3">
   {/* Tabs (left) */}
   <nav className="flex-1 min-w-0">
     <ul
-      className="hide-scrollbar flex gap-6 overflow-x-auto whitespace-nowrap justify-start md:overflow-visible"
+      className="hide-scrollbar flex gap-10 md:gap-14 overflow-x-auto whitespace-nowrap justify-start md:overflow-visible ml-6 md:ml-10"
       aria-label="Primary"
     >
       {[
@@ -134,7 +132,7 @@ export default function ImpressCleaningSite() {
         <li key={label}>
           <a
             href={href}
-            className="px-3 py-2 text-sm md:text-base font-medium text-slate-700 hover:text-slate-900 tracking-wide whitespace-nowrap"
+            className="px-3 py-2 text-[16px] md:text-[18px] font-semibold text-slate-800 hover:text-emerald-700 tracking-[0.02em] transition-colors"
           >
             {label}
           </a>

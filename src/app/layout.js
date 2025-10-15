@@ -1,11 +1,11 @@
 // src/app/layout.jsx
 import "./globals.css";
-import { Fraunces } from "next/font/google";
+import { Oswald } from "next/font/google";
 import Footer from "@/components/Footer";
 
-const brandFraunces = Fraunces({
+const oswald = Oswald({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: ['400', '500', '600', '700'],
   display: "swap",
   variable: "--font-brand", // we'll use this only for the logo word
 });
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${brandFraunces.variable} bg-[#FFFDF8] text-slate-900 antialiased`}
+        className={`${oswald.variable} bg-[#FFFDF8] text-slate-900 antialiased`}
       >
         <main className="min-h-screen flex flex-col">{children}</main>
         <Footer />

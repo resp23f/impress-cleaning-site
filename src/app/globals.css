@@ -29,7 +29,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-/* Wordmark = Fraunces (keeps your header look) */
+/* Wordmark = Oswald (keeps your header look) */
 .font-brand{
   font-family: var(--font-brand), ui-serif, Georgia, "Times New Roman", serif;
 }
