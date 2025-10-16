@@ -327,10 +327,13 @@ return (
 
           <a
             href="/aplicar/aplicar-form"
-className="inline-flex items-center justify-center rounded-lg 
-bg-[radial-gradient(circle_at_center,_#0B2850,_#081A36)] 
-px-5 py-2.5 text-white font-semibold shadow-md 
-hover:shadow-lg hover:brightness-110 hover:ring-2 hover:ring-[#00A86B]/30 hover:ring-offset-1 transition"
+className="relative inline-flex items-center justify-center rounded-lg
+bg-[#0B2850] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_18px_rgba(0,0,0,0.25)]
+px-5 py-2.5 text-white font-semibold shadow-md hover:shadow-lg hover:brightness-110
+hover:ring-2 hover:ring-[#00A86B]/30 hover:ring-offset-1 transition
+before:absolute before:inset-0 before:rounded-lg
+before:bg-[radial-gradient(100%_60%_at_50%_0%,rgba(255,255,255,0.18),rgba(255,255,255,0)_60%)]
+before:pointer-events-none"
           >
             Aplicar Ahora →
           </a>
