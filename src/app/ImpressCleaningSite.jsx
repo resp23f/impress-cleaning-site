@@ -45,7 +45,7 @@ const Chip = ({ icon, label, detail }) => (
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const FORM_ENDPOINT = ""; // e.g., https://formspree.io/f/xxxxxxx
+  const FORM_ENDPOINT = "https://formspree.io/f/xblzwdek"
 
   async function handleSubmit(e) {
     e.preventDefault();
