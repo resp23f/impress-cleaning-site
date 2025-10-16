@@ -129,10 +129,10 @@ return (
       <div
         className="inline-block rounded-xl bg-[#123a7c]/55 ring-1 ring-white/10
              backdrop-blur-sm px-9 py-9 sm:px-8 sm:py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]
-             translate-y-20 md:translate-y-55 max-w-2xl w-full text-center space-y-10 -translate-x-8 md:-translate-x-60"
+             translate-y-20 md:translate-y-45 max-w-2xl w-full text-center space-y-10 -translate-x-8 md:-translate-x-60"
       >
         <h1 className="text-white font-[Playfair_Display] font-bold leading-tight tracking-tight 
-               text-3xl sm:text-5xl md:text-6xl">
+               text-3xl sm:text-5xl md:text-5xl">
           EMPLEOS EN IMPRESS CLEANING SERVICES
         </h1>
         <p className="mt-2 text-white/85 text-sm md:text-base">
@@ -140,7 +140,7 @@ return (
 
         <a
           href="#aplicar-form"
-          className="mt-8 mx-auto flex items-center justify-center rounded-xl
+          className="mt-1 mx-auto flex items-center justify-center rounded-xl
              bg-gradient-to-r from-green-300 via-emerald-300 to-green-400
              px-6 py-3 text-white font-semibold shadow-md hover:shadow-lg
              hover:from-green-400 hover:to-emerald-400 transition"
