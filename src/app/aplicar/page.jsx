@@ -88,7 +88,9 @@ return (
       {/* --- CTA Button --- */}
       <a
         href="#aplicar-form"
-        className="rounded-lg bg-rose-500 px-5 py-2 text-white font-semibold hover:bg-rose-600 transition"
+        className="rounded-lg bg-gradient-to-r from-green-300 via-emerald-300 to-green-400
+             px-6 py-3 text-white font-semibold shadow-md hover:shadow-lg
+             hover:from-green-400 hover:to-emerald-400 transition"
       >
         Explora todos los empleos
       </a>
