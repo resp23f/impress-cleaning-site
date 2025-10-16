@@ -3,6 +3,15 @@
 
 import { useState } from "react";
 import { CheckCircle2, Upload, MapPin, CalendarDays, Clock } from "lucide-react";
+import {
+  CurrencyDollarIcon,
+  SunIcon,
+  AcademicCapIcon,
+  UsersIcon,
+  HeartIcon,
+  ChartBarIcon,
+} from "@heroicons/react/24/solid";
+
 
 
 const FORM_ENDPOINT = "https://formspree.io/f/mrbyrngw"
@@ -61,7 +70,7 @@ try {
     );
   }
   }
-  
+
 return (
   <>
   {/* ===== TOP HEADER (Molly-style) ===== */}
@@ -185,6 +194,104 @@ return (
     </p>
   </div>
 </section>
+
+{/* BEGIN Why Work Here */}
+<section className="mb-10">
+<div className="max-w-9xl px-6 md:px-12 text-center mx-auto">
+  </div>
+
+  <h2 className="text-4xl md:text-4xl font-[Playfair_Display] font-bold text-slate-800 mb-6 tracking-wide text-center">
+    ¿Por qué trabajar aquí?
+  </h2>
+  <p className="mt-2 text-slate-600 text-md leading-relaxed">
+  </p>
+
+<div className="max-w-8xl mx-auto px-4 md:px-8">
+  <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">    
+    
+    {/* 1 */}
+    <li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+<span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#0B2850]/5">
+  <CurrencyDollarIcon className="w-5 h-5 text-[#0B2850]" />
+</span>
+        <div>
+          <h3 className="font-semibold text-slate-900">Buen pago por un buen trabajo</h3>
+          <p className="text-sm text-slate-600 mt-1">En Impress Cleaning creemos en pagar justamente por un trabajo bien hecho. Ofrecemos un salario competitivo, pagos puntuales y reconocemos el esfuerzo extra cuando alguien da lo mejor de sí.</p>
+        </div>
+      </div>
+    </li>
+
+    {/* 2 */}
+    <li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
+  <SunIcon className="w-5 h-5 text-[#0B2850]" />
+</span>
+        <div>
+          <h3 className="font-semibold text-slate-900">Horarios de día y tiempo para ti</h3>
+          <p className="text-sm text-slate-600 mt-1">Nada de turnos nocturnos ni fines de semana interminables. Aquí trabajas de día, con tiempo para tu familia, tus planes y el descanso que te mereces. Queremos que tu vida laboral y personal estén en balance.</p>
+        </div>
+      </div>
+    </li>
+
+    {/* 3 */}
+    <li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
+  <AcademicCapIcon className="w-5 h-5 text-[#0B2850]" />
+</span>
+        <div>
+          <h3 className="font-semibold text-slate-900">Capacitación sencilla y pagada</h3>
+          <p className="text-sm text-slate-600 mt-1">Nos encargamos de enseñarte todo lo que necesitas para sentirte cómodo desde el primer día. Aprendes mientras trabajas, y te pagamos por ello. No importa si es tu primer empleo o ya tienes experiencia: aquí crecerás rápido.</p>
+        </div>
+      </div>
+    </li>
+
+    {/* 4 */}
+    <li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
+  <UsersIcon className="w-5 h-5 text-[#0B2850]" />
+</span>
+        <div>
+          <h3 className="font-semibold text-slate-900">Un equipo con historia</h3>
+          <p className="text-sm text-slate-600 mt-1">Llevamos más de 20 años limpiando hogares en el centro de Texas, y muchos de nuestros empleados han estado con nosotros por años. Somos un equipo pequeño, estable y de confianza, donde todos nos cuidamos mutuamente.</p>
+        </div>
+      </div>
+    </li>
+
+    {/* 5 */}
+    <li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
+  <HeartIcon className="w-5 h-5 text-[#0B2850]" />
+</span>
+        <div>
+          <h3 className="font-semibold text-slate-900">Seguro médico y apoyo real</h3>
+          <p className="text-sm text-slate-600 mt-1">Tu bienestar importa tanto como el de nuestros clientes. Ofrecemos seguro de salud y un ambiente de trabajo seguro, respetuoso y sin presiones innecesarias. Queremos que te sientas bien dentro y fuera del trabajo.</p>
+        </div>
+      </div>
+    </li>
+
+    {/* 6 */}
+    <li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
+  <ChartBarIcon className="w-5 h-5 text-[#0B2850]" />
+</span>
+        <div>
+          <h3 className="font-semibold text-slate-900">Crecimiento a tu ritmo</h3>
+          <p className="text-sm text-slate-600 mt-1">Si te gusta aprender, aquí siempre hay espacio para avanzar. Muchos de nuestros líderes empezaron como parte del equipo de limpieza. Con constancia y buena actitud, puedes construir una carrera estable con nosotros.</p>
+        </div>
+      </div>
+    </li>
+  </ul>
+        </div>
+
+</section>
+{/* END Why Work Here */}
+
 
     {/* ===== WRAPPER ===== */}
     <section className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
