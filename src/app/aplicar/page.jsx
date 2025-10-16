@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CheckCircle2, Upload, MapPin, CalendarDays, Clock } from "lucide-react";
 
 
-const FORM_ENDPOINT = ""; // add Formspree/Make endpoint later
+const FORM_ENDPOINT = "https://formspree.io/f/mrbyrngw"
 
 export default function Page() {
   const [sending, setSending] = useState(false);
@@ -23,13 +23,26 @@ export default function Page() {
       setTimeout(() => { setSending(false); setSent(true); }, 600);
       return;
     }
-    try {
-      const res = await fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(e.currentTarget) });
-      res.ok ? setSent(true) : setError("No pudimos enviar tu solicitud. Intenta de nuevo.");
-    } catch {
-      setError("Error de conexión. Intenta de nuevo.");
-    } finally { setSending(false); }
+try {
+  const formData = new FormData(e.currentTarget);
+  formData.append("_subject", "Nueva solicitud de empleo - Impress Cleaning");
+
+  const res = await fetch(FORM_ENDPOINT, {
+    method: "POST",
+    body: formData,
+    headers: { Accept: "application/json" },
+  });
+
+  if (res.ok) {
+    setSent(true);
+  } else {
+    setError("No pudimos enviar tu solicitud. Intenta de nuevo.");
   }
+} catch (err) {
+  setError("Error de conexión. Intenta de nuevo.");
+} finally {
+  setSending(false);
+}
 
   if (sent) {
     return (
@@ -47,7 +60,8 @@ export default function Page() {
       </div>
     );
   }
-
+  }
+  
 return (
   <>
   {/* ===== TOP HEADER (Molly-style) ===== */}
