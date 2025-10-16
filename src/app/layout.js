@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${oswald.variable} bg-[#FFFDF8] text-slate-900 antialiased`}
+        className={`${oswald.variable} bg-[#FAFBFC] text-slate-900 antialiased`}
       >
         <main className="min-h-screen flex flex-col">{children}</main>
         <Footer />

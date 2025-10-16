@@ -17,8 +17,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#FFFDF8]">
-      {/* Top section: brand + columns */}
+<footer className="mt-20 border-t border-slate-200">
+        {/* Top section: brand + columns */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-8 py-10 md:grid-cols-4">
           {/* Brand column */}
@@ -26,7 +26,7 @@ export default function Footer() {
             {/* Replace with your logo */}
             <div className="text-2xl font-bold">
               <span className="align-[-2px]">Impress Cleaning Services</span>{" "}
-              <span className="text-[#008250]">LLC</span>
+              <span className="text-[#0B2850]">LLC</span>
             </div>
 
             <a
@@ -57,39 +57,12 @@ export default function Footer() {
                 </svg>
               </SocialIcon>
 
-              <SocialIcon href="https://x.com" label="X / Twitter">
-                {/* x */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
-                     viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.9 3H21l-6.7 7.7L22 21h-5.6l-4.4-5.3L6.9 21H3.8l7.3-8.3L2.5 3h5.7l4 4.9L18.9 3z"/>
-                </svg>
-              </SocialIcon>
-
-              <SocialIcon href="https://youtube.com" label="YouTube">
-                {/* youtube */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
-                     viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L15.8 12l-6.2 3.5z"/>
-                </svg>
-              </SocialIcon>
-
               <SocialIcon href="https://instagram.com" label="Instagram">
                 {/* instagram */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
                      viewBox="0 0 24 24" fill="currentColor">
                   <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10
                     5 5 0 0 0 0-10zm6.5-.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/>
-                </svg>
-              </SocialIcon>
-
-              <SocialIcon href="https://linkedin.com" label="LinkedIn">
-                {/* linkedin */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
-                     viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5
-                    2.5 2.5 0 0 1 0-5zM3.5 8.98h3v11.5h-3V8.98zM9.5 8.98h2.9v1.57h.04
-                    c.4-.76 1.37-1.57 2.82-1.57 3.02 0 3.58 1.99 3.58 4.57v6.93h-3v-6.15
-                    c0-1.47-.03-3.36-2.05-3.36-2.05 0-2.37 1.6-2.37 3.25v6.26h-3V8.98z"/>
                 </svg>
               </SocialIcon>
             </div>

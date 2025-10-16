@@ -430,8 +430,6 @@ export default function ImpressCleaningSite() {
           key={i}
           className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md"
         >
-          <p className="text-slate-700 leading-relaxed">{`“${cleaned}”`}</p>
-          <footer className="w-full px-4 md:px-8 lg:px-12">— {r.name}</footer>
         </li>
       );
     })}

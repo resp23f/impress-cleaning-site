@@ -101,14 +101,7 @@ return (
 
     {/* --- Center/Right: Nav links --- */}
     <nav className="hidden md:flex items-center gap-10 text-[16px] text-[#0B2850] font-medium ml-auto">
-      <a href="/careers" className="hover:text-emerald-700">
-        Carreras
-      </a>
       <a href="/aplicar" className="hover:text-emerald-700">
-        Empleos de limpieza profesional
-      </a>
-      <a href="/oficina" className="hover:text-emerald-700">
-        Empleos de oficina
       </a>
       <a href="/english" className="hover:text-emerald-700">
         English Site
@@ -158,25 +151,11 @@ return (
     {/* content container */}
     <div className="relative z-10 mx-auto flex h-full max-w-6xl items-end md:items-center px-4 md:px-6 lg:px-8">
       <div
-        className="inline-block rounded-xl bg-[#123a7c]/55 ring-1 ring-white/10
-             backdrop-blur-sm px-9 py-9 sm:px-8 sm:py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]
-             translate-y-20 md:translate-y-45 max-w-2xl w-full text-center space-y-10 -translate-x-8 md:-translate-x-60"
       >
-        <h1 className="text-white font-[Playfair_Display] font-bold leading-tight tracking-tight 
-               text-3xl sm:text-5xl md:text-5xl">
-          EMPLEOS EN IMPRESS CLEANING SERVICES
-        </h1>
         <p className="mt-2 text-white/85 text-sm md:text-base">
         </p>
-
         <a
-          href="#aplicar-form"
-          className="mt-1 mx-auto flex items-center justify-center rounded-xl
-             bg-gradient-to-r from-green-300 via-emerald-300 to-green-400
-             px-6 py-3 text-white font-semibold shadow-md hover:shadow-lg
-             hover:from-green-400 hover:to-emerald-400 transition"
         >
-          Ver empleos disponibles
         </a>
       </div>
     </div>
@@ -187,7 +166,7 @@ return (
 
 </section>
 {/* ===== OPPORTUNITY SECTION ===== */}
-<section className="bg-[#FFFDF8] py-24">
+<section className="bg-transparent py-24">
   <div className="max-w-9xl px-6 md:px-12 text-left ml-[8%]">
     <h2 className="text-4xl md:text-5xl font-[Playfair_Display] font-bold text-slate-800 mb-6 tracking-wide">
       UN TRABAJO LIMPIO, UN FUTURO IMPRESIONANTE.
