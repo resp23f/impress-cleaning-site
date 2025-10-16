@@ -16,6 +16,12 @@ import {
 
 const FORM_ENDPOINT = "https://formspree.io/f/mrbyrngw"
 
+const jobs = [
+  { id: 1, title: "Técnico de Limpieza", location: "Georgetown, TX" },
+  { id: 2, title: "Supervisor de Equipo", location: "Georgetown, TX" },
+  { id: 3, title: "Asistente de Gerencia de Operaciones", location: "Georgetown, TX" },
+];
+
 export default function Page() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -291,6 +297,50 @@ return (
 
 </section>
 {/* END Why Work Here */}
+
+{/* BEGIN Empleos Disponibles */}
+<section className="py-14">
+  <div className="max-w-7xl mx-auto px-4 md:px-8">
+    {/* Title */}
+    <h2 className="text-3xl md:text-5xl font-[Playfair_Display] font-bold text-slate-800">
+      EMPLEOS DISPONIBLES
+    </h2>
+    <p className="mt-2 text-sm text-slate-500">
+      Mostrando 1–{jobs.length} de {jobs.length} trabajos
+    </p>
+
+    {/* List */}
+    <ul className="mt-8 divide-y divide-slate-200 bg-white rounded-2xl ring-1 ring-slate-200 overflow-hidden">
+      {jobs.map((job) => (
+        <li key={job.id} className="flex items-center justify-between gap-6 px-5 md:px-6 py-5 hover:bg-slate-50">
+          <div className="min-w-0">
+            <a href="/aplicar/aplicar-form" className="block text-[#0B2850] font-semibold hover:underline truncate">
+              {job.title}
+            </a>
+            <div className="mt-1 flex items-center gap-2 text-slate-500 text-sm">
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10z"/><circle cx="12" cy="11" r="2.5"/>
+              </svg>
+              <span className="truncate">{job.location}</span>
+            </div>
+          </div>
+
+          <a
+            href="/aplicar/aplicar-form"
+className="inline-flex items-center justify-center rounded-lg 
+bg-[radial-gradient(circle_at_center,_#0B2850,_#081A36)] 
+px-5 py-2.5 text-white font-semibold shadow-md 
+hover:shadow-lg hover:brightness-110 hover:ring-2 hover:ring-[#00A86B]/30 hover:ring-offset-1 transition"
+          >
+            Aplicar Ahora →
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+{/* END Empleos Disponibles */}
+
 
 
     {/* ===== WRAPPER ===== */}
