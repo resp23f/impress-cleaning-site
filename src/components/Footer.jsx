@@ -21,10 +21,10 @@ export default function Footer() {
   <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
     {/* Contact */}
     <div>
-      <h3 className="text-lg font-semibold mb-3 text-white/90">
-        Impress Cleaning Services
+      <h3 className="text-xl font-bold mb-3 text-white/90">
+        Impress Cleaning Services LLC
       </h3>
-      <p className="text-sm text-[#A9E5BB] mb-2">
+      <p className="text-sm font-semibold mb-3 text-white/90">
         A clean home is an impressive home.
       </p>
 <a
@@ -50,7 +50,7 @@ export default function Footer() {
 </a>
               
       <div className="flex gap-3 mt-3">
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-4 pt-2">
               
               <SocialIcon href="https://facebook.com" label="Facebook">
                 {/* facebook */}
