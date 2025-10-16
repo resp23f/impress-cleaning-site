@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { CheckCircle2, Upload, MapPin, CalendarDays, Clock } from "lucide-react";
 
+
 const FORM_ENDPOINT = ""; // add Formspree/Make endpoint later
 
 export default function Page() {
@@ -47,85 +48,217 @@ export default function Page() {
     );
   }
 
-  return (
-    <>
-      {/* badges like Molly Maid */}
-      <section className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+return (
+  <>
+  {/* ===== TOP HEADER (Molly-style) ===== */}
+<header className="relative z-50 bg-[linear-gradient(to_bottom,#FFFFFF,#FFFDF8)] border-b border-slate-100">
+  <div className="w-full flex items-center gap-8 px-2 md:px-6 py-4 md:py-5">
+    {/* --- Left: Brand logo --- */}
+    <a href="/" className="flex items-center gap-3">
+      <img
+        src="/sparkle.svg" // your sparkle mark or replace with your logo image
+        alt="Impress Cleaning logo"
+        className="h-7 w-7"
+      />
+      <div className="flex flex-col leading-tight scale-[1.15] md:scale-[1.25] ml-2 md:ml-8">
+        <span className="font-brand uppercase text-[#0B2850] text-2xl font-black tracking-wide">
+          Impress Cleaning Services <span className="relative top-[1px] -ml-[6px] text-[11px] font bold md:text-[11px] font-medium tracking-tight">LLC</span>
+        </span>
+        <span className="text-[11px] text-[#0B2850]/80 uppercase tracking-[0.08em]">
+          A clean home is an impressive home.
+        </span>
+      </div>
+    </a>
+
+    {/* --- Center/Right: Nav links --- */}
+    <nav className="hidden md:flex items-center gap-10 text-[16px] text-[#0B2850] font-medium ml-auto">
+      <a href="/careers" className="hover:text-emerald-700">
+        Carreras
+      </a>
+      <a href="/aplicar" className="hover:text-emerald-700">
+        Empleos de limpieza profesional
+      </a>
+      <a href="/oficina" className="hover:text-emerald-700">
+        Empleos de oficina
+      </a>
+      <a href="/english" className="hover:text-emerald-700">
+        English Site
+      </a>
+
+      {/* --- CTA Button --- */}
+      <a
+        href="#aplicar-form"
+        className="rounded-lg bg-rose-500 px-5 py-2 text-white font-semibold hover:bg-rose-600 transition"
+      >
+        Explora todos los empleos
+      </a>
+    </nav>
+
+    {/* --- Mobile menu placeholder (optional) --- */}
+    <button
+      type="button"
+      className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-[#0B2850] hover:bg-slate-100"
+      aria-label="Open menu"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+        stroke="currentColor"
+        className="h-6 w-6"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</header>
+{/* ===== HERO (refined) ===== */}
+<section className="relative isolate overflow-hidden">
+  {/* image height */}
+  <div className="h-[52vh] md:h-[68vh] lg:h-[72vh]">
+    {/* background image */}
+    <img
+      src="/careers-hero.jpg"
+      alt="Equipo de limpieza profesional"
+      className="absolute inset-0 h-full w-full object-cover object-[50%_28%]"
+    />
+
+    {/* content container */}
+    <div className="relative z-10 mx-auto flex h-full max-w-6xl items-end md:items-center px-4 md:px-6 lg:px-8">
+      <div
+        className="inline-block rounded-xl bg-[#123a7c]/55 ring-1 ring-white/10
+             backdrop-blur-sm px-9 py-9 sm:px-8 sm:py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]
+             translate-y-20 md:translate-y-55 max-w-2xl w-full text-center space-y-10 -translate-x-8 md:-translate-x-60"
+      >
+        <h1 className="text-white font-[Playfair_Display] font-bold leading-tight tracking-tight 
+               text-3xl sm:text-5xl md:text-6xl">
+          EMPLEOS EN IMPRESS CLEANING SERVICES
+        </h1>
+        <p className="mt-2 text-white/85 text-sm md:text-base">
+        </p>
+
+        <a
+          href="#aplicar-form"
+          className="mt-8 mx-auto flex items-center justify-center rounded-xl
+             bg-gradient-to-r from-green-300 via-emerald-300 to-green-400
+             px-6 py-3 text-white font-semibold shadow-md hover:shadow-lg
+             hover:from-green-400 hover:to-emerald-400 transition"
+        >
+          Ver empleos disponibles
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* gentle fade into page background so the next section doesn’t feel chopped */}
+  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-[#FFFDF8]/70" />
+
+</section>
+{/* ===== OPPORTUNITY SECTION ===== */}
+<section className="bg-[#FFFDF8] py-24">
+  <div className="max-w-9xl px-6 md:px-12 text-left ml-[8%]">
+    <h2 className="text-4xl md:text-5xl font-[Playfair_Display] font-bold text-slate-800 mb-6 tracking-wide">
+      UN TRABAJO LIMPIO, UN FUTURO IMPRESIONANTE.
+    </h2>
+    <p className="text-slate-600 text-lg leading-relaxed">
+      En Impress Cleaning creemos que un buen trabajo empieza con un gran equipo. 
+  Aquí encontrarás un ambiente positivo, horarios flexibles y la oportunidad de crecer mientras ayudas a que cada hogar brille. 
+  Nos enorgullece trabajar con personas dedicadas, alegres y con atención al detalle — 
+  porque cuando nuestros clientes sonríen, nosotros también.
+    </p>
+  </div>
+</section>
+
+    {/* ===== WRAPPER ===== */}
+    <section className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+      {/* badges row */}
+      <div className="mt-6 mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Badge icon={<MapPin className="w-4 h-4" />} text="Georgetown + Norte de Austin" />
         <Badge icon={<CalendarDays className="w-4 h-4" />} text="Tiempo completo o medio tiempo" />
         <Badge icon={<Clock className="w-4 h-4" />} text="Horarios de día — sin noches" />
-      </section>
+      </div>
 
-      <form onSubmit={onSubmit} className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-6 md:p-8" encType="multipart/form-data">
-        <input type="text" name="empresa_oculta" className="hidden" tabIndex={-1} autoComplete="off" />
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label="Nombre" name="nombre" required />
-          <Field label="Apellido" name="apellido" required />
-          <Field label="Teléfono" name="telefono" type="tel" placeholder="(512) 555-1234" required />
-          <Field label="Correo electrónico" name="email" type="email" placeholder="tu@correo.com" required />
-          <Field label="Ciudad" name="ciudad" />
-          <Field label="Código postal" name="zip" inputMode="numeric" />
-        </fieldset>
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Select label="Puesto de interés" name="puesto" options={["Limpieza residencial","Limpieza comercial","Supervisor/a"]} required />
-          <Select label="Tipo de empleo" name="tipo_empleo" options={["Tiempo completo","Medio tiempo"]} required />
-        </fieldset>
-
-        <fieldset className="mt-6">
-          <legend className="text-slate-900 font-medium mb-2">Disponibilidad</legend>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"].map((d)=>(
-              <ChipCheck key={d} name="dias[]" value={d} label={d} />
-            ))}
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <ChipCheck name="horario[]" value="Mañana" label="Mañana" />
-            <ChipCheck name="horario[]" value="Tarde" label="Tarde" />
-          </div>
-        </fieldset>
-
-        <fieldset className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Select label="¿Tienes transporte propio?" name="transporte" options={["Sí","No"]} required />
-          <Select label="¿Autorizado/a para trabajar en EE. UU.?" name="autorizado" options={["Sí","No"]} required />
-        </fieldset>
-
-        <fieldset className="mt-6 grid grid-cols-1 gap-4">
-          <TextArea label="Experiencia relevante" name="experiencia" placeholder="Años de experiencia, tipos de espacios, productos, etc." />
-          <TextArea label="Referencias (opcional)" name="referencias" placeholder="Nombre, relación y teléfono/correo." />
-        </fieldset>
-
-        <fieldset className="mt-6">
-          <label className="block text-sm font-medium text-slate-900 mb-2">Sube tu CV (PDF o DOC)</label>
-          <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg ring-1 ring-slate-200 hover:ring-slate-300 cursor-pointer">
-            <Upload className="w-4 h-4" />
-            <span>Elegir archivo</span>
-            <input name="cv" type="file" accept=".pdf,.doc,.docx" className="hidden" />
-          </label>
-          <p className="text-xs text-slate-500 mt-1">Máx. 10 MB.</p>
-        </fieldset>
-
-        <div className="mt-6 flex items-start gap-2">
-          <input id="consent" name="consent" type="checkbox" required className="mt-1 w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600" />
-          <label htmlFor="consent" className="text-sm text-slate-700">
-            Acepto que Impress Cleaning me contacte por teléfono o correo sobre mi solicitud.
-          </label>
+      {/* form card */}
+      <div id="aplicar-form" className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm">
+        <div className="border-b border-slate-200 px-6 md:px-8 py-5">
+          <h2 className="text-xl md:text-2xl font-semibold text-slate-900">Solicitud de empleo</h2>
+          <p className="text-slate-600 text-sm mt-1">
+            Completa el formulario y te contactaremos en 1–2 días hábiles.
+          </p>
         </div>
 
-        {error && <p className="text-sm text-red-600 mt-3">{error}</p>}
+        <form onSubmit={onSubmit} className="px-6 md:px-8 py-6" encType="multipart/form-data">
+          <input type="text" name="empresa_oculta" className="hidden" tabIndex={-1} autoComplete="off" />
 
-        <div className="mt-6 flex items-center gap-3">
-          <button type="submit" disabled={sending} className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-60">
-            {sending ? "Enviando…" : "Enviar solicitud"}
-          </button>
-          <a href="/" className="text-slate-600 hover:text-slate-900 text-sm">Cancelar</a>
-        </div>
-      </form>
-    </>
-  );
+          <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field label="Nombre" name="nombre" required />
+            <Field label="Apellido" name="apellido" required />
+            <Field label="Teléfono" name="telefono" type="tel" placeholder="(512) 555-1234" required />
+            <Field label="Correo electrónico" name="email" type="email" placeholder="tu@correo.com" required />
+            <Field label="Ciudad" name="ciudad" />
+            <Field label="Código postal" name="zip" inputMode="numeric" />
+          </fieldset>
+
+          <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+            <Select label="Puesto de interés" name="puesto" options={["Limpieza residencial","Limpieza comercial","Supervisor/a"]} required />
+            <Select label="Tipo de empleo" name="tipo_empleo" options={["Tiempo completo","Medio tiempo"]} required />
+          </fieldset>
+
+          <fieldset className="mt-6">
+            <legend className="text-slate-900 font-medium mb-2">Disponibilidad</legend>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+              {["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"].map((d)=>(
+                <ChipCheck key={d} name="dias[]" value={d} label={d} />
+              ))}
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2 max-w-sm">
+              <ChipCheck name="horario[]" value="Mañana" label="Mañana" />
+              <ChipCheck name="horario[]" value="Tarde" label="Tarde" />
+            </div>
+          </fieldset>
+
+          <fieldset className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select label="¿Tienes transporte propio?" name="transporte" options={["Sí","No"]} required />
+            <Select label="¿Autorizado/a para trabajar en EE. UU.?" name="autorizado" options={["Sí","No"]} required />
+          </fieldset>
+
+          <fieldset className="mt-6 grid grid-cols-1 gap-4">
+            <TextArea label="Experiencia relevante" name="experiencia" placeholder="Años de experiencia, tipos de espacios, productos, etc." />
+            <TextArea label="Referencias (opcional)" name="referencias" placeholder="Nombre, relación y teléfono/correo." />
+          </fieldset>
+
+          <fieldset className="mt-6">
+            <label className="block text-sm font-medium text-slate-900 mb-2">Sube tu CV (PDF o DOC)</label>
+            <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg ring-1 ring-slate-200 hover:ring-slate-300 cursor-pointer bg-white">
+              <Upload className="w-4 h-4" />
+              <span>Elegir archivo</span>
+              <input name="cv" type="file" accept=".pdf,.doc,.docx" className="hidden" />
+            </label>
+            <p className="text-xs text-slate-500 mt-1">Máx. 10 MB.</p>
+          </fieldset>
+
+          <div className="mt-6 flex items-start gap-2">
+            <input id="consent" name="consent" type="checkbox" required className="mt-1 w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600" />
+            <label htmlFor="consent" className="text-sm text-slate-700">
+              Acepto que Impress Cleaning me contacte por teléfono o correo sobre mi solicitud.
+            </label>
+          </div>
+
+          {error && <p className="text-sm text-rose-600 mt-3">{error}</p>}
+
+          <div className="mt-6 flex items-center gap-3">
+            <button type="submit" disabled={sending} className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-60">
+              {sending ? "Enviando…" : "Enviar solicitud"}
+            </button>
+            <a href="/" className="text-slate-600 hover:text-slate-900 text-sm">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </>
+);
 }
-
 /* ——— small UI helpers ——— */
 function Field({ label, name, type="text", placeholder="", inputMode, required }) {
   return (
