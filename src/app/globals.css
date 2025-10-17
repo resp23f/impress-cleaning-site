@@ -3,37 +3,37 @@
 @import "tailwindcss";
 /* --- Force light mode (no system dark theme) --- */
 :root {
-  color-scheme: light;          
-  --background: #FFFDF8;        
-  --foreground: #1f2937;        
+color-scheme: light;          
+--background: #FFFDF8;        
+--foreground: #1f2937;        
 }
 @media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light;
-    --background: #FFFDF8;
-    --foreground: #1f2937;
-   }
+:root {
+color-scheme: light;
+--background: #FFFDF8;
+--foreground: #1f2937;
+}
 }   
 html {
-  background-color: #FFFDF8;     /* Cream background */
-  -webkit-text-size-adjust: 100%; /* Prevent iOS font zooming */
+background-color: #FFFDF8;     /* Cream background */
+-webkit-text-size-adjust: 100%; /* Prevent iOS font zooming */
 }
 body { background-color: #FFFDF8; color: #1f2937; }
 
 body {
-  background-color: #FFFDF8 !important;
-  color: #1f2937 !important;  /* << explicit slate */
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "SF Pro Display",
-    "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+background-color: #FFFDF8 !important;
+color: #1f2937 !important;  /* << explicit slate */
+font-family:
+ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "SF Pro Display",
+"Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
+"Segoe UI Emoji", "Segoe UI Symbol";
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+text-rendering: optimizeLegibility;
 }
 /* Wordmark = Oswald (keeps your header look) */
 .font-brand{
-  font-family: var(--font-brand), ui-serif, Georgia, "Times New Roman", serif;
+font-family: var(--font-brand), ui-serif, Georgia, "Times New Roman", serif;
 }
 
 /* Tiny superscript for “LLC” */
@@ -42,9 +42,9 @@ body {
 footer, footer * { opacity: 1 !important; }
 /* Kill the native select arrow, all browsers */
 select.no-native {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: none !important; /* Safari */
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+background-image: none !important; /* Safari */
 }
 select.no-native::-ms-expand { display: none; } /* old Edge/IE */
