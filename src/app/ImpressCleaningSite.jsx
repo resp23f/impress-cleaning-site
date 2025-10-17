@@ -73,17 +73,20 @@ export default function ImpressCleaningSite() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (res.ok) {
-        setSent(true);
-        form.reset();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSending(false);
+if (res.ok) {
+      setSent(true);
+      form.reset();
+    } else {
+      console.error("Formspree JSON error", res.status, payload);
+      alert(payload.errors?.[0]?.message ?? "Submit failed. Check Allowed Domains.");
     }
+  } catch (err) {
+    console.error("Network error:", err);
+    alert("Network error. Please try again.");
+  } finally {
+    setSending(false);
   }
-
+}
   return (
     <main id="home" className="min-h-screen text-slate-800">
       
@@ -112,7 +115,7 @@ export default function ImpressCleaningSite() {
         <li className="mx-6 h-4 w-px bg-slate-200" aria-hidden="true" />
         <li><Link href="/aplicar" className="hover:text-slate-900">Aplicar</Link></li>
         <li className="mx-6 h-4 w-px bg-slate-200" aria-hidden="true" />
-        <li><a href="/gift-cards" className="hover:text-slate-900">Gift Cards</a></li>
+        <li><a href="/gift-cards" className="hover:text-slate-900">Gift Certificates</a></li>
       </ul>
     </div>
 
@@ -150,11 +153,24 @@ export default function ImpressCleaningSite() {
   <div className="ml-auto flex items-center gap-2 shrink-0">
     {/* Desktop ≥1280px */}
     <div className="hidden xl:flex items-center gap-3 shrink-0">
-      <a href="#quote" className="px-4 py-2 text-sm font-semibold text-[#0B2850] whitespace-nowrap">
+      <a href="#quote" 
+      className="relative inline-flex items-center justify-center rounded-lg
+bg-[#0B2850] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_18px_rgba(0,0,0,0.25)]
+px-5 py-3.5 text-white font-semibold shadow-md hover:shadow-lg hover:brightness-150
+hover:ring-2 hover:ring-[#00A86B]/30 hover:ring-offset-1 transition
+before:absolute before:inset-0 before:rounded-lg
+before:bg-[radial-gradient(100%_60%_at_50%_0%,rgba(255,255,255,0.18),rgba(255,255,255,0)_60%)]
+before:pointer-events-none">
         Get a Free Quote
       </a>
-      <a href="tel:15122775364" className="px-4 py-2 text-sm font-semibold text-[#0B2850] whitespace-nowrap">
-        Call (512) 277-5364
+      <a href="tel:15122775364" className="relative inline-flex items-center justify-center rounded-lg
+bg-[#0B2850] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_18px_rgba(0,0,0,0.25)]
+px-5 py-3.5 text-white font-semibold shadow-md hover:shadow-lg hover:brightness-150
+hover:ring-2 hover:ring-[#00A86B]/30 hover:ring-offset-1 transition
+before:absolute before:inset-0 before:rounded-lg
+before:bg-[radial-gradient(100%_60%_at_50%_0%,rgba(255,255,255,0.18),rgba(255,255,255,0)_60%)]
+before:pointer-events-none">
+        (512) 277-5364
       </a>
     </div>
 
@@ -215,18 +231,6 @@ export default function ImpressCleaningSite() {
         Reliable, insured, and detail-obsessed cleaning for residential homes, offices, and commercial spaces.
       </p>
       <div className="mt-8 flex flex-wrap gap-4">
-        <a
-          href="#quote"
-          className="rounded-2xl px-6 py-3 font-semibold bg-white text-slate-900 shadow hover:shadow-md"
-        >
-          Get a Fast Quote
-        </a>
-        <a
-          href="#services"
-          className="rounded-2xl px-6 py-3 font-semibold border border-white/30 text-white hover:bg-white/10"
-        >
-          Explore Services
-        </a>
       </div>
     </div>
   </div>
@@ -455,6 +459,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
     />
   </div>
 </section>
+
 {/* Quote Form */}
 <section id="quote" className="w-full px-4 md:px-8 lg:px-12 py-16">
     <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
@@ -463,6 +468,14 @@ className="w-full h-full block border-none outline-none -translate-y-px"
   <p className="mt-3 md:mt-3 text-lg md:text-1xl leading-snug text-slate-600 max-w-5xl">
     Tell us about your space and schedule. We’ll respond quickly after submitting your request.
   </p>
+  
+   {sent ? (
+    <div className="mt-6 rounded-2xl bg-white ring-1 ring-emerald-100 shadow-sm p-10 text-center text-emerald-700 animate-fade-in">
+      <p className="text-2xl font-semibold mb-2">Thank you!</p>
+      <p className="text-lg">We&apos;ll be in touch with you soon.</p>
+    </div>
+  ) : (
+      /* --- FORM CARD --- */  
   <form onSubmit={handleSubmit} className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 md:p-8">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Name */}
@@ -545,9 +558,10 @@ className="w-full h-full block border-none outline-none -translate-y-px"
           <select
             id="frequency"
             name="frequency"
-            defaultValue="One-Time"
+            defaultValue="Select Option"
             className="mt-1 w-full appearance-none rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 pr-9 text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
           >
+            <option>Select Option</option>
             <option>One-Time</option>
             <option>Weekly</option>
             <option>Bi-Weekly</option>
@@ -563,15 +577,16 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
       {/* Start (custom select) */}
       <div className="col-span-1 md:col-span-2 lg:col-span-1">
-        <label htmlFor="start" className="block text-sm font-medium text-slate-700">Start</label>
+        <label htmlFor="start" className="block text-sm font-medium text-slate-700">Start Date</label>
         <div className="relative">
           <select
             id="start"
             name="start"
-            defaultValue="Asap"
+            defaultValue="Start Date"
             className="mt-1 w-full appearance-none rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 pr-9 text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
           >
-            <option>Asap</option>
+            <option>Select Option</option>
+            <option>ASAP</option>
             <option>This Week</option>
             <option>Next Week</option>
             <option>Next Month</option>
@@ -601,21 +616,19 @@ className="w-full h-full block border-none outline-none -translate-y-px"
         type="submit"
         className="inline-flex items-center justify-center rounded-full bg-[#0B2850] px-5 py-2.5 text-white font-semibold shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
       >
-        Send Request
+        {sending ? "Sending..." : "Send Request"}
       </button>
       <a href="mailto:admin@impressyoucleaning.com" className="text-slate-600 hover:text-slate-900 text-sm underline-offset-2 hover:underline">
       </a>
     </div>
-
     <p className="mt-4 text-xs text-slate-500">
       By submitting, you agree to be contacted about your request. No spam.
     </p>
   </form>
-</section>
-
+  )}
+    </section>
     </main>
-  );
-}
+  )
 
 // ---------- UI building blocks ----------
 function Card({ title, desc }) {
@@ -783,4 +796,4 @@ function DropdownMenu({ label, items = [] }) {
       </div>
     </div>
   );
-}
+}}
