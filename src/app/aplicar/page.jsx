@@ -1,5 +1,6 @@
 // src/app/aplicar/page.jsx
 "use client";
+import Link from "next/link";
 
 import { useState } from "react";
 import { CheckCircle2, Upload, MapPin, CalendarDays, Clock } from "lucide-react";
@@ -17,9 +18,9 @@ import {
 const FORM_ENDPOINT = "https://formspree.io/f/mrbyrngw"
 
 const jobs = [
-  { id: 1, title: "Técnico de Limpieza", location: "Georgetown, TX" },
-  { id: 2, title: "Supervisor de Equipo", location: "Georgetown, TX" },
-  { id: 3, title: "Asistente de Gerencia de Operaciones", location: "Georgetown, TX" },
+  { id: 1, slug: "tecnico-de-limpieza", title: "Técnico de Limpieza", location: "Georgetown, TX" },
+  { id: 2, slug: "supervisor-de-equipo", title: "Supervisor de Equipo", location: "Georgetown, TX" },
+  { id: 3, slug: "asistente-de-gerencia-de-operaciones", title: "Asistente de Gerencia de Operaciones", location: "Georgetown, TX" },
 ];
 
 export default function Page() {
@@ -293,31 +294,28 @@ return (
       {jobs.map((job) => (
         <li key={job.id} className="flex items-center justify-between gap-6 px-5 md:px-6 py-5 hover:bg-slate-50">
           <div className="min-w-0">
-            <a href="/aplicar/aplicar-form" className="block text-[#0B2850] font-semibold hover:underline truncate">
+            <Link href={`/aplicar/trabajos/${job.slub}`} className="block text-[#0B2850] font-semibold hover:underline truncate">
               {job.title}
-            </a>
+            </Link>
             <div className="mt-1 flex items-center gap-2 text-slate-500 text-sm">
               <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10z"/><circle cx="12" cy="11" r="2.5"/>
               </svg>
               <span className="truncate">{job.location}</span>
-            </div>
-          </div>
+                </div>
+                  </div>
 
-          <a
-            href="/aplicar/aplicar-form"
-className="relative inline-flex items-center justify-center rounded-lg
-bg-[#0B2850] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_18px_rgba(0,0,0,0.25)]
-px-5 py-2.5 text-white font-semibold shadow-md hover:shadow-lg hover:brightness-110
-hover:ring-2 hover:ring-[#00A86B]/30 hover:ring-offset-1 transition
-before:absolute before:inset-0 before:rounded-lg
-before:bg-[radial-gradient(100%_60%_at_50%_0%,rgba(255,255,255,0.18),rgba(255,255,255,0)_60%)]
-before:pointer-events-none"
-          >
-            Aplicar Ahora →
-          </a>
-        </li>
-      ))}
+{/* RIGHT SIDE — button (force stays right) */}
+  <div className="flex-shrink-0">
+    <Link
+      href={`/aplicar/trabajos/${job.slug}`}
+      className="inline-flex items-center justify-center rounded-lg bg-[#0B2850] px-5 py-2.5 text-white font-semibold shadow hover:brightness-110 transition"
+    >
+      Aplicar Ahora →
+    </Link>
+  </div>
+</li>      
+))}
     </ul>
   </div>
 </section>

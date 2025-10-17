@@ -462,12 +462,15 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
 {/* Quote Form */}
 <section id="quote" className="w-full px-4 md:px-8 lg:px-12 py-10 md:py-12">
-    <h2 className="text-2xl md:text-4xl font-extrabold tracking-center text-[#0B2850]">
-    Request a Quote
-  </h2>
-  <p className="mt-2 md:mt-4 text-lg md:text-1xl text-slate-600 max-w-5xl">
-    Tell us about your space and schedule. We’ll respond quickly after submitting your request.
-  </p>
+  {/* Header wrapper (same width as form) */}
+  <div className="mx-auto max-w-5xl">
+    <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
+      Request a Quote
+    </h2>
+    <p className="mt-2 md:mt-4 text-lg md:text-xl text-slate-600 max-w-5xl">
+      Tell us about your space and schedule. We’ll respond quickly after submitting your request.
+    </p>
+  </div>  
   
    {sent ? (
     <div className="mt-6 rounded-2xl bg-white ring-1 ring-emerald-100 shadow-sm p-10 text-center text-emerald-700 animate-fade-in">
