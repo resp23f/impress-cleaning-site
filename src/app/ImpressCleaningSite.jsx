@@ -461,11 +461,11 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 </section>
 
 {/* Quote Form */}
-<section id="quote" className="w-full px-4 md:px-8 lg:px-12 py-16">
-    <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
+<section id="quote" className="w-full px-4 md:px-8 lg:px-12 py-10 md:py-12">
+    <h2 className="text-2xl md:text-4xl font-extrabold tracking-center text-[#0B2850]">
     Request a Quote
   </h2>
-  <p className="mt-3 md:mt-3 text-lg md:text-1xl leading-snug text-slate-600 max-w-5xl">
+  <p className="mt-2 md:mt-4 text-lg md:text-1xl text-slate-600 max-w-5xl">
     Tell us about your space and schedule. We’ll respond quickly after submitting your request.
   </p>
   
@@ -476,11 +476,11 @@ className="w-full h-full block border-none outline-none -translate-y-px"
     </div>
   ) : (
       /* --- FORM CARD --- */  
-  <form onSubmit={handleSubmit} className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 md:p-8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <form onSubmit={handleSubmit} className="mt-5 mx-auto max-w-5xl rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-5 md:p-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Name */}
-      <div className="col-span-1">
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700">
+      <div className="col-span-2">
+        <label htmlFor="name" className="block text-sm font-bold text-slate-700">
           Name <span className="text-rose-500">*</span>
         </label>
         <input
@@ -489,13 +489,13 @@ className="w-full h-full block border-none outline-none -translate-y-px"
           type="text"
           required
           placeholder="Full name"
-          className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+          className="mt-2 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
         />
       </div>
 
       {/* Phone */}
-      <div className="col-span-1">
-        <label htmlFor="phone" className="block text-sm font-medium text-slate-700">
+      <div className="col-span-2">
+        <label htmlFor="phone" className="block text-sm font-bold text-slate-700">
           Phone <span className="text-rose-500">*</span>
         </label>
         <input
@@ -509,8 +509,8 @@ className="w-full h-full block border-none outline-none -translate-y-px"
       </div>
 
       {/* Email */}
-      <div className="col-span-1">
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+      <div className="col-span-2">
+        <label htmlFor="email" className="block text-sm font-bold text-slate-700">
           Email <span className="text-rose-500">*</span>
         </label>
         <input
@@ -525,7 +525,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
       {/* Address (full width on md) */}
       <div className="md:col-span-2">
-        <label htmlFor="address" className="block text-sm font-medium text-slate-700">
+        <label htmlFor="address" className="block text-sm font-bold text-slate-700">
           Address <span className="text-rose-500">*</span>
         </label>
         <input
@@ -539,8 +539,9 @@ className="w-full h-full block border-none outline-none -translate-y-px"
       </div>
 
       {/* Sq. Ft. */}
-      <div className="col-span-1">
-        <label htmlFor="sqft" className="block text-sm font-medium text-slate-700">Sq. Ft.</label>
+      <div className="col-span-2">
+        <label htmlFor="sqft" className="block text-sm font-bold text-slate-700">Sq. Ft.<span className="text-rose-500">*</span>
+        </label>
         <input
           id="sqft"
           name="sqft"
@@ -552,14 +553,16 @@ className="w-full h-full block border-none outline-none -translate-y-px"
       </div>
 
       {/* Frequency (custom select) */}
-      <div className="col-span-1">
-        <label htmlFor="frequency" className="block text-sm font-medium text-slate-700">Frequency</label>
+      <div className="col-span-2">
+        <label htmlFor="frequency" className="block text-sm font-bold text-slate-700">
+          Frequency <span className="text-rose-500">*</span>
+        </label>
         <div className="relative">
           <select
             id="frequency"
-            name="frequency"
+            name="frequency" 
             defaultValue="Select Option"
-            className="mt-1 w-full appearance-none rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 pr-9 text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500 Comfortable h-7"
           >
             <option>Select Option</option>
             <option>One-Time</option>
@@ -577,13 +580,15 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
       {/* Start (custom select) */}
       <div className="col-span-1 md:col-span-2 lg:col-span-1">
-        <label htmlFor="start" className="block text-sm font-medium text-slate-700">Start Date</label>
+        <label htmlFor="start" className="block text-sm font-bold text-slate-700">
+          Start Date<span className="text-rose-500">*</span>
+        </label>
         <div className="relative">
           <select
             id="start"
             name="start"
             defaultValue="Start Date"
-            className="mt-1 w-full appearance-none rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 pr-9 text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
+className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500 Comfortable h-7"
           >
             <option>Select Option</option>
             <option>ASAP</option>
@@ -599,7 +604,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
       {/* Notes */}
       <div className="md:col-span-2">
-        <label htmlFor="notes" className="block text-sm font-medium text-slate-700">Notes / Access Details</label>
+        <label htmlFor="notes" className="block text-sm font-bold text-slate-700">Notes / Access Details</label>
         <textarea
           id="notes"
           name="notes"
@@ -616,7 +621,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
         type="submit"
         className="inline-flex items-center justify-center rounded-full bg-[#0B2850] px-5 py-2.5 text-white font-semibold shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
       >
-        {sending ? "Sending..." : "Send Request"}
+        {sending ? "Sending..." : "Submit Request"}
       </button>
       <a href="mailto:admin@impressyoucleaning.com" className="text-slate-600 hover:text-slate-900 text-sm underline-offset-2 hover:underline">
       </a>
