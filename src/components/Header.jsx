@@ -62,32 +62,53 @@ return (
         </div>
 
 {/* MOBILE NAV (phones & small tablets) — desktop untouched */}
-<div className="md:hidden px-4 pb-2 border-b border-slate-200/70">
-<nav
-className="
-    flex flex-wrap items-center
-    gap-x-4 gap-y-2
-    text-[13px] font-semibold text-slate-900">
+<nav className="md:hidden border-b border-slate-200/70 bg-white">
+  <div
+    className="px-4 py-2 flex flex-wrap items-stretch gap-2 text-[13px] font-medium text-slate-900"
+  >
+    {/* 3-column chips, wrap to new lines as needed */}
+    <a href="#residential"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      Residential
+    </a>
+    <a href="#commercial"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      Commercial
+    </a>
+    <a href="#why"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      Why Hire Us
+    </a>
 
-{/* primary */}
-<a href="#residential" className="py-1.5">Residential</a>
-<a href="#commercial"  className="py-1.5">Commercial</a>
-<a href="#why"         className="py-1.5">Why Hire Us</a>
-<a href="#about"       className="py-1.5">About Us</a>
-<a href="#faq"         className="py-1.5">FAQ</a>
+    <a href="#about"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      About Us
+    </a>
+    <a href="#faq"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      FAQ
+    </a>
+    <Link href="/aplicar"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      Aplicar
+    </Link>
 
-{/* utilities */}
-<Link href="/en/aplicar" className="py-1.5">Apply</Link>
-<Link href="/aplicar"    className="py-1.5">Aplicar</Link>
-<a   href="/#gift"       className="py-1.5">Gift Certificates</a>
+    <Link href="/apply"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      Apply
+    </Link>
+    <a href="/gift-cards"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
+      Gift Certificates
+    </a>
 
-{/* compact phone CTA sticks to right when there’s room */}
-<a
-    href="tel:+15122775364"
-    className="ml-auto rounded-lg bg-[#0B2850] px-3 py-1.5 text-white">
-    (512) 277-5364</a>
+    {/* compact phone CTA stays last; shows inline with chips */}
+    <a href="tel:+15122775364"
+       className="basis-[32%] grow text-center py-1.5 rounded-lg bg-[#0B2850] text-white">
+      (512) 277-5364
+    </a>
+  </div>
 </nav>
-</div>
 </div>
 </div>
 </header>
