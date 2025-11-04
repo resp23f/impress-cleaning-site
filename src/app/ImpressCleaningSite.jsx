@@ -540,12 +540,16 @@ className="w-full h-full block border-none outline-none -translate-y-px"
         Frequency <span className="text-rose-500">*</span>
     </label>
     <div className="relative">
-        <select
-        id="frequency"
-        name="frequency" 
-        defaultValue="Select Option"
-className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500 Comfortable h-7"
-        >
+ <select
+  id="Frequency"
+  name="Frequency"
+  defaultValue="Frequency"
+  className="mt-1 w-full rounded-xl ring-1 ring-slate-200
+  px-4 pr-10 h-12 text-[16px]
+  md:px-3.5 md:py-2.5 md:h-[46px] md:text-base
+  text-slate-900 placeholder-slate-400 shadow-sm outline-none
+  focus:ring-2 focus:ring-emerald-500 appearance-none"
+>
         <option>Select Option</option>
         <option>One-Time</option>
         <option>Weekly</option>
