@@ -506,7 +506,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
     </div>
 
     {/* Address (full width on md) */}
-    <div className="md:col-span-2">
+    <div className="col-span-2">
     <label htmlFor="address" className="block text-sm font-bold text-slate-700">
         Address <span className="text-rose-500">*</span>
     </label>
@@ -565,7 +565,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
     </div>
 
     {/* Start date (custom select) */}
-    <div className="col-span-1 md:col-span-2 lg:col-span-1">
+    <div className="col-span-2">
     <label htmlFor="start" className="block text-sm font-bold text-slate-700">
         Start Date<span className="text-rose-500">*</span>
     </label>
@@ -593,7 +593,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
     </div>
 
     {/* Notes */}
-    <div className="md:col-span-2">
+    <div className="col-span-2">
     <label htmlFor="notes" className="block text-sm font-bold text-slate-700">Notes / Access Details</label>
     <textarea
         id="notes"
