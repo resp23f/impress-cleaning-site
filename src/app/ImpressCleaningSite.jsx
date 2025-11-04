@@ -183,27 +183,6 @@ before:pointer-events-none">
     (512) 277-5364
     </a>
 </div>
-
-{/* Mobile <768px */}
-<div className="flex md:hidden items-center gap-2 shrink-0">
-    <a
-    href="#quote"
-    aria-label="Get a Free Quote"
-    className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 text-[#0B2850]"
-    >
-    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M4 7h16v10H4zM8 7v10M16 7v10M4 11h4M16 11h4" />
-    </svg>
-    </a>
-    <a
-    href="tel:15122775364"
-    aria-label="Call (512) 277-5364"
-    className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 text-[#0B2850]" >
-    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.6a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.47-1.13a2 2 0 0 1 2.11-.45c.83.29 1.7.5 2.6.62A2 2 0 0 1 22 16.92z" />
-    </svg>
-    </a>
-    </div>
 </div>
 </div>
 </header> 
@@ -581,19 +560,23 @@ className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2.5 text-slate-9
     </div>
     </div>
 
-    {/* Start (custom select) */}
+    {/* Start date (custom select) */}
     <div className="col-span-1 md:col-span-2 lg:col-span-1">
     <label htmlFor="start" className="block text-sm font-bold text-slate-700">
         Start Date<span className="text-rose-500">*</span>
     </label>
     <div className="relative">
-        <select
-        id="start"
-        name="start"
-        defaultValue="Start Date"
-className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500 Comfortable h-7"
-        >
-        <option>Select Option</option>
+<select
+  id="start"
+  name="start"
+  defaultValue="Start Date"
+  className="mt-1 w-full rounded-xl ring-1 ring-slate-200
+  px-4 pr-10 h-12 text-[16px]
+  md:px-3.5 md:py-2.5 md:h-[46px] md:text-base
+  text-slate-900 placeholder-slate-400 shadow-sm outline-none
+  focus:ring-2 focus:ring-emerald-500 appearance-none"
+> 
+       <option>Select Option</option>
         <option>ASAP</option>
         <option>This Week</option>
         <option>Next Week</option>
