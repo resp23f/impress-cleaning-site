@@ -52,7 +52,7 @@ aria-hidden="true"
     <div className="flex gap-3 mt-3">
         <div className="flex items-center gap-4 pt-2">
             
-            <SocialIcon href="https://facebook.com" label="Facebook">
+            <SocialIcon href="https://www.facebook.com/share/19vUj9gptf/?mibextid=wwXIfr" label="Facebook">
             {/* facebook */}
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
                     viewBox="0 0 24 24" fill="currentColor">
