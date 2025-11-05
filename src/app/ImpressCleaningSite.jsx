@@ -514,7 +514,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
     {/* Address (full width on md) */}
     <div className="col-span-2">
     <label htmlFor="address" className="block text-sm font-bold text-slate-700">
-        Address <span className="text-rose-500">*</span>
+        Service Address <span className="text-rose-500">*</span>
     </label>
     <input
         id="address"
@@ -522,20 +522,6 @@ className="w-full h-full block border-none outline-none -translate-y-px"
         type="text"
         required
         placeholder="Street, city, ZIP"
-        className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
-    />
-    </div>
-
-    {/* Sq. Ft. */}
-    <div className="col-span-2">
-    <label htmlFor="sqft" className="block text-sm font-bold text-slate-700">Sq. Ft.<span className="text-rose-500">*</span>
-    </label>
-    <input
-        id="sqft"
-        name="sqft"
-        inputMode="numeric"
-        pattern="[0-9]*"
-        placeholder="e.g., 1800"
         className="mt-1 w-full rounded-xl bg-white ring-1 ring-slate-200 px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-emerald-500"
     />
     </div>
