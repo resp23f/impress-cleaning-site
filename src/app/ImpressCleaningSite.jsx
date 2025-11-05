@@ -1,6 +1,8 @@
 'use client';
 import React, { useState } from "react";
 import Link from "next/link";
+import { track } from '@vercel/analytics';
+
 
 
 
@@ -61,6 +63,7 @@ if (!FORM_ENDPOINT) {
         .join("\n")
     );
     window.location.href = `mailto:admin@impressyoucleaning.com?subject=Quote%20Request&body=${body}`;
+      track('quote_submitted', { method: 'mailto' });
     setSending(false);
     setSent(true);
     form.reset();
@@ -74,13 +77,16 @@ try {
     body: JSON.stringify(data),
     });
 if (res.ok) {
+      track('quote_submitted', { method: 'formspree' });
     setSent(true);
     form.reset();
 } else {
+      track('quote_submit_failed', { status: res.status });
     console.error("Formspree JSON error", res.status, payload);
     alert(payload.errors?.[0]?.message ?? "Submit failed. Check Allowed Domains.");
 }
 } catch (err) {
+      track('quote_submit_failed', { error: 'network' });
 console.error("Network error:", err);
 alert("Network error. Please try again.");
 } finally {
