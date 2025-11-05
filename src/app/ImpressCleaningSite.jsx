@@ -275,9 +275,8 @@ className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
 {/* Why Choose Impress Cleaning Services */}
 <section className="py-16" id="why">
 <div className="w-full px-4 md:px-8 lg:px-12">
-<h2 className="text-2xl font-bold text-slate-900">Why Choose Impress Cleaning Services</h2>
-<p className="text-slate-600 mt-2">
-    Franchise-level reliability with a local, detail-first approach.
+<h2 className="text-2xl md:text-3xl font-bold text-slate-900">Why Choose Impress Cleaning Services</h2>
+<p className="text-slate-600 mt-1">
 </p>
 
 {/* Why Choose Impress Grid */}
@@ -287,45 +286,45 @@ className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
     title: "Satisfaction Guarantee",
     desc:  "If anything misses the mark, we’ll get it taken care of.",
 icon: (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-    <path fill="currentColor" d="M12 2 2 7v6c0 5 4 9 10 9s10-4 10-9V7L12 2zm0 10.4 3.6-3.6 1.4 1.4L12 15.2l-5-5 1.4-1.4 3.6 3.6z"/>
-  </svg>
+<svg viewBox="0 0 24 24" className="w-7 h-7 md:w-8 md:h-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M12 2 2 7v6c0 5 4 9 10 9s10-4 10-9V7L12 2zm-1 13-3-3 1.4-1.4L11 12.2l3.6-3.6L16 10l-5 5z"/>
+</svg>
 ),
 },
 {
     title: "Locally Owned",
     desc:  "Georgetown-based team—your dollars stay in the community.",
 icon: (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-    <path fill="currentColor" d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/>
-  </svg>
+<svg viewBox="0 0 24 24" className="w-7 h-7 md:w-8 md:h-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M12 3 3 10v11h7v-6h4v6h7V10l-9-7zm0 13.3-2.1-2.1a2.5 2.5 0 1 1 3.6-3.6 2.5 2.5 0 1 1 3.6 3.6L12 16.3z"/>
+</svg>
 ),
 },
 {
     title: "Reliable Results",
     desc:  "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule.",
 icon: (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-    <path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-8 8H7V9h4v2zm6-4H7V5h10v2z"/>
-  </svg>
+<svg viewBox="0 0 24 24" className="w-7 h-7 md:w-8 md:h-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M9 3h6l1 2h3v16H5V5h3l1-2zm2 4h2V6h-2v1zm-2 8-2-2 1.4-1.4L9 12.2l4.6-4.6L15 9l-6 6z"/>
+</svg>
 ),
 },
 {
     title: "Clear Communication",
     desc:  "We keep you in the loop from booking to follow-up, so you always know what’s happening and when.",
     icon: (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-        <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
-    </svg>
+<svg viewBox="0 0 24 24" className="w-7 h-7 md:w-8 md:h-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M4 4h14v8H6l-2 2V4zm4 10h12v6l-2-2H8v-4z"/>
+</svg>
     ),
 },
 {
     title: "Quality-Driven Service",
     desc:  "Supervisors review each job and feedback is built into our process, keeping standards high and details consistent.",
     icon: (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-        <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
-    </svg>
+<svg viewBox="0 0 24 24" className="w-7 h-7 md:w-8 md:h-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M12 3 13.5 8H19l-4 3 1.5 5L12 13 8.5 16 10 11 6 8h5.5L12 3zm7 2 1 3h3l-2.5 2 1 3L19 11l-2.5 2 1-3L15 8h3l1-3zM2 10l.8 2.4H5l-1.9 1.4.7 2.3L2 14.7.2 16l.7-2.3L0 12.4h2.2L2 10z"/>
+</svg>
     ),
     
 },  
@@ -334,19 +333,20 @@ icon: (
   title: "Easy Booking & Reminders",
   desc: "Schedule cleanings online in seconds—plus text confirmations and reminders before every visit.",
   icon: (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-      <path fill="currentColor" d="M7 2v2H3v18h18V4h-4V2h-2v2H9V2H7zm12 6H5v12h14V8z"/>
-    </svg>
+<svg viewBox="0 0 24 24" className="w-7 h-7 md:w-8 md:h-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a2 2 0 0 1 2 2v6h-2V8H5v12h6v2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V2zM15.5 13A5.5 5.5 0 1 1 10 18.5 5.5 5.5 0 0 1 15.5 13zm-.5 1v3.3l2.2 1.3.8-1.3-1.5-.9V14h-1.5z"/>
+</svg>
   ),
 },
 
 ].map(({ title, desc, icon }) => (
 <div
-    key={title}
-    className="bg-white rounded-2xl shadow-sm hover:shadow-md ring-1 ring-slate-200
-                border-t-[3px] border-emerald-500 transition p-5 md:p-6 flex gap-3 h-full"
+  key={title}
+className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 border-t-[3px] border-emerald-500 p-5 md:p-6 flex items-center gap-4 h-full transform transition-all duration-200 hover:shadow-md hover:-translate-y-[2px] hover:scale-[1.02]"
 >
-    <div className="shrink-0 mt-0.5">{icon}</div>
+<div className="shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-xl bg-emerald-50 flex items-center justify-center shadow-inner ring-1 ring-emerald-100">
+  {icon}
+</div>
     <div className="space-y-1.5">
     <h4 className="font-semibold text-slate-900">{title}</h4>
     <p className="text-slate-600 text-sm leading-relaxed">{desc}</p>
@@ -363,7 +363,6 @@ icon: (
     <header className="mb-6">
       <h3 className="text-2xl md:text-3xl font-bold text-slate-900">Who We Clean For</h3>
       <p className="text-slate-600 mt-1">
-        Homes, offices, and everything in-between—tailored to your space.
       </p>
     </header>
 
