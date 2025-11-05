@@ -286,29 +286,29 @@ className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
 {
     title: "Satisfaction Guarantee",
     desc:  "If anything misses the mark, we’ll get it taken care of.",
-    icon: (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-        <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
-    </svg>
-    ),
+icon: (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
+    <path fill="currentColor" d="M12 2 2 7v6c0 5 4 9 10 9s10-4 10-9V7L12 2zm0 10.4 3.6-3.6 1.4 1.4L12 15.2l-5-5 1.4-1.4 3.6 3.6z"/>
+  </svg>
+),
 },
 {
     title: "Locally Owned",
     desc:  "Georgetown-based team—your dollars stay in the community.",
-    icon: (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-        <path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/>
-    </svg>
-    ),
+icon: (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
+    <path fill="currentColor" d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/>
+  </svg>
+),
 },
 {
     title: "Reliable Results",
     desc:  "Every clean follows our proven checklist system—so your space looks great no matter who’s on the schedule.",
-    icon: (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
-        <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
-    </svg>
-    ),
+icon: (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
+    <path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-8 8H7V9h4v2zm6-4H7V5h10v2z"/>
+  </svg>
+),
 },
 {
     title: "Clear Communication",
@@ -327,7 +327,20 @@ className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
         <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.56 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"/>
     </svg>
     ),
-},      ].map(({ title, desc, icon }) => (
+    
+},  
+{
+
+  title: "Easy Booking & Reminders",
+  desc: "Schedule cleanings online in seconds—plus text confirmations and reminders before every visit.",
+  icon: (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-6 h-6 text-emerald-600">
+      <path fill="currentColor" d="M7 2v2H3v18h18V4h-4V2h-2v2H9V2H7zm12 6H5v12h14V8z"/>
+    </svg>
+  ),
+},
+
+].map(({ title, desc, icon }) => (
 <div
     key={title}
     className="bg-white rounded-2xl shadow-sm hover:shadow-md ring-1 ring-slate-200
@@ -345,47 +358,68 @@ className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
 </section>
 
 {/* Who we clean for */}
-<section className="py-12" id="who-we-clean">
-<div className="w-full px-4 md:px-8 lg:px-12">
-<h3 className="text-2xl font-bold text-slate-900">Who We Clean For</h3>
+<section id="who-we-clean" className="py-16 bg-[#FFFDF8]">
+  <div className="w-full px-4 md:px-8 lg:px-12 mx-auto">
+    <header className="mb-6">
+      <h3 className="text-2xl md:text-3xl font-bold text-slate-900">Who We Clean For</h3>
+      <p className="text-slate-600 mt-1">
+        Homes, offices, and everything in-between—tailored to your space.
+      </p>
+    </header>
 
-{/* Residential focus */}
-<div className="mt-4">
-    <p className="text-slate-600 text-sm mb-2 font-medium">Residential</p>
-    <div className="flex flex-wrap gap-2">
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Homes</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Apartments & Condos</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Move-In / Move-Out</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Deep Cleaning</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Recurring (Weekly/Bi-Weekly)</span>
+    {/* Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      {/* Residential */}
+      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm hover:shadow-md transition">
+        <div className="p-5 md:p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+              <path fill="currentColor" d="M12 3 3 10v11h6v-6h6v6h6V10l-9-7z"/>
+            </svg>
+            <h4 className="font-semibold text-slate-900">Residential</h4>
+          </div>
+          <ul className="flex flex-wrap gap-2">
+            {[
+              "Homes",
+              "Apartments & Condos",
+              "Move-In / Move-Out",
+              "Deep Cleaning",
+              "Recurring (Weekly/Bi-Weekly)"
+            ].map((label) => (
+              <li key={label} className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700">
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Commercial */}
+      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm hover:shadow-md transition">
+        <div className="p-5 md:p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
+              <path fill="currentColor" d="M3 21V7l9-4 9 4v14h-7v-5H10v5H3z"/>
+            </svg>
+            <h4 className="font-semibold text-slate-900">Commercial</h4>
+          </div>
+          <ul className="flex flex-wrap gap-2">
+            {[
+              "Professional Offices",
+              "Medical / Dental",
+              "Law Firms",
+              "Retail Suites",
+              "Property Management"
+            ].map((label) => (
+              <li key={label} className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700">
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
-</div>
-
-{/* Commercial kept visible */}
-<div className="mt-8" id="commercial">
-    <p className="text-slate-600 text-sm mb-2 font-medium">Commercial</p>
-    <div className="flex flex-wrap gap-2">
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Professional Offices</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Medical / Dental</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Law Firms</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Retail Suites</span>
-    <span className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm">Property Management</span>
-
-    {/* ✅ keep the map, but make it a proper expression that renders <span> chips */}
-    {[
-        // add anything you want here, or keep it empty if you don't need extras
-        // "Gyms", "Daycares"
-    ].map((i) => (
-        <span
-        key={i}
-        className="rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 whitespace-nowrap"
-        >
-        {i}
-        </span>
-    ))}
-    </div>
-</div>
-</div>
+  </div>
 </section>
 
     {/* CTA band */}
