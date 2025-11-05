@@ -2,6 +2,7 @@
 import "./globals.css";
 import { Oswald } from "next/font/google";
 import Footer from "@/components/Footer";
+import { Analytics } from '@vercel/analytics/react';
 
 const oswald = Oswald({
 subsets: ["latin"],
@@ -35,6 +36,7 @@ return (
     >
     <main className="min-h-screen flex flex-col">{children}</main>
     <Footer />
+      <Analytics />
     </body>
 </html>
 );
