@@ -47,4 +47,41 @@ select.no-native {
 appearance: none;
 background-image: none !important; /* Safari */
 }
+/* ====== GLOBAL PAGE WIDTH WRAPPER ====== */
+
+/* 
+   Keeps your site centered on large monitors 
+   while staying responsive and touch-safe on mobile.
+*/
+/* Global content width limiter */
+body {
+  background-color: #FFFDF8; /* cream stays full width */
+  margin: 0;
+  padding: 0;
+}
+
+/* Center and limit content only, not the background */
+.container {
+  width: 100%;
+  max-width: 72rem; /* roughly Tailwind max-w-6xl (1152px) */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
 select.no-native::-ms-expand { display: none; } /* old Edge/IE */

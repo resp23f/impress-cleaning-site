@@ -195,30 +195,31 @@ before:pointer-events-none">
 
 
 {/* Hero */}
-<section id="home" className="relative bg-slate-900 text-white">
-{/* Background image */}
-<img
-src="/hero-cleaners.jpg"
-alt="Professional cleaners from Impress Cleaning"
-className="absolute inset-0 h-full w-full object-cover object-[90%_40%]"
-/>
+<section   id="home"
+  className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden"
+>
+  {/* Background image */}
+  <img
+    src="/hero-cleaners.jpg"
+    alt="Professional cleaners from Impress Cleaning"
+    className="absolute inset-0 w-full h-full object-cover object-[60%_center]"
+  />
 
-{/* Subtle dark overlay */}
-<div className="absolute inset-0 bg-black/40" />
+  {/* Semi-transparent dark overlay */}
+  <div className="absolute inset-0 bg-black/40"></div>
 
-{/* Text content */}
-<div className="relative z-10 mx-auto max-w-6xl px-6 py-32 md:py-40">
-<div className="max-w-2xl">
-    <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-    Sparkling homes, zero hassle.
-    </h1>
-    <p className="mt-4 text-lg text-white/90 max-w-prose">
-    Reliable, insured, and detail-obsessed cleaning for residential homes, offices, and commercial spaces.
-    </p>
-    <div className="mt-8 flex flex-wrap gap-4">
+  {/* Text overlay container */}
+  <div className="relative z-10 flex items-center h-[520px] sm:h-[600px] md:h-[680px]">
+    <div className="container text-left px-6 md:px-8">
+      <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight max-w-2xl">
+        Sparkling homes, zero hassle.
+      </h1>
+      <p className="mt-4 text-lg text-slate-100 max-w-prose">
+        Reliable, insured, and detail-obsessed cleaning for residential homes,
+        offices, and commercial spaces.
+      </p>
     </div>
-</div>
-</div>
+  </div>
 </section>
 
 

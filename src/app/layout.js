@@ -29,15 +29,16 @@ apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
 };
 
 export default function RootLayout({ children }) {
-return (
-<html lang="en">
-    <body
-    className={`${oswald.variable} bg-[#FAFBFC] text-slate-900 antialiased`}
-    >
-    <main className="min-h-screen flex flex-col">{children}</main>
-    <Footer />
-      <Analytics />
-    </body>
-</html>
-);
+  return (
+    <html lang="en">
+      <body className={`${oswald.variable} bg-[#FFFDF8] text-slate-900 antialiased`}>
+        <main className="min-h-screen flex flex-col">
+          <div className="container">{children}</div>
+        </main>
+        <footer>
+          <Analytics />
+        </footer>
+      </body>
+    </html>
+  );
 }
