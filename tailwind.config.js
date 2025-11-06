@@ -6,12 +6,19 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-      },
-      lineHeight: { tight: "1.2", snug: "1.3" },
-    },
+extend: {
+  fontFamily: {
+    // Default body text
+    sans: ["var(--font-body)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+
+    // For headers and card titles
+    heading: ["var(--font-heading)", "Bebas Neue", "ui-sans-serif", "system-ui", "sans-serif"],
+  },
+  lineHeight: {
+    tight: "1.2",
+    snug: "1.3",
+  },
+},
   },
   plugins: [],
-};
+}

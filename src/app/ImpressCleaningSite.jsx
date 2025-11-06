@@ -200,7 +200,7 @@ before:pointer-events-none">
 >
   {/* Background image */}
   <img
-    src="/hero-cleaners.jpg"
+    src="/hero-cleaners1.jpg"
     alt="Professional cleaners from Impress Cleaning"
     className="absolute inset-0 w-full h-full object-cover object-[60%_center]"
   />
@@ -239,8 +239,8 @@ before:pointer-events-none">
     <svg aria-hidden="true" viewBox="0 0 24 24" className="w-8 h-8 mb-4 text-green-600">
         <path fill="currentColor" d="M12 2c.4 2.7 1.8 4.1 4.5 4.5C13.8 7 12.4 8.4 12 11.1 11.6 8.4 10.2 7 7.5 6.5 10.2 6.1 11.6 4.7 12 2zM12 12.9c.3 1.9 1.4 3 3.3 3.3-1.9.3-3 1.4-3.3 3.3-.3-1.9-1.4-3-3.3-3.3 1.9-.3 3-1.4 3.3-3.3z"/>
     </svg>
-    <h3 className="text-lg font-semibold text-slate-900 mb-2">Weekly / Bi-Weekly</h3>
-    <p className="text-slate-600 text-sm leading-relaxed">
+    <h3 className="text-lg font-semibold text-black mb-2">Weekly / Bi-Weekly</h3>
+    <p className="text-black text-sm leading-relaxed">
         Keep your home fresh and spotless with our recurring cleaning plans.
         Our team handles the details so you can enjoy the comfort.
     </p>
@@ -252,7 +252,7 @@ before:pointer-events-none">
         <path fill="currentColor" d="M12 3 3 10v11h6v-6h6v6h6V10l-9-7z"/>
     </svg>
     <h3 className="text-lg font-semibold text-slate-900 mb-2">Move-In / Move-Out</h3>
-    <p className="text-slate-600 text-sm leading-relaxed">
+    <p className="text-black text-sm leading-relaxed">
         Whether you’re settling in or saying goodbye, we’ll leave the space sparkling clean and move-in ready.
     </p>
     </div>
@@ -263,7 +263,7 @@ before:pointer-events-none">
         <path fill="currentColor" d="M3 21V7l9-4 9 4v14h-7v-5H10v5H3zM5 19h3v-3H5v3zm11 0h3v-9h-3v9zM8 9h3V7H8v2z"/>
     </svg>
     <h3 className="text-lg font-semibold text-slate-900 mb-2">Commercial Cleaning</h3>
-    <p className="text-slate-600 text-sm leading-relaxed">
+    <p className="text-black text-sm leading-relaxed">
         Impress your clients and create a spotless workspace that boosts morale and productivity.
     </p>
     </div>
@@ -276,7 +276,7 @@ before:pointer-events-none">
 {/* Why Choose Impress Cleaning Services */}
 <section className="py-16" id="why">
 <div className="w-full px-4 md:px-8 lg:px-12">
-<h2 className="text-2xl md:text-3xl font-bold text-slate-900">Why Choose Impress Cleaning Services</h2>
+<h2 className="text-2xl md:text-3xl font-bold text-black">Why Choose Impress Cleaning Services</h2>
 <p className="text-slate-600 mt-1">
 </p>
 
@@ -349,8 +349,8 @@ className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 border-t-[3px] b
   {icon}
 </div>
     <div className="space-y-1.5">
-    <h4 className="font-semibold text-slate-900">{title}</h4>
-    <p className="text-slate-600 text-sm leading-relaxed">{desc}</p>
+    <h4 className="font-semibold text-black">{title}</h4>
+    <p className="text-black text-sm leading-relaxed">{desc}</p>
     </div>
 </div>
 ))}
@@ -401,7 +401,7 @@ className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 border-t-[3px] b
             <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 text-emerald-600">
               <path fill="currentColor" d="M3 21V7l9-4 9 4v14h-7v-5H10v5H3z"/>
             </svg>
-            <h4 className="font-semibold text-slate-900">Commercial</h4>
+            <h4 className="font-semibold text-black">Commercial</h4>
           </div>
           <ul className="flex flex-wrap gap-2">
             {[
@@ -428,8 +428,8 @@ className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 border-t-[3px] b
 {/* Reviews */}
 <section id="reviews" className="w-full px-4 md:px-8 lg:px-12 py-16 rounded-[2rem]">
 <div className="mb-6">
-<h2 className="text-2xl font-bold text-slate-900">Customer Reviews</h2>
-<p className="text-slate-600 mt-1">Real feedback from happy clients.</p>
+<h2 className="text-2xl font-bold text-black">Customer Reviews</h2>
+<p className="text-black mt-1">Real feedback from happy clients.</p>
 </div>
 
 <ul className="grid md:grid-cols-3 gap-4 list-none">
@@ -453,8 +453,8 @@ className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 border-t-[3px] b
         key={i}
         className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6 transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md"
     >
-<p className="text-slate-700 leading-relaxed">“{cleaned}”</p>
-    <footer className="mt-3 text-sm text-slate-500">— {r.name}</footer>
+<p className="text-black leading-relaxed">“{cleaned}”</p>
+    <footer className="mt-3 text-sm text-black">— {r.name}</footer>
 </li>     
     );
 })}
@@ -464,7 +464,7 @@ className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 border-t-[3px] b
 {/* Service Area */}
 <section className="w-full px-4 md:px-8 lg:px-12 py-16">
 <h3 className="text-xl md:text-2xl font-semibold">Service Area</h3>
-<p className="text-slate-600 mt-2">
+<p className="text-black mt-2">
 Greater metro area and nearby suburbs. If you’re just outside, ask—we’re flexible for the right fit.
 </p>          
 <div className="mt-6 w-full h-48 md:h-64 rounded-2xl overflow-hidden bg-white shadow-sm">
@@ -486,7 +486,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0B2850]">
     Request a Quote
 </h2>
-<p className="mt-2 md:mt-4 text-lg md:text-xl text-slate-600 max-w-5xl">
+<p className="mt-2 md:mt-4 text-lg md:text-xl text-black max-w-5xl">
     Tell us about your space and schedule. We’ll respond quickly after submitting your request.
 </p>
 </div>  
@@ -502,7 +502,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {/* Name */}
     <div className="col-span-2">
-    <label htmlFor="name" className="block text-sm font-bold text-slate-700">
+    <label htmlFor="name" className="block text-sm font-bold text-black">
         Name <span className="text-rose-500">*</span>
     </label>
     <input
@@ -517,7 +517,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
     {/* Phone */}
     <div className="col-span-2">
-    <label htmlFor="phone" className="block text-sm font-bold text-slate-700">
+    <label htmlFor="phone" className="block text-sm font-bold text-black">
         Phone <span className="text-rose-500">*</span>
     </label>
     <input
@@ -532,7 +532,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
     {/* Email */}
     <div className="col-span-2">
-    <label htmlFor="email" className="block text-sm font-bold text-slate-700">
+    <label htmlFor="email" className="block text-sm font-bold text-black">
         Email <span className="text-rose-500">*</span>
     </label>
     <input
@@ -547,7 +547,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
     {/* Address (full width on md) */}
     <div className="col-span-2">
-    <label htmlFor="address" className="block text-sm font-bold text-slate-700">
+    <label htmlFor="address" className="block text-sm font-bold text-black">
         Service Address <span className="text-rose-500">*</span>
     </label>
     <input
@@ -562,7 +562,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
     {/* Frequency (custom select) */}
     <div className="col-span-2">
-    <label htmlFor="frequency" className="block text-sm font-bold text-slate-700">
+    <label htmlFor="frequency" className="block text-sm font-bold text-black">
         Frequency <span className="text-rose-500">*</span>
     </label>
     <div className="relative">
@@ -592,7 +592,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
     {/* Start date (custom select) */}
     <div className="col-span-2">
-    <label htmlFor="start" className="block text-sm font-bold text-slate-700">
+    <label htmlFor="start" className="block text-sm font-bold text-black">
         Start Date<span className="text-rose-500">*</span>
     </label>
     <div className="relative">
@@ -620,7 +620,7 @@ className="w-full h-full block border-none outline-none -translate-y-px"
 
     {/* Notes */}
     <div className="col-span-2">
-    <label htmlFor="notes" className="block text-sm font-bold text-slate-700">Notes / Access Details</label>
+    <label htmlFor="notes" className="block text-sm font-bold text-black">Notes / Access Details</label>
     <textarea
         id="notes"
         name="notes"
@@ -765,7 +765,7 @@ return (
     <div className="w-full px-4 md:px-8 lg:px-12">
     <div className="mt-2 rounded-3xl border border-slate-200 bg-slate-900 text-white p-6 md:p-8 shadow-sm grid md:grid-cols-2 gap-6 items-center">
         <div>
-        <h3 className="text-xl md:text-2xl font-semibold">Ready for a spotless space?</h3>
+        <h3 className="text-xl md:text-2xl font-semibold text-white">Ready for a spotless space?</h3>
         <p className="mt-1 text-white/80 text-sm">Get a fast quote below.</p>
         </div>
         <div className="flex md:justify-end gap-3">

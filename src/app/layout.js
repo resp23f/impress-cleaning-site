@@ -1,14 +1,21 @@
 // src/app/layout.jsx
 import "./globals.css";
-import { Oswald } from "next/font/google";
+import { Inter, Bebas_Neue } from "next/font/google";
 import Footer from "@/components/Footer";
 import { Analytics } from '@vercel/analytics/react';
 
-const oswald = Oswald({
+const inter = Inter({
 subsets: ["latin"],
-weight: ['400', '500', '600', '700'],
+weight: ["300", "400", "500"],
 display: "swap",
-variable: "--font-brand", // we'll use this only for the logo word
+variable: "--font-body",
+});
+
+const bebasNeue = Bebas_Neue({
+subsets: ["latin"],
+weight: ["400"],
+display: "swap",
+variable: "--font-heading",
 });
 
 export const metadata = {
@@ -31,13 +38,13 @@ apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${oswald.variable} bg-[#FFFDF8] text-slate-900 antialiased`}>
+<body
+  className={`${inter.variable} ${bebasNeue.variable} bg-[#FFFDF8] text-slate-900 antialiased`}
+>
         <main className="min-h-screen flex flex-col">
           <div className="container">{children}</div>
         </main>
-        <footer>
-          <Analytics />
-        </footer>
+        <Footer/>
       </body>
     </html>
   );

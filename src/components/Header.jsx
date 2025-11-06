@@ -17,7 +17,6 @@ const isJobs = pathname === "/aplicar" || pathname.startsWith("/aplicar/");
 return isJobs ? <JobsHeader /> : <SiteHeader />;
 }
 
-/* -------------------- Default site header (screenshot #1) -------------------- */
 function SiteHeader() {
 const [open, setOpen] = useState(false);
 const pathname = usePathname() || "/";

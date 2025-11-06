@@ -17,7 +17,7 @@ export default function Footer() {
 const year = new Date().getFullYear();
 
 return (
-<footer className="bg-[#0B2850] text-white py-12 px-6 md:px-12">
+<footer className="relative z-10 bg-[#0B2850] text-white py-12 px-6 md:px-12 [&_*]:!text-white">
 <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
 {/* Contact */}
 <div>
