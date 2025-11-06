@@ -90,5 +90,14 @@ body {
     padding-right: 3rem;
   }
 }
+/* Lets any section span edge-to-edge even if the page is centered */
+.full-bleed {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* avoid stray horizontal scrollbars */
+html, body { overflow-x: hidden; }
 
 select.no-native::-ms-expand { display: none; } /* old Edge/IE */

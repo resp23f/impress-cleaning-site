@@ -1,6 +1,7 @@
 // src/app/layout.jsx
 import "./globals.css";
 import { Inter, Bebas_Neue } from "next/font/google";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Analytics } from '@vercel/analytics/react';
 
@@ -41,6 +42,7 @@ export default function RootLayout({ children }) {
 <body
   className={`${inter.variable} ${bebasNeue.variable} bg-[#FFFDF8] text-slate-900 antialiased`}
 >
+       <Header />
         <main className="min-h-screen flex flex-col">
           <div className="container">{children}</div>
         </main>

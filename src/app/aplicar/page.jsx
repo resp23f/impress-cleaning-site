@@ -80,64 +80,8 @@ return (
 
 return (
 <>
-{/* ===== TOP HEADER (Molly-style) ===== */}
-<header className="relative z-50 bg-[linear-gradient(to_bottom,#FFFFFF,#FFFDF8)] border-b border-slate-100">
-<div className="w-full flex items-center gap-8 px-2 md:px-6 py-4 md:py-5">
-{/* --- Left: Brand logo --- */}
-<a href="/" className="flex items-center gap-3">
-    <img
-    src="/sparkle.svg" // your sparkle mark or replace with your logo image
-    alt="Impress Cleaning logo"
-    className="h-7 w-7"
-    />
-    <div className="flex flex-col leading-tight scale-[1.15] md:scale-[1.25] ml-2 md:ml-8">
-    <span className="font-brand uppercase text-[#0B2850] text-2xl font-black tracking-wide">
-        Impress Cleaning Services <span className="relative top-[1px] -ml-[6px] text-[11px] font bold md:text-[11px] font-medium tracking-tight">LLC</span>
-    </span>
-    <span className="text-[11px] text-[#0B2850]/80 uppercase tracking-[0.08em]">
-        A clean home is an impressive home.
-    </span>
-    </div>
-</a>
 
-{/* --- Center/Right: Nav links --- */}
-<nav className="hidden md:flex items-center gap-10 text-[16px] text-[#0B2850] font-medium ml-auto">
-    <a href="/aplicar" className="hover:text-emerald-700">
-    </a>
-    <a href="/english" className="hover:text-emerald-700">
-    English Site
-    </a>
 
-    {/* --- CTA Button --- */}
-    <a
-    href="#aplicar-form"
-    className="rounded-lg bg-gradient-to-r from-green-300 via-emerald-300 to-green-400
-            px-6 py-3 text-white font-semibold shadow-md hover:shadow-lg
-            hover:from-green-400 hover:to-emerald-400 transition"
-    >
-    Explora todos los empleos
-    </a>
-</nav>
-
-{/* --- Mobile menu placeholder (optional) --- */}
-<button
-    type="button"
-    className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-[#0B2850] hover:bg-slate-100"
-    aria-label="Open menu"
->
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth="2"
-    stroke="currentColor"
-    className="h-6 w-6"
-    >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-</button>
-</div>
-</header>
 {/* ===== HERO (refined) ===== */}
 <section className="relative isolate overflow-hidden">
 {/* image height */}
