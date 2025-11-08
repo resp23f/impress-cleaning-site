@@ -2,6 +2,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useMemo } from "react";
+import { Oswald, Inter } from "next/font/google";
+
+const oswald = Oswald({ subsets: ["latin"], weight: ["700"] });   // for IMPRESS
+const inter  = Inter({ subsets: ["latin"],  weight: ["500"] });   // for "cleaning services LLC"
 
 const NAV = [
 { label: "Residential", href: "/#services" },
@@ -26,62 +30,60 @@ const active = useMemo(
 );
 
 
-/* ------- MAIN SITE HEADER ------- */
+/* MAIN SITE HEADER */ 
+
 return (
-<header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur border-b border-slate-100">
-<div className="mx-auto max-w-8xl px-4 md:px-5">
-          {/* ── Row 1: Brand + utility links ───────────────────────────── */}
-      <div className="flex items-center justify-between py-8">
-        {/* Brand */}
-        <Link href="/" aria-label="Impress Cleaning Services LLC" className="flex items-start gap-3 shrink-0">
-          <img src="/sparkle.svg" alt="" className="w-6 h-6" />
-          <div>
-            <div className="font-brand uppercase tracking-[0.05em] text-[#0B2850] font-black text-[25px] md:text-[35px] leading-none">
-              IMPRESS CLEANING SERVICES
-              <span className="text-[10px] leading-none -translate-y-[1px] md:-translate-y-[2px]">LLC</span>
-            </div>
-            <p className="text-slate-500 text-sm md:text-md">A clean home is an impressive home.</p>
-          </div>
-        </Link>
+<header className="sticky top-0 z-40 w-full bg-[#FFFDF8] border-b border-neutral-200">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        
 
-        {/* Utility links (right, small text) */}
-        <ul className="hidden md:flex items-center gap-8 text-slate-600 text-[16px]">
-          <li><Link href="/careers" className="hover:text-slate-900">Apply</Link></li>
-          <li><Link href="/aplicar" className="hover:text-slate-900">Aplicar</Link></li>
-          <li><Link href="/gift-cards" className="hover:text-slate-900">Gift Certificates</Link></li>
-        </ul>
+<Link
+  href="#top"
+  className="flex items-start gap-3 select-none -translate-x-3 md:-translate-x-6 xl:-translate-x-10"
+>
+  {/* Tall green bar (the “I”) */}
+  <span className="h-[84px] md:h-[92px] w-[6px] bg-[#1E6A3C]" />
 
-        {/* Mobile hamburger (optional) */}
-        <button
-          onClick={() => setOpen(v => !v)}
-          className="md:hidden inline-flex items-center justify-center p-2 rounded-lg ring-1 ring-slate-300"
-          aria-label="Open menu"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M3 6h18M3 12h18M3 18h18" />
-          </svg>
-        </button>
-      </div>
+  {/* Text stack */}
+  <div className="leading-none relative -top-[5px]">
+    {/* MPRESS */}
+    <div
+      className={`${oswald.className} text-[#1E6A3C] uppercase font-bold
+                  tracking-[0.08em] text-[46px] md:text-[50px]`}
+    >
+      MPRESS
+    </div>
 
-      {/* ── Row 2 (DESKTOP): Tabs + inline CTAs ────────────────────── */}
-<div className="hidden md:flex items-center justify-between pb-3">
-          {/* Tabs (left) */}
-        <nav className="flex-1 min-w-0">
-          <ul className="flex items-center gap-20">
-            <li><a href="#residential" className="text-[20px] font-medium text-slate-900 hover:text-[#0B2850]">Residential</a></li>
-            <li><a href="#commercial"  className="text-[20px] font-medium text-slate-900 hover:text-[#0B2850]">Commercial</a></li>
-            <li><a href="#why"         className="text-[20px] font-medium text-slate-900 hover:text-[#0B2850]">Why Hire Us</a></li>
-            <li><a href="#about"       className="text-[20px] font-medium text-slate-900 hover:text-[#0B2850]">About Us</a></li>
-            <li><a href="#faq"         className="text-[20px] font-medium text-slate-900 hover:text-[#0B2850]">FAQ</a></li>
-          </ul>
-        </nav>
+    {/* Subline — same left gap as MPRESS (no extra ml here) */}
+<div className={`${inter.className} mt-[8px] text-[#0B2850] font-medium whitespace-nowrap`}>
+  <span className="text-[20px] md:text-[22px]">Cleaning Services</span>
+  <span className="ml-[3px] inline-block text-2xs md:text-1xs relative top-[0px] tracking-tight uppercase">
+    LLC
+  </span>
+</div>
+</div>
+</Link>
 
-        {/* Inline CTAs (right, NOT buttons to match old look) */}
-        <div className="flex items-center gap-10 shrink-0">
-          <a href="#quote" className="text-[20px] font-semibold text-[#0B2850] hover:underline">Free Quote</a>
-          <a href="tel:+15122775364" className="text-[20px] font-semibold text-[#0B2850] hover:underline">(512) 277-5364</a>
+
+{/* Right side: nav + CTA */}
+        <div className="hidden md:flex items-center gap-10">
+          <nav aria-label="Main" className="flex items-center gap-8 text-[16px] text-[#0B2850]">
+            <Link href="#residential" className="hover:text-[#1E6A3C]">Residential</Link>
+            <Link href="#commercial" className="hover:text-[#1E6A3C]">Commercial</Link>
+            <Link href="#why" className="hover:text-[#1E6A3C] whitespace-nowrap">Why Hire Us</Link>
+            <Link href="#about" className="hover:text-[#1E6A3C]">About Us</Link>
+          </nav>
+
+          <Link
+            href="#quote"
+            className="inline-flex items-center rounded-xl px-6 py-3 text-[16px] font-semibold 
+                       bg-[#1E6A3C] text-white shadow-sm transition 
+                       hover:bg-[#16502E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1E6A3C]"
+          >
+            Request a Quote
+          </Link>
         </div>
-      </div>
+    
 
       
 {/* MOBILE NAV (phones & small tablets) — desktop untouched */}
