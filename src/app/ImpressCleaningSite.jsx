@@ -2,6 +2,12 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { track } from '@vercel/analytics';
+import Image from "next/image";
+import { Fraunces, Inter } from "next/font/google";
+import { Variable } from "lucide-react";
+
+ const fraunces = Fraunces({ subsets: ["latin"], weight: "variable", display: "swap" });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500"] }); // body copy
 
 
 
@@ -98,41 +104,66 @@ return (
     
 
 {/* Hero */}
-<section   id="home"
-  className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden"
+<section
+  id="hero"
+  className="relative z-10 w-screen left-1/2 -ml-[50vw] overflow-hidden mt-[50px]"
+  aria-label="Hero"
+    >
+      {/* fixed height keeps the image from collapsing */}
+      <div className="relative h-[700px]">
+<Image
+  key="hero-75-40"                  // forces a re-mount in dev so changes apply
+  src="/hero-cleaners1.jpg?v=3"         // cache-bust; make sure this file is in /public
+  alt="Modern bright kitchen"
+  fill
+  sizes="100vw"
+  priority
+  unoptimized                       // TEMP: bypass Next optimizer while tweaking
+  /* Legacy props (for older Next/Image) */
+  objectFit="cover"
+  objectPosition="75% 40%"
+  /* Modern style (for newer Next/Image) */
+  style={{ objectFit: 'cover', objectPosition: '75% 40%' }}
+  className="!object-cover !object-[75%_60%]"  /* Tailwind override if any class wins */
+/>
+
+        {/* on-brand overlay + content */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1c294d]/60 via-[#1c294d]/30 to-transparent flex items-center">
+
+
+{/* overlay content – pinned near her elbow with responsive sizing */}
+<div className="absolute inset-0 pointer-events-none">
+  <div
+    className="
+      absolute
+      [left:7%]  [top:58%]
+      sm:[left:8%]  sm:[top:56%]
+      md:[left:10%] md:[top:55%]
+      lg:[left:12%] lg:[top:54%]
+      xl:[left:13%] xl:[top:53%]
+      -translate-y-1/2
+      max-w-[620px]
+      px-6
+    "
+  >
+    <h1
+      className={`${inter.className} pointer-events-auto !text-white font-semibold leading-[1.05] drop-shadow-[0_6px_24px_rgba(0,0,0,.35)]
+                   text-[34px] sm:text-[40px] md:text-[52px] lg:text-[60px] xl:text-[68px] mb-4`}
+    >
+      A clean home is an impressive home.
+    </h1>
+
+<a
+  href="tel:+15122775364"
+  className="inline-flex items-center gap-2 px-8 py-3
+             border-2 border-[#42924f] text-[#42924f] bg-white/90
+             backdrop-blur-sm rounded-[50px] font-semibold
+             hover:bg-[#42924f] hover:text-white transition"
 >
-  {/* Background image */}
-  <img
-    src="/hero-cleaners1.jpg"
-    alt="Professional cleaners from Impress Cleaning"
-    className="absolute inset-0 w-full h-full object-cover object-[60%_center]"
-  />
-
-  {/* Semi-transparent dark overlay */}
-  <div className="absolute inset-0 bg-black/40"></div>
-
-  {/* Text overlay container */}
-  <div className="relative z-10 flex items-center h-[520px] sm:h-[600px] md:h-[680px]">
-    <div className="container text-left px-6 md:px-8">
-      <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight max-w-2xl">
-        Sparkling homes, zero hassle.
-      </h1>
-      <p className="mt-4 text-lg text-slate-100 max-w-prose">
-        Reliable, insured, and detail-obsessed cleaning for residential homes,
-        offices, and commercial spaces.
-      </p>
-    </div>
-  </div>
-</section>
-
-
-    {/* Services */}
-<section id="services" className="py-20 bg-[#FFFDF8]">
-<div className="w-full px-4 md:px-8 lg:px-12">
-<h2 className="text-3xl font-bold text-slate-900 mb-2">How Impress Cleaning can serve you</h2>
-<p className="text-slate-600 mb-12">
-    A clean space makes a lasting impression. Choose the plan that fits your schedule.
-</p>
+  <span>Call Now (512) 277-5364</span>
+</a>  </div>
+</div>
+        </div>
 
 {/* GRID OPEN */}
 <div className="grid md:grid-cols-3 gap-8 text-left">

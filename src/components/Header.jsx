@@ -32,58 +32,66 @@ const active = useMemo(
 
 /* MAIN SITE HEADER */ 
 
-return (
-<header className="sticky top-0 z-40 w-full bg-[#FFFDF8] border-b border-neutral-200">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        
+  return (
+    <>
+      {/* Top Utility Bar */}
+      <div className="h-9 flex items-center justify-end gap-5 px-6 bg-[#202E56] text-white text-[13px] font-semibold tracking-wide">
+        <Link href="#gift" className="hover:text-[#42924F] transition">Gift Certificates</Link>
+        <Link href="#apply" className="hover:text-[#42924F] transition">Apply</Link>
+        <Link href="#aplicar" className="hover:text-[#42924F] transition">Aplicar</Link>
+      </div>
 
-<Link
-  href="#top"
-  className="flex items-start gap-3 select-none -translate-x-3 md:-translate-x-6 xl:-translate-x-10"
->
-  {/* Tall green bar (the “I”) */}
-  <span className="h-[84px] md:h-[92px] w-[6px] bg-[#1E6A3C]" />
+      {/* Main Header */}
+<header className="sticky top-0 z-50 shadow-md">
+  {/* White underlay that covers the header AND extends below it */}
+  <div className="relative w-full">
+    {/* full header background */}
+    <div className="absolute inset-0 bg-white" aria-hidden />
+    {/* extension: pushes white below header so the brand overhang is covered */}
+    <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-white" aria-hidden />
 
-  {/* Text stack */}
-  <div className="leading-none relative -top-[5px]">
-    {/* MPRESS */}
-    <div
-      className={`${oswald.className} text-[#1E6A3C] uppercase font-bold
-                  tracking-[0.08em] text-[46px] md:text-[50px]`}
-    >
-      MPRESS
-    </div>
-
-    {/* Subline — same left gap as MPRESS (no extra ml here) */}
-<div className={`${inter.className} mt-[8px] text-[#0B2850] font-medium whitespace-nowrap`}>
-  <span className="text-[20px] md:text-[22px]">Cleaning Services</span>
-  <span className="ml-[3px] inline-block text-2xs md:text-1xs relative top-[0px] tracking-tight uppercase">
-    LLC
-  </span>
-</div>
-</div>
-</Link>
-
-
-{/* Right side: nav + CTA */}
-        <div className="hidden md:flex items-center gap-10">
-          <nav aria-label="Main" className="flex items-center gap-8 text-[16px] text-[#0B2850]">
-            <Link href="#residential" className="hover:text-[#1E6A3C]">Residential</Link>
-            <Link href="#commercial" className="hover:text-[#1E6A3C]">Commercial</Link>
-            <Link href="#why" className="hover:text-[#1E6A3C] whitespace-nowrap">Why Hire Us</Link>
-            <Link href="#about" className="hover:text-[#1E6A3C]">About Us</Link>
-          </nav>
-
-          <Link
-            href="#quote"
-            className="inline-flex items-center rounded-xl px-6 py-3 text-[16px] font-semibold 
-                       bg-[#1E6A3C] text-white shadow-sm transition 
-                       hover:bg-[#16502E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1E6A3C]"
-          >
-            Request a Quote
-          </Link>
+    {/* content layer */}
+    <div className="relative flex items-center justify-center px-8 py-4 translate-y-[6px] md:translate-y-[20px]">
+      {/* Logo pinned left */}
+      <a
+        href="#top"
+        className="flex flex-col select-none absolute left-4 md:left-8"
+        aria-label="Impress Cleaning Home"
+      >
+        <div className="flex items-end text-[#202E56] leading-none">
+          <span className="text-[86px] relative top-[10px] font-serif font-bold"
+          style={{
+    lineHeight: '0.8',
+    display: 'inline-block',
+    transform: 'scaleY(1.3)',  // elongates vertically
+    transformOrigin: 'top',     // stretch downward
+  }}>I</span>
+          <span className="text-[58px] font-serif font-bold tracking-[0.02em]">MPRESS</span>
         </div>
-    
+        <div className="text-[14px] uppercase tracking-[0.16em] text-[#475569] mt-[2px] ml-[50px]">
+          Cleaning Services LLC
+        </div>
+      </a>
+
+      {/* centered nav */}
+      <nav className="flex items-center gap-8 text-[15.5px] font-medium text-[#202E56]" aria-label="Primary">
+        <a href="#residential" className="hover:text-[#42924F] transition">Residential</a>
+        <a href="#commercial" className="hover:text-[#42924F] transition">Commercial</a>
+        <a href="#why" className="hover:text-[#42924F] transition">Why Hire Us</a>
+        <a href="#faq" className="hover:text-[#42924F] transition">FAQ</a>
+        <a href="#about" className="hover:text-[#42924F] transition">About Us</a>
+        <a
+          href="#quote"
+          className="inline-flex items-center justify-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-semibold hover:bg-[#E7F5EA] transition"
+        >
+          Request a Quote
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>    </>
+  );
+}
 
       
 {/* MOBILE NAV (phones & small tablets) — desktop untouched */}
@@ -134,10 +142,6 @@ return (
     </a>
   </div>
 </nav>
-</div>
-</header>
-);
-}
 
 
 /* -------------------- Jobs/aplicar header -------------------- */
