@@ -1,22 +1,15 @@
 // src/app/layout.jsx
 import "./globals.css";
-import { Inter, Bebas_Neue } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Analytics } from '@vercel/analytics/react';
 
-const inter = Inter({
-subsets: ["latin"],
-weight: ["300", "400", "500"],
-display: "swap",
-variable: "--font-body",
-});
-
-const bebasNeue = Bebas_Neue({
-subsets: ["latin"],
-weight: ["400"],
-display: "swap",
-variable: "--font-heading",
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+    variable: "--font-playfair",
 });
 
 export const metadata = {
@@ -40,11 +33,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
 <body
-  className={`${inter.variable} ${bebasNeue.variable} bg-[#FFFDF8] text-slate-900 antialiased`}
+  className={`${inter.variable} ${playfair.variable} bg-[#FAFAF8] text-slate-900 antialiased`}
 >
        <Header />
         <main className="min-h-screen flex flex-col">
-          <div className="container">{children}</div>
+            {children}
         </main>
         <Footer/>
       </body>

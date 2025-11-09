@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useMemo } from "react";
-import { Oswald, Inter } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 
-const oswald = Oswald({ subsets: ["latin"], weight: ["700"] });   // for IMPRESS
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["700"] });   // for IMPRESS
 const inter  = Inter({ subsets: ["latin"],  weight: ["500"] });   // for "cleaning services LLC"
 
 const NAV = [
@@ -42,16 +42,16 @@ const active = useMemo(
       </div>
 
       {/* Main Header */}
-<header className="sticky top-0 z-50 shadow-md">
+<header className="sticky top-0 z-50 bg-[#FAFAF8]">
   {/* White underlay that covers the header AND extends below it */}
   <div className="relative w-full">
     {/* full header background */}
-    <div className="absolute inset-0 bg-white" aria-hidden />
+    <div className="absolute inset-0 bg-[#FAFAF8]" aria-hidden />
     {/* extension: pushes white below header so the brand overhang is covered */}
-    <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-white" aria-hidden />
+    <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-[#FAFAF8]" aria-hidden />
 
     {/* content layer */}
-    <div className="relative flex items-center justify-center px-8 py-4 translate-y-[6px] md:translate-y-[20px]">
+    <div className="relative flex items-center justify-center px-8 py-4 translate-y-[6px] md:translate-y-[55px]">
       {/* Logo pinned left */}
       <a
         href="#top"
@@ -68,13 +68,13 @@ const active = useMemo(
   }}>I</span>
           <span className="text-[58px] font-serif font-bold tracking-[0.02em]">MPRESS</span>
         </div>
-        <div className="text-[14px] uppercase tracking-[0.16em] text-[#475569] mt-[2px] ml-[50px]">
+        <div className="text-[14px] uppercase tracking-[0.20em] text-[#475569] mt-[1px] ml-[50px]">
           Cleaning Services LLC
         </div>
       </a>
 
       {/* centered nav */}
-      <nav className="flex items-center gap-8 text-[15.5px] font-medium text-[#202E56]" aria-label="Primary">
+      <nav className="flex items-center gap-8 text-[22.5px] font-medium text-[#202E56]" aria-label="Primary">
         <a href="#residential" className="hover:text-[#42924F] transition">Residential</a>
         <a href="#commercial" className="hover:text-[#42924F] transition">Commercial</a>
         <a href="#why" className="hover:text-[#42924F] transition">Why Hire Us</a>

@@ -6,19 +6,31 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-extend: {
-  fontFamily: {
-    // Default body text
-    sans: ["var(--font-body)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1.25rem",
+        md: "2rem",
+        lg: "3rem",
+        xl: "4rem",
+      },
+      screens: { "2xl": "1320px" },
+    },
 
-    // For headers and card titles
-    heading: ["var(--font-heading)", "Bebas Neue", "ui-sans-serif", "system-ui", "sans-serif"],
+    
+
+extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-playfair)', 'Playfair Display', 'ui-serif', 'Georgia', 'serif'],
+        heading: ['var(--font-playfair)', 'Playfair Display', 'ui-serif', 'serif'],
+      },
+      lineHeight: {
+        tight: "1.2",
+        snug: "1.3",
+      },
+    },
   },
-  lineHeight: {
-    tight: "1.2",
-    snug: "1.3",
-  },
-},
-  },
-  plugins: [],
+      plugins: [],
 }

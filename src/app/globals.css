@@ -1,47 +1,22 @@
 @import "tailwindcss";
-/* --- Force light mode (no system dark theme) --- */
 :root {
 color-scheme: light;          
---background: #FFFDF8;        
+--background: #FAFAF8;        
 --foreground: #1f2937;        
 }
 @media (prefers-color-scheme: dark) {
 :root {
 color-scheme: light;
---background: bg-white shadow-md;
+--background: #FAFAF8;
 --foreground: #1f2937;
 }
 }   
 html {
-background-color: bg-white shadow-md;    /* Cream background */
+background-color:#FAFAF8; 
 -webkit-text-size-adjust: 100%; /* Prevent iOS font zooming */
 }
-body { background-color: #FFFDF8; color: #1f2937; }
+body { background-color: #FAFAF8; color: #1f2937; }
 
-body {
-  background-color:bg-white shadow-md;
-  font-family: var(--font-body), "Inter", sans-serif;
-  font-weight: 450;
-   line-height: 1.65; 
-    font-size: 17px;          
-  color: #000000;            
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading), "Bebas Neue", sans-serif;
-  font-weight: 400;
-    color: #000000;
-    footer,
-footer h1, footer h2, footer h3, footer h4, footer h5, footer h6,
-footer p, footer a, footer li, footer small, footer span {
-  color: #ffffff !important;
-}}
-
-strong, b {
-  font-weight: 600;
-}
 
 /* Tiny superscript for “LLC” */
 .align-super{ vertical-align: super; }
@@ -67,7 +42,7 @@ background-image: none !important; /* Safari */
 */
 /* Global content width limiter */
 body {
-  background-color:F7F7F2; /* cream stays full width */
+  background-color: #FAFAF8; /* cream stays full width */
   margin: 0;
   padding: 0;
 }
@@ -100,6 +75,11 @@ body {
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 /* avoid stray horizontal scrollbars */
