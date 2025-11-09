@@ -1,9 +1,10 @@
 // src/app/layout.jsx
 import "./globals.css";
-import { Inter, Playfair_Display } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Analytics } from '@vercel/analytics/react';
+import { Inter, Playfair_Display } from "next/font/google";
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({
@@ -31,10 +32,9 @@ apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-<body
-  className={`${inter.variable} ${playfair.variable} bg-[#FAFAF8] text-slate-900 antialiased`}
->
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <body className="bg-[#FAFAF8] text-slate-900 antialiased">
+
        <Header />
         <main className="min-h-screen flex flex-col">
             {children}

@@ -30,12 +30,10 @@ const active = useMemo(
 );
 
 
-/* MAIN SITE HEADER */ 
-
   return (
     <>
       {/* Top Utility Bar */}
-      <div className="h-9 flex items-center justify-end gap-5 px-6 bg-[#202E56] text-white text-[13px] font-semibold tracking-wide">
+      <div className="font-headline h-9 flex items-center justify-end gap-5 px-6 bg-[#202E56] text-white text-[13px] font-semibold tracking-wide">
         <Link href="#gift" className="hover:text-[#42924F] transition">Gift Certificates</Link>
         <Link href="#apply" className="hover:text-[#42924F] transition">Apply</Link>
         <Link href="#aplicar" className="hover:text-[#42924F] transition">Aplicar</Link>
@@ -43,105 +41,127 @@ const active = useMemo(
 
       {/* Main Header */}
 <header className="sticky top-0 z-50 bg-[#FAFAF8]">
-  {/* White underlay that covers the header AND extends below it */}
-  <div className="relative w-full">
-    {/* full header background */}
-    <div className="absolute inset-0 bg-[#FAFAF8]" aria-hidden />
-    {/* extension: pushes white below header so the brand overhang is covered */}
-    <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-[#FAFAF8]" aria-hidden />
+<div className="relative w-full">
+  <div className="absolute inset-0 bg-[#FAFAF8]" aria-hidden />
+  <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-[#FAFAF8]" aria-hidden />
 
-    {/* content layer */}
-    <div className="relative flex items-center justify-center px-8 py-4 translate-y-[6px] md:translate-y-[55px]">
-      {/* Logo pinned left */}
-      <a
-        href="#top"
-        className="flex flex-col select-none absolute left-4 md:left-8"
-        aria-label="Impress Cleaning Home"
-      >
-        <div className="flex items-end text-[#202E56] leading-none">
-          <span className="text-[86px] relative top-[10px] font-serif font-bold"
+  <div className="relative flex items-center justify-between px-8 py-[0.5px] translate-y-[4px] md:translate-y-[40px]">
+    {/* Logo pinned left */}
+    <a
+      href="#top"
+      className="flex flex-col select-none"
+      aria-label="Impress Cleaning Home"
+    >
+      <div className="flex items-end text-[#202E56] leading-none">
+        <span
+          className="text-[98px] relative top-[10px] font-serif font-bold"
           style={{
-    lineHeight: '0.8',
-    display: 'inline-block',
-    transform: 'scaleY(1.3)',  // elongates vertically
-    transformOrigin: 'top',     // stretch downward
-  }}>I</span>
-          <span className="text-[58px] font-serif font-bold tracking-[0.02em]">MPRESS</span>
-        </div>
-        <div className="text-[14px] uppercase tracking-[0.20em] text-[#475569] mt-[1px] ml-[50px]">
-          Cleaning Services LLC
-        </div>
-      </a>
+            lineHeight: "0.9",
+            display: "inline-block",
+            transform: "scaleY(1.25)",
+            transformOrigin: "top",
+            textShadow: '0 2px 3px rgba(0, 0, 0, 0.45)', // <— subtle drop shadow
+          }}>
+          I
+        </span>
+        <span className="text-[78px] font-serif font-bold tracking-[0.07em]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.45)' }}>
+          MPRESS
+        </span>
+      </div>
+      <div className="text-[20px] font-serif font-extrabold uppercase tracking-[0.20em] text-[#42924F] mt-[-3px] ml-[39px]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.25)' }}>
+        Cleaning Services LLC
+      </div>
+    </a>
 
-      {/* centered nav */}
-      <nav className="flex items-center gap-8 text-[22.5px] font-medium text-[#202E56]" aria-label="Primary">
-        <a href="#residential" className="hover:text-[#42924F] transition">Residential</a>
-        <a href="#commercial" className="hover:text-[#42924F] transition">Commercial</a>
-        <a href="#why" className="hover:text-[#42924F] transition">Why Hire Us</a>
-        <a href="#faq" className="hover:text-[#42924F] transition">FAQ</a>
-        <a href="#about" className="hover:text-[#42924F] transition">About Us</a>
-        <a
-          href="#quote"
-          className="inline-flex items-center justify-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-semibold hover:bg-[#E7F5EA] transition"
+    {/* Hamburger toggle (mobile only) */}
+    <button
+      type="button"
+      aria-label="Toggle navigation"
+      onClick={() => setOpen((prev) => !prev)}
+      className="md:hidden ml-auto inline-flex items-center justify-center w-10 h-10 rounded-md ring-1 ring-slate-300 text-[#202E56] hover:bg-slate-100"
+    >
+      {open ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
         >
-          Request a Quote
-        </a>
-      </nav>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      )}
+    </button>
+
+    {/* Centered nav (desktop only) */}
+    <nav className="hidden md:flex items-center gap-8 text-[22.5px] font-normal text-[#202E56] font-headline" aria-label="Primary">
+      <a href="#residential" className="hover:text-[#42924F] transition">
+        Residential
+      </a>
+      <a href="#commercial" className="hover:text-[#42924F] transition">
+        Commercial
+      </a>
+      <a href="#why" className="hover:text-[#42924F] transition">
+        Why Hire Us
+      </a>
+      <a href="#faq" className="hover:text-[#42924F] transition">
+        FAQ
+      </a>
+      <a href="#about" className="hover:text-[#42924F] transition">
+        About Us
+      </a>
+      <a
+        href="#quote"
+        className="inline-flex items-center justify-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-extrabold hover:bg-[#E7F5EA] transition font-headline"
+      >
+        Request a Quote
+      </a>
+    </nav>
+  </div>
+
+  {/* Mobile dropdown menu */}
+  {open && (
+    <div className="md:hidden bg-[#FAFAF8] border-t border-slate-200 px-6 py-4 space-y-3 text-[#202E56]">
+      <a href="#residential" className="block hover:text-[#42924F] transition">
+        Residential
+      </a>
+      <a href="#commercial" className="block hover:text-[#42924F] transition">
+        Commercial
+      </a>
+      <a href="#why" className="block hover:text-[#42924F] transition">
+        Why Hire Us
+      </a>
+      <a href="#faq" className="block hover:text-[#42924F] transition">
+        FAQ
+      </a>
+      <a href="#about" className="block hover:text-[#42924F] transition">
+        About Us
+      </a>
+      <a
+        href="#quote"
+        className="block w-full text-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-semibold hover:bg-[#E7F5EA] transition"
+      >
+        Request a Quote
+      </a>
     </div>
-  </div>
-</header>    </>
-  );
+  )}
+</div>
+</header>
+</>
+);
 }
-
-      
-{/* MOBILE NAV (phones & small tablets) — desktop untouched */}
-<nav className="md:hidden border-b border-slate-200/70 bg-white">
-  <div
-    className="px-4 py-2 flex flex-wrap items-stretch gap-2 text-[13px] font-medium text-slate-900"
-  >
-    {/* 3-column chips, wrap to new lines as needed */}
-    <a href="#residential"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      Residential
-    </a>
-    <a href="#commercial"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      Commercial
-    </a>
-    <a href="#why"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      Why Hire Us
-    </a>
-
-    <a href="#about"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      About Us
-    </a>
-    <a href="#faq"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      FAQ
-    </a>
-    <Link href="/aplicar"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      Aplicar
-    </Link>
-
-    <Link href="/apply"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      Apply
-    </Link>
-    <a href="/gift-cards"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg ring-1 ring-slate-200">
-      Gift Certificates
-    </a>
-
-    {/* compact phone CTA stays last; shows inline with chips */}
-    <a href="tel:+15122775364"
-       className="basis-[32%] grow text-center py-1.5 rounded-lg bg-[#0B2850] text-white">
-      (512) 277-5364
-    </a>
-  </div>
-</nav>
 
 
 /* -------------------- Jobs/aplicar header -------------------- */

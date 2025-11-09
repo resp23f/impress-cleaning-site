@@ -1,6 +1,8 @@
 'use client';
 import React, { useState } from "react";
 import { track } from '@vercel/analytics';
+import { Playfair_Display } from "next/font/google";
+const playfairLocal = Playfair_Display({ subsets: ["latin"], weight: ["400"] });
 
 const ShieldCheckIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
@@ -99,17 +101,20 @@ function Hero() {
           alt="Impress Cleaning pro team"
           className="absolute inset-0 h-full w-full object-cover object-[50%_27.5%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 via-slate-900/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/35 to-transparent pointer-events-none z-10" />
+
+        <div className="absolute top-0 left-0 right-0 h-[10px] bg-gradient-to-b from-[#FAFAF8]/90 via-[#FAFAF8]/40 to-transparent pointer-events-none z-10" />
         <div className="relative h-full">
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6">
-            <div className="h-full grid lg:grid-cols-2 gap-8 md:gap-10 items-center">
-              <div>
-                        <h1 className="text-white font-[var(--font-playfair)] font-medium tracking-tight text-white text-[36px] md:text-[54px] lg:text-[60px] leading-[1.05]">
-                      Relax. We’ll make your space shine – so you can focus on what matters.
+<div className="md:absolute md:left-[clamp(1.5rem,6vw,5rem)] md:top-[clamp(5rem,22vh,12rem)] md:max-w-[700px] z-10">
+<div>
+               <h1 className="font-headline font-normal tracking-tight text-white text-[36px] md:text-[54px] lg:text-[60px] leading-[1.05]">
+
+                      We’ll make your space shine so you can focus on what matters.
                         </h1>
-                <div className="mt-6 flex flex-wrap gap-3">
-                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-6 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700">Call Now</a>
-<a href="#quote" className="inline-flex items-center rounded-lg px-6 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700">Get a Free Quote</a>
+                <div className="mt-6 flex flex-wrap gap-4">
+                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[9px] md:text-[14px] lg:text-[19px]">Call Now</a>
+<a href="#quote" className="inline-flex items-center rounded-lg px-12 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[9px] md:text-[14px] lg:text-[19px]">Get a Free Quote</a>
 </div>
               </div>
 
@@ -125,54 +130,46 @@ function Hero() {
 
 function ContactCard(){
   return (
-    <aside className="rounded-[22px] bg-white text-slate-900 p-6 md:p-7 shadow-xl ring-1 ring-slate-200">
-      <h4 className="text-xl font-extrabold">Text or Chat With Us</h4>
-      <p className="mt-1 text-sm text-slate-600">Real people. Fast replies.</p>
+    <aside className="rounded-[22px] bg-white text-slate-900 p-6 md:p-7 shadow-xs ring-1 ring-[#42924F]">
+      <h4 className="text-xl font-extrabold text-center">Text or Chat With Us</h4>
+      <p className="mt-1 text-sm text-slate-600 text-center">Real people. Fast replies.</p>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <a href="sms:+15122775364" className="rounded-2xl px-4 py-2 font-semibold bg-emerald-600 text-white text-center">Text Us</a>
-        <a href="#chat" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 text-center">Live Chat</a>
-        <a href="tel:+15122775364" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 text-center">Call Us</a>
-        <a href="mailto:admin@impressyoucleaning.com" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 text-center">Email</a>
+        <a href="sms:+15122775364" className="rounded-2xl px-4 py-2 font-semibold bg-[#42924F] text-white text-center">Text Us</a>
+        <a href="#chat" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 bg-[#42924F] text-white text-center">Live Chat</a>
+        <a href="tel:+15122775364" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 bg-[#42924F] text-white text-center">Call Us</a>
+        <a href="mailto:admin@impressyoucleaning.com" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-#42924F bg-[#42924F] text-white text-center">Email</a>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-        <div className="rounded-xl ring-1 ring-slate-200 bg-white p-2 text-center">
-          <div className="font-semibold">4.9★</div>
-          <div className="text-slate-500">Google</div>
         </div>
-        <div className="rounded-xl ring-1 ring-slate-200 bg-white p-2 text-center">
-          <div className="font-semibold">100%</div>
-          <div className="text-slate-500">Satisfaction</div>
-        </div>
-        <div className="rounded-xl ring-1 ring-slate-200 bg-white p-2 text-center">
-          <div className="font-semibold">Bilingual</div>
-          <div className="text-slate-500">English/Spanish</div>
-        </div>
-      </div>
     </aside>
   );
 }
 
 function WhyChoose() {
   const cards = [
-    { t: 'Satisfaction Guaranteed', d: 'If anything misses, we make it right.', icon: <CheckIcon /> },
-    { t: 'Locally Owned', d: 'Georgetown-based team. Dollars stay local.', icon: <HomeIcon /> },
-    { t: 'Consistent Teams', d: 'Same pros, reliable schedules, reminders.', icon: <CheckIcon /> },
-    { t: 'Quality Products', d: 'We use pro-grade supplies and tools.', icon: <StarIcon /> },
+    { t: 'Reliable Results', d: 'Every clean follows our proven checklist system, so your space looks great no matter whos on the schedule.', icon:"/results.png" },
+
+    { t: 'Easy Booking & Reminders', d: 'Schedule cleaning online in seconds - plus text confirmations and reminders before every visit.', icon:"/calendar.png" },
+
+    { t: 'Clear Communication', d: 'We keep you in the loop from booking to follow-up, so you always know what\'s happening and when.', icon:"/communication.png" },
+
+    { t: 'Locally Owned', d: 'Proudly serving our community with a local touch. Every job supports local families.', icon:"/local-home.png" },
+
   ];
   return (
     <section className="bg-white py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="grid lg:grid-cols-3 gap-6 items-start">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-6">
+        <div className="grid lg:grid-cols-3 gap-6 items-center">
           <div className="lg:col-span-2">
-            <h3 className="font-[var(--font-playfair)] text-[22px] md:text-[26px] font-extrabold tracking-tight text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
+            <h3 className="font-headline text-70px md:text-[34px] font-extrabold tracking-[-0.04em] text-center text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
             <ul className="mt-6 grid sm:grid-cols-2 gap-4">
               {cards.map((c) => (
-                <li key={c.t} className="rounded-2xl bg-white ring-1 ring-emerald-200 p-5">
+                <li key={c.t} className="rounded-2xl bg-white ring-1 ring-[#42924F] p-5">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 ring-1 ring-emerald-100 grid place-items-center text-emerald-700">{c.icon}</div>
+                    <div className="w-20 h-20 grid place-items-center text-emerald-700"><img src={c.icon} alt={c.t} className="w-50 h-30 object-contain" /> </div>
                     <div>
-                      <div className="font-semibold text-slate-900">{c.t}</div>
-                      <p className="text-sm text-slate-600 mt-1">{c.d}</p>
+                      <div className="font-league-gothic font-semibold text-slate-900 text-left w-full">{c.t}</div>
+                      <p className="font-league-gothic text-sm text-slate-600 mt-1">{c.d}</p>
                     </div>
                   </div>
                 </li>
@@ -248,8 +245,8 @@ function SocialProof() {
             <div className="text-sm text-white/80 mt-1">We communicate clearly.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">Insured for Peace of Mind</div>
-            <div className="text-sm text-white/80 mt-1">Fully insured & bonded.</div>
+            <div className="font-semibold"> for Peace of Mind</div>
+            <div className="text-sm text-white/80 mt-1">Fully  .</div>
           </div>
         </div>
       </div>
