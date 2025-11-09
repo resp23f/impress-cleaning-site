@@ -17,8 +17,9 @@ export default function Footer() {
 const year = new Date().getFullYear();
 
 return (
-<footer className="relative z-10 bg-[#0B2850] text-white py-12 px-6 md:px-12 [&_*]:!text-white">
-<div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+<footer className="relative z-10 bg-[#0B2850] text-white py-10 px-6 md:px-12 [&_*]:text-white">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-center sm:text-left">
+
 {/* Contact */}
 <div>
     <h3 className="text-xl font-bold mb-3 text-white/90">
@@ -48,10 +49,10 @@ aria-hidden="true"
 
 <span>(512) 277-5364</span>
 </a>
-            
-    <div className="flex gap-3 mt-3">
-        <div className="flex items-center gap-4 pt-2">
-            
+
+<div className="flex gap-3 mt-3 justify-center sm:justify-start">
+    <div className="flex items-center gap-4 pt-2">
+
             <SocialIcon href="https://www.facebook.com/share/19vUj9gptf/?mibextid=wwXIfr" label="Facebook">
             {/* facebook */}
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
