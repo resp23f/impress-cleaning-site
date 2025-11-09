@@ -50,7 +50,8 @@ aria-hidden="true"
 <span>(512) 277-5364</span>
 </a>
 
-<div className="flex flex-col sm:flex-row justify-center sm:justify-between gap-8 sm:gap-12 text-center sm:text-left">
+<div className="md:col-span-3">
+<div className="grid grid-cols-3 gap-8 text-center sm:text-left">
 <div className="flex items-center gap-4 pt-2">
 
             <SocialIcon href="https://www.facebook.com/share/19vUj9gptf/?mibextid=wwXIfr" label="Facebook">
@@ -73,42 +74,43 @@ aria-hidden="true"
     </div>
 </div>
 </div>
-
+  </div>
 {/* Services */}
-  <div className="flex-1">
-    <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
-      Services
-    </h4>
-    <ul className="space-y-1 text-sm text-white/80">
-      <li>Residential</li>
-      <li>Light Commercial</li>
-    </ul>
-  </div>
+    <div>
+      <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
+        Services
+      </h4>
+      <ul className="space-y-1 text-sm text-white/80">
+        <li>Residential</li>
+        <li>Light Commercial</li>
+      </ul>
+    </div>
 
-  {/* Company */}
-  <div className="flex-1">
-    <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
-      Company
-    </h4>
-    <ul className="space-y-1 text-sm text-white/80">
-      <li>Why Hire Us</li>
-      <li>About Us</li>
-      <li>Apply</li>
-      <li>Aplicar</li>
-    </ul>
-  </div>
+{/* Company */}
+    <div>
+      <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
+        Company
+      </h4>
+      <ul className="space-y-1 text-sm text-white/80">
+        <li>Why Hire Us</li>
+        <li>About Us</li>
+        <li>Apply</li>
+        <li>Aplicar</li>
+      </ul>
+    </div>
 
  {/* Resources */}
-  <div className="flex-1">
-    <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
-      Resources
-    </h4>
-    <ul className="space-y-1 text-sm text-white/80">
-      <li>Cleaning Tips</li>
-      <li>Gift Certificates</li>
-    </ul>
+    <div>
+      <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
+        Resources
+      </h4>
+      <ul className="space-y-1 text-sm text-white/80">
+        <li>Cleaning Tips</li>
+        <li>Gift Certificates</li>
+      </ul>
+    </div>
   </div>
-</div>
+
 
 {/* Bottom disclaimer */}
 <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-white/70">
