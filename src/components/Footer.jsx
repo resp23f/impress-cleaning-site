@@ -50,8 +50,8 @@ aria-hidden="true"
 <span>(512) 277-5364</span>
 </a>
 
-<div className="flex gap-3 mt-3 justify-center sm:justify-start">
-    <div className="flex items-center gap-4 pt-2">
+<div className="flex flex-col sm:flex-row justify-center sm:justify-between gap-8 sm:gap-12 text-center sm:text-left">
+<div className="flex items-center gap-4 pt-2">
 
             <SocialIcon href="https://www.facebook.com/share/19vUj9gptf/?mibextid=wwXIfr" label="Facebook">
             {/* facebook */}
@@ -73,40 +73,41 @@ aria-hidden="true"
     </div>
 </div>
 </div>
+
 {/* Services */}
-<div>
+  <div className="flex-1">
     <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
-    Services
+      Services
     </h4>
     <ul className="space-y-1 text-sm text-white/80">
-    <li>Residential</li>
-    <li>Light Commercial</li>
+      <li>Residential</li>
+      <li>Light Commercial</li>
     </ul>
-</div>
+  </div>
 
-{/* Company */}
-<div>
+  {/* Company */}
+  <div className="flex-1">
     <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
-    Company
+      Company
     </h4>
     <ul className="space-y-1 text-sm text-white/80">
-    <li>Why Hire Us</li>
-    <li>About Us</li>
-    <li>Apply</li>
-    <li>Applicar</li>
+      <li>Why Hire Us</li>
+      <li>About Us</li>
+      <li>Apply</li>
+      <li>Aplicar</li>
     </ul>
-</div>
+  </div>
 
-{/* Resources */}
-<div>
+ {/* Resources */}
+  <div className="flex-1">
     <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
-    Resources
+      Resources
     </h4>
     <ul className="space-y-1 text-sm text-white/80">
-    <li>Cleaning Tips</li>
-    <li>Gift Certificates</li>
+      <li>Cleaning Tips</li>
+      <li>Gift Certificates</li>
     </ul>
-</div>
+  </div>
 </div>
 
 {/* Bottom disclaimer */}
