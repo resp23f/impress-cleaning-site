@@ -17,12 +17,12 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="relative z-10 bg-[#0B2850] text-white text-center py-10 px-6 md:px-12 [&_*]:text-white">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-17">
+      <div className="font-headline max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-17">
         <div>
-          <h3 className="text-xl font-bold mb-3 text-white/90 whitespace-nowrap">
+          <h3 className="font-headline text-xl font-bold mb-3 text-white/90 whitespace-nowrap">
             Impress Cleaning Services LLC
           </h3>
-          <p className="text-sm text-center font-semibold mb-3 text-white/90">
+          <p className="font-headline text-sm text-center font-semibold mb-3 text-white/90">
             A clean home is a happy home.
 </p>
 
