@@ -18,8 +18,7 @@ const year = new Date().getFullYear();
 
 return (
 <footer className="relative z-10 bg-[#0B2850] text-white py-10 px-6 md:px-12 [&_*]:text-white">
-  <div className="max-w-7xl mx-auto grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-4 gap-10">
-
+<div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
 {/* Contact */}
 <div>
     <h3 className="text-xl font-bold mb-3 text-white/90">
