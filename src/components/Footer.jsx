@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
 
 return (
 <footer className="relative z-10 bg-[#0B2850] text-white py-10 px-6 md:px-12 [&_*]:text-white">
-    <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-center sm:text-left">
+  <div className="max-w-7xl mx-auto grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-4 gap-10">
 
 {/* Contact */}
 <div>
@@ -75,7 +75,7 @@ aria-hidden="true"
 </div>
 </div>
   </div>
-{/* Services */}
+  {/* Services */}
     <div>
       <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
         Services
@@ -86,7 +86,7 @@ aria-hidden="true"
       </ul>
     </div>
 
-{/* Company */}
+    {/* Company */}
     <div>
       <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
         Company
@@ -99,7 +99,7 @@ aria-hidden="true"
       </ul>
     </div>
 
- {/* Resources */}
+    {/* Resources */}
     <div>
       <h4 className="text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
         Resources
