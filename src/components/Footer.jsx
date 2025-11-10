@@ -77,6 +77,7 @@ aria-hidden="true"
   {/* Services */}
     <div>
       <h4 className="text-xs sm:text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
+        Services
       </h4>
       <ul className="space-y-1 text-xs sm:text-sm text-white/80">
         <li>Residential</li>
@@ -87,20 +88,24 @@ aria-hidden="true"
     {/* Company */}
     <div>
       <h4 className="text-xs sm:text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
+        Company
       </h4>
       <ul className="space-y-1 text-xs sm:text-sm text-white/80">
         <li>About Us</li>
         <li>Apply</li>
         <li>Aplicar</li>
+        <li>Contact us</li>
       </ul>
     </div>
 
     {/* Resources */}
     <div>
       <h4 className="text-xs sm:text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">
+        Resources
       </h4>
       <ul className="space-y-1 text-xs sm:text-sm text-white/80">
         <li>Gift Certificates</li>
+        <li>Cleaning Tips</li>
       </ul>
     </div>
   </div>
