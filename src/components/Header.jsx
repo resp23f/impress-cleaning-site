@@ -45,13 +45,12 @@ const active = useMemo(
   <div className="absolute inset-0 bg-[#FAFAF8]" aria-hidden />
   <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-[#FAFAF8]" aria-hidden />
 
-  <div className="relative flex items-center justify-between px-8 py-[0.5px] translate-y-[4px] md:translate-y-[40px]">
-    {/* Logo pinned left */}
+  <div className="relative flex items-center justify-center md:justify-between px-8 py-[0.5px] translate-y-[4px] md:translate-y-[40px]">    {/* Logo pinned left */}
     <a
-      href="#top"
-      className="flex flex-col select-none"
-      aria-label="Impress Cleaning Home"
-    >
+href="#top"
+className="flex flex-col select-none absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
+aria-label="Impress Cleaning Home"
+>
       <div className="flex items-end text-[#202E56] leading-none">
         <span
           className="text-[98px] relative top-[10px] font-serif font-bold"
@@ -74,13 +73,13 @@ const active = useMemo(
     </a>
 
     {/* Hamburger toggle (mobile only) */}
-    <button
-      type="button"
-      aria-label="Toggle navigation"
-      onClick={() => setOpen((prev) => !prev)}
-      className="md:hidden ml-auto inline-flex items-center justify-center w-10 h-10 rounded-md ring-1 ring-slate-300 text-[#202E56] hover:bg-slate-100"
-    >
-      {open ? (
+<button
+type="button"
+aria-label="Toggle navigation"
+onClick={() => setOpen((prev) => !prev)}
+className="md:hidden ml-auto inline-flex items-center justify-center w-11 h-11 rounded-lg bg-white ring-2 ring-[#42924F]/20 text-[#202E56] hover:bg-[#E7F5EA] hover:ring-[#42924F]/40 transition-all shadow-sm"
+>
+  {open ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-5 h-5"
@@ -132,9 +131,9 @@ const active = useMemo(
   </div>
 
   {/* Mobile dropdown menu */}
-  {open && (
-    <div className="md:hidden bg-[#FAFAF8] border-t border-slate-200 px-6 py-4 space-y-3 text-[#202E56]">
-      <a href="#residential" className="block hover:text-[#42924F] transition">
+{open && (
+  <div className="md:hidden bg-white border-t border-slate-200 px-6 py-4 space-y-3 text-[#202E56] font-headline text-lg">
+          <a href="#residential" className="block hover:text-[#42924F] transition">
         Residential
       </a>
       <a href="#commercial" className="block hover:text-[#42924F] transition">
