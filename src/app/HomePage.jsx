@@ -142,7 +142,7 @@ function ContactCard(){
 
 function WhyChoose() {
   const cards = [
-    { t: 'Reliable Results', d: 'Every clean follows our proven checklist system, so your space looks great no matter whos on the schedule.', icon:"/results.png" },
+    { t: 'Reliable Results', d: 'Every clean follows our proven checklist system, so your space looks great no matter whos on the schedule.', icon:"/results.png", extra: 'scale-[1.15] translate-y-[7px]' },
 
     { t: 'Easy Booking & Reminders', d: 'Schedule cleaning online in seconds - plus text confirmations and reminders before every visit.', icon:"/calendar.png" },
 
@@ -159,9 +159,11 @@ function WhyChoose() {
             <h3 className="font-headline text-70px md:text-[34px] font-extrabold tracking-[-0.04em] text-center text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
             <ul className="mt-6 grid sm:grid-cols-2 gap-4">
               {cards.map((c) => (
-                <li key={c.t} className="rounded-2xl bg-white ring-1 ring-[#42924F] p-5">
+                <li key={c.t} className="rounded-2xl bg-white ring-1 ring-[#42924F] py-4 px-5">
                   <div className="flex items-start gap-3">
-                    <div className="w-20 h-20 grid place-items-center text-emerald-700 -mt-1.5"><img src={c.icon} alt={c.t} className="w-50 h-30 object-contain" /> </div>
+<div className="w-20 h-20 grid place-items-center text-emerald-700 -mt-6 sm:-mt-1.5">
+<img src={c.icon} alt={c.t} className={`w-50 h-30 object-contain ${c.extra || ''}`} />
+</div>
                     <div>
                       <div className="font-league-gothic font-semibold text-slate-900 text-left w-full">{c.t}</div>
                       <p className="font-league-gothic text-sm text-slate-600 mt-1">{c.d}</p>

@@ -1,5 +1,5 @@
-import ImpressCleaningSite from "./ImpressCleaningSite.jsx";
+import HomePage from "./HomePage";
 
 export default function Page() {
-  return <ImpressCleaningSite />;
+  return <HomePage />;
 }
