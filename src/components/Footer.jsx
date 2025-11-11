@@ -16,19 +16,19 @@ function SocialIcon({ href, label, children }) {
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="relative z-10 bg-[#0B2850] text-white text-center py-10 px-6 md:px-12 [&_*]:text-white">
-      <div className="font-headline max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-17">
+    <footer className="relative z-10 bg-[#0B2850] font-oswald text-white text-center py-10 px-6 md:px-15 [&_*]:text-white">
+      <div className="font-Oswald max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-17">
         <div>
-          <h3 className="font-headline text-xl font-bold mb-3 text-white/90 whitespace-nowrap">
+          <h3 className="text-2xl font-extrabold mb-2 text-white/90 whitespace-nowrap">
             Impress Cleaning Services LLC
           </h3>
-          <p className="font-headline text-sm text-center font-semibold mb-3 text-white/90">
+          <p className="font-Oswald text-sm text-center mb-3 text-white/90">
             A clean home is a happy home.
 </p>
 
     {/* Phone and social icons - arranged horizontally on mobile */}
     <div className="flex items-center justify-center md:justify-start gap-4">
-    <a href="tel:+15122775364" className="inline-flex items-center gap-2 text-lg font-semibold text-white hover:text-[#A9E5BB] transition whitespace-nowrap">
+    <a href="tel:+15122775364" className="inline-flex items-center gap-2 text-xl font-oswald text-white hover:text-[#A9E5BB] transition whitespace-nowrap">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#00A86B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M22 16.92v2.5a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.58 4.18 2 2 0 0 1 4.56 2h2.5a2 2 0 0 1 2 1.72c.1.74.27 1.46.5 2.15a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.92-1.41a2 2 0 0 1 2.11-.45c.69.23 1.41.4 2.15.5A2 2 0 0 1 22 16.92Z"></path>
         </svg>
@@ -51,15 +51,15 @@ export default function Footer() {
 
         <div className="col-span-1 sm:col-span-2 md:col-span-3 grid grid-cols-3 gap-4 md:grid-cols-3 md:gap-5">
           <div>
-            <h4 className="text-xs sm:text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">Services</h4>
-            <ul className="space-y-1 text-xs sm:text-sm text-white/80">
+            <h4 className="text-xs font-oswald sm:text-xl font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">Services</h4>
+            <ul className="font-oswald space-y-1 text-xs sm:text-lg text-white/80">
               <li>Residential</li>
               <li>Light Commercial</li>
             </ul>
           </div>
           <div>
-            <h4 className="text-xs sm:text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">Company</h4>
-            <ul className="space-y-1 text-xs sm:text-sm text-white/80">
+            <h4 className="text-xs sm:text-xl font-oswald mb-2 text-[#A9E5BB] uppercase tracking-wide">Company</h4>
+            <ul className="font-oswald space-y-1 text-xs sm:text-lg text-white/80">
               <li>About Us</li>
               <li>Apply</li>
               <li>Aplicar</li>
@@ -67,8 +67,8 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-xs sm:text-sm font-semibold mb-2 text-[#A9E5BB] uppercase tracking-wide">Resources</h4>
-            <ul className="space-y-1 text-xs sm:text-sm text-white/80">
+            <h4 className="text-xs sm:text-xl font-oswald mb-2 text-[#A9E5BB] uppercase tracking-wide">Resources</h4>
+            <ul className="font-oswald space-y-1 text-xs sm:text-lg text-white/80">
               <li>Gift Certificates</li>
               <li>Cleaning Tips</li>
             </ul>

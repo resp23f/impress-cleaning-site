@@ -139,7 +139,7 @@ function WhyChoose() {
     <div className="mx-auto max-w-7xl px-4 md:px-6">
     <div className="grid md:grid-cols-2 gap-6 items-center">
                  <div className="lg:col-span-2">
-            <h3 className="font-heading-oswald text-70px md:text-[35px] font-extrabold tracking-[-0.04em] text-center text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
+            <h3 className="font-heading-oswald text-70px md:text-[39px] font-extrabold tracking-[-0.04em] text-center text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
             <ul className="mt-6 grid sm:grid-cols-2 gap-4">
               {cards.map((c) => (
                 <li key={c.t} className="rounded-2xl bg-white border-2 border-[#079447] py-4 px-5">                  <div className="flex items-start gap-3">
@@ -172,7 +172,7 @@ function HowItWorks() {
   return (
     <section className="bg-white py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <h3 className="font-heading-oswald text-70px md:text-[35px] font-extrabold tracking-tight text-center text-slate-900">HOW IT WORKS — SIMPLE, FAST & STRESS-FREE</h3>
+        <h3 className="font-heading-oswald text-70px md:text-[39px] font-extrabold tracking-tight text-center text-slate-900">HOW IT WORKS: SIMPLE, FAST & STRESS FREE</h3>
         <ol className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {steps.map(([t,d],i)=> (
             <li key={t} className="rounded-2xl bg-white border-2 border-[#079447] py-4 px-5">
@@ -191,7 +191,7 @@ function SocialProof() {
   return (
     <section className="bg-[#0B2850] py-12 md:py-16 text-white">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <h3 className="font-heading-oswald text-[22px] md:text-[35px] font-extrabold tracking-tight text-center">WHY TEXAS FAMILIES TRUST IMPRESS</h3>
+        <h3 className="font-heading-oswald text-[22px] md:text-[39px] font-extrabold tracking-tight text-center">WHY TEXAS FAMILIES TRUST IMPRESS</h3>
         <div className="mt-6 grid md:grid-cols-4 gap-4">
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
             <div className="font-semibold">Texas Homes. Texas Trust.</div>

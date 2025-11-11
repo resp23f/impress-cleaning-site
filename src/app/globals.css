@@ -16,6 +16,11 @@ color-scheme: light;
   letter-spacing: 0.03em;   
   text-transform: uppercase;
 }
+.font-oswald {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
 
 html {
 background-color:#FAFAF8; 
