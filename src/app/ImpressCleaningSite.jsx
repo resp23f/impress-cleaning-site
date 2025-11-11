@@ -161,7 +161,7 @@ function WhyChoose() {
               {cards.map((c) => (
                 <li key={c.t} className="rounded-2xl bg-white ring-1 ring-[#42924F] p-5">
                   <div className="flex items-start gap-3">
-                    <div className="w-20 h-20 grid place-items-center text-emerald-700"><img src={c.icon} alt={c.t} className="w-50 h-30 object-contain" /> </div>
+                    <div className="w-20 h-20 grid place-items-center text-emerald-700 -mt-1.5"><img src={c.icon} alt={c.t} className="w-50 h-30 object-contain" /> </div>
                     <div>
                       <div className="font-league-gothic font-semibold text-slate-900 text-left w-full">{c.t}</div>
                       <p className="font-league-gothic text-sm text-slate-600 mt-1">{c.d}</p>
@@ -178,23 +178,6 @@ function WhyChoose() {
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none">
-      <path d="M20 7L9 18l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-function StarIcon(){
-  return (
-    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor"><path d="M12 3l2.7 5.6 6.2.9-4.5 4.3 1 6.1L12 17.8 6.6 20l1-6.1L3 9.5l6.2-.9L12 3z"/></svg>
-  )
-}
-function HomeIconSvg(){
-  return (
-    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor"><path d="M12 3 3 10v11h6v-6h6v6h6V10l-9-7z"/></svg>
-  )
-}
 
 function HowItWorks() {
   const steps = [
