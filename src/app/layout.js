@@ -4,21 +4,21 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactButton from '@/components/ContactButton'
 import { Analytics } from '@vercel/analytics/react';
-import { Inter, Playfair_Display } from "next/font/google";
-import { Oswald } from "next/font/google";
+import { Manrope, DM_Serif_Display } from "next/font/google";
 
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-    variable: "--font-playfair",
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
-const oswald = Oswald({
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["400","500","600","700"],
-  variable: "--font-oswald",   // <-- important
+  weight: ["400"],             
+  style: ["normal", "italic"],
+  variable: "--font-dm",
+  display: "swap",
 });
 
 
@@ -41,14 +41,13 @@ apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} ${oswald.variable}`}>
-      <body className="bg-[#FAFAF8] text-slate-900 antialiased">
-
-       <Header />
-        <main className="min-h-screen flex flex-col">
-            {children}
+    <html lang="en" className={`${manrope.variable} ${dmSerif.variable}`}>
+      <body className="font-sans antialiased bg-[#FAFAF8] text-slate-900">
+        <Header />
+        <main className="min-h-screen flex-col">
+          {children}
         </main>
-        <Footer/>
+        <Footer />
         <ContactButton />
       </body>
     </html>

@@ -24,17 +24,24 @@ module.exports = {
       },
     },
 
-extend: {
+    extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-playfair)', 'Playfair Display', 'ui-serif', 'Georgia', 'serif'],
-        heading: ['var(--font-playfair)', 'Playfair Display', 'ui-serif', 'serif'],
-        oswald: ['Oswald', 'sans-serif'],
-                  },
-      lineHeight: {
-        tight: "1.2",
-        snug: "1.3",
+        fontFamily: {
+          sans: ["var(--font-sans)", "Manrope", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+          display: ["var(--font-display)", "DM Display", "serif"],
+          manrope: ["Manrope", "sans-serif"],
+          dmDisplay: ["DM Display", "serif"],
+        },      },
+      colors: {
+        brandNavy: "#18335A",
+        brandEmerald: "#00A884",
+        outlineGray: "#E7EBF0",
+        textNavy: "#2C3A4B",
       },
+    },
+    lineHeight: {
+      tight: "1.2",
+      snug: "1.3",
     },
   },
       plugins: [],
