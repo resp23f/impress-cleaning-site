@@ -87,7 +87,7 @@ export default function ImpressCleaningSite() {
       <WhyChoose />
       <HowItWorks />
       <SocialProof />
-      <QuoteCTA />
+      <TestimonialsSection />
     </main>
   );
 }
@@ -123,23 +123,6 @@ function Hero() {
   );
 }
 
-function ContactCard(){
-  return (
-    <aside className="rounded-[22px] bg-white text-slate-900 p-6 md:p-7 shadow-xs ring-1 ring-[#42924F]">
-      <h4 className="text-xl font-extrabold text-center">Text or Chat With Us</h4>
-      <p className="mt-1 text-sm text-slate-600 text-center">Real people. Fast replies.</p>
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        <a href="sms:+15122775364" className="rounded-2xl px-4 py-2 font-semibold bg-[#42924F] text-white text-center">Text Us</a>
-        <a href="#chat" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 bg-[#42924F] text-white text-center">Live Chat</a>
-        <a href="tel:+15122775364" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-slate-200 bg-[#42924F] text-white text-center">Call Us</a>
-        <a href="mailto:admin@impressyoucleaning.com" className="rounded-2xl px-4 py-2 font-semibold ring-1 ring-#42924F bg-[#42924F] text-white text-center">Email</a>
-      </div>
-      <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-        </div>
-    </aside>
-  );
-}
-
 function WhyChoose() {
   const cards = [
     { t: 'Reliable Results', d: 'Every clean follows our proven checklist system, so your space looks great no matter whos on the schedule.', icon:"/results.png", extra: 'scale-[1.15] translate-y-[7px]' },
@@ -153,27 +136,25 @@ function WhyChoose() {
   ];
   return (
     <section className="bg-white py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 py-6">
-        <div className="grid lg:grid-cols-3 gap-6 items-center">
-          <div className="lg:col-span-2">
-            <h3 className="font-headline text-70px md:text-[34px] font-extrabold tracking-[-0.04em] text-center text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
+    <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <div className="grid md:grid-cols-2 gap-6 items-center">
+                 <div className="lg:col-span-2">
+            <h3 className="font-heading-oswald text-70px md:text-[35px] font-extrabold tracking-[-0.04em] text-center text-slate-900">WHY CHOOSE IMPRESS CLEANING SERVICES</h3>
             <ul className="mt-6 grid sm:grid-cols-2 gap-4">
               {cards.map((c) => (
-                <li key={c.t} className="rounded-2xl bg-white ring-1 ring-[#42924F] py-4 px-5">
-                  <div className="flex items-start gap-3">
+                <li key={c.t} className="rounded-2xl bg-white border-2 border-[#079447] py-4 px-5">                  <div className="flex items-start gap-3">
 <div className="w-20 h-20 grid place-items-center text-emerald-700 -mt-6 sm:-mt-1.5">
 <img src={c.icon} alt={c.t} className={`w-50 h-30 object-contain ${c.extra || ''}`} />
 </div>
                     <div>
-                      <div className="font-league-gothic font-semibold text-slate-900 text-left w-full">{c.t}</div>
-                      <p className="font-league-gothic text-sm text-slate-600 mt-1">{c.d}</p>
+                      <div className="font-oswald font-semibold text-slate-900 text-left w-full">{c.t}</div>
+                      <p className="font-oswald text-sm text-slate-600 mt-1">{c.d}</p>
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
-          <ContactCard />
         </div>
       </div>
     </section>
@@ -183,18 +164,18 @@ function WhyChoose() {
 
 function HowItWorks() {
   const steps = [
-    ['Request Your Quote','Fill the quick form or text us for a clear price.'],
-    ['Schedule Your Clean','Pick a date; we confirm and send reminders.'],
-    ['We Make It Shine','Our local team uses a checklist and pro tools.'],
-    ['Relax & Enjoy','We follow up to ensure you’re thrilled.'],
+    ['Request Your Quote','Tell us a little about your home and the cleaning you need. We’ll send a quick, straightforward quote that’s easy to understand.'],
+    ['Schedule Your Clean','Choose the day and time that fit your schedule. We’ll confirm your booking and send a quick reminder before your appointment.'],
+    ['We Make It Shine','Our local team arrives on time, fully equipped, and ready to get your space spotless using our detailed checklist and eco-safe products trusted by professionals.'],
+    ['Relax & Enjoy','Come home to a space that feels fresh and cared for. Your clean is complete and your satisfaction always comes first.'],
   ];
   return (
     <section className="bg-white py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <h3 className="font-sans text-[22px] md:text-[26px] font-extrabold tracking-tight text-slate-900">HOW IT WORKS — SIMPLE, FAST & STRESS-FREE</h3>
+        <h3 className="font-heading-oswald text-70px md:text-[35px] font-extrabold tracking-tight text-center text-slate-900">HOW IT WORKS — SIMPLE, FAST & STRESS-FREE</h3>
         <ol className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {steps.map(([t,d],i)=> (
-            <li key={t} className="rounded-2xl bg-white ring-1 ring-emerald-200 p-5">
+            <li key={t} className="rounded-2xl bg-white border-2 border-[#079447] py-4 px-5">
               <div className="text-[12px] font-semibold text-emerald-700">Step {i+1}</div>
               <div className="mt-1 font-semibold text-slate-900">{t}</div>
               <p className="mt-1 text-sm text-slate-600">{d}</p>
@@ -210,23 +191,23 @@ function SocialProof() {
   return (
     <section className="bg-[#0B2850] py-12 md:py-16 text-white">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <h3 className="font-sans text-[22px] md:text-[26px] font-extrabold tracking-tight">WHY TEXAS FAMILIES TRUST IMPRESS</h3>
+        <h3 className="font-heading-oswald text-[22px] md:text-[35px] font-extrabold tracking-tight text-center">WHY TEXAS FAMILIES TRUST IMPRESS</h3>
         <div className="mt-6 grid md:grid-cols-4 gap-4">
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="text-4xl font-extrabold">100%</div>
-            <div className="text-sm text-white/80">5-star ratings</div>
+            <div className="font-semibold">Texas Homes. Texas Trust.</div>
+            <div className="text-sm text-white/80">Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">100% SATISFACTION GUARANTEED</div>
-            <div className="text-sm text-white/80 mt-1">We make it right, every time.</div>
+            <div className="font-semibold">Proven Reputation</div>
+            <div className="text-sm text-white/80 mt-1">Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">Cleaner Home Guarantee</div>
-            <div className="text-sm text-white/80 mt-1">We communicate clearly.</div>
+            <div className="font-semibold">People Who Care</div>
+            <div className="text-sm text-white/80 mt-1">We’re more than a cleaning company. We’re neighbors who take pride in helping families enjoy their homes.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold"> for Peace of Mind</div>
-            <div className="text-sm text-white/80 mt-1">Fully  .</div>
+            <div className="font-semibold">Guaranteed Peace of Mind</div>
+            <div className="text-sm text-white/80 mt-1">You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.</div>
           </div>
         </div>
       </div>
@@ -234,21 +215,68 @@ function SocialProof() {
   );
 }
 
-function QuoteCTA(){
+function TestimonialsSection() {
+  const testimonials = [
+    {
+      text: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. The whole team with her are such hard workers. Keep up the good work!",
+      author: "Shantell R, Verified Customer"
+    },
+    {
+      text: "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You can reach them at admin@impressyoucleaning.com. You will be very happy you called. They are awesome!",
+      author: "Juli E, Verified Customer"
+    },
+    {
+      text: "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.",
+      author: "Omally O, Verified Customer"
+    }
+  ];
+
   return (
-    <section id="quote" className="bg-white py-12">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="rounded-3xl bg-slate-900 text-white p-6 md:p-8 grid md:grid-cols-2 gap-4 items-center">
-          <div>
-            <h4 className="text-2xl font-extrabold">Ready for your free quote?</h4>
-            <p className="text-white/80 mt-1">Quick reply after you submit.</p>
-          </div>
-          <div className="flex md:justify-end gap-2">
-            <a href="#quote" className="rounded-2xl px-5 py-3 font-semibold bg-white text-slate-900 shadow">Get My Quote</a>
-            <a href="tel:+15122775364" className="rounded-2xl px-5 py-3 font-semibold ring-1 ring-white/30">Call Now</a>
-          </div>
+    <section className="bg-white py-12 md:py-16 overflow-hidden">
+      <div className="container mx-auto mb-12">
+        <h2 className="font-heading-oswald text-4xl md:text-5xl font-extrabold text-center text-slate-900">
+          WHAT OUR CLIENTS SAY
+        </h2>
+      </div>
+      
+      {/* Scrolling container */}
+      <div className="relative">
+        <div className="flex animate-scroll">
+          {/* First set of testimonials */}
+          {testimonials.map((testimonial, index) => (
+            <div key={`original-${index}`} className="flex-shrink-0 w-[90vw] md:w-[500px] px-6 text-center inline-block">              
+<p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${index % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+                    "{testimonial.text}"
+              </p>
+              <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
+            </div>
+          ))}
+          {/* Duplicate set for seamless loop */}
+{testimonials.map((testimonial, index) => (
+  <div key={`duplicate-${index}`} className="flex-shrink-0 w-[90vw] md:w-[500px] px-6 text-center inline-block">
+    <p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${(index + testimonials.length) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+                         "{testimonial.text}"
+              </p>
+              <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Custom CSS for animation */}
+<style jsx>{`
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-scroll {
+    animation: scroll 60s linear infinite;
+  }
+`}</style>
     </section>
   );
 }

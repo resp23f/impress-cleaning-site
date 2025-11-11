@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import ContactButton from '@/components/ContactButton'
 import { Analytics } from '@vercel/analytics/react';
 import { Inter, Playfair_Display } from "next/font/google";
+import { Oswald } from "next/font/google";
 
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -13,6 +14,13 @@ const playfair = Playfair_Display({
   weight: ["400", "500", "600", "700"],
     variable: "--font-playfair",
 });
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  weight: ["400","500","600","700"],
+  variable: "--font-oswald",   // <-- important
+});
+
 
 export const metadata = {
 title: "House Cleaning Services | Impress Cleaning Services",
@@ -33,7 +41,7 @@ apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable} ${oswald.variable}`}>
       <body className="bg-[#FAFAF8] text-slate-900 antialiased">
 
        <Header />

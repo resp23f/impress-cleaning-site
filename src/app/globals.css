@@ -10,8 +10,13 @@ color-scheme: light;
 --background: #FAFAF8;
 --foreground: #1f2937;
 }
-@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
-}   
+}
+.font-heading-oswald {
+  font-family: var(--font-oswald), 'Oswald', sans-serif;
+  letter-spacing: 0.03em;   
+  text-transform: uppercase;
+}
+
 html {
 background-color:#FAFAF8; 
 -webkit-text-size-adjust: 100%; /* Prevent iOS font zooming */

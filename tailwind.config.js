@@ -29,8 +29,8 @@ extend: {
         sans: ['var(--font-inter)', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         serif: ['var(--font-playfair)', 'Playfair Display', 'ui-serif', 'Georgia', 'serif'],
         heading: ['var(--font-playfair)', 'Playfair Display', 'ui-serif', 'serif'],
-      headline: ['"League Gothic"', 'ui-sans-serif'],
-      },
+        oswald: ['Oswald', 'sans-serif'],
+                  },
       lineHeight: {
         tight: "1.2",
         snug: "1.3",
