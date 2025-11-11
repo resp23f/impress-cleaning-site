@@ -95,27 +95,23 @@ export default function ImpressCleaningSite() {
 function Hero() {
   return (
     <section id="home" className="relative w-screen left-1/2 -ml-[50vw] mt-20">
-      <div className="relative h-[78vh] min-h-[560px] w-full overflow-hidden">
-        <img
+<div className="relative h-[50vh] md:h-[78vh] min-h-[400px] md:min-h-[560px] w-full overflow-hidden">        <img
           src="/hero-cleaners1.jpg"
           alt="Impress Cleaning pro team"
           className="absolute inset-0 h-full w-full object-cover object-[50%_27.5%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/35 to-transparent pointer-events-none z-10" />
-
-        <div className="absolute top-0 left-0 right-0 h-[10px] bg-gradient-to-b from-[#FAFAF8]/90 via-[#FAFAF8]/40 to-transparent pointer-events-none z-10" />
+<div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none z-10" />
+        <div className="absolute top-0 left-0 right-0 h-[10px] bg-gradient-to-b from-[#FAFAF8]/90 via-[#FAFAF8]/40 to-transparent pointer-events-none z-30" />
         <div className="relative h-full">
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6">
-<div className="md:absolute md:left-[clamp(1.5rem,6vw,5rem)] md:top-[clamp(5rem,22vh,12rem)] md:max-w-[700px] z-10">
-<div>
-               <h1 className="font-headline font-normal tracking-tight text-white text-[36px] md:text-[54px] lg:text-[60px] leading-[1.05]">
-
-                      We’ll make your space shine so you can focus on what matters.
+          <div className="md:absolute md:left-[clamp(1.5rem,6vw,5rem)] md:top-[clamp(5rem,22vh,12rem)] md:max-w-[700px] z-20">
+            <div>
+            <h1 className="font-headline font-normal tracking-tight text-white text-[36px] md:text-[54px] lg:text-[60px] leading-[1.05] mt-[205px] md:mt-0 max-w-[280px] md:max-w-none" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.5)' }}>
+                                                  We’ll make your space shine so you can focus on what matters.
                         </h1>
-                <div className="mt-6 flex flex-wrap gap-4">
-                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[9px] md:text-[14px] lg:text-[19px]">Call Now</a>
-<a href="#quote" className="inline-flex items-center rounded-lg px-12 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[9px] md:text-[14px] lg:text-[19px]">Get a Free Quote</a>
-</div>
+                        <div className="mt-3 md:mt-6 flex flex-wrap gap-4">                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[14x] md:text-[14px] lg:text-[19px]">Call Now</a>
+                        <a href="#quote" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[14px] md:text-[14px] lg:text-[19px]">Free Quote</a>
+                        </div>
               </div>
 
               {/* Right column kept for layout balance; remove if you want text to span full width */}
