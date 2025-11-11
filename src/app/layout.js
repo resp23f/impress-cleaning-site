@@ -2,6 +2,7 @@
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ContactButton from '@/components/ContactButton'
 import { Analytics } from '@vercel/analytics/react';
 import { Inter, Playfair_Display } from "next/font/google";
 
