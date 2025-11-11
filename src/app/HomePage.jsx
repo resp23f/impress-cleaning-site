@@ -232,29 +232,31 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section className="bg-white py-12 md:py-16 overflow-hidden">
-      <div className="container mx-auto mb-12">
+<section className="bg-white py-12 md:py-16">
+        <div className="container mx-auto mb-12">
         <h2 className="font-heading-oswald text-4xl md:text-5xl font-extrabold text-center text-slate-900">
           WHAT OUR CLIENTS SAY
         </h2>
       </div>
       
 {/* Scrolling container */}
-<div className="relative max-w-5xl mx-auto px-8 md:px-12">
-      <div className="flex animate-scroll">
-        {/* Render testimonials 3 times for smoother infinite scroll */}
-    {[...Array(3)].map((_, setIndex) => (
-      testimonials.map((testimonial, index) => (
-        <div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[500px] px-6 text-center inline-block">
-          <p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
-            "{testimonial.text}"
-          </p>
-          <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
-        </div>
-      ))
-    ))}
+<div className="relative max-w-6xl mx-auto">
+  <div className="overflow-hidden px-[15%] md:px-[20%]">
+    <div className="flex animate-scroll">
+      {/* Render testimonials 3 times for smoother infinite scroll */}
+      {[...Array(3)].map((_, setIndex) => (
+        testimonials.map((testimonial, index) => (
+<div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[350px] px-4 text-center inline-block">
+              <p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+              "{testimonial.text}"
+            </p>
+            <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
+          </div>
+        ))
+      ))}
+    </div>
   </div>
-  </div>
+</div>    
 
       {/* Custom CSS for animation */}
 <style jsx>{`
@@ -267,7 +269,7 @@ function TestimonialsSection() {
     }
   }
   .animate-scroll {
-    animation: scroll 60s linear infinite;
+    animation: scroll 30s linear infinite;
   }
 `}</style>
     </section>
