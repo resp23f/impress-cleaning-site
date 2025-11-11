@@ -247,10 +247,10 @@ function TestimonialsSection() {
       {[...Array(3)].map((_, setIndex) => (
         testimonials.map((testimonial, index) => (
 <div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[350px] px-4 text-center inline-block">
-              <p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+              <p className={`text-slate-900 text-lg md:text-xl font-oswald mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
               "{testimonial.text}"
             </p>
-            <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
+            <p className="text-slate-600 font-playfair text-base md:text-lg">– {testimonial.author}</p>
           </div>
         ))
       ))}
@@ -268,8 +268,10 @@ function TestimonialsSection() {
       transform: translateX(calc(-100% / 3));
     }
   }
-  .animate-scroll {
-    animation: scroll 30s linear infinite;
+    .animate-scroll {
+      animation: scroll 25s linear infinite;
+      will-change: transform;
+    }
   }
 `}</style>
     </section>
