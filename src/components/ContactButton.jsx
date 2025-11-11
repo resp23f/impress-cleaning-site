@@ -19,21 +19,21 @@ export default function ContactButton() {
       name: 'Text Us',
       icon: MessageSquare,
       action: () => {
-        window.open('sms:+1234567890', '_blank'); // Replace with your phone number
+        window.open('sms:+15122775364', '_blank'); // Replace with your phone number
       }
     },
     {
       name: 'Call Us',
       icon: Phone,
       action: () => {
-        window.location.href = 'tel:+1234567890'; // Replace with your phone number
+        window.location.href = 'tel:+15122775364'; // Replace with your phone number
       }
     },
     {
       name: 'Email Us',
       icon: Mail,
       action: () => {
-        window.location.href = 'mailto:info@impresscleaning.com'; // Replace with your email
+        window.location.href = 'mailto:admin@impressyoucleaning.com'; // Replace with your email
       }
     }
   ];

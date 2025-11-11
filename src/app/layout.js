@@ -41,6 +41,7 @@ export default function RootLayout({ children }) {
             {children}
         </main>
         <Footer/>
+        <ContactButton />
       </body>
     </html>
   );
