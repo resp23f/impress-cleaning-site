@@ -24,8 +24,6 @@ module.exports = {
       },
     },
 
-    
-
 extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],

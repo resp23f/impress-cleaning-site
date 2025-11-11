@@ -32,14 +32,17 @@ const active = useMemo(
   return (
     <>
       {/* Top Utility Bar */}
-      <div className="font-headline h-6 flex items-center justify-end gap-5 px-6 bg-[#202E56] text-white text-[13px] font-semibold tracking-wide">
+      <div className="font-headline h-6 flex items-center justify-end gap-5 px-6 bg-[#1C294E]">
       </div>
 
       {/* Main Header */}
-      <header className="sticky top-0 z-50 bg-[#FAFAF8]">
-        <div className="relative w-full">
+<header className="sticky top-0 z-50 bg-[#FAFAF8] relative">
+<div className="relative w-full">
           <div className="absolute inset-0 bg-[#FAFAF8]" aria-hidden />
-          <div className="absolute inset-x-0 bottom-0 translate-y-full h-[50px] bg-[#FAFAF8]" aria-hidden />
+          <div
+  className="absolute inset-x-0 bottom-[-1px] translate-y-full h-[50px] bg-[#FAFAF8]"
+  aria-hidden
+/>
 
           <div className="relative flex items-center justify-center md:justify-between px-8 py-3 md:py-[0.5px] translate-y-[30px] md:translate-y-[40px]">
             
@@ -47,7 +50,7 @@ const active = useMemo(
               className="flex flex-col select-none absolute left-4 md:static scale-90 md:scale-100"
               aria-label="Impress Cleaning Home"
             >
-              <div className="flex items-end text-[#202E56] leading-none">
+              <div className="flex items-end text-[#1C294E] leading-none">
                 <span
                   className="text-[98px] relative top-[10px] font-serif font-bold"
                   style={{
@@ -59,11 +62,11 @@ const active = useMemo(
                   }}>
                   I
                 </span>
-                <span className="text-[78px] font-serif font-bold tracking-[0.07em]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.45)' }}>
+                <span className="text-[78px] font-serif font-bold tracking-[0.07em] text-[#1C294E]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.45)' }}>
                   MPRESS
                 </span>
               </div>
-              <div className="text-[20px] font-serif font-extrabold uppercase tracking-[0.20em] text-[#42924F] mt-[-3px] ml-[39px]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.25)' }}>
+              <div className="text-[20px] font-serif font-extrabold uppercase tracking-[0.20em] text-[#079447] mt-[-3px] ml-[39px]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.25)' }}>
                 Cleaning Services LLC
               </div>
             </a>
@@ -135,7 +138,7 @@ const active = useMemo(
           )}
 
           {/* Slide-in drawer menu */}
-          <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#2D3748] text-white z-50 transform transition-transform duration-300 ease-in-out md:hidden ${open ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#1C294E] text-white z-50 transform transition-transform duration-300 ease-in-out md:hidden ${open ? 'translate-x-0' : '-translate-x-full'}`}>
             <div className="p-6">
               <button 
                 onClick={() => setOpen(false)}
@@ -156,15 +159,9 @@ const active = useMemo(
                 <a href="#why" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
                   Why Hire Us
                 </a>
-                <a href="#faq" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
-                  FAQ
-                </a>
                 <a href="#about" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
                   About Us
                 </a>
-                <a href="#about" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
-  About Us
-</a>
 <a href="#gift" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
   Gift Certificates
 </a>
@@ -174,14 +171,17 @@ const active = useMemo(
 <a href="#aplicar" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
   Aplicar
 </a>
-<a href="#quote" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
-  Request a Quote
-</a>
+<a href="#faq" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
+                  FAQ
+                </a>
+
               </nav>
             </div>
           </div>
         </div>
       </header>
+    <div
+  />
     </>
   ); 
 }

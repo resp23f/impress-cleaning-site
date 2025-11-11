@@ -82,7 +82,7 @@ export default function ImpressCleaningSite() {
   }
 
   return (
-    <main id="home" className="min-h-screen text-slate-800">
+    <main id="top" className="min-h-screen">
       <Hero />
       <WhyChoose />
       <HowItWorks />
@@ -94,14 +94,13 @@ export default function ImpressCleaningSite() {
 
 function Hero() {
   return (
-    <section id="home" className="relative w-screen left-1/2 -ml-[50vw] mt-20">
+<section id="home" className="relative w-screen left-1/2 -ml-[50vw] mt-20">
 <div className="relative h-[50vh] md:h-[78vh] min-h-[400px] md:min-h-[560px] w-full overflow-hidden">        <img
           src="/hero-cleaners1.jpg"
           alt="Impress Cleaning pro team"
           className="absolute inset-0 h-full w-full object-cover object-[50%_27.5%]"
         />
-<div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none z-10" />
-        <div className="absolute top-0 left-0 right-0 h-[10px] bg-gradient-to-b from-[#FAFAF8]/90 via-[#FAFAF8]/40 to-transparent pointer-events-none z-30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-transparent pointer-events-none z-10" />
         <div className="relative h-full">
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6">
           <div className="md:absolute md:left-[clamp(1.5rem,6vw,5rem)] md:top-[clamp(5rem,22vh,12rem)] md:max-w-[700px] z-20">
