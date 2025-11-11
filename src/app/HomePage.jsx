@@ -239,29 +239,22 @@ function TestimonialsSection() {
         </h2>
       </div>
       
-      {/* Scrolling container */}
-      <div className="relative">
-        <div className="flex animate-scroll">
-          {/* First set of testimonials */}
-          {testimonials.map((testimonial, index) => (
-            <div key={`original-${index}`} className="flex-shrink-0 w-[90vw] md:w-[500px] px-6 text-center inline-block">              
-<p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${index % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
-                    "{testimonial.text}"
-              </p>
-              <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
-            </div>
-          ))}
-          {/* Duplicate set for seamless loop */}
-{testimonials.map((testimonial, index) => (
-  <div key={`duplicate-${index}`} className="flex-shrink-0 w-[90vw] md:w-[500px] px-6 text-center inline-block">
-    <p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${(index + testimonials.length) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
-                         "{testimonial.text}"
-              </p>
-              <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
-            </div>
-          ))}
+{/* Scrolling container */}
+<div className="relative max-w-5xl mx-auto px-8 md:px-12">
+      <div className="flex animate-scroll">
+        {/* Render testimonials 3 times for smoother infinite scroll */}
+    {[...Array(3)].map((_, setIndex) => (
+      testimonials.map((testimonial, index) => (
+        <div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[500px] px-6 text-center inline-block">
+          <p className={`text-slate-900 text-lg md:text-xl mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+            "{testimonial.text}"
+          </p>
+          <p className="text-slate-600 text-base md:text-lg">– {testimonial.author}</p>
         </div>
-      </div>
+      ))
+    ))}
+  </div>
+  </div>
 
       {/* Custom CSS for animation */}
 <style jsx>{`
@@ -270,7 +263,7 @@ function TestimonialsSection() {
       transform: translateX(0);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translateX(calc(-100% / 3));
     }
   }
   .animate-scroll {
