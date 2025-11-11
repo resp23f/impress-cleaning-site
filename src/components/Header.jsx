@@ -104,7 +104,7 @@ const active = useMemo(
             </button>
 
             {/* Centered nav (desktop only) */}
-            <nav className="hidden md:flex items-center gap-8 text-[22.5px] font-normal text-[#202E56] font-headline" aria-label="Primary">
+            <nav className="hidden md:flex items-center gap-8 text-[22.5px] font-normal text-[#202E56] font-inter" aria-label="Primary">
               <a href="#residential" className="hover:text-[#42924F] transition">
                 Residential
               </a>
@@ -122,7 +122,7 @@ const active = useMemo(
               </a>
               
                 <a href="#quote"
-                className="inline-flex items-center justify-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-extrabold hover:bg-[#E7F5EA] transition font-headline"
+                className="inline-flex items-center justify-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-extrabold hover:bg-[#E7F5EA] transition font-inter"
               >
                 Request a Quote
               </a>
@@ -149,7 +149,7 @@ const active = useMemo(
                 </svg>
               </button>
               
-              <nav className="mt-12 space-y-6 font-headline text-lg">
+              <nav className="mt-12 space-y-6 font-inter text-lg">
                 <a href="#residential" className="block hover:text-[#42924F] transition" onClick={() => setOpen(false)}>
                   Residential
                 </a>

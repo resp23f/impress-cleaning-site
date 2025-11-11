@@ -105,11 +105,11 @@ function Hero() {
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6">
           <div className="md:absolute md:left-[clamp(1.5rem,6vw,5rem)] md:top-[clamp(5rem,22vh,12rem)] md:max-w-[700px] z-20">
             <div>
-            <h1 className="font-headline font-normal tracking-tight text-white text-[36px] md:text-[54px] lg:text-[60px] leading-[1.05] mt-[205px] md:mt-0 max-w-[280px] md:max-w-none" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.5)' }}>
+            <h1 className="font-oswald font-semibold tracking-tight text-white text-[36px] md:text-[54px] lg:text-[60px] leading-[1.05] mt-[205px] md:mt-0 max-w-[280px] md:max-w-none" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.5)' }}>
                                                   We’ll make your space shine so you can focus on what matters.
                         </h1>
-                        <div className="mt-3 md:mt-6 flex flex-wrap gap-4">                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[14x] md:text-[14px] lg:text-[19px]">Call Now</a>
-                        <a href="#quote" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-headline text-[14px] md:text-[14px] lg:text-[19px]">Free Quote</a>
+                        <div className="mt-3 md:mt-6 flex flex-wrap gap-4">                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-inter text-[14x] md:text-[14px] lg:text-[19px]">Call Now</a>
+                        <a href="#quote" className="inline-flex items-center rounded-lg px-15 py-3 font-semibold text-white shadow-sm hover:shadow-md transition bg-emerald-600 hover:bg-emerald-700 font-inter text-[14px] md:text-[14px] lg:text-[19px]">Free Quote</a>
                         </div>
               </div>
 
@@ -143,12 +143,12 @@ function WhyChoose() {
             <ul className="mt-6 grid sm:grid-cols-2 gap-4">
               {cards.map((c) => (
                 <li key={c.t} className="rounded-2xl bg-white border-2 border-[#079447] py-4 px-5">                  <div className="flex items-start gap-3">
-<div className="w-20 h-20 grid place-items-center text-emerald-700 -mt-6 sm:-mt-1.5">
+                <div className="w-20 h-20 grid place-items-center text-emerald-700 sm:mt-0 md:-mt-[8px] lg:-mt-[19px]">
 <img src={c.icon} alt={c.t} className={`w-50 h-30 object-contain ${c.extra || ''}`} />
 </div>
                     <div>
-                      <div className="font-oswald font-semibold text-slate-900 text-left w-full">{c.t}</div>
-                      <p className="font-oswald text-sm text-slate-600 mt-1">{c.d}</p>
+                      <div className="font-inter font-semibold text-slate-900 text-left w-full">{c.t}</div>
+                      <p className="font-inter text-sm text-slate-600 mt-1">{c.d}</p>
                     </div>
                   </div>
                 </li>
@@ -176,9 +176,9 @@ function HowItWorks() {
         <ol className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {steps.map(([t,d],i)=> (
             <li key={t} className="rounded-2xl bg-white border-2 border-[#079447] py-4 px-5">
-              <div className="text-[12px] font-semibold text-emerald-700">Step {i+1}</div>
-              <div className="mt-1 font-semibold text-slate-900">{t}</div>
-              <p className="mt-1 text-sm text-slate-600">{d}</p>
+              <div className="text-[12px] font-inter font-semibold text-[#079447]">Step {i+1}</div>
+              <div className="mt-1 font-inter font-semibold text-slate-900">{t}</div>
+              <p className="mt-1 font-inter text-sm text-slate-600">{d}</p>
             </li>
           ))}
         </ol>
@@ -194,20 +194,20 @@ function SocialProof() {
         <h3 className="font-heading-oswald text-[22px] md:text-[39px] font-extrabold tracking-tight text-center">WHY TEXAS FAMILIES TRUST IMPRESS</h3>
         <div className="mt-6 grid md:grid-cols-4 gap-4">
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">Texas Homes. Texas Trust.</div>
-            <div className="text-sm text-white/80">Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.</div>
+            <div className="font-inter font-bold">Texas Homes. Texas Trust.</div>
+            <div className="font-inter text-sm text-white/80">Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">Proven Reputation</div>
-            <div className="text-sm text-white/80 mt-1">Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.</div>
+            <div className="font-inter font-bold">Proven Reputation.</div>
+            <div className="font-inter text-sm text-white/80 mt-1">Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">People Who Care</div>
-            <div className="text-sm text-white/80 mt-1">We’re more than a cleaning company. We’re neighbors who take pride in helping families enjoy their homes.</div>
+            <div className="font-inter font-bold">People Who Care.</div>
+            <div className="font-inter text-sm text-white/80 mt-1">We’re more than a cleaning company. We’re neighbors who take pride in helping families enjoy their homes.</div>
           </div>
           <div className="rounded-2xl ring-1 ring-white/20 bg-white/5 p-6 shadow-sm">
-            <div className="font-semibold">Guaranteed Peace of Mind</div>
-            <div className="text-sm text-white/80 mt-1">You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.</div>
+            <div className="font-inter font-bold">Guaranteed Peace of Mind.</div>
+            <div className="font-inter text-sm text-white/80 mt-1">You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.</div>
           </div>
         </div>
       </div>
