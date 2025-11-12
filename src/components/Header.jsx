@@ -111,19 +111,13 @@ function SiteHeader() {
               </a>
               
               {/* ========== REQUEST A QUOTE BUTTON WITH FLUID SIZING ========== */}
-            <a 
-                href="#quote" 
+            <Link
+                href="/service-quote" 
                 className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
                 style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
             >
-                {/* REPLACED: px-1.5 py-0.5 text-[9px] lg:px-6 lg:py-3 lg:text-[16px] */}
-                {/* NEW: style={{ padding: 'clamp(2px, 0.5vw, 12px) clamp(8px, 1vw, 24px)', fontSize: 'clamp(9px, 1vw, 16px)' }} */}
-                {/* Padding scales: vertical 2px-12px, horizontal 8px-24px */}
-                {/* Font size scales: 9px-16px */}
-                Request a Quote
-                <Link href="/service-quote">Request a Quote</Link>
-
-              </a>
+                  Request a Quote
+            </Link> 
             </nav>
           </div>
 

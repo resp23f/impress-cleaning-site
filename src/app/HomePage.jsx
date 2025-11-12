@@ -116,11 +116,13 @@ function Hero() {
                 <a href="tel:+15122775364" className="inline-flex items-center justify-center rounded-lg font-extrabold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
                 style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }} >Call Now</a>
 
-                <a href="#quote" className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
-                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(12px, 1.3vw, 20px)' }} >Get a Free Estimate</a>
-                <Link href="/service-quote">Get a Free Estimate</Link>
-                 </div>
-              </div>
+                <Link href="/service-quote" className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
+                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(12px, 1.3vw, 20px)' }} 
+                >
+                   Get a Free Estimate
+                </Link>
+        </div>
+        </div>
 
               {/* Right column kept for layout balance; remove if you want text to span full width */}
               <div className="hidden lg:block" />
