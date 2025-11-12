@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useForm } from '@formspree/react';
-import Header from '../components/Header.jsx';
-import Footer from '../components/Footer.jsx';
 
 export default function ServiceQuotePage() {
   const [state, handleSubmit] = useForm("https://formspree.io/f/xblzwdek");
@@ -14,9 +12,6 @@ export default function ServiceQuotePage() {
     phone: '',
     serviceType: 'residential',
     address: '',
-    squareFootage: '',
-    bedrooms: '',
-    bathrooms: '',
     frequency: 'one-time',
     message: ''
   });
@@ -30,9 +25,7 @@ export default function ServiceQuotePage() {
 
   if (state.succeeded) {
     return (
-      <main className="min-h-screen bg-gray-50">
-        <Header />
-        
+      <div className="min-h-screen bg-gray-50">
         <section className="py-20">
           <div className="container mx-auto px-4 max-w-4xl text-center">
             <div className="bg-white rounded-lg shadow-lg p-12">
@@ -46,31 +39,24 @@ export default function ServiceQuotePage() {
               <p className="text-lg text-gray-600 mb-8">
                 Our team will review your information and contact you within 24 hours with a custom quote.
               </p>
-              <div className="space-y-4">
-                
-                  href="tel:+15125550123"
-                  className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-                  Call Us Now: (512) 555-0123
-                <br />
-                
-                  href="/"
-                  className="inline-block text-blue-600 hover:underline"
-                  Back to Home
-              </div>
-              </div>
+                  <a
+              
+                href="/"
+                className="inline-block text-blue-600 hover:underline"
+              >
+                Back to Home
+              </a>
+            </div>
           </div>
         </section>
-
-        <Footer />
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <Header />
-      
-      <section className="bg-blue-600 text-white py-16">
+    <div className="min-h-screen bg-gray-50">
+
+      <section className="bg-dark-navy text-white py-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Request a Free Quote</h1>
           <p className="text-xl">Fill out the form below and we will get back to you within 24 hours with a custom cleaning quote</p>
@@ -92,7 +78,7 @@ export default function ServiceQuotePage() {
               
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  Service Type
+                  Service Type <span className="text-red-600">*</span>
                 </label>
                 <select
                   name="serviceType"
@@ -109,7 +95,7 @@ export default function ServiceQuotePage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Full Name
+                    Full Name <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -124,7 +110,7 @@ export default function ServiceQuotePage() {
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Email
+                    Email <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="email"
@@ -141,7 +127,7 @@ export default function ServiceQuotePage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Phone Number
+                    Phone Number <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="tel"
@@ -156,7 +142,7 @@ export default function ServiceQuotePage() {
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Cleaning Frequency
+                    Cleaning Frequency <span className="text-red-600">*</span>
                   </label>
                   <select
                     name="frequency"
@@ -168,6 +154,10 @@ export default function ServiceQuotePage() {
                     <option value="one-time">One-Time Cleaning</option>
                     <option value="weekly">Weekly</option>
                     <option value="bi-weekly">Bi-Weekly</option>
+                    <option value="monthly">Tri-weekly</option>
+                    <option value="move-in">Move-in</option>
+                    <option value="move-out">Move-out</option>
+                    <option value="post-renovation">Deep-Cleaning</option>
                     <option value="monthly">Monthly</option>
                   </select>
                 </div>
@@ -175,7 +165,7 @@ export default function ServiceQuotePage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  Service Address
+                  Service Address <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -187,56 +177,6 @@ export default function ServiceQuotePage() {
                   placeholder="123 Main St, Georgetown, TX 78626"
                 />
               </div>
-
-              {formData.serviceType === 'residential' && (
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Bedrooms
-                    </label>
-                    <input
-                      type="number"
-                      name="bedrooms"
-                      value={formData.bedrooms}
-                      onChange={handleChange}
-                      min="0"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="3"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Bathrooms
-                    </label>
-                    <input
-                      type="number"
-                      name="bathrooms"
-                      value={formData.bathrooms}
-                      onChange={handleChange}
-                      min="0"
-                      step="0.5"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="2"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Square Footage
-                    </label>
-                    <input
-                      type="number"
-                      name="squareFootage"
-                      value={formData.squareFootage}
-                      onChange={handleChange}
-                      min="0"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="2000"
-                    />
-                  </div>
-                </div>
-              )}
 
               {formData.serviceType === 'commercial' && (
                 <div>
@@ -266,7 +206,7 @@ export default function ServiceQuotePage() {
                   onChange={handleChange}
                   rows="4"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Tell us about any specific cleaning needs, areas of focus, pets, move-in/move-out cleaning, etc."
+                  placeholder="Tell us about any specific cleaning needs, areas of focus, pets, etc."
                 />
               </div>
 
@@ -279,7 +219,7 @@ export default function ServiceQuotePage() {
               </button>
 
               <p className="text-sm text-gray-600 text-center">
-                We respect your privacy. Your information will never be shared.
+                We respect your privacy. Your information will never be shared. No Spam. Ever.
               </p>
             </form>
           </div>
@@ -288,23 +228,21 @@ export default function ServiceQuotePage() {
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">⚡</div>
               <h3 className="font-semibold mb-2">Fast Response</h3>
-              <p className="text-gray-600 text-sm">Get your quote within 24 hours</p>
+              <p className="text-gray-600 text-sm">Get your quote within 24 hours or less</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">💰</div>
-              <h3 className="font-semibold mb-2">No Obligation</h3>
+              <h3 className="font-semibold mb-2">No Obligation.</h3>
               <p className="text-gray-600 text-sm">Free quotes with no pressure</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">✓</div>
               <h3 className="font-semibold mb-2">Trusted Service</h3>
-              <p className="text-gray-600 text-sm">Serving Georgetown since 2020</p>
+              <p className="text-gray-600 text-sm">Serving Georgetown since 2010</p>
             </div>
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </div>
   );
 }

@@ -1,22 +1,13 @@
-@import "tailwindcss";
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* ========== CSS VARIABLES ========== */
-/**
- * These variables define colors that can be used throughout your CSS.
- * They're defined once here and can be referenced anywhere.
- */
 :root {
   color-scheme: light;              /* Tells browser this is a light-themed site */
   --background: #FAFAF8;            /* ✅ CHANGED: Was #ffffff, now warm off-white */
   --foreground: #2C3A4B;            /* Text color (dark gray) */
 }
 
-/**
- * This media query checks if user prefers dark mode.
- * Currently we're forcing light mode even if they prefer dark.
- * If you want to support dark mode in the future, change these values.
- */
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: light;            /* Still forcing light mode */
@@ -25,7 +16,6 @@
   }
 }
 
-/* ========== UTILITY CLASSES ========== */
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
@@ -36,7 +26,6 @@
   }
 }
 
-/* ========== ANIMATIONS ========== */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -83,7 +72,6 @@
   animation-delay: 0.6s;
 }
 
-/* ========== GLOBAL HTML & BODY STYLES ========== */
 html {
   background-color: var(--background);
   -webkit-text-size-adjust: 100%; /* prevent iOS auto-zoom */
@@ -102,11 +90,8 @@ body {
 .text-3xs { font-size: 9px  !important; line-height: 1; }
 .text-4xs { font-size: 8px  !important; line-height: 1; }
 
-/* ========== FOOTER OPACITY FIX ========== */
-/* iOS “washout” guard for footer */
 footer, footer * { opacity: 1 !important; }
 
-/* ========== SELECT DROPDOWN STYLING ========== */
 select.no-native {
 -webkit-appearance: none;
 -moz-appearance: none;
@@ -115,7 +100,6 @@ background-image: none !important; /* Safari */
 }
 
 
-/* ========== CONTAINER STYLES ========== */
 .container {
   width: 100%;
   max-width: 72rem; /* roughly Tailwind max-w-6xl (1152px) */
@@ -138,14 +122,12 @@ background-image: none !important; /* Safari */
     padding-right: 3rem;
   }
 }
-/* ========== FULL BLEED UTILITY ========== */
 .full-bleed {
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
 }
 
-/* ========== SCROLLBAR UTILITIES ========== */
 @layer utilities {
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
@@ -158,6 +140,5 @@ html, body { overflow-x: hidden; }
 select.no-native::-ms-expand { display: none; }
 
 
-/* ========== FONT FAMILIES ========== */
 .font-display { font-family: var(--font-heading), "Onest", ui-serif, system-ui, sans-serif; }
 .font-sans { font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; }
