@@ -31,20 +31,35 @@ const active = useMemo(
 
   return (
     <>
-      {/* Top Utility Bar */}
-      <div className="font-headline h-6 flex items-center justify-end gap-5 px-6 bg-[#1C294E]">
-      </div>
+        <div className="fixed top-0 left-0 right-0 h-2 bg-white z-[9999]" />
 
-      {/* Main Header */}
-<header className="sticky top-0 z-50 bg-[#FAFAF8] relative">
-<div className="relative w-full">
-          <div className="absolute inset-0 bg-[#FAFAF8]" aria-hidden />
-          <div
-  className="absolute inset-x-0 bottom-[-1px] translate-y-full h-[50px] bg-[#FAFAF8]"
-  aria-hidden
-/>
+<div className="relative overflow-hidden bg-white">
+<div className="bg-white py-2 px-6">
+<div className="flex items-center justify-end gap-6 text-gray-600 text-sm font-medium pr-8">
+<a href="#gift" className="hover:text-[#00A884] transition">
+      Gift Certificates
+    </a>
+    <span className="text-gray-300">|</span>
+    <a href="#apply" className="hover:text-[#00A884] transition">
+      Careers
+    </a>
+    <span className="text-gray-300">|</span>
+    <a href="#aplicar" className="hover:text-[#00A884] transition">
+      Aplicar
+    </a>
+  </div>
+</div>
+</div>
 
-          <div className="relative flex items-center justify-center md:justify-between px-8 py-3 md:py-[0.5px] translate-y-[30px] md:translate-y-[40px]">
+{/* Main Header */}
+<header className="sticky top-0 z-50 bg-white relative border-0">
+<div className="relative w-full border-0">
+  <div className="absolute inset-0 bg-white border-0" aria-hidden="true" />
+  <div
+    className="absolute inset-x-0 bottom-[-1px] translate-y-full h-[50px] bg-white border-0"
+    aria-hidden="true"
+  />
+<div className="relative flex items-center justify-center md:justify-between px-8 py-3 md:py-[0.5px] translate-y-[30px] md:translate-y-[40px]">
             
               <a href="#top"
               className="flex flex-col select-none absolute left-4 md:static scale-90 md:scale-100"
@@ -104,26 +119,26 @@ const active = useMemo(
             </button>
 
             {/* Centered nav (desktop only) */}
-            <nav className="hidden md:flex items-center gap-8 text-[22.5px] font-normal text-[#202E56] font-inter" aria-label="Primary">
-              <a href="#residential" className="hover:text-[#42924F] transition">
-                Residential
+<nav className="hidden md:flex items-center gap-8 text-[16px] md:text-[20px] lg:text-[36px] font-medium text-[#202E56] font-manrope" aria-label="Primary">
+<a href="#residential" className="hover:text-[#00A884] transition-colors duration-200">
+Residential
               </a>
-              <a href="#commercial" className="hover:text-[#42924F] transition">
+              <a href="#commercial" className="hover:text-[#00A884] transition-colors duration-200">
                 Commercial
               </a>
-              <a href="#why" className="hover:text-[#42924F] transition">
+              <a href="#why" className="hover:text-[#00A884] transition-colors duration-200">
                 Why Hire Us
               </a>
-              <a href="#faq" className="hover:text-[#42924F] transition">
+              <a href="#faq" className="hover:text-[#00A884] transition-colors duration-200">
                 FAQ
               </a>
-              <a href="#about" className="hover:text-[#42924F] transition">
+              <a href="#about" className="hover:text-[#00A884] transition-colors duration-200">
                 About Us
               </a>
               
                 <a href="#quote"
-                className="inline-flex items-center justify-center px-4 py-2 border-2 border-[#42924F] text-[#42924F] rounded-[18px] font-extrabold hover:bg-[#E7F5EA] transition font-inter"
-              >
+  className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope"
+  >
                 Request a Quote
               </a>
             </nav>
@@ -180,8 +195,6 @@ const active = useMemo(
           </div>
         </div>
       </header>
-    <div
-  />
     </>
   ); 
 }

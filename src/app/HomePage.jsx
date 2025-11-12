@@ -80,7 +80,7 @@ export default function ImpressCleaningSite() {
   }
 
   return (
-    <main id="top" className="min-h-screen">
+    <main id="top" className="min-h-screen bg-white">
       <Hero />
       <WhyChoose />
       <HowItWorks />
@@ -92,8 +92,9 @@ export default function ImpressCleaningSite() {
 
 function Hero() {
   return (
-<section id="home" className="relative w-screen left-1/2 -ml-[50vw] mt-20">
-<div className="relative h-[50vh] md:h-[78vh] min-h-[400px] md:min-h-[560px] w-full overflow-hidden">        <img
+    <section id="home" className="relative w-screen left-1/2 -ml-[50vw] -mt-4 overflow-hidden">
+<div className="relative h-[50vh] md:h-[78vh] min-h-[400px] md:min-h-[560px] w-full overflow-hidden -mt-6">
+<img
           src="/hero-cleaners1.jpg"
           alt="Impress Cleaning pro team"
           className="absolute inset-0 h-full w-full object-cover object-[50%_27.5%]"
@@ -101,13 +102,14 @@ function Hero() {
         <div className="absolute text-regular inset-0 bg-gradient-to-r from-transparent via-black/10 to-transparent pointer-events-none z-10" />
         <div className="relative h-full">
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6">
-          <div className="md:absolute md:left-[clamp(1.5rem,6vw,5rem)] md:top-[clamp(5rem,22vh,12rem)] md:max-w-[700px] z-20">
-            <div>
-            <h1 className="font-display tracking-tight text-[#18335A] text-[32px] md:text-[40px] lg:text-[48px] leading-tight[1.2] mt-[205px] md:mt-0 max-w-[280px] md:max-w-none" >
-                                                  We’ll make your space shine so you can focus on what matters.
+<div className="md:absolute md:left-[clamp(2rem,8vw,6rem)] md:top-[clamp(3rem,15vh,8rem)] md:max-w-[600px] z-20 md:p-6">
+<div>
+<h1 className="font-display font-bold tracking-tight text-white text-[36px] md:text-[52px] lg:text-[64px] leading-tight drop-shadow-2xl mt-[205px] md:mt-0 max-w-[320px] md:max-w-[600px]" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.6), 0px 0px 12px rgba(0,0,0,0.4)'}}>We’ll make your space shine so you can focus on what matters.
                         </h1>
-                        <div className="mt-3 md:mt-6 flex flex-wrap gap-4">                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-15 py-3 tracking-wide font-semibold text-white shadow-sm hover:shadow-md transition bg-[#00A884]  hover:bg-[#009879] font-manrope text-[15px] md:text-[16px] lg:text-[16px]">Call Now</a>
-                        <a href="#quote" className="inline-flex items-center rounded-lg px-15 py-3 tracking-wide font-semibold text-white shadow-sm hover:shadow-md transition bg-[#00A884]  hover:bg-[#009879] font-manrope text-[14px] md:text-[16px] lg:text-[16px]">Free Quote</a>
+<div className="mt-6 md:mt-8 flex flex-wrap gap-4">
+<a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-10 py-5 tracking-wide font-bold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[22px]">Call Now</a>
+
+<a href="#quote" className="inline-flex items-center rounded-lg px-8 py-4 tracking-wide font-bold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[22px]">Free Quote</a>
                         </div>
               </div>
 
@@ -161,23 +163,60 @@ function WhyChoose() {
 
 
 function HowItWorks() {
+  const sectionRef = React.useRef(null);
+  const cardsRef = React.useRef([]);
+  
+  React.useEffect(() => {
+    const currentSection = sectionRef.current;
+    const currentCards = cardsRef.current;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Trigger all cards to animate
+            currentCards.forEach((card) => {
+              if (card) card.classList.add('visible');
+            });
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (currentSection) {
+      observer.observe(currentSection);
+    }
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection);
+      }
+    };
+  }, []);
+
   const steps = [
-    ['Request Your Quote','Tell us a little about your home and the cleaning you need. We’ll send a quick, straightforward quote that’s easy to understand.'],
-    ['Schedule Your Clean','Choose the day and time that fit your schedule. We’ll confirm your booking and send a quick reminder before your appointment.'],
-    ['We Make It Shine','Our local team arrives on time, fully equipped, and ready to get your space spotless using our detailed checklist and eco-safe products trusted by professionals.'],
-    ['Relax & Enjoy','Come home to a space that feels fresh and cared for. Your clean is complete and your satisfaction always comes first.'],
+    ['Request Your Quote', 'Tell us a little about your home and the cleaning you need. We\'ll send a quick, straightforward quote that\'s easy to understand.'],
+    ['Schedule Your Clean', 'Choose the day and time that fit your schedule. We\'ll confirm your booking and send a quick reminder before your appointment.'],
+    ['We Make It Shine', 'Our local team arrives on time, fully equipped, and ready to get your space spotless using our detailed checklist and eco-safe products trusted by professionals.'],
+    ['Relax & Enjoy', 'Come home to a space that feels fresh and cared for. Your clean is complete and your satisfaction always comes first.'],
   ];
+  
   return (
-    <section className="bg-white py-12 md:py-16">
-    <div className="mx-auto max-w-[1600px] px-12 sm:px-6 lg:px-4">
-          <h3 className="font-display text-24px md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">How It Works: Simple, Fast & Stress Free</h3>
-<ol className="mt-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 tracking-wide">
-{steps.map(([t,d],i)=> (
-<li key={t} className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm px-10 py-5">
-<div className="text-[12px] font-inter font-semibold text-[#079447]">Step {i+1}</div>
-<div className="font-manrope font-semibold leading-snug text-[#18335A] text-left w-full text-base md:text-lg lg:text-lg">{t}</div>
-<p className="font-manrope font-regular text-sm md:text-base lg:text-base text-[#2C3A4B] leading-relaxed tracking-normal mt-2">{d}</p>
-</li>
+    <section ref={sectionRef} className="bg-white py-12 md:py-16">
+      <div className="mx-auto max-w-[1600px] px-12 sm:px-6 lg:px-4">
+        <h3 className="font-display text-[24px] md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">How It Works: Simple, Fast & Stress Free</h3>
+        <ol className="mt-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 tracking-wide">
+          {steps.map(([t,d],i)=> (
+            <li 
+              key={t} 
+              ref={(el) => (cardsRef.current[i] = el)}
+              className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm px-10 py-5 stagger-item"
+            >
+              <div className="text-[12px] font-inter font-semibold text-[#079447]">Step {i+1}</div>
+              <div className="font-manrope font-semibold leading-snug text-[#18335A] text-left w-full text-base md:text-lg lg:text-lg">{t}</div>
+              <p className="font-manrope font-regular text-sm md:text-base lg:text-base text-[#2C3A4B] leading-relaxed tracking-normal mt-2">{d}</p>
+            </li>
           ))}
         </ol>
       </div>
@@ -195,22 +234,11 @@ function SocialProof() {
     
     const handleScroll = () => {
       const scrollLeft = scrollContainer.scrollLeft;
-      const scrollWidth = scrollContainer.scrollWidth;
-      const clientWidth = scrollContainer.clientWidth;
       
       // Calculate which card is currently visible
       const cardWidth = 300 + 16; // card width + gap
       const currentIndex = Math.round(scrollLeft / cardWidth);
       setActiveIndex(currentIndex);
-      
-      // If scrolled to the end, jump back to start
-      if (scrollLeft + clientWidth >= scrollWidth - 10) {
-        scrollContainer.scrollLeft = 0;
-      }
-      // If scrolled to start (going left), jump to end
-      if (scrollLeft <= 10) {
-        scrollContainer.scrollLeft = scrollWidth - clientWidth;
-      }
     };
     
     scrollContainer.addEventListener('scroll', handleScroll);
@@ -219,44 +247,42 @@ function SocialProof() {
   
   return (
     <>
-      <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white shadow-lg rounded-2xl overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 md:px-6 w-full md:w-auto flex-1">
-          <h3 className="font-display text-25px md:text-[35px] lg:text-[38px] font-bold leading-tight[1.3] tracking-tight text-center text-white">Why Texas Families Trust Impress</h3>
-          <div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 px-6 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-10 lg:px-16 md:gap-x-15 md:gap-y-8 md:snap-none tracking-wide pb-2">
-            <div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[280px] md:min-h-0 flex flex-col">
-              <div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Texas Homes. Texas Trust.</div>
-              <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.</div>
+    <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
+<div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
+<h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight[1.3] tracking-tight text-center text-white">Why Texas Families Trust Impress</h3>
+<div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
+<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
+<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Texas Homes. Texas Trust.</div>
+<div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.</div>
             </div>
 
-            <div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[280px] md:min-h-0 flex flex-col">
-              <div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Proven Reputation.</div>
+<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
+<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Proven Reputation.</div>
               <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.</div>
             </div>
 
-            <div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[280px] md:min-h-0 flex flex-col">
-              <div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">People Who Care.</div>
+<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
+<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">People Who Care.</div>
               <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">We're more than a cleaning company. We're neighbors who take pride in helping families enjoy their homes.</div>
             </div>
 
-            <div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[280px] md:min-h-0 flex flex-col">
-              <div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Guaranteed Peace of Mind.</div>
+<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
+<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Guaranteed Peace of Mind.</div>
               <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.</div>
             </div>
           </div>
-        </div>
-      </section>
-
       {/* Scroll Indicators - Only visible on mobile/tablet */}
       <div className="flex justify-center gap-2 mt-6 md:hidden">
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 0 ? 'bg-[#0B2850]' : 'bg-gray-300'}`}></div>
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 1 ? 'bg-[#0B2850]' : 'bg-gray-300'}`}></div>
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 2 ? 'bg-[#0B2850]' : 'bg-gray-300'}`}></div>
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 3 ? 'bg-[#0B2850]' : 'bg-gray-300'}`}></div>
+        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 0 ? 'bg-white' : 'bg-white/50'}`}></div>
+        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 1 ? 'bg-white' : 'bg-white/50'}`}></div>
+        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 2 ? 'bg-white' : 'bg-white/50'}`}></div>
+        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 3 ? 'bg-white' : 'bg-white/50'}`}></div>
       </div>
+      </div> 
+      </section>
     </>
   );
 }
-
 
 function TestimonialsSection() {
   const testimonials = [
@@ -276,21 +302,21 @@ function TestimonialsSection() {
 
   return (
 <section className="bg-white py-12 md:py-16">
-        <div className="container mx-auto mb-12">
-        <h2 className="font-heading-oswald text-4xl md:text-5xl font-extrabold text-center text-slate-900">
-          WHAT OUR CLIENTS SAY
+<div className="container mx-auto mb-12 md:max-w-[1800px]">
+<h2 className="font-display text-4xl md:text-5xl font-extrabold text-center text-slate-900">
+          What Our Clients Are Saying
         </h2>
       </div>
       
 {/* Scrolling container */}
-<div className="relative max-w-6xl mx-auto">
-  <div className="overflow-hidden px-[15%] md:px-[20%]">
-    <div className="flex animate-scroll">
-      {/* Render testimonials 3 times for smoother infinite scroll */}
-      {[...Array(3)].map((_, setIndex) => (
+<div className="relative max-w-full mx-auto">
+<div className="overflow-hidden">
+<div className="flex animate-scroll -translate-x-[10%]">
+{/* Render testimonials 3 times for smoother infinite scroll */}
+      {[...Array(12)].map((_, setIndex) => (
         testimonials.map((testimonial, index) => (
-<div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[350px] px-4 text-center inline-block">
-              <p className={`text-slate-900 text-lg md:text-xl font-oswald mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+          <div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block">
+              <p className={`text-slate-900 text-lg md:text-xl font-manrope mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
               "{testimonial.text}"
             </p>
             <p className="text-slate-600 font-playfair text-base md:text-lg">– {testimonial.author}</p>
@@ -308,13 +334,12 @@ function TestimonialsSection() {
       transform: translateX(0);
     }
     100% {
-      transform: translateX(calc(-100% / 3));
+      transform: translateX(-50%);
     }
   }
-    .animate-scroll {
-      animation: scroll 25s linear infinite;
-      will-change: transform;
-    }
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+    will-change: transform;
   }
 `}</style>
     </section>
