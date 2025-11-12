@@ -121,6 +121,8 @@ function SiteHeader() {
                 {/* Padding scales: vertical 2px-12px, horizontal 8px-24px */}
                 {/* Font size scales: 9px-16px */}
                 Request a Quote
+                <Link href="/service-quote">Request a Quote</Link>
+
               </a>
             </nav>
           </div>

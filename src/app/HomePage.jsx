@@ -118,6 +118,7 @@ function Hero() {
 
                 <a href="#quote" className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
                 style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(12px, 1.3vw, 20px)' }} >Get a Free Estimate</a>
+                <Link href="/service-quote">Get a Free Estimate</Link>
                  </div>
               </div>
 
