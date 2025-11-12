@@ -4,7 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactButton from '@/components/ContactButton'
 import { Analytics } from '@vercel/analytics/react';
-import { Manrope, DM_Serif_Display } from "next/font/google";
+import { Manrope, Onest } from "next/font/google";
+
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -13,11 +14,10 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const dmSerif = DM_Serif_Display({
+const onest = Onest({
   subsets: ["latin"],
-  weight: ["400"],             
-  style: ["normal", "italic"],
-  variable: "--font-dm",
+  weight: ["600", "700"],
+  variable: "--font-heading",
   display: "swap",
 });
 
@@ -41,7 +41,7 @@ apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${dmSerif.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${onest.variable}`}>
       <body className="font-sans antialiased bg-[#FAFAF8] text-slate-900">
         <Header />
         <main className="min-h-screen flex-col">

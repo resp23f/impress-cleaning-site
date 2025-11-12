@@ -104,7 +104,7 @@ function Hero() {
           <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
             <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
             <div>
-            <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[290px]">
+            <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[0px]">
 
 <h1 className="font-display font-bold tracking-tight text-balance text-white text-[36px] md:text-[52px] lg:text-[60px] leading-tight drop-shadow-2xl mt-[205px] md:mt-0 max-w-[320px] md:max-w-[600px]" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.6), 0px 0px 12px rgba(0,0,0,0.24)'}}>We’ll make your space shine so you can focus on what matters.
                         </h1>

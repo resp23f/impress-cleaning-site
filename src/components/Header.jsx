@@ -29,7 +29,7 @@ const active = useMemo(
 
 <div className="relative overflow-hidden bg-white">
 <div className="bg-white/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-[51] hidden md:block">
-<div className="max-w-[1600px] mx-auto flex items-center font-manrope justify-end gap-5 font-bold text-[13px] md:text-[15px] lg:text-[22px] text-gray-600 py-1.5 px-6 lg:px-8 relative left-[30px]">
+<div className="max-w-[1600px] mx-auto flex items-center font-heading justify-end gap-5 font-bold text-[13px] md:text-[15px] lg:text-[22px] text-gray-600 py-1.5 px-6 lg:px-8 relative left-[30px]">
 <a href="#gift" className="hover:text-[#00A884] font-manrope font-semibold transition">
       Gift Certificates
     </a>

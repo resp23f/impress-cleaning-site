@@ -29,10 +29,10 @@ module.exports = {
     extend: {
       fontFamily: {
         fontFamily: {
-          sans: ["var(--font-sans)", "Manrope", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"],
-          display: ["var(--font-display)", "DM Display", "serif"],
+          sans: ["var(--font-sans)", "Manrope", "system-ui", "sans-serif"],
+          display: ["var(--font-display)", "Onest", "serif"],
           manrope: ["Manrope", "sans-serif"],
-          dmDisplay: ["DM Display", "serif"],
+          onest: ["Onest", "sans-serif"],
         },      },
       colors: {
         brandNavy: "#18335A",
