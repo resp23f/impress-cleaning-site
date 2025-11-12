@@ -37,7 +37,7 @@ export default function ServiceQuotePage() {
                 We have received your quote request for {formData.serviceType} cleaning services.
               </p>
               <p className="text-lg text-gray-600 mb-8">
-                Our team will review your information and contact you within 24 hours with a custom quote.
+                Our team will review your information and contact you within 24 hours or less with a custom quote.
               </p>
                   <a
               
@@ -59,7 +59,7 @@ export default function ServiceQuotePage() {
       <section className="bg-[#1C294E]/90 text-white py-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Request a Free Quote</h1>
-          <p className="font-manrope text-xl">Fill out the form below and we will get back to you within 24 hours with a custom cleaning quote</p>
+          <p className="font-manrope text-xl">Fill out the form below and we will get back to you within 24 hours or less with a cleaning quote</p>
         </div>
       </section>
 
@@ -85,7 +85,7 @@ export default function ServiceQuotePage() {
                   value={formData.serviceType}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-manrope"
                 >
                   <option value="residential">Residential Cleaning</option>
                   <option value="commercial">Commercial Cleaning</option>
@@ -103,7 +103,7 @@ export default function ServiceQuotePage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-manrope"
                     placeholder="John Doe"
                   />
                 </div>
@@ -118,7 +118,7 @@ export default function ServiceQuotePage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-manrope"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -245,4 +245,4 @@ export default function ServiceQuotePage() {
       </section>
     </div>
   );
-}
+}      
