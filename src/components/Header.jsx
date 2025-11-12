@@ -63,7 +63,7 @@ function SiteHeader() {
   aria-label="Impress Cleaning Home"
 >
   <img 
-    src="/impress-cleaning-logo-no-background.png" 
+    src="/impress-cleaning-background.png" 
     alt="Impress Cleaning Services" 
     className="h-[80px] md:h-[70px] lg:h-[85px] xl:h-[100px] 2xl:h-[120px] w-[170px] translate-y-[16px]"/> </a>
             {/* ========== HAMBURGER MENU BUTTON (Mobile Only) ========== */}
