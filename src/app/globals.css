@@ -1,7 +1,7 @@
 @import "tailwindcss";
 :root {
 color-scheme: light;          
---background: #FAFAF8;        
+--background: #ffffff;        
 --foreground: #1f2937;        
 }
 @media (prefers-color-scheme: dark) {
@@ -102,7 +102,7 @@ background-image: none !important; /* Safari */
 */
 /* Global content width limiter */
 body {
-  background-color: #FAFAF8; /* cream stays full width */
+  background-color: #ffffff; /* cream stays full width */
   margin: 0;
   padding: 0;
 }

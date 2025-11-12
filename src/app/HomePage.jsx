@@ -92,24 +92,26 @@ export default function ImpressCleaningSite() {
 
 function Hero() {
   return (
-    <section id="home" className="relative w-screen left-1/2 -ml-[50vw] -mt-4 overflow-hidden">
-<div className="relative h-[50vh] md:h-[78vh] min-h-[400px] md:min-h-[560px] w-full overflow-hidden -mt-6">
+    <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
+    <div className="relative min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] w-full overflow-hidden">
 <img
           src="/hero-cleaners1.jpg"
           alt="Impress Cleaning pro team"
-          className="absolute inset-0 h-full w-full object-cover object-[50%_27.5%]"
+          className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
         />
-        <div className="absolute text-regular inset-0 bg-gradient-to-r from-transparent via-black/10 to-transparent pointer-events-none z-10" />
-        <div className="relative h-full">
-          <div className="mx-auto max-w-7xl h-full px-4 md:px-6">
-<div className="md:absolute md:left-[clamp(2rem,8vw,6rem)] md:top-[clamp(3rem,15vh,8rem)] md:max-w-[600px] z-20 md:p-6">
-<div>
-<h1 className="font-display font-bold tracking-tight text-white text-[36px] md:text-[52px] lg:text-[64px] leading-tight drop-shadow-2xl mt-[205px] md:mt-0 max-w-[320px] md:max-w-[600px]" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.6), 0px 0px 12px rgba(0,0,0,0.4)'}}>We’ll make your space shine so you can focus on what matters.
-                        </h1>
-<div className="mt-6 md:mt-8 flex flex-wrap gap-4">
-<a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-10 py-5 tracking-wide font-bold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[22px]">Call Now</a>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
+        <div className="relative z-10">
+          <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
+            <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
+            <div>
+            <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[290px]">
 
-<a href="#quote" className="inline-flex items-center rounded-lg px-8 py-4 tracking-wide font-bold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[22px]">Free Quote</a>
+<h1 className="font-display font-bold tracking-tight text-balance text-white text-[36px] md:text-[52px] lg:text-[60px] leading-tight drop-shadow-2xl mt-[205px] md:mt-0 max-w-[320px] md:max-w-[600px]" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.6), 0px 0px 12px rgba(0,0,0,0.24)'}}>We’ll make your space shine so you can focus on what matters.
+                        </h1>
+                <div className="mt-6 2xl:mt-8 flex gap-4">
+                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-10 py-5 tracking-wide font-extrabold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[25px]">Call Now</a>
+
+<a href="#quote" className="inline-flex items-center rounded-lg px-8 py-4 tracking-wide font-extrabold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[25px]">Free Quote</a>
                         </div>
               </div>
 
@@ -118,6 +120,7 @@ function Hero() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

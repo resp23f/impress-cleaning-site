@@ -2,11 +2,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useMemo } from "react";
-import { Playfair_Display, Inter } from "next/font/google";
-
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["700"] });
-const inter  = Inter({ subsets: ["latin"],  weight: ["500"] });
-
 const NAV = [
 { label: "Residential", href: "/#services" },
 { label: "Commercial",  href: "/#services" },
@@ -31,20 +26,19 @@ const active = useMemo(
 
   return (
     <>
-        <div className="fixed top-0 left-0 right-0 h-2 bg-white z-[9999]" />
 
 <div className="relative overflow-hidden bg-white">
-<div className="bg-white py-2 px-6">
-<div className="flex items-center justify-end gap-6 text-gray-600 text-sm font-medium pr-8">
-<a href="#gift" className="hover:text-[#00A884] transition">
+<div className="bg-white/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-[51] hidden md:block">
+<div className="max-w-[1600px] mx-auto flex items-center font-manrope justify-end gap-5 font-bold text-[13px] md:text-[15px] lg:text-[22px] text-gray-600 py-1.5 px-6 lg:px-8 relative left-[30px]">
+<a href="#gift" className="hover:text-[#00A884] font-manrope font-semibold transition">
       Gift Certificates
     </a>
-    <span className="text-gray-300">|</span>
-    <a href="#apply" className="hover:text-[#00A884] transition">
+    <span className="text-gray-300 font-manrope">|</span>
+    <a href="#apply" className="hover:text-[#00A884] font-manrope transition">
       Careers
     </a>
-    <span className="text-gray-300">|</span>
-    <a href="#aplicar" className="hover:text-[#00A884] transition">
+    <span className="text-gray-300 font-manrope font-semibold">|</span>
+    <a href="#aplicar" className="hover:text-[#00A884] font-manrope transition">
       Aplicar
     </a>
   </div>
@@ -52,36 +46,32 @@ const active = useMemo(
 </div>
 
 {/* Main Header */}
-<header className="sticky top-0 z-50 bg-white relative border-0">
-<div className="relative w-full border-0">
-  <div className="absolute inset-0 bg-white border-0" aria-hidden="true" />
-  <div
-    className="absolute inset-x-0 bottom-[-1px] translate-y-full h-[50px] bg-white border-0"
-    aria-hidden="true"
-  />
-<div className="relative flex items-center justify-center md:justify-between px-8 py-3 md:py-[0.5px] translate-y-[30px] md:translate-y-[40px]">
-            
+<header className="sticky top-0 z-50 bg-white [transform:translateZ(0)] [backface-visibility:hidden]">
+  
+<div className="container relative">
+<div className="flex items-center justify-between gap-4 flex-nowrap py-3 md:py-4 2xl:py-5 px-4 lg:px-8">
+                
               <a href="#top"
-              className="flex flex-col select-none absolute left-4 md:static scale-90 md:scale-100"
-              aria-label="Impress Cleaning Home"
+  className="flex flex-col select-none shrink-0 md:scale-100 -ml-10 lg:-ml-16 xl:-ml-70 mr-10 lg:mr-25"
+  aria-label="Impress Cleaning Home"
             >
-              <div className="flex items-end text-[#1C294E] leading-none">
+              <div className="flex items-end text-[#32477C] leading-none">
                 <span
-                  className="text-[98px] relative top-[10px] font-serif font-bold"
+                  className="text-[98px] relative top-[10px] font-display font-bold"
                   style={{
                     lineHeight: "0.9",
                     display: "inline-block",
-                    transform: "scaleY(1.25)",
+                    transform: "scaleY(1.19)",
                     transformOrigin: "top",
-                    textShadow: '0 2px 3px rgba(0, 0, 0, 0.45)',
+                    textShadow: '0 2px 3px rgba(0, 0, 0, 0.25)',
                   }}>
                   I
                 </span>
-                <span className="text-[78px] font-serif font-bold tracking-[0.07em] text-[#1C294E]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.45)' }}>
+                <span className="text-[78px] font-display font-bold tracking-[0.07em] text-[#32477C]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.25)' }}>
                   MPRESS
                 </span>
               </div>
-              <div className="text-[20px] font-serif font-extrabold uppercase tracking-[0.20em] text-[#079447] mt-[-3px] ml-[39px]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.25)' }}>
+              <div className="text-[20px] font-display font-extrabold uppercase tracking-[0.20em] text-[#079447] mt-[-3px] ml-[39px]" style={{ textShadow: '0 2px 3px rgba(0, 0, 0, 0.15)' }}>
                 Cleaning Services LLC
               </div>
             </a>
@@ -119,20 +109,25 @@ const active = useMemo(
             </button>
 
             {/* Centered nav (desktop only) */}
-<nav className="hidden md:flex items-center gap-8 text-[16px] md:text-[20px] lg:text-[36px] font-medium text-[#202E56] font-manrope" aria-label="Primary">
-<a href="#residential" className="hover:text-[#00A884] transition-colors duration-200">
+<nav
+className="hidden md:flex flex-1 items-center justify-center gap-6 lg:gap-8 xl:gap-10 2xl:gap-12
+           text-[16px] md:text-[18px] xl:text-[28px] font-medium text-[#202E56]
+           whitespace-nowrap"
+aria-label="Primary"
+>
+<a href="#residential" className="hover:text-[#00A884] font-display transition-colors duration-200">
 Residential
               </a>
-              <a href="#commercial" className="hover:text-[#00A884] transition-colors duration-200">
+              <a href="#commercial" className="hover:text-[#00A884] font-display transition-colors duration-200">
                 Commercial
               </a>
-              <a href="#why" className="hover:text-[#00A884] transition-colors duration-200">
+              <a href="#why" className="hover:text-[#00A884] font-display transition-colors duration-200">
                 Why Hire Us
               </a>
-              <a href="#faq" className="hover:text-[#00A884] transition-colors duration-200">
+              <a href="#faq" className="hover:text-[#00A884] font-display transition-colors duration-200">
                 FAQ
               </a>
-              <a href="#about" className="hover:text-[#00A884] transition-colors duration-200">
+              <a href="#about" className="hover:text-[#00A884] font-display transition-colors duration-200">
                 About Us
               </a>
               
