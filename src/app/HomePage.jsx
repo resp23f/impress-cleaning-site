@@ -106,13 +106,19 @@ function Hero() {
             <div>
             <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[0px]">
 
-<h1 className="font-display font-bold tracking-tight text-balance text-white text-[36px] md:text-[52px] lg:text-[60px] leading-tight drop-shadow-2xl mt-[205px] md:mt-0 max-w-[320px] md:max-w-[600px]" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.6), 0px 0px 12px rgba(0,0,0,0.24)'}}>We’ll make your space shine so you can focus on what matters.
-                        </h1>
-                <div className="mt-6 2xl:mt-8 flex gap-4">
-                <a href="tel:+15122775364" className="inline-flex items-center rounded-lg px-10 py-5 tracking-wide font-extrabold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[25px]">Call Now</a>
+<h1
+                className="font-display tracking-tight text-balance text-white 
+                    text-[clamp(28px,3.5vw,190px)] leading-[clamp(1.25,3vw,1.25)] max-w-[min(90vw,34ch)]"
+                 > Cleaning done right, so you can enjoy what matters most.
+                                        </h1>
+        <div className="mt-4 sm:mt-6 flex gap-3 sm:gap-4">
+            
+                <a href="tel:+15122775364" className="inline-flex items-center justify-center rounded-lg font-extrabold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
+                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }} >Call Now</a>
 
-<a href="#quote" className="inline-flex items-center rounded-lg px-8 py-4 tracking-wide font-extrabold text-white shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 bg-[#00A884] hover:bg-[#009879] font-manrope text-[18px] md:text-[20px] lg:text-[25px]">Free Quote</a>
-                        </div>
+                <a href="#quote" className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
+                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(12px, 1.3vw, 20px)' }} >Get a Free Estimate</a>
+                 </div>
               </div>
 
               {/* Right column kept for layout balance; remove if you want text to span full width */}
