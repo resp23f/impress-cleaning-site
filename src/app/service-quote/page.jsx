@@ -54,12 +54,12 @@ export default function ServiceQuotePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
 
-      <section className="bg-dark-navy text-white py-16">
+      <section className="bg-[#1C294E]/90 text-white py-16">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Request a Free Quote</h1>
-          <p className="text-xl">Fill out the form below and we will get back to you within 24 hours with a custom cleaning quote</p>
+          <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Request a Free Quote</h1>
+          <p className="font-manrope text-xl">Fill out the form below and we will get back to you within 24 hours with a custom cleaning quote</p>
         </div>
       </section>
 
@@ -77,7 +77,7 @@ export default function ServiceQuotePage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block font-display text-gray-700 font-semibold mb-2">
                   Service Type <span className="text-red-600">*</span>
                 </label>
                 <select
@@ -94,7 +94,7 @@ export default function ServiceQuotePage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block font-display text-gray-700 font-semibold mb-2">
                     Full Name <span className="text-red-600">*</span>
                   </label>
                   <input
@@ -109,7 +109,7 @@ export default function ServiceQuotePage() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block font-display text-gray-700 font-semibold mb-2">
                     Email <span className="text-red-600">*</span>
                   </label>
                   <input
@@ -126,7 +126,7 @@ export default function ServiceQuotePage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block font-display text-gray-700 font-semibold mb-2">
                     Phone Number <span className="text-red-600">*</span>
                   </label>
                   <input
@@ -141,7 +141,7 @@ export default function ServiceQuotePage() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block font-display text-gray-700 font-semibold mb-2">
                     Cleaning Frequency <span className="text-red-600">*</span>
                   </label>
                   <select
@@ -164,7 +164,7 @@ export default function ServiceQuotePage() {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block font-display text-gray-700 font-semibold mb-2">
                   Service Address <span className="text-red-600">*</span>
                 </label>
                 <input
@@ -197,7 +197,7 @@ export default function ServiceQuotePage() {
               )}
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block font-display text-gray-700 font-semibold mb-2">
                   Additional Details or Special Requests
                 </label>
                 <textarea
@@ -213,12 +213,12 @@ export default function ServiceQuotePage() {
               <button
                 type="submit"
                 disabled={state.submitting}
-                className="w-full bg-blue-600 text-white font-semibold py-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-lg"
+                className="w-full bg-[#079447] font-display text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-lg"
               >
                 {state.submitting ? 'Submitting...' : 'Request Free Quote'}
               </button>
 
-              <p className="text-sm text-gray-600 text-center">
+              <p className="text-sm font-manrope text-gray-600 text-center">
                 We respect your privacy. Your information will never be shared. No Spam. Ever.
               </p>
             </form>
@@ -227,18 +227,18 @@ export default function ServiceQuotePage() {
           <div className="mt-8 grid md:grid-cols-3 gap-6 text-center">
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">⚡</div>
-              <h3 className="font-semibold mb-2">Fast Response</h3>
-              <p className="text-gray-600 text-sm">Get your quote within 24 hours or less</p>
+              <h3 className="font-semibold font-display mb-2">Fast Response</h3>
+              <p className="text-gray-600 font-manrope text-sm">Get your quote within 24 hours or less</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">💰</div>
-              <h3 className="font-semibold mb-2">No Obligation.</h3>
-              <p className="text-gray-600 text-sm">Free quotes with no pressure</p>
+              <h3 className="font-semibold font-display mb-2">No Obligation.</h3>
+              <p className="text-gray-600 font-manrope text-sm">Free quotes with no pressure</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">✓</div>
-              <h3 className="font-semibold mb-2">Trusted Service</h3>
-              <p className="text-gray-600 text-sm">Serving Georgetown since 2010</p>
+              <h3 className="font-semibold font-display mb-2">Trusted Service</h3>
+              <p className="text-gray-600 font-manrope text-sm">Serving Georgetown since 2010</p>
             </div>
           </div>
         </div>

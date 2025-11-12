@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   color-scheme: light;              /* Tells browser this is a light-themed site */
@@ -23,6 +21,14 @@
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  
+  .scrollbar-none::-webkit-scrollbar { 
+    display: none; 
+  }
+  .scrollbar-none { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
   }
 }
 
@@ -76,6 +82,7 @@ html {
   background-color: var(--background);
   -webkit-text-size-adjust: 100%; /* prevent iOS auto-zoom */
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -83,22 +90,45 @@ body {
   color: var(--foreground);
 }
 
-/* Tiny superscript for “LLC” */
-.align-super{ vertical-align: super; }
-/* Tiny font utilities (bulletproof, override Tailwind if needed) */
-.text-2xs { font-size: 10px !important; line-height: 1; }
-.text-3xs { font-size: 9px  !important; line-height: 1; }
-.text-4xs { font-size: 8px  !important; line-height: 1; }
-
-footer, footer * { opacity: 1 !important; }
-
-select.no-native {
--webkit-appearance: none;
--moz-appearance: none;
-appearance: none;
-background-image: none !important; /* Safari */
+html, body { 
+  overflow-x: hidden; 
 }
 
+/* Tiny superscript for "LLC" */
+.align-super { 
+  vertical-align: super; 
+}
+
+/* Tiny font utilities (bulletproof, override Tailwind if needed) */
+.text-2xs { 
+  font-size: 10px !important; 
+  line-height: 1; 
+}
+
+.text-3xs { 
+  font-size: 9px !important; 
+  line-height: 1; 
+}
+
+.text-4xs { 
+  font-size: 8px !important; 
+  line-height: 1; 
+}
+
+footer, footer * { 
+  opacity: 1 !important; 
+}
+
+select.no-native {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none !important; /* Safari */
+}
+
+select.no-native::-ms-expand { 
+  display: none; 
+}
 
 .container {
   width: 100%;
@@ -122,23 +152,17 @@ background-image: none !important; /* Safari */
     padding-right: 3rem;
   }
 }
+
 .full-bleed {
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
 }
 
-@layer utilities {
-  .scrollbar-none::-webkit-scrollbar { display: none; }
-  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+.font-display { 
+  font-family: var(--font-heading), "Onest", ui-serif, system-ui, sans-serif; 
 }
 
-/* avoid stray horizontal scrollbars */
-html, body { overflow-x: hidden; }
-
-/* Remove dropdown arrow in old Edge/IE */
-select.no-native::-ms-expand { display: none; }
-
-
-.font-display { font-family: var(--font-heading), "Onest", ui-serif, system-ui, sans-serif; }
-.font-sans { font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; }
+.font-sans { 
+  font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
+}

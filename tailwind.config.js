@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {  
-  
+
   content: [
     "./src/app/**/*.{js,jsx,ts,tsx}",        
     "./src/app/(routes)/**/*.{js,jsx,ts,tsx}",
@@ -25,6 +25,7 @@ module.exports = {
         manrope: ["Manrope", "sans-serif"],                                     // Explicit Manrope
         onest: ["Onest", "sans-serif"],                                         // Explicit Onest
       },
+      
       colors: {
         background: "#FAFAF8",
         navy: "#1C294E",        
