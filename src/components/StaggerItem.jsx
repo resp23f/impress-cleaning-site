@@ -1,63 +1,51 @@
-// components/StaggerItem.jsx
 'use client';
-import { useEffect, useRef, useState } from 'react';
+
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 export default function StaggerItem({ 
   children, 
-  delay = 0, 
+  className = "",
+  delay = 0,
+  once = true,
   threshold = 0.1,
-  rootMargin = '-50px 0px',
-  duration = 700,
-  once = true  // Add this prop to control re-animation
+  rootMargin = "-50px"
 }) {
-  const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
+  const isInView = useInView(ref, { 
+    once: once,
+    amount: threshold,
+    margin: rootMargin
+  });
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          // Element is entering the viewport
-          if (!isVisible) {
-            setTimeout(() => setIsVisible(true), delay);
-          }
-        } else if (!once && isVisible) {
-          // Element is leaving viewport - only reset if once=false
-          setIsVisible(false);
-        }
-      },
-      {
-        threshold,
-        rootMargin,
+  const itemVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 30,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        delay: delay / 1000, // Convert ms to seconds for Framer Motion
+        ease: [0.16, 1, 0.3, 1], // More natural easing curve
       }
-    );
-
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
     }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [delay, isVisible, threshold, rootMargin, once]);
+  };
 
   return (
-    <div
+    <motion.div 
       ref={ref}
-      className={`transition-all ease-out ${
-        isVisible 
-          ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-8'
-      }`}
-      style={{
-        transitionDuration: `${duration}ms`,
-        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-      }}
+      variants={itemVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      className={className}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
