@@ -90,6 +90,9 @@ function SiteHeader() {
               {/* NEW: style={{ gap: 'clamp(4px, 0.8vw, 48px)', fontSize: 'clamp(10px, 1.2vw, 28px)' }} */}
               {/* Gap scales from 4px to 48px based on screen width */}
               {/* Font size scales from 10px to 28px based on screen width */}
+
+              <Link href="/" className="hover:text-green transition-colors duration-200 font-display"
+              > Home </Link>
               
               <Link href="/residential-section" className="hover:text-green transition-colors duration-200 font-display"
               > Residential </Link>
