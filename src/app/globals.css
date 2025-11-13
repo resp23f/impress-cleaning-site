@@ -127,6 +127,9 @@
 .animate-in {
   opacity: 1 !important;
   transform: translateY(0) !important;
+} 
+.ease-butter {
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 html {

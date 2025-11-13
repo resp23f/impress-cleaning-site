@@ -35,7 +35,7 @@ export default function ResidentialPage() {
    {/* Hero Section */}
       <section 
         ref={heroRef}
-        className="relative pt-32 pb-20 px-4 overflow-hidden opacity-0 transition-all duration-1000 ease-out translate-y-8"
+        className="relative pt-32 pb-20 px-4 overflow-hidden opacity-0 transition-all duration-2000 ease-butter translate-y-8"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#001F3F] to-[#003D7A] opacity-90" />
         <div className="absolute inset-0">
