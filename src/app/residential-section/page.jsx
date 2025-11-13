@@ -1,8 +1,56 @@
 'use client';
 import StaggerItem from '@/components/StaggerItem';
+import Link from 'next/link';
+import { useState } from 'react';
 
-export default function ResidentialPage() {
 
+export default function ImpressCleaningSite() {
+      const [sent, setSent] = useState(false);
+      const [sending, setSending] = useState(false);
+      const FORM_ENDPOINT = "https://formspree.io/f/xblzwdek";
+    
+      async function handleSubmit(e) {
+        e.preventDefault();
+        setSending(true);
+        const form = e.currentTarget;
+        const data = Object.fromEntries(new FormData(form));
+    
+        if (!FORM_ENDPOINT) {
+          const body = encodeURIComponent(
+            Object.entries(data).map(([k, v]) => `${k}: ${v}`).join("\n")
+          );
+          window.location.href = `mailto:admin@impressyoucleaning.com?subject=Quote%20Request&body=${body}`;
+          track('quote_submitted', { method: 'mailto' });
+          setSending(false);
+          setSent(true);
+          form.reset();
+          return;
+        }
+    
+        try {
+          const res = await fetch(FORM_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(data),
+          });
+          const payload = await res.json().catch(() => ({}));
+          if (res.ok) {
+            track('quote_submitted', { method: 'formspree' });
+            setSent(true);
+            form.reset();
+          } else {
+            track('quote_submit_failed', { status: res.status });
+            console.error("Formspree JSON error", res.status, payload);
+            alert(payload?.errors?.[0]?.message ?? "Submit failed. Check Allowed Domains.");
+          }
+        } catch (err) {
+          track('quote_submit_failed', { error: 'network' });
+          console.error("Network error:", err);
+          alert("Network error. Please try again.");
+        } finally {
+          setSending(false);
+        }
+      }    
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -31,13 +79,13 @@ export default function ResidentialPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a 
-                href="/quote" 
+              <Link
+                href="/service-quote"
                 className="group px-8 py-4 bg-white text-[#001F3F] rounded-lg font-semibold text-lg hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 Get Your Free Quote
                 <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </a>
+              </Link>
               <a 
                 href="#services" 
                 className="px-8 py-4 bg-transparent text-white rounded-lg font-semibold text-lg border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300"
@@ -622,13 +670,14 @@ export default function ResidentialPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a 
-                href="/quote" 
+                            
+              <Link
+                href="/service-quote" 
                 className="group px-10 py-5 bg-[#FAFAF8] text-[#1C294E] rounded-lg font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
               >
                 Get Your Free Quote
                 <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </a>
+                </Link>
               <a 
                 href="tel:+15121234567" 
                 className="group px-10 py-5 bg-[#FAFAF8] text-[#1C294E] rounded-lg font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
