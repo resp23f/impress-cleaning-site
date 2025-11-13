@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useMemo } from "react";
 
@@ -50,24 +51,20 @@ function SiteHeader() {
       <header className="sticky top-0 z-50 bg-background [transform:translateZ(0)] [backface-visibility:hidden]">
         
         {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
-<div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
-          {/* REPLACED: className="container relative" */}
-          {/* NEW: Fluid max-width scales from 900px to 1600px based on screen size */}
-          
+<div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>          
           <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5 px-4 lg:px-8">
             
             {/* ========== LOGO ========== */}
-<a 
-  href="#top"
-  className="flex items-center select-none shrink-0"
-  aria-label="Impress Cleaning Home"
->
-  <img 
-    src="/impress-cleaning-background.png" 
-    alt="Impress Cleaning Services" 
-    className="h-[80px] md:h-[70px] lg:h-[85px] xl:h-[100px] 2xl:h-[120px] w-[170px] translate-y-[16px]"/> </a>
-            {/* ========== HAMBURGER MENU BUTTON (Mobile Only) ========== */}
-            <button
+<Link href="/" className="flex items-center select-none shrink-0" aria-label="Impress Cleaning Home">
+<Image
+  src="/impress-cleaning-background.png"
+  alt="Impress Cleaning Services"
+  width={170}
+  height={100}
+  className="h-[80px] md:h-[70px] lg:h-[85px] xl:h-[100px] 2xl:h-[120px] w-[170px] translate-y-[-16px]"
+/>
+</Link>            
+<button
               type="button"
               aria-label="Toggle navigation"
               onClick={() => setOpen((prev) => !prev)}
