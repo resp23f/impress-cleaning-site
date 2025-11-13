@@ -29,8 +29,8 @@ function SiteHeader() {
     <>
       {/* ========== TOP BAR (Gift Certificates | Careers | Aplicar) ========== */}
       <div className="relative overflow-hidden bg-background">
-        <div className="bg-white/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-[51] hidden md:block">
-          <div className="max-w-[1600px] mx-auto flex items-center justify-end gap-5 py-1.5 px-6 lg:px-8 relative left-[30px] font-manrope font-semibold text-textLight text-[13px] lg:text-[15px]">
+        <div className="bg-background  sticky top-0 z-[51] hidden md:block">
+          <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-6 py-1.5 px-6 lg:px-8 relative left-[10px] font-manrope font-semibold text-textLight text-[13px] lg:text-[15px]">
             <a href="#gift" className="hover:text-green transition font-manrope">
               Gift Certificates
             </a>
@@ -47,7 +47,7 @@ function SiteHeader() {
       </div>
 
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-      <header className="sticky top-0 z-50 bg-white [transform:translateZ(0)] [backface-visibility:hidden]">
+      <header className="sticky top-0 z-50 bg-background [transform:translateZ(0)] [backface-visibility:hidden]">
         
         {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
 <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>

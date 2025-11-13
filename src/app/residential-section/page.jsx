@@ -31,7 +31,7 @@ export default function ResidentialPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-background">
    {/* Hero Section */}
       <section 
         ref={heroRef}
@@ -81,7 +81,7 @@ export default function ResidentialPage() {
       <section 
         id="services"
         ref={servicesRef}
-        className="py-24 px-4 bg-gradient-to-b from-gray-50 to-white opacity-0 transition-all duration-1000 ease-out translate-y-8"
+        className="py-24 px-4 bg-background-50 transition-all duration-1000 ease-out translate-y-8"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -343,7 +343,7 @@ export default function ResidentialPage() {
 
 
  {/* Who We Serve Section - Add this AFTER the Services Grid and BEFORE How It Works */}
-<section className="py-20 px-4 bg-white">
+<section className="py-20 px-4 bg-background-100">
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-12">
       <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -429,7 +429,7 @@ export default function ResidentialPage() {
       {/* Process Section */}
       <section 
         ref={processRef}
-        className="py-24 px-4 bg-white opacity-0 transition-all duration-1000 ease-out translate-y-8"
+        className="py-24 px-4 bg-[5FB87E] opacity-100 transition-all duration-1000 ease-out translate-y-8"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
