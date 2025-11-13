@@ -52,51 +52,6 @@
   }
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.scroll-animate {
-  opacity: 0;
-}
-
-.scroll-animate.visible {
-  opacity: 1;
-}
-
-/* Staggered animation for cards */
-.stagger-item {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.stagger-item.visible {
-  animation: fadeInUp 1.5s ease-out forwards;
-}
-
-/* Delay for each card - slower stagger */
-.stagger-item:nth-child(1).visible {
-  animation-delay: 0.15s;
-}
-
-.stagger-item:nth-child(2).visible {
-  animation-delay: 0.3s;
-}
-
-.stagger-item:nth-child(3).visible {
-  animation-delay: 0.45s;
-}
-
-.stagger-item:nth-child(4).visible {
-  animation-delay: 0.6s;
-}
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);
@@ -124,13 +79,16 @@
   animation-delay: 4s;
 }
 
+/* Apple-style smooth scroll animations */
 .animate-in {
   opacity: 1 !important;
   transform: translateY(0) !important;
-} 
+}
+
 .ease-butter {
   transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
+
 
 html {
   background-color: var(--background);

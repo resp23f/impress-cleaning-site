@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactButton from '@/components/ContactButton'
+import PageTransition from '@/components/PageTransition'
 import { Analytics } from '@vercel/analytics/react';
 import { Manrope, Onest } from "next/font/google";
 
@@ -37,10 +38,12 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${manrope.variable} ${onest.variable}`}>
       <body className="font-sans antialiased bg-background text-slate-900">
         <Header />
+        <PageTransition>
         <main className="min-h-screen flex-col">
           {children}
         </main>
         <Footer />
+        </PageTransition>
         <ContactButton />
       </body>
     </html>
