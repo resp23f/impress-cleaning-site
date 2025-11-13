@@ -3,11 +3,11 @@
 import { useEffect, useRef } from 'react';
 
 export default function ResidentialPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const servicesRef = useRef<HTMLDivElement>(null);
-  const processRef = useRef<HTMLDivElement>(null);
-  const benefitsRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef(null);
+  const servicesRef = useRef(null);
+  const processRef = useRef(null);
+  const benefitsRef = useRef(null);
+  const ctaRef = useRef(null);
 
   useEffect(() => {
     const observerOptions = {
@@ -32,7 +32,7 @@ export default function ResidentialPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Hero Section */}
+   {/* Hero Section */}
       <section 
         ref={heroRef}
         className="relative pt-32 pb-20 px-4 overflow-hidden opacity-0 transition-all duration-1000 ease-out translate-y-8"

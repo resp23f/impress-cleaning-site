@@ -94,9 +94,9 @@ function SiteHeader() {
               {/* Gap scales from 4px to 48px based on screen width */}
               {/* Font size scales from 10px to 28px based on screen width */}
               
-              <Link href="/residential-section" className="hover:text-green transition-colors duration-200 font-display">
-                Residential
-              </Link>
+              <Link href="/residential-section" className="hover:text-green transition-colors duration-200 font-display"
+              > Residential </Link>
+
               <a href="#commercial" className="hover:text-green transition-colors duration-200 font-display">
                 Commercial
               </a>
