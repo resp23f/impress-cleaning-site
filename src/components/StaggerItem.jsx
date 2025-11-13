@@ -7,8 +7,8 @@ import { useRef } from 'react';
 export default function StaggerItem({ children, className = "" }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { 
-    once: true,  // Animation happens only once
-    margin: "-100px"  // Trigger 100px before element enters viewport
+    once: false,  // ← Changed from true to false
+    margin: "-100px"
   });
 
   const itemVariants = {
