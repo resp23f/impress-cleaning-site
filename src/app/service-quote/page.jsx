@@ -56,14 +56,14 @@ export default function ServiceQuotePage() {
   return (
     <div className="min-h-screen bg-background">
 
-      <section className="bg-[#1C294E]/90 text-white py-16">
+      <section className="bg-[#1C294E]/80 text-white py-15">
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Request a Free Quote</h1>
           <p className="font-manrope text-xl">Fill out the form below and we will get back to you within 24 hours or less with a cleaning quote</p>
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-25">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
             
@@ -224,14 +224,14 @@ export default function ServiceQuotePage() {
             </form>
           </div>
 
-          <div className="mt-8 grid md:grid-cols-3 gap-6 text-center">
+          <div className="mt-20 grid md:grid-cols-3 gap-6 text-center">
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">⚡</div>
               <h3 className="font-semibold font-display mb-2">Fast Response</h3>
               <p className="text-gray-600 font-manrope text-sm">Get your quote within 24 hours or less</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
-              <div className="text-3xl mb-2">💰</div>
+              <div className="text-3xl mb-2">✓</div>
               <h3 className="font-semibold font-display mb-2">No Obligation.</h3>
               <p className="text-gray-600 font-manrope text-sm">Free quotes with no pressure</p>
             </div>
