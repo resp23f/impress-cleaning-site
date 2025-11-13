@@ -2,15 +2,35 @@
 
 :root {
   color-scheme: light;              /* Tells browser this is a light-themed site */
-  --background: #FAFAF8;            /* ✅ CHANGED: Was #ffffff, now warm off-white */
-  --foreground: #2C3A4B;            /* Text color (dark gray) */
-}
+    --background: #FAFAF8;
+    --foreground: #2C3A4B;
+    --softgreen: #7AC699;
+    --navy: #1C294E;
+    --green: #5FB87E;
+    --navy-dark: #0B2859;
+    --text-primary: #1C294E;
+    --text-secondary: #2C3A4B;
+    --text-light: #647488;
+    --text-white: #FFFFFF;
+    --border-gray: #E7EBF0;
+    --green-hover: #08A855;
+  }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: light;            /* Still forcing light mode */
-    --background: #FAFAF8;          /* ✅ CHANGED: Still light background */
-    --foreground: #2C3A4B;          /* Still dark text */
+    --background: #FAFAF8;
+    --foreground: #2C3A4B;
+    --softgreen: #7AC699;
+    --navy: #1C294E;
+    --green: #5FB87E;
+    --navy-dark: #0B2859;
+    --text-primary: #1C294E;
+    --text-secondary: #2C3A4B;
+    --text-light: #647488;
+    --text-white: #FFFFFF;
+    --border-gray: #E7EBF0;
+    --green-hover: #08A855;
   }
 }
 

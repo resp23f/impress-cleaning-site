@@ -47,10 +47,10 @@ export default function ResidentialPage() {
           <div className="inline-block mb-6 px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
             <span className="text-blue-200 text-sm font-medium tracking-wide">RESIDENTIAL CLEANING SERVICES</span>
           </div>
-          
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
             Your Home Deserves
-            <span className="block mt-2 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+            <span className="block mt-2 bg-gradient-to-r font-display from-blue-200 to-white bg-clip-text text-transparent">
               The Impress Standard
             </span>
           </h1>
@@ -85,7 +85,7 @@ export default function ResidentialPage() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
               Flexible Cleaning Plans
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -109,7 +109,7 @@ export default function ResidentialPage() {
                   <span className="inline-block px-3 py-1 bg-blue-100 text-[#001F3F] text-xs font-semibold rounded-full mb-3">
                     MOST POPULAR
                   </span>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Bi-Weekly Cleaning</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Bi-Weekly Cleaning</h3>
                   <p className="text-gray-600 leading-relaxed">
                     Perfect for busy families who want to maintain a consistently clean home without the daily hassle. Every two weeks, we restore your space to pristine condition.
                   </p>
@@ -148,8 +148,8 @@ export default function ResidentialPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Tri-Weekly Cleaning</h3>
+
+                <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Tri-Weekly Cleaning</h3>
                 <p className="text-gray-600 leading-relaxed mb-6">
                   The sweet spot for homes that stay relatively tidy but need regular professional attention. Every three weeks keeps your space fresh and welcoming.
                 </p>
@@ -187,8 +187,8 @@ export default function ResidentialPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Monthly Cleaning</h3>
+
+                <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Monthly Cleaning</h3>
                 <p className="text-gray-600 leading-relaxed mb-6">
                   Ideal for well-maintained homes or those looking for periodic deep refreshes. We tackle the cleaning tasks that build up over time.
                 </p>
@@ -226,8 +226,8 @@ export default function ResidentialPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                 </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Move-Out Cleaning</h3>
+
+                <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Move-Out Cleaning</h3>
                 <p className="text-gray-600 leading-relaxed mb-6">
                   Comprehensive cleaning for vacant properties. We ensure every corner is spotless, helping you leave a lasting impression or prepare your home for its next chapter.
                 </p>
@@ -265,8 +265,8 @@ export default function ResidentialPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Make-Ready Cleaning</h3>
+
+                <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Make-Ready Cleaning</h3>
                 <p className="text-gray-600 leading-relaxed mb-6">
                 Perfect for homeowners preparing to sell, realtors staging properties, or families helping older relatives transition between homes. We transform homes between owners, ensuring they're move-in ready and impressive.
                 </p>
@@ -304,8 +304,8 @@ export default function ResidentialPage() {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
       </svg>
     </div>
-    
-    <h3 className="text-2xl font-bold text-white mb-2">Premium Add-On Services</h3>
+
+    <h3 className="text-2xl font-bold text-white font-display mb-2">Premium Add-On Services</h3>
     <p className="text-blue-100 leading-relaxed mb-6">
       Enhance your cleaning with specialized services. Each requires dedicated time, equipment, and expertise—priced separately to ensure quality results.
     </p>
@@ -346,7 +346,7 @@ export default function ResidentialPage() {
 <section className="py-20 px-4 bg-background-100">
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-12">
-      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+      <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 mb-4">
         Who Relies on Impress
       </h2>
       <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -427,17 +427,18 @@ export default function ResidentialPage() {
 </section>
 
       {/* Process Section */}
-      <section 
-        ref={processRef}
-        className="py-24 px-4 bg-[5FB87E] opacity-100 transition-all duration-1000 ease-out translate-y-8"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              How It Works
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Getting professional cleaning services has never been easier. We've streamlined every step.
+<section
+ref={processRef}
+className="py-24 px-4 bg-[var(--background)] opacity-100 transition-all duration-1000 ease-out translate-y-8"
+>
+<div className="max-w-7xl mx-auto">
+  <div className="bg-[var(--softgreen)] rounded-3xl p-12 md:p-16 shadow-2xl border border-green-200/30">
+    <div className="text-center mb-16">
+      <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+        How It Works
+      </h2>
+      <p className="text-xl text-gray-600 font-manrope max-w-2xl mx-auto">
+                          Getting professional cleaning services has never been easier. We've streamlined every step.
             </p>
           </div>
 
@@ -452,8 +453,8 @@ export default function ResidentialPage() {
                   {/* Connector Line */}
                   <div className="hidden md:block absolute top-10 left-20 w-full h-0.5 bg-gradient-to-r from-[#001F3F] to-gray-200" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Request a Quote</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-xl font-bold font-display text-gray-900 mb-3">Request a Quote</h3>
+                <p className="text-gray-600 leading-relaxed font-manrope">
                   Fill out our simple form or call us directly. We'll discuss your needs and provide a transparent, no-obligation quote.
                 </p>
               </div>
@@ -468,8 +469,8 @@ export default function ResidentialPage() {
                   </div>
                   <div className="hidden md:block absolute top-10 left-20 w-full h-0.5 bg-gradient-to-r from-gray-200 to-gray-200" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Schedule Service</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-xl font-bold text-gray-900 font-display mb-3">Schedule Service</h3>
+                <p className="text-gray-600 leading-relaxed font-manrope">
                   Choose a time that works for you. We're flexible and send reminders so you never miss an appointment. Self-booking coming soon!
                 </p>
               </div>
@@ -484,8 +485,8 @@ export default function ResidentialPage() {
                   </div>
                   <div className="hidden md:block absolute top-10 left-20 w-full h-0.5 bg-gradient-to-r from-gray-200 to-gray-200" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">We Clean</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-xl font-bold text-gray-900 font-display mb-3">We Clean</h3>
+                <p className="text-gray-600 leading-relaxed font-manrope">
                   Our professional team arrives with eco-friendly products that truly remove dirt and grime. We handle every detail with care.
                 </p>
               </div>
@@ -499,30 +500,27 @@ export default function ResidentialPage() {
                     <span className="text-3xl font-bold text-white">4</span>
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Enjoy Your Home</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Enjoy Your Home</h3>
+                <p className="text-gray-600 leading-relaxed font-manrope">
                   Relax in your spotless space. Manage future appointments easily through our upcoming customer portal.
                 </p>
               </div>
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* Benefits Section */}
       <section 
         ref={benefitsRef}
-        className="py-24 px-4 bg-gradient-to-b from-gray-50 to-white opacity-0 transition-all duration-1000 ease-out translate-y-8"
+        className="py-24 px-4 bg-gradient-to-b from-gray-50 to-background opacity-100 transition-all duration-1000 ease-out translate-y-8"
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div>
-              <div className="inline-block mb-6 px-4 py-2 bg-blue-100 rounded-full">
-                <span className="text-[#001F3F] text-sm font-semibold tracking-wide">WHY CHOOSE US</span>
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <div>              
+              <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 mb-6 leading-tight">
                 The Impress Difference
               </h2>
               
@@ -613,24 +611,13 @@ export default function ResidentialPage() {
                     <svg className="w-24 h-24 text-white/50 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <p className="text-white/70 text-lg">Professional Cleaning Excellence</p>
+                    <p className="text-white/70 text-lg">TBD</p>
                   </div>
                 </div>
                 
                 {/* Decorative Elements */}
                 <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob" />
                 <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000" />
-              </div>
-              
-              {/* Stats Cards */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-6 border border-gray-100">
-                <div className="text-3xl font-bold text-[#001F3F] mb-1">500+</div>
-                <div className="text-sm text-gray-600">Homes Cleaned</div>
-              </div>
-              
-              <div className="absolute -top-6 -right-6 bg-white rounded-xl shadow-xl p-6 border border-gray-100">
-                <div className="text-3xl font-bold text-[#001F3F] mb-1">5★</div>
-                <div className="text-sm text-gray-600">Client Rating</div>
               </div>
             </div>
           </div>
@@ -640,43 +627,47 @@ export default function ResidentialPage() {
       {/* CTA Section */}
       <section 
         ref={ctaRef}
-        className="relative py-24 px-4 overflow-hidden opacity-0 transition-all duration-1000 ease-out translate-y-8"
+        className="relative py-24 px-4 overflow-hidden opacity-0 transition-all duration-1000 ease-out translate-y-5"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#001F3F] to-[#003D7A] opacity-90" />
+        <div className="absolute inset-0 bg-[var(--softgreen)]" />
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--background)] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[var(--background)] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+
         </div>
         
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display leading-tight">
             Ready to Experience the Impress Difference?
           </h2>
-          <p className="text-xl text-blue-100 mb-10 leading-relaxed">
+          <p className="text-xl text-[#1C294E] mb-10 font-semibold font-manrope leading-relaxed">
           Join hundreds of families and homeowners who rely on us for essential home maintenance. Get your free quote today and ensure your home receives the professional care it deserves.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
               href="/quote" 
-              className="group px-10 py-5 bg-white text-[#001F3F] rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
+              className="group px-10 py-5 bg-[#FAFAF8] text-[#1C294E] rounded-lg font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
             >
               Get Your Free Quote
               <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>
             <a 
               href="tel:+15121234567" 
-              className="px-10 py-5 bg-transparent text-white rounded-lg font-bold text-lg border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300"
-            >
+              className="group px-10 py-5 bg-[#FAFAF8] text-[#1C294E] rounded-lg font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
+                          >
               Call (512) 123-4567
+              <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1"></span>
             </a>
           </div>
-          
-          <p className="mt-8 text-blue-200 text-sm">
+
+          <p className="mt-8 text-[#2C3A4B] font-manrope text-md">
           Professional service • Trusted locally • Dependable results
           </p>
         </div>
       </section>
+      <section className="py-9 bg-background"></section>
+
     </main>
   );
 }

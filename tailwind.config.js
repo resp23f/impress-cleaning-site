@@ -30,6 +30,7 @@ module.exports = {
         background: "#FAFAF8",
         navy: "#1C294E",        
         green: "#5FB87E",
+        softgreen: "#7AC699",
         navyDark: "#0B2850",
         textPrimary: "#1C294E",
         textSecondary: "#2C3A4B",
