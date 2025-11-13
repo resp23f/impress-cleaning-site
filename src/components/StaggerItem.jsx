@@ -10,7 +10,6 @@ export default function StaggerItem({
   delay = 0,
   once = true,
   direction = "up",
-  direction = "down",
   threshold = 0.1,
   rootMargin = "-100px"
 }) {
