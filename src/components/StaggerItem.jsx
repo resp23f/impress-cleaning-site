@@ -9,9 +9,10 @@ export default function StaggerItem({
   className = "",
   delay = 0,
   once = true,
-  direction = "down", 
-  direction = "up"  // Add direction: "up", "down", "left", "right"
-  
+  direction = "up",
+  direction = "down",
+  threshold = 0.1,
+  rootMargin = "-100px"
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { 
