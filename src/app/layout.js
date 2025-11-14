@@ -25,14 +25,20 @@ const onest = Onest({
 
 
 export const metadata = {
-title: "House Cleaning Services | Impress Cleaning Services",
-description:
-"Locally owned residential cleaning service in Georgetown, TX. Reliable, professional, and thorough home cleaning.",
-icons: {
-icon: { url: "/favicon-v2.png", sizes: "32x32", type: "image/png" },
-apple: { url: "/favicon-v2.png", sizes: "180x180", type: "image/png" },
-},
+  title: "Impress Cleaning Services - Professional House Cleaning in Georgetown, TX",
+  description: "Professional cleaning services in Georgetown, Austin, and Central Texas. Reliable, insured, and trusted for over 15 years.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' },
+    ],
+  },
 };
+
 
 export default function RootLayout({ children }) {
   return (
