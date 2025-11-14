@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { track } from '@vercel/analytics';
 import Link from 'next/link';
+import StaggerItem from '@/components/StaggerItem';
 
 const ShieldCheckIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
@@ -93,80 +94,95 @@ export default function ImpressCleaningSite() {
 
 function Hero() {
   return (
-    <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
-    <div className="relative min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] w-full overflow-hidden">
-<img
-          src="/hero-cleaners1.jpg"
-          alt="Impress Cleaning pro team"
-          className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
-        <div className="relative z-10">
-          <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
-            <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
-            <div>
-            <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[0px]">
+    <StaggerItem>
+      <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
+        <div className="relative min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] w-full overflow-hidden">
+          <img
+            src="/hero-cleaners1.jpg"
+            alt="Impress Cleaning pro team"
+            className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
+          <div className="relative z-10">
+            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
+              <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
+                <div>
+                  <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[0px]">
+                    <h1
+                      className="font-display tracking-tight text-balance text-white 
+                        text-[clamp(28px,3.5vw,190px)] leading-[clamp(1.25,3vw,1.25)] max-w-[min(90vw,34ch)]"
+                    > 
+                      We'll Make Your Space Shine So You Can Focus On What Matters Most.
+                    </h1>
+                    <div className="mt-4 sm:mt-6 flex gap-3 sm:gap-4">
+                      <a 
+                        href="tel:+15122775364" 
+                        className="inline-flex items-center justify-center rounded-lg font-extrabold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
+                        style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }} 
+                      >
+                        Call Now
+                      </a>
 
-<h1
-                className="font-display tracking-tight text-balance text-white 
-                    text-[clamp(28px,3.5vw,190px)] leading-[clamp(1.25,3vw,1.25)] max-w-[min(90vw,34ch)]"
-                 > Cleaning done right, so you can enjoy what matters most.
-                                        </h1>
-        <div className="mt-4 sm:mt-6 flex gap-3 sm:gap-4">
-            
-                <a href="tel:+15122775364" className="inline-flex items-center justify-center rounded-lg font-extrabold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
-                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }} >Call Now</a>
+                      <Link 
+                        href="/service-quote" 
+                        className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
+                        style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(12px, 1.3vw, 20px)' }} 
+                      >
+                        Get a Free Estimate
+                      </Link>
+                    </div>
+                  </div>
 
-                <Link 
-                href="/service-quote" 
-                className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
-                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(12px, 1.3vw, 20px)' }} 
-                >
-                   Get a Free Estimate
-                </Link>
-        </div>
-        </div>
-
-              {/* Right column kept for layout balance; remove if you want text to span full width */}
-              <div className="hidden lg:block" />
+                  {/* Right column kept for layout balance; remove if you want text to span full width */}
+                  <div className="hidden lg:block" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
-    </section>
+      </section>
+    </StaggerItem>
   );
 }
 
 function WhyChoose() {
   const cards = [
     { t: 'Reliable Results', d: 'Every clean follows our proven checklist system, so your space looks great no matter whos on the schedule.', icon:"/results.png", extra: 'scale-[1.15] translate-y-[7px]' },
-
     { t: 'Easy Booking & Reminders', d: 'Schedule cleaning online in seconds - plus text confirmations and reminders before every visit.', icon:"/calendar.png" },
-
     { t: 'Clear Communication', d: 'We keep you in the loop from booking to follow-up, so you always know what\'s happening and when.', icon:"/communication.png" },
-
     { t: 'Locally Owned', d: 'Proudly serving our community with a local touch. Every job supports local families.', icon:"/local-home.png" },
-
   ];
+
   return (
     <section className="bg-white py-12 md:py-16">
-    <div className="mx-auto max-w-7xl px-4 md:px-6">
-    <div className="grid md:grid-cols-2 gap-6 items-center">
-                 <div className="lg:col-span-2">
-            <h3 className="font-display text-24px md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">Why Choose Impress Cleaning Services</h3>
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="grid md:grid-cols-2 gap-6 items-center">
+          <div className="lg:col-span-2">
+            <StaggerItem>
+              <h3 className="font-display text-24px md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">
+                Why Choose Impress Cleaning Services
+              </h3>
+            </StaggerItem>
+
             <ul className="mt-6 grid sm:grid-cols-2 gap-4">
-              {cards.map((c) => (
-                <li key={c.t} className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm p-6">                  <div className="flex items-start gap-3">
-                <div className="w-20 h-20 grid place-items-center text-emerald-700 sm:mt-0 md:-mt-[8px] lg:-mt-[19px]">
-<img src={c.icon} alt={c.t} className={`w-50 h-30 object-contain ${c.extra || ''}`} />
-</div>
-                    <div>
-                      <div className="font-manrope font-semibold leading-snug[1.45] text-[#18335A] text-left w-full text-16px md:text-[18px] lg:text-[18px]">{c.t}</div>
-                      <p className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-[#2C3A4B] leading-relaxed [1.7] tracking-normal">{c.d}</p>
+              {cards.map((c, index) => (
+                <StaggerItem key={c.t} delay={100 + (index * 100)}>
+                  <li className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm p-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-20 h-20 grid place-items-center text-emerald-700 sm:mt-0 md:-mt-[8px] lg:-mt-[19px]">
+                        <img src={c.icon} alt={c.t} className={`w-50 h-30 object-contain ${c.extra || ''}`} />
+                      </div>
+                      <div>
+                        <div className="font-manrope font-semibold leading-snug[1.45] text-[#18335A] text-left w-full text-16px md:text-[18px] lg:text-[18px]">
+                          {c.t}
+                        </div>
+                        <p className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-[#2C3A4B] leading-relaxed [1.7] tracking-normal">
+                          {c.d}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </li>
+                  </li>
+                </StaggerItem>
               ))}
             </ul>
           </div>
@@ -176,40 +192,7 @@ function WhyChoose() {
   );
 }
 
-
 function HowItWorks() {
-  const sectionRef = React.useRef(null);
-  const cardsRef = React.useRef([]);
-  
-  React.useEffect(() => {
-    const currentSection = sectionRef.current;
-    const currentCards = cardsRef.current;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Trigger all cards to animate
-            currentCards.forEach((card) => {
-              if (card) card.classList.add('visible');
-            });
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    if (currentSection) {
-      observer.observe(currentSection);
-    }
-
-    return () => {
-      if (currentSection) {
-        observer.unobserve(currentSection);
-      }
-    };
-  }, []);
-
   const steps = [
     ['Request Your Quote', 'Tell us a little about your home and the cleaning you need. We\'ll send a quick, straightforward quote that\'s easy to understand.'],
     ['Schedule Your Clean', 'Choose the day and time that fit your schedule. We\'ll confirm your booking and send a quick reminder before your appointment.'],
@@ -218,20 +201,27 @@ function HowItWorks() {
   ];
   
   return (
-    <section ref={sectionRef} className="bg-white py-12 md:py-16">
+    <section className="bg-white py-12 md:py-16">
       <div className="mx-auto max-w-[1600px] px-12 sm:px-6 lg:px-4">
-        <h3 className="font-display text-[24px] md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">How It Works: Simple, Fast & Stress Free</h3>
+        <StaggerItem>
+          <h3 className="font-display text-[24px] md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">
+            How It Works: Simple, Fast & Stress Free
+          </h3>
+        </StaggerItem>
+
         <ol className="mt-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 tracking-wide">
-          {steps.map(([t,d],i)=> (
-            <li 
-              key={t} 
-              ref={(el) => (cardsRef.current[i] = el)}
-              className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm px-10 py-5 stagger-item"
-            >
-              <div className="text-[12px] font-inter font-semibold text-[#079447]">Step {i+1}</div>
-              <div className="font-manrope font-semibold leading-snug text-[#18335A] text-left w-full text-base md:text-lg lg:text-lg">{t}</div>
-              <p className="font-manrope font-regular text-sm md:text-base lg:text-base text-[#2C3A4B] leading-relaxed tracking-normal mt-2">{d}</p>
-            </li>
+          {steps.map(([t, d], i) => (
+            <StaggerItem key={t} delay={100 + (i * 100)}>
+              <li className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm px-10 py-5">
+                <div className="text-[12px] font-inter font-semibold text-[#079447]">Step {i + 1}</div>
+                <div className="font-manrope font-semibold leading-snug text-[#18335A] text-left w-full text-base md:text-lg lg:text-lg">
+                  {t}
+                </div>
+                <p className="font-manrope font-regular text-sm md:text-base lg:text-base text-[#2C3A4B] leading-relaxed tracking-normal mt-2">
+                  {d}
+                </p>
+              </li>
+            </StaggerItem>
           ))}
         </ol>
       </div>
@@ -259,43 +249,62 @@ function SocialProof() {
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const proofCards = [
+    {
+      title: 'Texas Homes. Texas Trust.',
+      description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.'
+    },
+    {
+      title: 'Proven Reputation.',
+      description: 'Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.'
+    },
+    {
+      title: 'People Who Care.',
+      description: 'We\'re more than a cleaning company. We\'re neighbors who take pride in helping families enjoy their homes.'
+    },
+    {
+      title: 'Guaranteed Peace of Mind.',
+      description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.'
+    }
+  ];
   
   return (
-    <>
-    <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
-<div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
-<h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight[1.3] tracking-tight text-center text-white">Why Texas Families Trust Impress</h3>
-<div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
-<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
-<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Texas Homes. Texas Trust.</div>
-<div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.</div>
-            </div>
+    <StaggerItem>
+      <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
+        <div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
+          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight[1.3] tracking-tight text-center text-white">
+            Why Texas Families Trust Impress
+          </h3>
 
-<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
-<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Proven Reputation.</div>
-              <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.</div>
-            </div>
-
-<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
-<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">People Who Care.</div>
-              <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">We're more than a cleaning company. We're neighbors who take pride in helping families enjoy their homes.</div>
-            </div>
-
-<div className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col">
-<div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">Guaranteed Peace of Mind.</div>
-              <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.</div>
-            </div>
+          <div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
+            {proofCards.map((card, index) => (
+              <div 
+                key={index}
+                className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col"
+              >
+                <div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">
+                  {card.title}
+                </div>
+                <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">
+                  {card.description}
+                </div>
+              </div>
+            ))}
           </div>
-      {/* Scroll Indicators - Only visible on mobile/tablet */}
-      <div className="flex justify-center gap-2 mt-6 md:hidden">
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 0 ? 'bg-white' : 'bg-white/50'}`}></div>
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 1 ? 'bg-white' : 'bg-white/50'}`}></div>
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 2 ? 'bg-white' : 'bg-white/50'}`}></div>
-        <div className={`w-2 h-2 rounded-full transition-colors ${activeIndex === 3 ? 'bg-white' : 'bg-white/50'}`}></div>
-      </div>
-      </div> 
+
+          {/* Scroll Indicators - Only visible on mobile/tablet */}
+          <div className="flex justify-center gap-2 mt-6 md:hidden">
+            {proofCards.map((_, index) => (
+              <div 
+                key={index}
+                className={`w-2 h-2 rounded-full transition-colors ${activeIndex === index ? 'bg-white' : 'bg-white/50'}`}
+              />
+            ))}
+          </div>
+        </div> 
       </section>
-    </>
+    </StaggerItem>
   );
 }
 
@@ -316,47 +325,54 @@ function TestimonialsSection() {
   ];
 
   return (
-<section className="bg-white py-12 md:py-16">
-<div className="container mx-auto mb-12 md:max-w-[1800px]">
-<h2 className="font-display text-4xl md:text-5xl font-extrabold text-center text-slate-900">
-          What Our Clients Are Saying
-        </h2>
-      </div>
-      
-{/* Scrolling container */}
-<div className="relative max-w-full mx-auto">
-<div className="overflow-hidden">
-<div className="flex animate-scroll -translate-x-[10%]">
-{/* Render testimonials 3 times for smoother infinite scroll */}
-      {[...Array(12)].map((_, setIndex) => (
-        testimonials.map((testimonial, index) => (
-          <div key={`set-${setIndex}-${index}`} className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block">
-              <p className={`text-slate-900 text-lg md:text-xl font-manrope mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
-              "{testimonial.text}"
-            </p>
-            <p className="text-slate-600 font-playfair text-base md:text-lg">– {testimonial.author}</p>
+    <StaggerItem>
+      <section className="bg-white py-12 md:py-16">
+        <div className="container mx-auto mb-12 md:max-w-[1800px]">
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-center text-slate-900">
+            What Our Clients Are Saying
+          </h2>
+        </div>
+        
+        {/* Scrolling container */}
+        <div className="relative max-w-full mx-auto">
+          <div className="overflow-hidden">
+            <div className="flex animate-scroll -translate-x-[10%]">
+              {/* Render testimonials 12 times for smoother infinite scroll */}
+              {[...Array(12)].map((_, setIndex) => (
+                testimonials.map((testimonial, index) => (
+                  <div 
+                    key={`set-${setIndex}-${index}`} 
+                    className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block"
+                  >
+                    <p className={`text-slate-900 text-lg md:text-xl font-manrope mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+                      "{testimonial.text}"
+                    </p>
+                    <p className="text-slate-600 font-playfair text-base md:text-lg">
+                      – {testimonial.author}
+                    </p>
+                  </div>
+                ))
+              ))}
+            </div>
           </div>
-        ))
-      ))}
-    </div>
-  </div>
-</div>    
+        </div>    
 
-      {/* Custom CSS for animation */}
-<style jsx>{`
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-  .animate-scroll {
-    animation: scroll 30s linear infinite;
-    will-change: transform;
-  }
-`}</style>
-    </section>
+        {/* Custom CSS for animation */}
+        <style jsx>{`
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+          .animate-scroll {
+            animation: scroll 30s linear infinite;
+            will-change: transform;
+          }
+        `}</style>
+      </section>
+    </StaggerItem>
   );
 }

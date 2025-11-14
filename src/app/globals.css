@@ -1,54 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light;              /* Tells browser this is a light-themed site */
-    --background: #FAFAF8;
-    --foreground: #2C3A4B;
-    --softgreen: #7AC699;
-    --navy: #1C294E;
-    --green: #5FB87E;
-    --navy-dark: #0B2859;
-    --text-primary: #1C294E;
-    --text-secondary: #2C3A4B;
-    --text-light: #647488;
-    --text-white: #FFFFFF;
-    --border-gray: #E7EBF0;
-    --green-hover: #08A855;
-  }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light;            /* Still forcing light mode */
-    --background: #FAFAF8;
-    --foreground: #2C3A4B;
-    --softgreen: #7AC699;
-    --navy: #1C294E;
-    --green: #5FB87E;
-    --navy-dark: #0B2859;
-    --text-primary: #1C294E;
-    --text-secondary: #2C3A4B;
-    --text-light: #647488;
-    --text-white: #FFFFFF;
-    --border-gray: #E7EBF0;
-    --green-hover: #08A855;
-  }
+  color-scheme: light;
+  --background: #FAFAF8;
+  --foreground: #2C3A4B;
+  --navy: #001F3F;           /* Updated to match your actual navy color */
+  --green: #079447;          /* Updated to match your actual green */
+  --navy-dark: #0B2859;
+  --text-primary: #1C294E;
+  --text-secondary: #2C3A4B;
+  --text-light: #647488;
+  --text-white: #FFFFFF;
+  --border-gray: #E7EBF0;
+  --green-hover: #08A855;
+  
+  /* Additional colors you're using */
+  --softgreen: #7AC699;
 }
 
+/* Remove the duplicate dark mode section since you're not using dark mode */
+/* If you want to add dark mode later, update with actual dark colors */
+
 @layer utilities {
-  .scrollbar-hide::-webkit-scrollbar {
+  .scrollbar-hide::-webkit-scrollbar,
+  .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-  .scrollbar-hide {
+  
+  .scrollbar-hide,
+  .scrollbar-none {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-  
-  .scrollbar-none::-webkit-scrollbar { 
-    display: none; 
-  }
-  .scrollbar-none { 
-    -ms-overflow-style: none; 
-    scrollbar-width: none; 
   }
 }
 
@@ -89,10 +71,9 @@
   transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-
 html {
   background-color: var(--background);
-  -webkit-text-size-adjust: 100%; /* prevent iOS auto-zoom */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -111,7 +92,7 @@ html, body {
   vertical-align: super; 
 }
 
-/* Tiny font utilities (bulletproof, override Tailwind if needed) */
+/* Tiny font utilities */
 .text-2xs { 
   font-size: 10px !important; 
   line-height: 1; 
@@ -127,24 +108,27 @@ html, body {
   line-height: 1; 
 }
 
+/* Ensure footer visibility */
 footer, footer * { 
   opacity: 1 !important; 
 }
 
+/* Custom select styling */
 select.no-native {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: none !important; /* Safari */
+  background-image: none !important;
 }
 
 select.no-native::-ms-expand { 
   display: none; 
 }
 
+/* Container utilities */
 .container {
   width: 100%;
-  max-width: 72rem; /* roughly Tailwind max-w-6xl (1152px) */
+  max-width: 72rem;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
@@ -171,10 +155,12 @@ select.no-native::-ms-expand {
   transform: translateX(-50%);
 }
 
+/* Font family utilities */
 .font-display { 
   font-family: var(--font-heading), "Onest", ui-serif, system-ui, sans-serif; 
 }
 
-.font-sans { 
+.font-sans,
+.font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
 }

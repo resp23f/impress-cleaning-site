@@ -31,10 +31,7 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="inline-flex items-center gap-2 mb-6">
-                  <div className="w-12 h-0.5 bg-[#079447]"></div>
-                  <span className="text-[#079447] font-medium tracking-wide uppercase text-sm">About Impress</span>
-                </div>
-                
+                  </div>                
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-6 leading-tight">
                   15 Years of Creating
                   <span className="block text-[#001F3F] mt-2">Time for What Matters</span>
