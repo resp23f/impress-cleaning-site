@@ -100,9 +100,6 @@ function SiteHeader() {
               <a href="#commercial" className="hover:text-green transition-colors duration-200 font-display">
                 Commercial
               </a>
-              <a href="#why" className="hover:text-green transition-colors duration-200 font-display">
-                Why Hire Us
-              </a>
               <a href="#faq" className="hover:text-green transition-colors duration-200 font-display">
                 FAQ
               </a>
@@ -147,9 +144,6 @@ function SiteHeader() {
                 </a>
                 <a href="#commercial" className="block hover:text-green transition font-display" onClick={() => setOpen(false)}>
                   Commercial
-                </a>
-                <a href="#why" className="block hover:text-green transition font-display" onClick={() => setOpen(false)}>
-                  Why Hire Us
                 </a>
                 <a href="#about" className="block hover:text-green transition font-display" onClick={() => setOpen(false)}>
                   About Us
