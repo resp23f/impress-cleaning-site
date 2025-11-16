@@ -147,45 +147,83 @@ function Hero() {
 
 function WhyChoose() {
   const cards = [
-    { t: 'Reliable Results', d: 'Every clean follows our proven checklist system, so your space looks great no matter whos on the schedule.', icon:"/results.png", extra: 'scale-[1.15] translate-y-[7px]' },
-    { t: 'Easy Booking & Reminders', d: 'Schedule cleaning online in seconds - plus text confirmations and reminders before every visit.', icon:"/calendar.png" },
-    { t: 'Clear Communication', d: 'We keep you in the loop from booking to follow-up, so you always know what\'s happening and when.', icon:"/communication.png" },
-    { t: 'Locally Owned', d: 'Proudly serving our community with a local touch. Every job supports local families.', icon:"/local-home.png" },
+    { 
+      t: 'Reliable Results', 
+      d: 'Every clean follows our proven checklist system, so your space looks great no matter who\'s on the schedule.', 
+      icon: "/results.png", 
+      extra: 'scale-[1.15] translate-y-[7px]',
+      color: 'from-blue-500 to-blue-700',
+      bgColor: 'bg-blue-50',
+      iconBg: 'bg-blue-100'
+    },
+    { 
+      t: 'Easy Booking & Reminders', 
+      d: 'Schedule cleaning online in seconds - plus text confirmations and reminders before every visit.', 
+      icon: "/calendar.png",
+      color: 'from-purple-500 to-purple-700',
+      bgColor: 'bg-purple-50',
+      iconBg: 'bg-purple-100'
+    },
+    { 
+      t: 'Clear Communication', 
+      d: 'We keep you in the loop from booking to follow-up, so you always know what\'s happening and when.', 
+      icon: "/communication.png",
+      color: 'from-green-500 to-green-700',
+      bgColor: 'bg-green-50',
+      iconBg: 'bg-green-100'
+    },
+    { 
+      t: 'Locally Owned', 
+      d: 'Proudly serving our community with a local touch. Every job supports local families.', 
+      icon: "/local-home.png",
+      color: 'from-orange-500 to-orange-700',
+      bgColor: 'bg-orange-50',
+      iconBg: 'bg-orange-100'
+    },
   ];
 
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="grid md:grid-cols-2 gap-6 items-center">
-          <div className="lg:col-span-2">
-            <StaggerItem>
-              <h3 className="font-display text-24px md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">
-                Why Choose Impress Cleaning Services
-              </h3>
-            </StaggerItem>
-
-            <ul className="mt-6 grid sm:grid-cols-2 gap-4">
-              {cards.map((c, index) => (
-                <StaggerItem key={c.t} delay={100 + (index * 100)}>
-                  <li className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm p-6">
-                    <div className="flex items-start gap-3">
-                      <div className="w-20 h-20 grid place-items-center text-emerald-700 sm:mt-0 md:-mt-[8px] lg:-mt-[19px]">
-                        <img src={c.icon} alt={c.t} className={`w-50 h-30 object-contain ${c.extra || ''}`} />
-                      </div>
-                      <div>
-                        <div className="font-manrope font-semibold leading-snug[1.45] text-[#18335A] text-left w-full text-16px md:text-[18px] lg:text-[18px]">
-                          {c.t}
-                        </div>
-                        <p className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-[#2C3A4B] leading-relaxed [1.7] tracking-normal">
-                          {c.d}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                </StaggerItem>
-              ))}
-            </ul>
+        <StaggerItem>
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
+              <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Why Choose Us</span>
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-5xl font-bold leading-tight tracking-tight text-[#18335A] mb-4">
+              Why Choose Impress Cleaning Services
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Four reasons families trust us to care for their homes
+            </p>
           </div>
+        </StaggerItem>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {cards.map((c, index) => (
+            <StaggerItem key={c.t} delay={100 + (index * 100)}>
+              <div className="group relative h-full">
+                {/* Hover gradient background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
+                
+                {/* Main card */}
+                <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300 group-hover:-translate-y-2">
+                  {/* Icon container */}
+                  <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
+                    {c.t}
+                  </h3>
+                  <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
+                    {c.d}
+                  </p>
+                </div>
+              </div>
+            </StaggerItem>
+          ))}
         </div>
       </div>
     </section>
@@ -194,36 +232,113 @@ function WhyChoose() {
 
 function HowItWorks() {
   const steps = [
-    ['Request Your Quote', 'Tell us a little about your home and the cleaning you need. We\'ll send a quick, straightforward quote that\'s easy to understand.'],
-    ['Schedule Your Clean', 'Choose the day and time that fit your schedule. We\'ll confirm your booking and send a quick reminder before your appointment.'],
-    ['We Make It Shine', 'Our local team arrives on time, fully equipped, and ready to get your space spotless using our detailed checklist and eco-safe products trusted by professionals.'],
-    ['Relax & Enjoy', 'Come home to a space that feels fresh and cared for. Your clean is complete and your satisfaction always comes first.'],
+    {
+      title: 'Request Your Quote', 
+      description: 'Tell us a little about your home and the cleaning you need. We\'ll send a quick, straightforward quote that\'s easy to understand.',
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Schedule Your Clean', 
+      description: 'Choose the day and time that fit your schedule. We\'ll confirm your booking and send a quick reminder before your appointment.',
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      )
+    },
+    {
+      title: 'We Make It Shine', 
+      description: 'Our local team arrives on time, fully equipped, and ready to get your space spotless using our detailed checklist and eco-safe products trusted by professionals.',
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Relax & Enjoy', 
+      description: 'Come home to a space that feels fresh and cared for. Your clean is complete and your satisfaction always comes first.',
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    },
   ];
   
   return (
-    <section className="bg-white py-12 md:py-16">
-      <div className="mx-auto max-w-[1600px] px-12 sm:px-6 lg:px-4">
+    <section className="bg-white py-16 md:py-24 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+      
+      <div className="mx-auto max-w-7xl px-4 md:px-6 relative">
         <StaggerItem>
-          <h3 className="font-display text-[24px] md:text-[28px] lg:text-[32px] font-normal leading-tight[1.3] tracking-tight text-center text-[#18335A]">
-            How It Works: Simple, Fast & Stress Free
-          </h3>
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
+              <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Our Process</span>
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-5xl font-bold leading-tight tracking-tight text-[#18335A] mb-4">
+              How It Works: Simple, Fast & Stress Free
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Getting your home professionally cleaned in four easy steps
+            </p>
+          </div>
         </StaggerItem>
 
-        <ol className="mt-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 tracking-wide">
-          {steps.map(([t, d], i) => (
-            <StaggerItem key={t} delay={100 + (i * 100)}>
-              <li className="rounded-2xl bg-white border-2 ring-1 ring-[#E7EBF0] rounded-2xl shadow-sm px-10 py-5">
-                <div className="text-[12px] font-inter font-semibold text-[#079447]">Step {i + 1}</div>
-                <div className="font-manrope font-semibold leading-snug text-[#18335A] text-left w-full text-base md:text-lg lg:text-lg">
-                  {t}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {/* Connection line for desktop */}
+          <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-[#079447]/20 via-[#079447]/40 to-[#079447]/20" />
+          
+          {steps.map((step, i) => (
+            <StaggerItem key={step.title} delay={100 + (i * 100)}>
+              <div className="relative h-full group">
+                {/* Step number badge */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-2xl font-bold text-white">{i + 1}</span>
+                  </div>
                 </div>
-                <p className="font-manrope font-regular text-sm md:text-base lg:text-base text-[#2C3A4B] leading-relaxed tracking-normal mt-2">
-                  {d}
-                </p>
-              </li>
+
+                {/* Card */}
+                <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl px-6 py-8 transition-all duration-300 group-hover:-translate-y-2">
+                  {/* Icon */}
+                  <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors duration-300">
+                    {step.icon}
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
+                    {step.description}
+                  </p>
+                </div>
+              </div>
             </StaggerItem>
           ))}
-        </ol>
+        </div>
+
+        {/* CTA below steps */}
+        <StaggerItem delay={500}>
+          <div className="mt-12 text-center">
+            <Link
+              href="/service-quote"
+              className="inline-flex items-center justify-center px-8 py-4 bg-[#079447] text-white rounded-lg font-bold text-lg hover:bg-[#08A855] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              Get Started Today
+              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </StaggerItem>
       </div>
     </section>
   );
@@ -273,7 +388,7 @@ function SocialProof() {
     <StaggerItem>
       <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
         <div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
-          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight[1.3] tracking-tight text-center text-white">
+          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-white">
             Why Texas Families Trust Impress
           </h3>
 
@@ -283,10 +398,10 @@ function SocialProof() {
                 key={index}
                 className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col"
               >
-                <div className="font-manrope font-semibold text-18 md:text-[20px] lg:text-[22px] mb-2">
+                <div className="font-manrope font-semibold text-[18px] md:text-[20px] lg:text-[22px] mb-2">
                   {card.title}
                 </div>
-                <div className="font-manrope font-regular text-15 md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">
+                <div className="font-manrope font-regular text-[15px] md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">
                   {card.description}
                 </div>
               </div>
