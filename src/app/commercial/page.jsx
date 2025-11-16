@@ -26,12 +26,12 @@ export default function CommercialPage() {
                 </div>
 
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-[1.1]">
-                  Commercial-Grade Cleaning
+                  Commercial Grade Cleaning
                   <span className="block text-green-400 mt-2">Built for Business</span>
                 </h1>
                 
                 <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-xl">
-                  Industrial-strength solutions for offices, warehouses, medical facilities, and retail spaces. Professional service that keeps your business running at peak performance.
+                  Industrial strength solutions for offices, warehouses, medical facilities, and retail spaces. Professional service that keeps your business running at peak performance.
                 </p>
 
                 <div className="grid grid-cols-2 gap-6 mb-10 max-w-lg">
@@ -78,12 +78,10 @@ export default function CommercialPage() {
                   </h3>
                   <ul className="space-y-4">
                     {[
-                      'Licensed & Insured Commercial Service',
                       'Industrial-Grade Equipment & Products',
                       'Flexible After-Hours Scheduling',
                       'Dedicated Account Manager',
                       'Quality Assurance Inspections',
-                      'Emergency Response Available'
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-start text-slate-300">
                         <svg className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -394,7 +392,7 @@ export default function CommercialPage() {
                 <div className="grid grid-cols-2 gap-6 mb-8">
                   <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
                     <div className="text-4xl font-bold text-green-500 mb-2">100%</div>
-                    <div className="text-slate-700 font-medium">Licensed & Insured</div>
+                    <div className="text-slate-700 font-medium">Reliable Service</div>
                   </div>
                   <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
                     <div className="text-4xl font-bold text-green-500 mb-2">24/7</div>
@@ -455,8 +453,6 @@ export default function CommercialPage() {
                   <svg className="w-24 h-24 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  <p className="text-slate-500 text-lg font-medium">Commercial Cleaning Team</p>
-                  <p className="text-slate-400 text-sm mt-2">Professional cleaners in navy uniforms</p>
                 </div>
               </div>
             </div>
@@ -503,13 +499,13 @@ export default function CommercialPage() {
 
             <div className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-slate-500 text-sm mb-1">Licensed</div>
+                <div className="text-slate-500 text-sm mb-1">Reliable</div>
                 <svg className="w-8 h-8 text-green-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
               <div className="text-center">
-                <div className="text-slate-500 text-sm mb-1">Insured</div>
+                <div className="text-slate-500 text-sm mb-1">Professional</div>
                 <svg className="w-8 h-8 text-green-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>

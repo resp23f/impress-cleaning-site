@@ -152,17 +152,17 @@ function WhyChoose() {
       d: 'Every clean follows our proven checklist system, so your space looks great no matter who\'s on the schedule.', 
       icon: "/results.png", 
       extra: 'scale-[1.15] translate-y-[7px]',
-      color: 'from-blue-500 to-blue-700',
-      bgColor: 'bg-blue-50',
-      iconBg: 'bg-blue-100'
+      color: 'from-green-500 to-green-700',
+      bgColor: 'bg-green-50',
+      iconBg: 'bg-green-100'
     },
     { 
       t: 'Easy Booking & Reminders', 
       d: 'Schedule cleaning online in seconds - plus text confirmations and reminders before every visit.', 
       icon: "/calendar.png",
-      color: 'from-purple-500 to-purple-700',
-      bgColor: 'bg-purple-50',
-      iconBg: 'bg-purple-100'
+      color: 'from-green-500 to-green-700',
+      bgColor: 'bg-green-50',
+      iconBg: 'bg-green-100'
     },
     { 
       t: 'Clear Communication', 
@@ -176,9 +176,9 @@ function WhyChoose() {
       t: 'Locally Owned', 
       d: 'Proudly serving our community with a local touch. Every job supports local families.', 
       icon: "/local-home.png",
-      color: 'from-orange-500 to-orange-700',
-      bgColor: 'bg-orange-50',
-      iconBg: 'bg-orange-100'
+      color: 'from-green-500 to-green-700',
+      bgColor: 'bg-green-50',
+      iconBg: 'bg-green-100'
     },
   ];
 

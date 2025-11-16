@@ -210,10 +210,6 @@ const generalQuestions = [
     a: "We've been serving the Georgetown community for over 15 years! Our experience means you get reliable, professional service every single time."
   },
   {
-    q: "Are you licensed and insured?",
-    a: "Yes! We're fully licensed and insured for your peace of mind. Your home and belongings are protected when you work with us."
-  },
-  {
     q: "Do I need to be home during the cleaning?",
     a: "Nope! Many of our clients prefer to be out while we clean. We're happy to work with whatever arrangement makes you most comfortable—whether you're home, at work, or running errands."
   },
@@ -298,10 +294,6 @@ const billingQuestions = [
 ];
 
 const otherQuestions = [
-  {
-    q: "Are your cleaners background checked?",
-    a: "Yes! All our team members go through thorough background checks. We only hire trustworthy, professional cleaners who we'd feel comfortable having in our own homes."
-  },
   {
     q: "What if something gets damaged during cleaning?",
     a: "While we take every precaution to protect your belongings, accidents can happen. That's why we're fully insured. If something is damaged, just let us know and we'll work with you to make it right."

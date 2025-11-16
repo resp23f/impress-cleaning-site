@@ -75,7 +75,7 @@ export default function ImpressCleaningSite() {
             </h1>
             
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-10 leading-relaxed">
-              Professional cleaning services for Georgetown and nearby areas. We bring eco-friendly solutions and meticulous attention to detail to every home we serve. Because maintaining a clean, healthy home isn't a luxury—it's a necessity that deserves professional care.
+              Professional cleaning services for Austin, Cedar Park, Round Rock, Georgetown and nearby areas. We bring eco friendly solutions and meticulous attention to detail to every home we serve. Because maintaining a clean, healthy home isn't a luxury, it's a necessity that deserves professional care.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -113,7 +113,7 @@ export default function ImpressCleaningSite() {
 
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       
-      {/* Bi-Weekly Service */}
+      {/* Weekly Service */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100 to-transparent rounded-bl-full opacity-50" />
@@ -128,9 +128,9 @@ export default function ImpressCleaningSite() {
               <span className="inline-block px-3 py-1 bg-blue-100 text-[#001F3F] text-xs font-semibold rounded-full mb-3">
                 MOST POPULAR
               </span>
-              <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Bi-Weekly Cleaning</h3>
+              <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Weekly Cleaning</h3>
               <p className="text-gray-600 leading-relaxed">
-                Perfect for busy families who want to maintain a consistently clean home without the daily hassle. Every two weeks, we restore your space to pristine condition.
+                Perfect for busy families who want to maintain a consistently clean home without the daily hassle. Every week, we restore your space to pristine condition.
               </p>
             </div>
             
@@ -158,7 +158,7 @@ export default function ImpressCleaningSite() {
         </div>
       </StaggerItem>
 
-      {/* Tri-Weekly Service */}
+      {/* Bi-Weekly Service */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-transparent rounded-bl-full opacity-50" />
@@ -170,9 +170,9 @@ export default function ImpressCleaningSite() {
               </svg>
             </div>
 
-            <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Tri-Weekly Cleaning</h3>
+            <h3 className="text-2xl font-bold text-gray-900 font-display mb-2"> Bi Weekly Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
-              The sweet spot for homes that stay relatively tidy but need regular professional attention. Every three weeks keeps your space fresh and welcoming.
+              The sweet spot for homes that stay relatively tidy but need regular professional attention. Every two weeks keeps your space fresh and welcoming.
             </p>
             
             <ul className="space-y-3 mb-6">
@@ -186,7 +186,7 @@ export default function ImpressCleaningSite() {
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Cost-effective maintenance</span>
+                <span>Cost effective maintenance</span>
               </li>
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -213,7 +213,7 @@ export default function ImpressCleaningSite() {
 
             <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Monthly Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
-              Ideal for well-maintained homes or those looking for periodic deep refreshes. We tackle the cleaning tasks that build up over time.
+              Ideal for well maintained homes or those looking for periodic deep refreshes. We tackle the cleaning tasks that build up over time.
             </p>
             
             <ul className="space-y-3 mb-6">
@@ -252,7 +252,7 @@ export default function ImpressCleaningSite() {
               </svg>
             </div>
 
-            <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Move-Out Cleaning</h3>
+            <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Move Out Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
               Comprehensive cleaning for vacant properties. We ensure every corner is spotless, helping you leave a lasting impression or prepare your home for its next chapter.
             </p>
@@ -262,7 +262,7 @@ export default function ImpressCleaningSite() {
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Thorough top-to-bottom cleaning</span>
+                <span>Thorough top to bottom cleaning</span>
               </li>
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -274,7 +274,7 @@ export default function ImpressCleaningSite() {
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Sale-ready results</span>
+                <span>Sale ready results</span>
               </li>
             </ul>
           </div>
@@ -309,13 +309,13 @@ export default function ImpressCleaningSite() {
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Rental-ready standards</span>
+                <span>Rental ready standards</span>
               </li>
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Realtor-recommended service</span>
+                <span>Realtor recommended service</span>
               </li>
             </ul>
           </div>
@@ -336,7 +336,7 @@ export default function ImpressCleaningSite() {
 
             <h3 className="text-2xl font-bold text-white font-display mb-2">Premium Add-On Services</h3>
             <p className="text-blue-100 leading-relaxed mb-6">
-              Enhance your cleaning with specialized services. Each requires dedicated time, equipment, and expertise—priced separately to ensure quality results.
+              Enhance your cleaning with specialized services. Each requires dedicated time, and equipment separately to ensure quality results.
             </p>
             
             <ul className="space-y-3 mb-6">
@@ -390,8 +390,8 @@ export default function ImpressCleaningSite() {
               {/* Busy Families */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-7 h-7 text-[#001F3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex-shrink-0 w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-7 h-7 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   </div>
@@ -407,8 +407,8 @@ export default function ImpressCleaningSite() {
               {/* Retired Homeowners */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-7 h-7 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex-shrink-0 w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-7 h-7 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                   </div>
@@ -441,8 +441,8 @@ export default function ImpressCleaningSite() {
               {/* Life Transitions */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-7 h-7 text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex-shrink-0 w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-7 h-7 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                     </svg>
                   </div>
@@ -573,8 +573,8 @@ export default function ImpressCleaningSite() {
                   </div>
 
                   <div className="flex items-start group">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
@@ -587,8 +587,8 @@ export default function ImpressCleaningSite() {
                   </div>
 
                   <div className="flex items-start group">
-                    <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                       </svg>
                     </div>
@@ -601,8 +601,8 @@ export default function ImpressCleaningSite() {
                   </div>
 
                   <div className="flex items-start group">
-                    <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                       </svg>
                     </div>
@@ -615,8 +615,8 @@ export default function ImpressCleaningSite() {
                   </div>
 
                   <div className="flex items-start group">
-                    <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>

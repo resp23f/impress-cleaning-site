@@ -38,7 +38,7 @@ export default function AboutPage() {
                 </h1>
                 
                 <p className="text-xl text-gray-600 mb-8 leading-relaxed font-manrope">
-                  Since 2009, we've been more than just a cleaning service. We're time-givers, stress-relievers, and your neighbors who understand that a clean home means more moments with the people you love.
+                  Since 2009, we've been more than just a cleaning service. We're time givers, stress relievers, and your neighbors who understand that a clean home means more moments with the people you love.
                 </p>
 
                 <div className="flex items-center gap-8">
@@ -63,7 +63,7 @@ export default function AboutPage() {
                     <svg className="w-32 h-32 text-[#001F3F]/30 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
-                    <p className="text-gray-500">Team Photo Coming Soon</p>
+                    <p className="text-gray-500"></p>
                   </div>
                 </div>
                 {/* Decorative elements */}
@@ -84,7 +84,7 @@ export default function AboutPage() {
                 Built on Trust, Grown Through Service
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed">
-                What started as a small family operation in Austin has grown into Central Texas's most trusted cleaning service—not through advertising, but through the recommendations of neighbors who became friends.
+                What started as a small family operation in Austin has grown into Central Texas's most trusted cleaning service, not through advertising, but through the recommendations of neighbors who became friends.
               </p>
             </div>
           </FadeInWhenVisible>
@@ -99,7 +99,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">The Beginning</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  In 2009, Maria Rodriguez started Impress after noticing how many of her Austin neighbors struggled to balance demanding careers with home maintenance. She believed professional cleaning shouldn't be a luxury—it should be accessible support that gives families their weekends back.
+                  In 2009, our family started Impress after noticing how many of our Austin neighbors struggled to balance demanding careers with home maintenance. We believed professional cleaning shouldn't be a luxury, it should be accessible support that gives families their evenings and weekends back.
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -113,7 +113,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Today's Mission</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Now serving thousands of homes across Austin, Georgetown, Round Rock, and throughout Central Texas, we've never forgotten Maria's original vision: every clean we complete gives someone more time for their kids' soccer games, their aging parents, their health, or simply a peaceful Sunday morning.
+                  Now serving thousands of homes across Austin, Georgetown, Round Rock, and throughout Central Texas, we've never forgotten our original vision: every clean we complete gives someone more time for their kids' soccer games, their aging parents, their health, or simply a peaceful Sunday morning.
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -130,7 +130,7 @@ export default function AboutPage() {
                 What Drives Us Every Day
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                These aren't just words on a wall—they're the principles that guide every interaction, every clean, and every relationship we build.
+                These aren't just words on a wall, they're the principles that guide every interaction, every clean, and every relationship we build.
               </p>
             </div>
           </FadeInWhenVisible>
@@ -145,7 +145,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Time is Precious</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  We know that every hour we save you is an hour you can spend on what truly matters—whether that's your family, your health, or your dreams.
+                  We know that every hour we save you is an hour you can spend on what truly matters, whether that's your family, your health, or your dreams.
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -191,7 +191,7 @@ export default function AboutPage() {
                 The Hearts Behind the Homes
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Our team isn't just skilled—they're caring individuals who take pride in making your life easier. Many have been with us for over a decade, becoming extended family to the homes they serve.
+                Our team isn't just skilled. They're caring individuals who take pride in making your life easier. Many have been with us for over a decade, becoming extended family to the homes they serve.
               </p>
             </div>
           </FadeInWhenVisible>
@@ -200,17 +200,11 @@ export default function AboutPage() {
             <FadeInWhenVisible delay={0.1}>
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">More Than a Team—A Family</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">More Than a Team. A Family.</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    When you welcome Impress into your home, you're not getting temporary workers—you're getting dedicated professionals who've chosen to make cleaning excellence their career.
+                    When you welcome Impress into your home, you're not getting temporary workers, you're getting dedicated professionals who've chosen to make cleaning excellence their career.
                   </p>
                   <ul className="space-y-4">
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-[#079447] mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span className="text-gray-700">Background-checked and fully insured professionals</span>
-                    </li>
                     <li className="flex items-start">
                       <svg className="w-5 h-5 text-[#079447] mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -239,37 +233,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Community Impact */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <FadeInWhenVisible>
-            <div className="bg-gradient-to-br from-[#001F3F] to-[#003D7A] rounded-3xl p-12 md:p-16 text-white">
-              <div className="max-w-3xl">
-                <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">
-                  Giving Back to Central Texas
-                </h2>
-                <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                  A cleaner community starts with caring. That's why we donate free cleaning services to families facing medical crises, partner with local shelters, and support Georgetown and Austin area schools.
-                </p>
-                <div className="grid sm:grid-cols-3 gap-8 mt-12">
-                  <div>
-                    <div className="text-3xl font-bold text-white mb-2">500+</div>
-                    <div className="text-blue-200">Free hours donated annually</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white mb-2">12</div>
-                    <div className="text-blue-200">Local charities supported</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white mb-2">$25K+</div>
-                    <div className="text-blue-200">Invested in community programs</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <FadeInWhenVisible>
