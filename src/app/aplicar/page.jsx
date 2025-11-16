@@ -335,13 +335,16 @@ export default function AplicarPage() {
               Aplicar Ahora
               <ChevronRight className="ml-2 w-5 h-5" />
             </Link>
-            <a 
-              href="mailto:trabajos@impressyoucleaning.com"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white rounded-lg hover:bg-white/10 transition-colors"
-            >
-              Envíanos un correo: trabajos@impressyoucleaning.com
-            </a>
-          </div>
+            <div className="flex flex-col bg-white text-[#001F3F] px-4 py-1 rounded-lg font-bold hover:bg-gray-100 transition-colors text-center">
+                <span className="text-md">Envíanos un correo:</span>
+                <a 
+                  href="mailto:trabajos@impressyoucleaning.com" 
+                  className="bg-white text-[#001F3F] px-4 py-2 rounded-lg font-extrabold hover:bg-gray-100 transition-colors text-center"
+                >
+                  trabajos@impressyoucleaning.com
+                </a>
+                </div>      
+              </div>
           </div>          
       </section>
           </div>
