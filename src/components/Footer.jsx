@@ -18,7 +18,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   
   return (
-    <footer className="relative z-10 bg-[#1B2845] text-white py-12 px-6 md:px-8">
+    <footer className="relative z-10 bg-[#0B2850] text-white py-12 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         
         {/* Top Section - Logo and Contact */}
