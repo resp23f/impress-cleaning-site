@@ -108,13 +108,11 @@ function Hero() {
               <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
                 <div>
                   <div className="md:max-w-[28ch] 2xl:max-w-[65ch] transform translate-y-[40px] md:translate-y-[60px] xl:translate-y-[0px]">
-                    <h1
-                      className="font-display tracking-tight text-balance text-white 
-                        text-[clamp(28px,3.5vw,190px)] leading-[clamp(1.25,3vw,1.25)] max-w-[min(90vw,34ch)]"
-                    > 
-                      We'll Make Your Space Shine So You Can Focus On What Matters Most.
-                    </h1>
-                    <div className="mt-4 sm:mt-6 flex gap-3 sm:gap-4">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-[1.1]">
+                We'll Make Your Space Shine
+                <span className="block text-green-400 mt-2">So You Can Focus On What Matters Most.</span>
+              </h1>
+                  <div className="mt-4 sm:mt-6 flex gap-3 sm:gap-4">
                       <a 
                         href="tel:+15122775364" 
                         className="inline-flex items-center justify-center rounded-lg font-extrabold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-sans" 
