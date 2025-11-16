@@ -11,13 +11,9 @@ const NAV = [
   { label: "About Us",    href: "/#about" },
   { label: "FAQ",         href: "/#faq"   },
 ];
-
 export default function Header() {
-  const pathname = usePathname() || "/";
-  const isJobs = pathname === "/aplicar" || pathname.startsWith("/aplicar/");
-  return isJobs ? <JobsHeader /> : <SiteHeader />;
+  return <SiteHeader />;
 }
-
 function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
@@ -35,13 +31,13 @@ function SiteHeader() {
             Gift Certificates
           </a>
           <span className="text-borderGray font-manrope">|</span>
-          <a href="#apply" className="hover:text-green transition font-manrope">
+          <Link href="/apply" className="hover:text-green transition font-manrope">
             Careers
-          </a>
+          </Link>
           <span className="text-borderGray font-manrope">|</span>
-          <a href="#aplicar" className="hover:text-green transition font-manrope">
+          <Link href="/aplicar" className="hover:text-green transition font-manrope">
             Aplicar
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -175,10 +171,10 @@ function SiteHeader() {
           <a href="#apply" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
             Careers
           </a>
-          <a href="#aplicar" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
-            Aplicar
-          </a>
-          
+          <Link href="/aplicar" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
+          Aplicar
+        </Link>
+        
           {/* Mobile Quote Button */}
           <div className="pt-6 border-t border-white/10">
             <Link
@@ -193,39 +189,4 @@ function SiteHeader() {
       </div>
     </>
   ); 
-}
-
-/* ========== JOBS/APLICAR HEADER ========== */
-function JobsHeader() {
-  return (
-    <header className="relative z-50 bg-[linear-gradient(to_bottom,#FFFFFF,#FFFDF8)] border-b border-slate-100">
-      <div className="w-full flex items-center gap-8 px-2 md:px-6 py-4 md:py-5">
-        <a href="/" className="flex items-center gap-3">
-          <img src="/sparkle.svg" alt="Impress Cleaning logo" className="h-7 w-7" />
-          <div className="flex flex-col leading-tight scale-[1.15] md:scale-[1.25] ml-2 md:ml-8">
-            <span className="font-display uppercase text-navyDark text-2xl font-black tracking-wide">
-              Impress Cleaning Services <span className="relative top-[1px] -ml-[6px] text-[11px] font-medium tracking-tight">LLC</span>
-            </span>
-            <span className="text-[11px] text-navyDark/80 uppercase tracking-[0.08em] font-manrope">
-              A clean home is an impressive home.
-            </span>
-          </div>
-        </a>
-
-        <nav className="hidden md:flex items-center gap-10 text-[16px] text-navyDark font-manrope font-medium ml-auto">
-          <a href="/aplicar" className="hover:text-green transition font-manrope"></a>
-          <a href="/english" className="hover:text-green transition font-manrope">English Site</a>
-          <a href="#aplicar-form" className="rounded-lg bg-gradient-to-r from-green-300 via-green to-green-400 px-6 py-3 text-white font-semibold font-manrope shadow-md hover:shadow-lg hover:from-green-400 hover:to-green transition">
-            Explora todos los empleos
-          </a>
-        </nav>
-
-        <button type="button" className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-navyDark hover:bg-slate-100 transition" aria-label="Open menu">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-6 w-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-    </header>
-  );
 }

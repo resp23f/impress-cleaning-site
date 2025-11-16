@@ -1,412 +1,351 @@
-// src/app/aplicar/page.jsx
+//Aplicar Home Page - src/app/aplicar/page.jsx//
+
 "use client";
 import Link from "next/link";
+import { 
+  MapPin, 
+  Clock, 
+  DollarSign, 
+  Heart, 
+  Users, 
+  TrendingUp,
+  Sun,
+  Award,
+  Briefcase,
+  ChevronRight,
+  CheckCircle
+} from "lucide-react";
 
-import { useState } from "react";
-import { CheckCircle2, Upload, MapPin, CalendarDays, Clock } from "lucide-react";
-import {
-CurrencyDollarIcon,
-SunIcon,
-AcademicCapIcon,
-UsersIcon,
-HeartIcon,
-ChartBarIcon,
-} from "@heroicons/react/24/solid";
-
-
-
-const FORM_ENDPOINT = "https://formspree.io/f/mrbyrngw"
+import Header from '@/components/Header';
 
 const jobs = [
-{ id: 1, slug: "tecnico-de-limpieza", title: "Técnico de Limpieza", location: "Georgetown, TX" },
-{ id: 2, slug: "supervisor-de-equipo", title: "Supervisor de Equipo", location: "Georgetown, TX" },
-{ id: 3, slug: "asistente-de-gerencia-de-operaciones", title: "Asistente de Gerencia de Operaciones", location: "Georgetown, TX" },
+  { 
+    id: 1, 
+    slug: "tecnico-de-limpieza", 
+    title: "Técnico de Limpieza", 
+    location: "Georgetown, TX",
+    type: "Tiempo Completo",
+    experience: "No se requiere experiencia"
+  },
+  { 
+    id: 2, 
+    slug: "supervisor-de-equipo", 
+    title: "Supervisor de Equipo", 
+    location: "Georgetown, TX",
+    type: "Tiempo Completo", 
+    experience: "2+ años de experiencia"
+  },
+  { 
+    id: 3, 
+    slug: "asistente-de-gerencia-de-operaciones", 
+    title: "Asistente de Gerencia de Operaciones", 
+    location: "Georgetown, TX",
+    type: "Tiempo Completo",
+    experience: "1+ año de experiencia"
+  },
 ];
 
-export default function Page() {
-const [sending, setSending] = useState(false);
-const [sent, setSent] = useState(false);
-const [error, setError] = useState("");
+const benefits = [
+  {
+    icon: <DollarSign className="w-6 h-6" />,
+    title: "Salario Competitivo",
+    description: "Pago justo desde el día uno, con aumentos basados en desempeño y bonos por excelencia."
+  },
+  {
+    icon: <Sun className="w-6 h-6" />,
+    title: "Horarios de Día",
+    description: "Lunes a Viernes, sin noches ni fines de semana. Tiempo para tu familia y vida personal."
+  },
+  {
+    icon: <Heart className="w-6 h-6" />,
+    title: "Seguro Médico",
+    description: "Cobertura de salud completa para empleados de tiempo completo después de 90 días."
+  },
+  {
+    icon: <Award className="w-6 h-6" />,
+    title: "Entrenamiento Pagado",
+    description: "Te capacitamos completamente con pago completo. No necesitas experiencia previa."
+  },
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: "Equipo Estable",
+    description: "Únete a una empresa familiar con 20+ años de historia y empleados de largo plazo."
+  },
+  {
+    icon: <TrendingUp className="w-6 h-6" />,
+    title: "Oportunidades de Crecimiento",
+    description: "Muchos de nuestros líderes empezaron en limpieza. Tu futuro puede crecer aquí."
+  }
+];
 
-async function onSubmit(e) {
-e.preventDefault();
-setError(""); setSending(true);
+const requirements = [
+  "Autorización para trabajar en Estados Unidos",
+  "Transporte confiable para llegar al trabajo",
+  "Capacidad de levantar hasta 25 libras",
+  "Atención al detalle y actitud positiva",
+  "Disponibilidad de Lunes a Viernes",
+  "Pasar verificación de antecedentes"
+];
 
-const hp = e.currentTarget.elements.namedItem("empresa_oculta")?.value || "";
-if (hp) { setSending(false); return; }
-
-if (!FORM_ENDPOINT) {
-    setTimeout(() => { setSending(false); setSent(true); }, 600);
-    return;
-}
-try {
-const formData = new FormData(e.currentTarget);
-formData.append("_subject", "Nueva solicitud de empleo - Impress Cleaning");
-
-const res = await fetch(FORM_ENDPOINT, {
-method: "POST",
-body: formData,
-headers: { Accept: "application/json" },
-});
-
-if (res.ok) {
-setSent(true);
-} else {
-setError("No pudimos enviar tu solicitud. Intenta de nuevo.");
-}
-} catch (err) {
-setError("Error de conexión. Intenta de nuevo.");
-} finally {
-setSending(false);
-}
-
-if (sent) {
-return (
-    <div className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-6 md:p-8">
-    <div className="flex items-start gap-3">
-        <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-        <div>
-        <h2 className="text-2xl font-semibold text-slate-900">¡Solicitud enviada!</h2>
-        <p className="text-slate-600 mt-1">Te contactaremos en 1–2 días hábiles.</p>
+export default function AplicarPage() {
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">  
+              <section className="relative overflow-hidden bg-[#001F3F]">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }} />
         </div>
-    </div>
-    <a href="/" className="inline-flex mt-6 px-4 py-2 rounded-lg ring-1 ring-slate-200 hover:ring-slate-300">
-        Volver al inicio
-    </a>
-    </div>
-);
-}
-}
-
-return (
-<>
-
-
-{/* ===== HERO (refined) ===== */}
-<section className="relative isolate overflow-hidden">
-{/* image height */}
-<div className="h-[52vh] md:h-[68vh] lg:h-[72vh]">
-{/* background image */}
-<img
-    src="/careers-hero.jpg"
-    alt="Equipo de limpieza profesional"
-    className="absolute inset-0 h-full w-full object-cover object-[50%_28%]"
-/>
-
-{/* content container */}
-<div className="relative z-10 mx-auto flex h-full max-w-6xl items-end md:items-center px-4 md:px-6 lg:px-8">
-    <div
-    >
-    <p className="mt-2 text-white/85 text-sm md:text-base">
-    </p>
-    <a
-    >
-    </a>
-    </div>
-</div>
-</div>
-
-{/* gentle fade into page background so the next section doesn’t feel chopped */}
-<div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-[#FFFDF8]/70" />
-
-</section>
-{/* ===== OPPORTUNITY SECTION ===== */}
-<section className="bg-transparent py-24">
-<div className="max-w-9xl px-6 md:px-12 text-left ml-[8%]">
-<h2 className="text-4xl md:text-5xl font-[Playfair_Display] font-bold text-slate-800 mb-6 tracking-wide">
-    UN TRABAJO LIMPIO, UN FUTURO IMPRESIONANTE.
-</h2>
-<p className="text-slate-600 text-lg leading-relaxed">
-    En Impress Cleaning creemos que un buen trabajo empieza con un gran equipo. 
-Aquí encontrarás un ambiente positivo, horarios flexibles y la oportunidad de crecer mientras ayudas a que cada hogar brille. 
-Nos enorgullece trabajar con personas dedicadas, alegres y con atención al detalle — 
-porque cuando nuestros clientes sonríen, nosotros también.
-</p>
-</div>
-</section>
-
-{/* BEGIN Why Work Here */}
-<section className="mb-10">
-<div className="max-w-9xl px-6 md:px-12 text-center mx-auto">
-</div>
-
-<h2 className="text-4xl md:text-4xl font-[Playfair_Display] font-bold text-slate-800 mb-6 tracking-wide text-center">
-¿Por qué trabajar aquí?
-</h2>
-<p className="mt-2 text-slate-600 text-md leading-relaxed">
-</p>
-
-<div className="max-w-8xl mx-auto px-4 md:px-8">
-<ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">    
-
-{/* 1 */}
-<li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
-    <div className="flex items-center gap-3">
-<span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#0B2850]/5">
-<CurrencyDollarIcon className="w-5 h-5 text-[#0B2850]" />
-</span>
-    <div>
-        <h3 className="font-semibold text-slate-900">Buen pago por un buen trabajo</h3>
-        <p className="text-sm text-slate-600 mt-1">En Impress Cleaning creemos en pagar justamente por un trabajo bien hecho. Ofrecemos un salario competitivo, pagos puntuales y reconocemos el esfuerzo extra cuando alguien da lo mejor de sí.</p>
-    </div>
-    </div>
-</li>
-
-{/* 2 */}
-<li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
-    <div className="flex items-center gap-3">
-<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
-<SunIcon className="w-5 h-5 text-[#0B2850]" />
-</span>
-    <div>
-        <h3 className="font-semibold text-slate-900">Horarios de día y tiempo para ti</h3>
-        <p className="text-sm text-slate-600 mt-1">Nada de turnos nocturnos ni fines de semana interminables. Aquí trabajas de día, con tiempo para tu familia, tus planes y el descanso que te mereces. Queremos que tu vida laboral y personal estén en balance.</p>
-    </div>
-    </div>
-</li>
-
-{/* 3 */}
-<li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
-    <div className="flex items-center gap-3">
-<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
-<AcademicCapIcon className="w-5 h-5 text-[#0B2850]" />
-</span>
-    <div>
-        <h3 className="font-semibold text-slate-900">Capacitación sencilla y pagada</h3>
-        <p className="text-sm text-slate-600 mt-1">Nos encargamos de enseñarte todo lo que necesitas para sentirte cómodo desde el primer día. Aprendes mientras trabajas, y te pagamos por ello. No importa si es tu primer empleo o ya tienes experiencia: aquí crecerás rápido.</p>
-    </div>
-    </div>
-</li>
-
-{/* 4 */}
-<li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
-    <div className="flex items-center gap-3">
-<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
-<UsersIcon className="w-5 h-5 text-[#0B2850]" />
-</span>
-    <div>
-        <h3 className="font-semibold text-slate-900">Un equipo con historia</h3>
-        <p className="text-sm text-slate-600 mt-1">Llevamos más de 20 años limpiando hogares en el centro de Texas, y muchos de nuestros empleados han estado con nosotros por años. Somos un equipo pequeño, estable y de confianza, donde todos nos cuidamos mutuamente.</p>
-    </div>
-    </div>
-</li>
-
-{/* 5 */}
-<li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
-    <div className="flex items-center gap-3">
-<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
-<HeartIcon className="w-5 h-5 text-[#0B2850]" />
-</span>
-    <div>
-        <h3 className="font-semibold text-slate-900">Seguro médico y apoyo real</h3>
-        <p className="text-sm text-slate-600 mt-1">Tu bienestar importa tanto como el de nuestros clientes. Ofrecemos seguro de salud y un ambiente de trabajo seguro, respetuoso y sin presiones innecesarias. Queremos que te sientas bien dentro y fuera del trabajo.</p>
-    </div>
-    </div>
-</li>
-
-{/* 6 */}
-<li className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm p-5 hover:shadow-md transition">
-    <div className="flex items-center gap-3">
-<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#0B2850]/5">
-<ChartBarIcon className="w-5 h-5 text-[#0B2850]" />
-</span>
-    <div>
-        <h3 className="font-semibold text-slate-900">Crecimiento a tu ritmo</h3>
-        <p className="text-sm text-slate-600 mt-1">Si te gusta aprender, aquí siempre hay espacio para avanzar. Muchos de nuestros líderes empezaron como parte del equipo de limpieza. Con constancia y buena actitud, puedes construir una carrera estable con nosotros.</p>
-    </div>
-    </div>
-</li>
-</ul>
-    </div>
-
-</section>
-{/* END Why Work Here */}
-
-{/* BEGIN Empleos Disponibles */}
-<section className="py-14">
-<div className="max-w-7xl mx-auto px-4 md:px-8">
-{/* Title */}
-<h2 className="text-3xl md:text-5xl font-[Playfair_Display] font-bold text-slate-800">
-    EMPLEOS DISPONIBLES
-</h2>
-<p className="mt-2 text-sm text-slate-500">
-    Mostrando 1–{jobs.length} de {jobs.length} trabajos
-</p>
-
-{/* List */}
-<ul className="mt-8 divide-y divide-slate-200 bg-white rounded-2xl ring-1 ring-slate-200 overflow-hidden">
-    {jobs.map((job) => (
-    <li key={job.id} className="flex items-center justify-between gap-6 px-5 md:px-6 py-5 hover:bg-slate-50">
-        <div className="min-w-0">
-        <Link href={`/aplicar/trabajos/${job.slub}`} className="block text-[#0B2850] font-semibold hover:underline truncate">
-            {job.title}
-        </Link>
-        <div className="mt-1 flex items-center gap-2 text-slate-500 text-sm">
-            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10z"/><circle cx="12" cy="11" r="2.5"/>
-            </svg>
-            <span className="truncate">{job.location}</span>
+        
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+          <div className="text-center">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+              Únete a Nuestro Equipo
+            </h1>
+            <p className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              Construye una carrera estable con Impress Cleaning Services - donde cada día haces la diferencia
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="#open-positions" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-[#001F3F] bg-white rounded-lg hover:bg-gray-100 transition-colors">
+                Ver Posiciones Abiertas
+                <ChevronRight className="ml-2 w-5 h-5" />
+              </a>
+              <a href="#why-join" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white rounded-lg hover:bg-white/10 transition-colors">
+                Por Qué Unirte
+              </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                Un Trabajo Limpio, Un Futuro Impresionante
+              </h2>
+              <p className="text-lg text-gray-600 mb-6">
+                En Impress Cleaning creemos que un buen trabajo empieza con un gran equipo. 
+                Aquí encontrarás un ambiente positivo, horarios flexibles y la oportunidad 
+                de crecer mientras ayudas a que cada hogar brille.
+              </p>
+              <p className="text-lg text-gray-600 mb-8">
+                Nos enorgullece trabajar con personas dedicadas, alegres y con atención al 
+                detalle — porque cuando nuestros clientes sonríen, nosotros también.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700 font-medium">20+ años en el negocio</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700 font-medium">Empresa familiar local</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-gray-700 font-medium">Equipo estable y unido</span>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <img 
+                src="/careers-team.jpg" 
+                alt="Equipo de Impress Cleaning"
+                className="rounded-2xl shadow-2xl"
+              />
+              <div className="absolute -bottom-6 -right-6 bg-[#079447] text-white p-6 rounded-xl shadow-xl">
+                <div className="text-3xl font-bold">95%</div>
+                <div className="text-sm">Satisfacción del Empleado</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-{/* RIGHT SIDE — button (force stays right) */}
-<div className="flex-shrink-0">
-<Link
-    href={`/aplicar/trabajos/${job.slug}`}
-    className="inline-flex items-center justify-center rounded-lg bg-[#0B2850] px-5 py-2.5 text-white font-semibold shadow hover:brightness-110 transition"
->
-    Aplicar Ahora →
-</Link>
-</div>
-</li>      
-))}
-</ul>
-</div>
-</section>
-{/* END Empleos Disponibles */}
-
-
-
-{/* ===== WRAPPER ===== */}
-<section className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-    {/* badges row */}
-    <div className="mt-6 mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
-    <Badge icon={<MapPin className="w-4 h-4" />} text="Georgetown + Norte de Austin" />
-    <Badge icon={<CalendarDays className="w-4 h-4" />} text="Tiempo completo o medio tiempo" />
-    <Badge icon={<Clock className="w-4 h-4" />} text="Horarios de día — sin noches" />
-    </div>
-
-    {/* form card */}
-    <div id="aplicar-form" className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm">
-    <div className="border-b border-slate-200 px-6 md:px-8 py-5">
-        <h2 className="text-xl md:text-2xl font-semibold text-slate-900">Solicitud de empleo</h2>
-        <p className="text-slate-600 text-sm mt-1">
-        Completa el formulario y te contactaremos en 1–2 días hábiles.
-        </p>
-    </div>
-
-    <form onSubmit={onSubmit} className="px-6 md:px-8 py-6" encType="multipart/form-data">
-        <input type="text" name="empresa_oculta" className="hidden" tabIndex={-1} autoComplete="off" />
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Field label="Nombre" name="nombre" required />
-        <Field label="Apellido" name="apellido" required />
-        <Field label="Teléfono" name="telefono" type="tel" placeholder="(512) 555-1234" required />
-        <Field label="Correo electrónico" name="email" type="email" placeholder="tu@correo.com" required />
-        <Field label="Ciudad" name="ciudad" />
-        <Field label="Código postal" name="zip" inputMode="numeric" />
-        </fieldset>
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-        <Select label="Puesto de interés" name="puesto" options={["Limpieza residencial","Limpieza comercial","Supervisor/a"]} required />
-        <Select label="Tipo de empleo" name="tipo_empleo" options={["Tiempo completo","Medio tiempo"]} required />
-        </fieldset>
-
-        <fieldset className="mt-6">
-        <legend className="text-slate-900 font-medium mb-2">Disponibilidad</legend>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-            {["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"].map((d)=>(
-            <ChipCheck key={d} name="dias[]" value={d} label={d} />
+      {/* BENEFITS SECTION */}
+      <section id="why-join" className="py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              ¿Por Qué Trabajar Con Nosotros?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Ofrecemos más que un trabajo - es una oportunidad de ser parte de algo especial
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {benefits.map((benefit, index) => (
+              <div key={index} className="group hover:shadow-lg transition-shadow rounded-xl p-6 bg-gray-50 hover:bg-white border border-gray-100">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-[#079447]/10 rounded-lg flex items-center justify-center text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors">
+                    {benefit.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
             ))}
+          </div>
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-2 max-w-sm">
-            <ChipCheck name="horario[]" value="Mañana" label="Mañana" />
-            <ChipCheck name="horario[]" value="Tarde" label="Tarde" />
+      </section>
+
+      {/* JOB OPENINGS SECTION */}
+      <section id="open-positions" className="py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Posiciones Disponibles
+            </h2>
+            <p className="text-lg text-gray-600">
+              Encuentra tu lugar perfecto en nuestro equipo
+            </p>
+          </div>
+
+          <div className="grid gap-6 max-w-4xl mx-auto">
+            {jobs.map((job) => (
+              <div key={job.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                <div className="p-6 sm:p-8">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                        {job.title}
+                      </h3>
+                      <div className="flex flex-wrap gap-4 text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4" />
+                          <span>{job.location}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Briefcase className="w-4 h-4" />
+                          <span>{job.type}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          <span>{job.experience}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Link 
+                      href={`/aplicar/trabajos/${job.slug}`}
+                      className="inline-flex items-center justify-center px-6 py-3 bg-[#079447] text-white font-semibold rounded-lg hover:bg-[#068339] transition-colors whitespace-nowrap"
+                    >
+                      Aplicar Ahora
+                      <ChevronRight className="ml-2 w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        </fieldset>
+      </section>
 
-        <fieldset className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Select label="¿Tienes transporte propio?" name="transporte" options={["Sí","No"]} required />
-        <Select label="¿Autorizado/a para trabajar en EE. UU.?" name="autorizado" options={["Sí","No"]} required />
-        </fieldset>
-
-        <fieldset className="mt-6 grid grid-cols-1 gap-4">
-        <TextArea label="Experiencia relevante" name="experiencia" placeholder="Años de experiencia, tipos de espacios, productos, etc." />
-        <TextArea label="Referencias (opcional)" name="referencias" placeholder="Nombre, relación y teléfono/correo." />
-        </fieldset>
-
-        <fieldset className="mt-6">
-        <label className="block text-sm font-medium text-slate-900 mb-2">Sube tu CV (PDF o DOC)</label>
-        <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg ring-1 ring-slate-200 hover:ring-slate-300 cursor-pointer bg-white">
-            <Upload className="w-4 h-4" />
-            <span>Elegir archivo</span>
-            <input name="cv" type="file" accept=".pdf,.doc,.docx" className="hidden" />
-        </label>
-        <p className="text-xs text-slate-500 mt-1">Máx. 10 MB.</p>
-        </fieldset>
-
-        <div className="mt-6 flex items-start gap-2">
-        <input id="consent" name="consent" type="checkbox" required className="mt-1 w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600" />
-        <label htmlFor="consent" className="text-sm text-slate-700">
-            Acepto que Impress Cleaning me contacte por teléfono o correo sobre mi solicitud.
-        </label>
+      {/* REQUIREMENTS SECTION */}
+      <section className="py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                Lo Que Buscamos
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                No necesitas experiencia previa en limpieza - te entrenaremos completamente. 
+                Lo más importante es tu actitud y compromiso.
+              </p>
+              <ul className="space-y-3">
+                {requirements.map((req, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">{req}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                Proceso de Aplicación
+              </h2>
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#079447] text-white rounded-full flex items-center justify-center font-bold">
+                    1
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Envía tu Aplicación</h3>
+                    <p className="text-gray-600">Completa nuestro formulario simple en línea</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#079447] text-white rounded-full flex items-center justify-center font-bold">
+                    2
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Entrevista Telefónica</h3>
+                    <p className="text-gray-600">Te llamamos en 1-2 días hábiles para conocerte</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#079447] text-white rounded-full flex items-center justify-center font-bold">
+                    3
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Entrevista en Persona</h3>
+                    <p className="text-gray-600">Ven a conocer nuestro equipo y las instalaciones</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#079447] text-white rounded-full flex items-center justify-center font-bold">
+                    4
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">¡Comienza tu Carrera!</h3>
+                    <p className="text-gray-600">Entrenamiento pagado y bienvenida al equipo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {error && <p className="text-sm text-rose-600 mt-3">{error}</p>}
-
-        <div className="mt-6 flex items-center gap-3">
-        <button type="submit" disabled={sending} className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-60">
-            {sending ? "Enviando…" : "Enviar solicitud"}
-        </button>
-        <a href="/" className="text-slate-600 hover:text-slate-900 text-sm">Cancelar</a>
-        </div>
-    </form>
-    </div>
-</section>
-</>
-);
-}
-/* ——— small UI helpers ——— */
-function Field({ label, name, type="text", placeholder="", inputMode, required }) {
-return (
-<label className="block">
-    <span className="block text-sm font-medium text-slate-900">{label}</span>
-    <input name={name} type={type} placeholder={placeholder} inputMode={inputMode} required={required}
-    className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
-</label>
-);
-}
-function TextArea({ label, name, placeholder="" }) {
-return (
-<label className="block">
-    <span className="block text-sm font-medium text-slate-900">{label}</span>
-    <textarea name={name} placeholder={placeholder} rows={4}
-    className="mt-1 w-full rounded-lg ring-1 ring-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
-</label>
-);
-}
-function Select({ label, name, options=[], required }) {
-return (
-<label className="block">
-    <span className="block text-sm font-medium text-slate-900">{label}</span>
-    <div className="relative mt-1">
-    <select name={name} required={required}
-        className="appearance-none w-full rounded-lg ring-1 ring-slate-200 bg-white px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-emerald-600">
-        <option value="">Selecciona una opción</option>
-        {options.map((o)=> (<option key={o} value={o}>{o}</option>))}
-    </select>
-    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
-    </div>
-</label>
-);
-}
-function ChipCheck({ name, value, label }) {
-const id = `${name}-${value}`;
-return (
-<label htmlFor={id} className="cursor-pointer">
-    <input id={id} name={name} value={value} type="checkbox" className="peer sr-only" />
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full ring-1 ring-slate-200 bg-white text-slate-700 peer-checked:ring-emerald-600 peer-checked:bg-emerald-50">
-    <span className="block w-1.5 h-1.5 rounded-full bg-emerald-600" />
-    {label}
-    </span>
-</label>
-);
-}
-function Badge({ icon, text }) {
-return (
-<div className="bg-white rounded-full ring-1 ring-slate-200 shadow-sm px-4 py-2 text-sm text-slate-700 flex items-center gap-2">
-    <span className="text-emerald-600">{icon}</span>
-    <span className="whitespace-nowrap">{text}</span>
-</div>
-);
+      {/* CTA SECTION */}
+      <section className="py-16 lg:py-20 bg-[#001F3F]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            ¿Listo Para Comenzar Tu Futuro?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Únete a una empresa que valora a sus empleados tanto como a sus clientes
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="/aplicar/trabajos/tecnico-de-limpieza"
+              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-[#001F3F] bg-white rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              Aplicar Ahora
+              <ChevronRight className="ml-2 w-5 h-5" />
+            </Link>
+            <a 
+              href="tel:5125551234"
+              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white rounded-lg hover:bg-white/10 transition-colors"
+            >
+              Llámanos: (512) 555-1234
+            </a>
+          </div>
+          </div>          
+      </section>
+          </div>
+  );
 }
