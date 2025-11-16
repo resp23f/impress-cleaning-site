@@ -67,7 +67,7 @@ export default function Footer() {
 
           {/* Company Column */}
           <div className="text-center md:text-left">
-            <h4 className="text-lg font-oswald font-bold mb-3 text-[#A9E5BB] uppercase tracking-wide">
+            <h4 className="text-lg font-oswald font-bold mb-3 text-[#7AC699] uppercase tracking-wide">
               Company
             </h4>
             <ul className="font-manrope space-y-2 text-base text-white/80">

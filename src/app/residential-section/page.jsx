@@ -633,19 +633,13 @@ export default function ImpressCleaningSite() {
 
               {/* Right Content - Image Placeholder */}
               <div className="relative">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <div className="aspect-[4/5] bg-gradient-to-br from-[#001F3F] to-[#003D7A] flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <svg className="w-24 h-24 text-white/50 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                      </svg>
-                      <p className="text-white/70 text-lg">TBD</p>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob" />
-                  <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000" />
-                </div>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+                  <img 
+                    src="/residential-section-group-photo.png"
+                    alt="Professional cleaning team at work"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  </div>                  
               </div>
             </div>
           </div>
@@ -694,7 +688,6 @@ export default function ImpressCleaningSite() {
         </section>
       </StaggerItem>
 
-      <section className="py-9 bg-background"></section>
     </main>
   );
 }
