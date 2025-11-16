@@ -107,13 +107,13 @@ function Hero() {
 <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
 <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
   <div>
-    <div className="max-w-[90vw] md:max-w-[28ch] 2xl:max-w-[65ch]" style={{ transform: 'translateY(clamp(0px, 3vh, 60px))' }}>
-                                        <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>
+  <div className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" style={{ transform: 'translateY(clamp(0px, 3vh, 60px))' }}>
+                                            <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>
                   We'll Make Your Space Shine
                   <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
               </h1>
-                <div className="flex flex-col sm:flex-row gap-4">
-                <a 
+              <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+                                <a 
                     href="tel:+15122775364" 
                     className="inline-flex items-center justify-center bg-slate-800 text-white rounded-lg font-bold border-2 border-slate-700 hover:bg-slate-700 hover:border-slate-600 transition-all duration-300"
                     style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}>
