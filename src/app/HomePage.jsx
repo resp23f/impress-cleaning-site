@@ -104,11 +104,11 @@ function Hero() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
           <div className="relative z-10">
-            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
-              <div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
-<div className="px-4 sm:px-6">
-<div className="max-w-[90vw] md:max-w-[28ch] 2xl:max-w-[65ch]" style={{ transform: 'translateY(clamp(0px, 3vh, 60px))' }}>
-                                  <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>
+<div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
+<div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
+  <div>
+    <div className="max-w-[90vw] md:max-w-[28ch] 2xl:max-w-[65ch]" style={{ transform: 'translateY(clamp(0px, 3vh, 60px))' }}>
+                                        <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>
                   We'll Make Your Space Shine
                   <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
               </h1>
