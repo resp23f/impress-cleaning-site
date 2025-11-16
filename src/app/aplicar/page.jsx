@@ -79,12 +79,10 @@ const benefits = [
 ];
 
 const requirements = [
-  "Autorización para trabajar en Estados Unidos",
   "Transporte confiable para llegar al trabajo",
   "Capacidad de levantar hasta 25 libras",
   "Atención al detalle y actitud positiva",
   "Disponibilidad de Lunes a Viernes",
-  "Pasar verificación de antecedentes"
 ];
 
 export default function AplicarPage() {
@@ -338,10 +336,10 @@ export default function AplicarPage() {
               <ChevronRight className="ml-2 w-5 h-5" />
             </Link>
             <a 
-              href="tel:5125551234"
+              href="mailto:trabajos@impressyoucleaning.com"
               className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white rounded-lg hover:bg-white/10 transition-colors"
             >
-              Llámanos: (512) 555-1234
+              Envíanos un correo: trabajos@impressyoucleaning.com
             </a>
           </div>
           </div>          

@@ -42,14 +42,14 @@ export default function Footer() {
 
           {/* Services Column */}
           <div className="text-center md:text-left">
-            <h4 className="text-lg font-oswald font-bold mb-3 text-[#A9E5BB] uppercase tracking-wide">
+            <h4 className="text-lg font-oswald font-bold mb-3 text-[#7AC699] uppercase tracking-wide">
               Services
             </h4>
             <ul className="font-manrope space-y-2 text-base text-white/80">
               <li>
                 <Link 
                   href="/residential-section" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Residential
                 </Link>
@@ -57,7 +57,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/commercial" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Commercial
                 </Link>
@@ -74,7 +74,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/about-us" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   About Us
                 </Link>
@@ -82,7 +82,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/careers" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Apply
                 </Link>
@@ -90,7 +90,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/aplicar" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Aplicar
                 </Link>
@@ -98,7 +98,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/service-quote" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Contact Us
                 </Link>
@@ -108,14 +108,14 @@ export default function Footer() {
 
           {/* Resources Column */}
           <div className="text-center md:text-left">
-            <h4 className="text-lg font-oswald font-bold mb-3 text-[#A9E5BB] uppercase tracking-wide">
+            <h4 className="text-lg font-oswald font-bold mb-3 text-[#7AC699] uppercase tracking-wide">
               Resources
             </h4>
             <ul className="font-manrope space-y-2 text-base text-white/80">
               <li>
                 <Link 
                   href="/faq" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   FAQ
                 </Link>
@@ -123,7 +123,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/gift-certificates" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Gift Certificates
                 </Link>
@@ -131,7 +131,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/cleaning-tips" 
-                  className="hover:text-[#A9E5BB] transition-colors duration-200 block"
+                  className="hover:text-[#7AC699] transition-colors duration-200 block"
                 >
                   Cleaning Tips
                 </Link>
@@ -153,7 +153,7 @@ export default function Footer() {
     >
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="w-5 h-5 text-[#00A86B]" 
+        className="w-5 h-5 text-[#7AC699]" 
         viewBox="0 0 24 24" 
         fill="none" 
         stroke="currentColor" 
@@ -173,7 +173,7 @@ export default function Footer() {
     >
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="w-5 h-5 text-[#00A86B]" 
+        className="w-5 h-5 text-[#7AC699]" 
         viewBox="0 0 24 24" 
         fill="none" 
         stroke="currentColor" 
@@ -222,7 +222,7 @@ export default function Footer() {
 </div>
         {/* Copyright */}
         <div className="text-center pt-6 border-t border-white/10">
-          <p className="text-sm text-white/60 font-manrope">
+          <p className="text-sm text-white/80 font-manrope">
             &copy; {year} Impress Cleaning Services LLC. All rights reserved.
           </p>
         </div>
