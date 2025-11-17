@@ -26,6 +26,24 @@ export default function TawkToChat() {
         window.Tawk_API.hideWidget();
       }
 
+      // ✅ NEW: Track when chat is maximized (opened)
+      window.Tawk_API.onChatMaximized = function() {
+        // Hide custom chat button when Tawk widget opens
+        const customButton = document.querySelector('[data-chat-button]');
+        if (customButton) {
+          customButton.style.display = 'none';
+        }
+      };
+
+      // ✅ NEW: Track when chat is minimized (closed)
+      window.Tawk_API.onChatMinimized = function() {
+        // Show custom chat button again when Tawk widget closes
+        const customButton = document.querySelector('[data-chat-button]');
+        if (customButton) {
+          customButton.style.display = 'block';
+        }
+      };
+
       // ✅ FIX: Remove the fake "1 new message" notification badge
       window.Tawk_API.onUnreadCountChanged = function(count) {
         // Only show unread count if there's an actual ongoing conversation

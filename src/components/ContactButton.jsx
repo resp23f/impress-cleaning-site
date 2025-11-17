@@ -165,21 +165,22 @@ export default function ContactButton() {
       </div>
 
       {/* Floating Button - Responsive sizing with pulse animation */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`fixed z-50 transition-all duration-300
-          bottom-4 right-4 
-          md:bottom-6 md:right-6 
-          ${isOpen 
-            ? 'bg-gray-800 scale-90 rotate-180' 
-            : 'bg-gradient-to-r from-green-600 to-green-700 hover:scale-110 animate-pulse-subtle'
-          }
-          text-white shadow-lg hover:shadow-xl
-          w-14 h-14 sm:w-16 sm:h-16 
-          rounded-full 
-          flex items-center justify-center`}
-        aria-label="Contact us"
-      >
+<button
+data-chat-button  // ← ADD THIS LINE
+onClick={() => setIsOpen(!isOpen)}
+className={`fixed z-50 transition-all duration-300
+  bottom-4 right-4 
+  md:bottom-6 md:right-6 
+  ${isOpen 
+    ? 'bg-gray-800 scale-90 rotate-180' 
+    : 'bg-gradient-to-r from-green-600 to-green-700 hover:scale-110 animate-pulse-subtle'
+  }
+  text-white shadow-lg hover:shadow-xl
+  w-14 h-14 sm:w-16 sm:h-16 
+  rounded-full 
+  flex items-center justify-center`}
+aria-label="Contact us"
+>
         {isOpen ? (
           <X className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={2} />
         ) : (
