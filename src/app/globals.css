@@ -167,9 +167,17 @@ select.no-native::-ms-expand {
 div[class*="tawk"][class*="branding"],
 .tawk-branding,
 .tawk-text-branding,
-.tawk-min-branding {
+.tawk-min-branding,
+a[href*="tawk.to"],
+div[style*="tawk"] a {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   height: 0 !important;
+}
+/* Hide Tawk minimize button to avoid overlap */
+#tawk-bubble-container,
+.tawk-min-container,
+div[id*="tawk-bubble"] {
+  display: none !important;
 }
