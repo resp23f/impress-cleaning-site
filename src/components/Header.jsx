@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react"; // ← Add useEffect
+
 
 const NAV = [
   { label: "Residential", href: "/#services" },
@@ -16,11 +18,20 @@ export default function Header() {
 }
 function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // ← ADD THIS
   const pathname = usePathname() || "/";
   const active = useMemo(
     () => (href) => (pathname === href ? "text-green font-semibold" : ""),
     [pathname]
   );
+  // ← ADD THIS useEffect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -42,8 +53,11 @@ function SiteHeader() {
       </div>
 
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-      <header className="sticky top-0 z-50 bg-background [transform:translateZ(0)] [backface-visibility:hidden]">
-        
+<header className={`sticky top-0 z-50 transition-all duration-300 [transform:translateZ(0)] [backface-visibility:hidden] ${
+  isScrolled 
+    ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+    : 'bg-background'
+}`}>        
         {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
         <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>          
           <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
@@ -69,8 +83,9 @@ function SiteHeader() {
               type="button"
               aria-label="Toggle navigation"
               onClick={() => setOpen((prev) => !prev)}
-              className="md:hidden inline-flex items-center justify-center w-10 h-10 text-navy hover:text-green transition-colors relative z-10"
-            >
+              className={`md:hidden inline-flex items-center justify-center w-10 h-10 hover:text-green transition-colors relative z-10 ${
+                isScrolled ? 'text-navy' : 'text-navy'
+              }`}            >
               {open ? (
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
