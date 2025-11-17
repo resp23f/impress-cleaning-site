@@ -105,10 +105,12 @@ function Hero() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
           <div className="relative z-10">
 <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
-<div className="grid md:grid-cols-2 items-center min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh]">
-  <div>
-  <div className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" style={{ transform: 'translateY(clamp(0px, 3vh, 60px))' }}>
-      <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)'
+<div className="grid md:grid-cols-2 items-center md:items-center items-end min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] pb-8 md:pb-0">
+    <div>
+<div 
+className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" 
+style={{ transform: 'translateY(0)' }}
+>      <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)'
  }}>
                   We'll Make Your Space Shine
                   <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
