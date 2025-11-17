@@ -80,7 +80,8 @@ export default function ContactButton() {
     <>
       {/* Backdrop - subtle blur effect */}
       {isOpen && (
-        <div 
+        <div
+        data-contact-backdrop  
           className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 animate-fadeIn"
           onClick={() => setIsOpen(false)}
         />
@@ -97,7 +98,9 @@ export default function ContactButton() {
       )}
 
       {/* Contact Options Menu - Improved responsive design */}
-      <div className={`fixed z-50 transition-all duration-300 ease-out transform ${
+      <div
+        data-contact-menu
+      className={`fixed z-50 transition-all duration-300 ease-out transform ${
         isOpen 
           ? 'translate-y-0 opacity-100 scale-100' 
           : 'translate-y-4 opacity-0 scale-95 pointer-events-none'

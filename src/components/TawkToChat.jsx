@@ -26,21 +26,39 @@ export default function TawkToChat() {
         window.Tawk_API.hideWidget();
       }
 
-      // ✅ NEW: Track when chat is maximized (opened)
+      // ✅ Track when chat is maximized (opened)
       window.Tawk_API.onChatMaximized = function() {
         // Hide custom chat button when Tawk widget opens
         const customButton = document.querySelector('[data-chat-button]');
         if (customButton) {
           customButton.style.display = 'none';
         }
+        
+        // ✅ NEW: Also hide the contact menu dropdown
+        const contactMenu = document.querySelector('[data-contact-menu]');
+        if (contactMenu) {
+          contactMenu.style.display = 'none';
+        }
+        
+        // ✅ NEW: Also close the menu state by clicking the button if it's open
+        const backdrop = document.querySelector('[data-contact-backdrop]');
+        if (backdrop) {
+          backdrop.click(); // This will trigger the close
+        }
       };
 
-      // ✅ NEW: Track when chat is minimized (closed)
+      // ✅ Track when chat is minimized (closed)
       window.Tawk_API.onChatMinimized = function() {
         // Show custom chat button again when Tawk widget closes
         const customButton = document.querySelector('[data-chat-button]');
         if (customButton) {
           customButton.style.display = 'block';
+        }
+        
+        // ✅ NEW: Show contact menu again
+        const contactMenu = document.querySelector('[data-contact-menu]');
+        if (contactMenu) {
+          contactMenu.style.display = 'block';
         }
       };
 
