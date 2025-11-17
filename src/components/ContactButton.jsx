@@ -32,22 +32,19 @@ export default function ContactButton() {
 
   const contactOptions = [
     {
-      name: 'Chat with us',
-      description: 'Start a live conversation',
-      icon: MessageCircle,
-      color: 'bg-green-500',
-      action: () => {
-        // Open Tawk.to chat widget
-        if (window.Tawk_API && window.Tawk_API.toggle) {
-          window.Tawk_API.toggle();
-        } else {
-          // Fallback if Tawk isn't loaded yet
-          window.open('https://tawk.to/chat/YOUR_PROPERTY_ID/default', '_blank');
+        name: 'Chat with us',
+        description: 'Start a live conversation',
+        icon: MessageCircle,
+        color: 'bg-green-500',
+        action: () => {
+          // Open Tawk.to chat widget maximized (full screen)
+          if (window.Tawk_API && window.Tawk_API.maximize) {
+            window.Tawk_API.maximize();
+          }
+          setIsOpen(false);
         }
-        setIsOpen(false);
-      }
-    },
-  {
+      },
+        {
       name: 'Call us',
       description: '(512) 277-5364',
       icon: Phone,

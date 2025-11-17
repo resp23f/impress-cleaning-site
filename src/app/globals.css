@@ -163,21 +163,15 @@ select.no-native::-ms-expand {
 .font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
 }
-/* Hide Tawk.to branding */
-div[class*="tawk"][class*="branding"],
-.tawk-branding,
-.tawk-text-branding,
-.tawk-min-branding,
-a[href*="tawk.to"],
-div[style*="tawk"] a {
+/* Force hide Tawk branding and minimize button */
+iframe[title*="chat"] div[style*="tawk"],
+iframe[title*="chat widget"] a[href*="tawk.to"],
+#tawk-bubble-container,
+.tawk-min-container,
+div[class*="ChatMessageWidget"] > div:last-child a,
+div[style*="z-index: 1000000099"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
-  height: 0 !important;
-}
-/* Hide Tawk minimize button to avoid overlap */
-#tawk-bubble-container,
-.tawk-min-container,
-div[id*="tawk-bubble"] {
-  display: none !important;
+  pointer-events: none !important;
 }
