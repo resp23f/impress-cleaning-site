@@ -1,6 +1,6 @@
 'use client';
 import StaggerItem from '@/components/StaggerItem';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 export default function FAQPage() {
   // Add this useEffect hook right at the start of the component
