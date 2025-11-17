@@ -163,3 +163,13 @@ select.no-native::-ms-expand {
 .font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
 }
+/* Hide Tawk.to branding */
+div[class*="tawk"][class*="branding"],
+.tawk-branding,
+.tawk-text-branding,
+.tawk-min-branding {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+}
