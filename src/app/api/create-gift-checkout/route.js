@@ -59,8 +59,8 @@ export async function POST(request) {
 
     const encodedGiftData = Buffer.from(JSON.stringify(giftData)).toString('base64');
 
-    // Create checkout session with Square
-    const checkoutResponse = await squareClient.checkout.paymentLinks.create({
+    // Prepare the request body
+    const requestBody = {
       idempotencyKey,
       order: {
         locationId: process.env.SQUARE_LOCATION_ID,
@@ -85,7 +85,16 @@ export async function POST(request) {
       prePopulatedData: {
         buyerEmail: recipientEmail,
       },
+    };
+
+    console.log('Creating Square payment link with:', {
+      locationId: process.env.SQUARE_LOCATION_ID,
+      amount: amountInCents,
+      recipientEmail,
     });
+
+    // Create checkout session with Square
+    const checkoutResponse = await squareClient.checkout.paymentLinks.create(requestBody);
 
     if (!checkoutResponse.result.paymentLink) {
       throw new Error('Failed to create checkout session');
@@ -98,18 +107,30 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Error creating checkout:', error);
+    console.error('Error details:', {
+      message: error.message,
+      name: error.name,
+      errors: error.errors,
+      statusCode: error.statusCode,
+    });
 
     // Handle Square API errors
     if (error.errors) {
-      console.error('Square API errors:', error.errors);
+      console.error('Square API errors:', JSON.stringify(error.errors, null, 2));
       return Response.json(
-        { error: 'Payment service error. Please try again.' },
+        {
+          error: 'Payment service error. Please try again.',
+          details: process.env.NODE_ENV === 'development' ? error.errors : null
+        },
         { status: 500 }
       );
     }
 
     return Response.json(
-      { error: error.message || 'Failed to create checkout session' },
+      {
+        error: error.message || 'Failed to create checkout session',
+        details: process.env.NODE_ENV === 'development' ? error.stack : null
+      },
       { status: 500 }
     );
   }
