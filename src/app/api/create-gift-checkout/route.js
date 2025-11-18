@@ -60,7 +60,7 @@ export async function POST(request) {
     const encodedGiftData = Buffer.from(JSON.stringify(giftData)).toString('base64');
 
     // Create checkout session with Square
-    const checkoutResponse = await squareClient.checkoutApi.createPaymentLink({
+    const checkoutResponse = await squareClient.checkout.paymentLinks.create({
       idempotencyKey,
       order: {
         locationId: process.env.SQUARE_LOCATION_ID,
