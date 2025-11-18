@@ -1,11 +1,11 @@
-import { Client } from 'square';
+import { SquareClient, SquareEnvironment } from 'square';
 import crypto from 'crypto';
 
-const squareClient = new Client({
+const squareClient = new SquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
   environment: process.env.SQUARE_ENVIRONMENT === 'production'
-    ? 'production'
-    : 'sandbox',
+    ? SquareEnvironment.Production
+    : SquareEnvironment.Sandbox,
 });
 
 // Generate a unique gift certificate code
