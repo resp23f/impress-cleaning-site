@@ -37,9 +37,9 @@ function SiteHeader() {
       {/* ========== TOP BAR (Gift Certificates | Careers | Aplicar) - DESKTOP ONLY ========== */}
       <div className="hidden md:block bg-background">
         <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-6 py-1.5 px-6 lg:px-8 relative left-[10px] font-manrope font-semibold text-textLight text-[13px] lg:text-[15px]">
-          <a href="#gift" className="hover:text-green transition font-manrope">
+          <Link href="/gift-certificate" className="hover:text-green transition font-manrope">
             Gift Certificates
-          </a>
+          </Link>
           <span className="text-borderGray font-manrope">|</span>
           <Link href="/apply" className="hover:text-green transition font-manrope">
             Careers
@@ -176,7 +176,7 @@ function SiteHeader() {
           <Link href="/about-us" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
             About Us
           </Link>
-          <Link href="/gift-certificates" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
+          <Link href="/gift-certificate" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
             Gift Certificates
           </Link>
           <Link href="/faq" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
