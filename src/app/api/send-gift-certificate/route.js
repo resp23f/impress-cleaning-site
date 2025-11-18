@@ -127,11 +127,23 @@ export async function POST(request) {
     const giftData = await request.json();
     const { code, recipientName, recipientEmail, senderName, amount } = giftData;
 
+    console.log('Attempting to send gift certificate:', { code, recipientName, recipientEmail, senderName, amount });
+
     // Validate required fields
     if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
+      console.error('Missing required fields:', { code, recipientName, recipientEmail, senderName, amount });
       return Response.json(
         { error: 'Missing required gift certificate data' },
         { status: 400 }
+      );
+    }
+
+    // Check if Resend API key is configured
+    if (!process.env.RESEND_API_KEY_STAGING) {
+      console.error('RESEND_API_KEY_STAGING is not configured');
+      return Response.json(
+        { error: 'Email service not configured' },
+        { status: 500 }
       );
     }
 
@@ -139,18 +151,24 @@ export async function POST(request) {
     const emailHtml = createGiftCertificateEmail(giftData);
 
     // Send email using Resend
+    // Using Resend's verified onboarding domain for testing
+    // TODO: Replace with your verified domain once set up in Resend
+    console.log('Sending email to:', recipientEmail);
     const emailResponse = await resend.emails.send({
-      from: 'Impress Cleaning <noreply@impresscleaning.com>',
+      from: 'Impress Cleaning <onboarding@resend.dev>',
       to: recipientEmail,
       subject: `🎁 Gift Certificate from ${senderName} - $${amount}`,
       html: emailHtml,
     });
 
+    console.log('Resend response:', emailResponse);
+
     if (!emailResponse.data) {
-      throw new Error('Failed to send email');
+      console.error('No data in email response:', emailResponse);
+      throw new Error('Failed to send email - no response data');
     }
 
-    console.log('Gift certificate email sent:', emailResponse.data.id);
+    console.log('Gift certificate email sent successfully:', emailResponse.data.id);
 
     return Response.json({
       success: true,
@@ -160,11 +178,21 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Error sending gift certificate email:', error);
+    console.error('Error details:', {
+      message: error.message,
+      name: error.name,
+      stack: error.stack
+    });
+
+    // Log Resend-specific errors
+    if (error.message?.includes('API')) {
+      console.error('Resend API error detected');
+    }
 
     return Response.json(
       {
         error: error.message || 'Failed to send gift certificate email',
-        details: error.response?.body || null
+        details: process.env.NODE_ENV === 'development' ? error.stack : null
       },
       { status: 500 }
     );
