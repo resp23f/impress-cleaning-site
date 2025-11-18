@@ -17,6 +17,23 @@ function generateGiftCode() {
 
 export async function POST(request) {
   try {
+    // Check if Square is configured
+    if (!process.env.SQUARE_ACCESS_TOKEN) {
+      console.error('SQUARE_ACCESS_TOKEN is not configured');
+      return Response.json(
+        { error: 'Payment service not configured' },
+        { status: 500 }
+      );
+    }
+
+    if (!process.env.SQUARE_LOCATION_ID) {
+      console.error('SQUARE_LOCATION_ID is not configured');
+      return Response.json(
+        { error: 'Payment service not configured' },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { recipientName, recipientEmail, senderName, message, amount } = body;
 
@@ -91,6 +108,9 @@ export async function POST(request) {
       locationId: process.env.SQUARE_LOCATION_ID,
       amount: amountInCents,
       recipientEmail,
+      hasAccessToken: !!process.env.SQUARE_ACCESS_TOKEN,
+      tokenLength: process.env.SQUARE_ACCESS_TOKEN?.length,
+      environment: process.env.SQUARE_ENVIRONMENT,
     });
 
     // Create checkout session with Square
