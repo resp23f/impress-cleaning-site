@@ -264,14 +264,14 @@ function WhyChoose() {
           {/* Scrollable Container */}
           <div 
             ref={scrollRef}
-            className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4"
-          >
+            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
+            >
             {cards.map((c, index) => (
               <div 
                 key={c.t}
                 data-card
-                className="flex-shrink-0 w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center"
-              >
+                className="flex-shrink-0 w-[340px] snap-center"
+                >
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
                   
@@ -306,29 +306,44 @@ function WhyChoose() {
           )}
         </div>
 
-        {/* Mobile: Grid layout (no carousel needed since you only have 4 cards) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden">
-          {cards.map((c, index) => (
-            <StaggerItem key={c.t} delay={100 + (index * 100)}>
-              <div className="group relative h-full">
-                <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
-                
-                <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300">
-                  <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
-                    <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
-                  </div>
-                  
-                  <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
-                    {c.t}
-                  </h3>
-                  <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
-                    {c.d}
-                  </p>
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
+{/* Mobile: Horizontal scroll carousel */}
+<div className="md:hidden">
+  <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4 px-4">
+    {cards.map((c, index) => (
+      <div 
+        key={c.t}
+        className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
+      >
+        <div className="group relative h-full">
+          <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 rounded-2xl transition-opacity duration-300`} />
+          
+          <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm p-6">
+            <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+              <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
+            </div>
+            
+            <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
+              {c.t}
+            </h3>
+            <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
+              {c.d}
+            </p>
+          </div>
         </div>
+      </div>
+    ))}
+  </div>
+  
+  {/* Dot indicators */}
+  <div className="flex justify-center gap-2 mt-4">
+    {cards.map((_, index) => (
+      <div 
+        key={index}
+        className="w-2 h-2 rounded-full bg-gray-300"
+      />
+    ))}
+  </div>
+</div>
       </div>
     </section>
   );
@@ -452,14 +467,14 @@ function HowItWorks() {
           {/* Scrollable Container */}
           <div 
             ref={scrollRef}
-            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4"
-          >
+            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
+            >
             {steps.map((step, i) => (
               <div 
                 key={step.title}
                 data-card
-                className="flex-shrink-0 w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center"
-              >
+                className="flex-shrink-0 w-[340px] snap-center"
+                >
                 <div className="relative h-full group">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                     <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -498,33 +513,48 @@ function HowItWorks() {
           )}
         </div>
 
-        {/* Mobile: Grid layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:hidden">
-          {steps.map((step, i) => (
-            <StaggerItem key={step.title} delay={100 + (i * 100)}>
-              <div className="relative h-full group">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-2xl font-bold text-white">{i + 1}</span>
-                  </div>
-                </div>
+{/* Mobile: Horizontal scroll carousel */}
+<div className="md:hidden">
+  <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8">
+    {steps.map((step, i) => (
+      <div 
+        key={step.title}
+        className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
+      >
+        <div className="relative h-full">
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-2xl font-bold text-white">{i + 1}</span>
+            </div>
+          </div>
 
-                <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
-                  <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
-                    {step.icon}
-                  </div>
+          <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
+            <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
+              {step.icon}
+            </div>
 
-                  <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
+            <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
+              {step.title}
+            </h3>
+            <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
+              {step.description}
+            </p>
+          </div>
         </div>
+      </div>
+    ))}
+  </div>
+  
+  {/* Dot indicators */}
+  <div className="flex justify-center gap-2 mt-4">
+    {steps.map((_, index) => (
+      <div 
+        key={index}
+        className="w-2 h-2 rounded-full bg-gray-300"
+      />
+    ))}
+  </div>
+ </div>
 
         {/* CTA below steps */}
         <StaggerItem delay={500}>

@@ -21,12 +21,26 @@ export default function TawkToChat() {
 
     window.Tawk_API = window.Tawk_API || {};
     window.Tawk_API.onLoad = function() {
-      // Hide the default widget since you have your own chat button
-      if (window.Tawk_API.hideWidget) {
-        window.Tawk_API.hideWidget();
-      }
-
-      // Track when chat is maximized (opened)
+      // Multiple attempts to hide widget with delays
+      const hideWidget = () => {
+        if (window.Tawk_API && window.Tawk_API.hideWidget) {
+          window.Tawk_API.hideWidget();
+        }
+      };
+      
+      hideWidget();
+      setTimeout(hideWidget, 100);
+      setTimeout(hideWidget, 500);
+      setTimeout(hideWidget, 1000);
+      const clearTabBadge = () => {
+        if (document.title.match(/^\(\d+\)/)) {
+          document.title = document.title.replace(/^\(\d+\)\s*/, '');
+        }
+      };
+    
+      clearTabBadge();
+      setInterval(clearTabBadge, 2000); // Check every 2 seconds
+      
       window.Tawk_API.onChatMaximized = function() {
         const customButton = document.querySelector('[data-chat-button]');
         if (customButton) {
@@ -44,7 +58,6 @@ export default function TawkToChat() {
         }
       };
 
-      // Track when chat is minimized (closed)
       window.Tawk_API.onChatMinimized = function() {
         const customButton = document.querySelector('[data-chat-button]');
         if (customButton) {
@@ -57,16 +70,12 @@ export default function TawkToChat() {
         }
       };
 
-      // Remove fake notification badge - only show for real visitor messages
       window.Tawk_API.onUnreadCountChanged = function(count) {
-        // Clear any unread count if there's no active chat
         if (count > 0 && !window.Tawk_API.isChatOngoing()) {
-          // Force clear the badge by setting count to 0
           window.Tawk_API.setUnreadCount?.(0);
         }
       };
 
-      // Also clear on page load if there's no active chat
       setTimeout(() => {
         if (!window.Tawk_API.isChatOngoing()) {
           window.Tawk_API.setUnreadCount?.(0);
