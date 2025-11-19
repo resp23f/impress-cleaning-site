@@ -153,6 +153,10 @@ style={{ transform: 'translateY(0)' }}
 }
 
 function WhyChoose() {
+  const scrollRef = React.useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(true);
+
   const cards = [
     { 
       t: 'Reliable Results', 
@@ -189,6 +193,42 @@ function WhyChoose() {
     },
   ];
 
+  const updateArrows = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+    
+    const { scrollLeft, scrollWidth, clientWidth } = container;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  };
+
+  React.useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    
+    updateArrows();
+    container.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    
+    return () => {
+      container.removeEventListener('scroll', updateArrows);
+      window.removeEventListener('resize', updateArrows);
+    };
+  }, []);
+
+  const scroll = (direction) => {
+    const container = scrollRef.current;
+    if (!container) return;
+    
+    const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
+    const scrollAmount = cardWidth + 24; // card width + gap
+    
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -206,21 +246,78 @@ function WhyChoose() {
           </div>
         </StaggerItem>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Desktop: Scrollable with arrows */}
+        <div className="relative hidden md:block">
+          {/* Left Arrow */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
+              aria-label="Scroll left"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
+
+          {/* Scrollable Container */}
+          <div 
+            ref={scrollRef}
+            className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4"
+          >
+            {cards.map((c, index) => (
+              <div 
+                key={c.t}
+                data-card
+                className="flex-shrink-0 w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center"
+              >
+                <div className="group relative h-full">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
+                  
+                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300 group-hover:-translate-y-2">
+                    <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
+                    </div>
+                    
+                    <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
+                      {c.t}
+                    </h3>
+                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
+                      {c.d}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
+              aria-label="Scroll right"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Mobile: Grid layout (no carousel needed since you only have 4 cards) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden">
           {cards.map((c, index) => (
             <StaggerItem key={c.t} delay={100 + (index * 100)}>
               <div className="group relative h-full">
-                {/* Hover gradient background */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
                 
-                {/* Main card */}
-                <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300 group-hover:-translate-y-2">
-                  {/* Icon container */}
-                  <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300">
+                  <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
                     <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
                   </div>
                   
-                  {/* Content */}
                   <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
                     {c.t}
                   </h3>
@@ -238,6 +335,10 @@ function WhyChoose() {
 }
 
 function HowItWorks() {
+  const scrollRef = React.useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(true);
+
   const steps = [
     {
       title: 'Request Your Quote', 
@@ -276,10 +377,45 @@ function HowItWorks() {
       )
     },
   ];
+
+  const updateArrows = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+    
+    const { scrollLeft, scrollWidth, clientWidth } = container;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  };
+
+  React.useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    
+    updateArrows();
+    container.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    
+    return () => {
+      container.removeEventListener('scroll', updateArrows);
+      window.removeEventListener('resize', updateArrows);
+    };
+  }, []);
+
+  const scroll = (direction) => {
+    const container = scrollRef.current;
+    if (!container) return;
+    
+    const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
+    const scrollAmount = cardWidth + 32; // card width + gap
+    
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
   
   return (
     <section className="bg-white py-16 md:py-24 relative overflow-hidden">
-      {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
       
@@ -298,28 +434,86 @@ function HowItWorks() {
           </div>
         </StaggerItem>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-          {/* Connection line for desktop */}
-          <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-[#079447]/20 via-[#079447]/40 to-[#079447]/20" />
-          
+        {/* Desktop: Scrollable with arrows */}
+        <div className="relative hidden md:block">
+          {/* Left Arrow */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
+              aria-label="Scroll left"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
+
+          {/* Scrollable Container */}
+          <div 
+            ref={scrollRef}
+            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4"
+          >
+            {steps.map((step, i) => (
+              <div 
+                key={step.title}
+                data-card
+                className="flex-shrink-0 w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center"
+              >
+                <div className="relative h-full group">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-2xl font-bold text-white">{i + 1}</span>
+                    </div>
+                  </div>
+
+                  <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl px-6 py-8 transition-all duration-300 group-hover:-translate-y-2">
+                    <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors duration-300">
+                      {step.icon}
+                    </div>
+
+                    <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
+                      {step.title}
+                    </h3>
+                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
+              aria-label="Scroll right"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Mobile: Grid layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:hidden">
           {steps.map((step, i) => (
             <StaggerItem key={step.title} delay={100 + (i * 100)}>
               <div className="relative h-full group">
-                {/* Step number badge */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
                     <span className="text-2xl font-bold text-white">{i + 1}</span>
                   </div>
                 </div>
 
-                {/* Card */}
-                <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl px-6 py-8 transition-all duration-300 group-hover:-translate-y-2">
-                  {/* Icon */}
-                  <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors duration-300">
+                <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
+                  <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
                     {step.icon}
                   </div>
 
-                  {/* Content */}
                   <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
                     {step.title}
                   </h3>
@@ -350,6 +544,7 @@ function HowItWorks() {
     </section>
   );
 }
+
 
 function SocialProof() {
   const scrollRef = React.useRef(null);
