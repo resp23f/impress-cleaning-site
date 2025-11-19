@@ -32,6 +32,17 @@
     scrollbar-width: none;
   }
 }
+/* Prevent carousel from blocking page scroll */
+.horizontal-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  pointer-events: auto;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 
 @keyframes blob {
   0% {

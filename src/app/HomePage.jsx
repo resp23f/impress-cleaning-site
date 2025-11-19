@@ -247,8 +247,8 @@ function WhyChoose() {
         </StaggerItem>
 
         {/* Desktop: Scrollable with arrows */}
-        <div className="relative hidden md:block">
-          {/* Left Arrow */}
+        <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
+        {/* Left Arrow */}
           {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
@@ -450,7 +450,7 @@ function HowItWorks() {
         </StaggerItem>
 
         {/* Desktop: Scrollable with arrows */}
-        <div className="relative hidden md:block">
+        <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
           {/* Left Arrow */}
           {canScrollLeft && (
             <button
