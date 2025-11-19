@@ -13,7 +13,10 @@ function SuccessContent() {
     const sendGiftCertificate = async () => {
       try {
         const encodedData = searchParams.get('data');
-        if (!encodedData) return;
+        if (!encodedData) {
+          setEmailSent(true);
+          return;
+        }
 
         const decodedData = JSON.parse(atob(decodeURIComponent(encodedData)));
 
