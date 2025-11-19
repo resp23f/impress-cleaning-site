@@ -122,15 +122,24 @@ function SiteHeader() {
                 About Us
               </Link>
 
-              {/* ========== REQUEST A QUOTE BUTTON WITH FLUID SIZING ========== */}
-              <Link
-                href="/service-quote" 
-                className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
-                style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
-              >
-                Request a Quote
-              </Link> 
-            </nav>
+              {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
+              <div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)' }}>
+                <Link
+                  href="/booking" 
+                  className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
+                  style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
+                >
+                  Book Now
+                </Link>
+                <Link
+                  href="/service-quote" 
+                  className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
+                  style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
+                >
+                  Request a Quote
+                </Link>
+              </div>
+                          </nav>
           </div>
         </div>
       </header>
@@ -189,16 +198,23 @@ function SiteHeader() {
           Aplicar
         </Link>
         
-          {/* Mobile Quote Button */}
-          <div className="pt-6 border-t border-white/10">
-            <Link
-              href="/service-quote" 
-              className="block text-center rounded-lg bg-[#079447] hover:bg-[#08A855] px-6 py-3 text-white font-semibold transition-all duration-300"
-              onClick={() => setOpen(false)}
-            >
-              Request a Quote
-            </Link>
-          </div>
+{/* Mobile Action Buttons */}
+<div className="pt-6 border-t border-white/10 space-y-3">
+  <Link
+    href="/booking" 
+    className="block text-center rounded-lg bg-[#079447] hover:bg-[#08A855] px-6 py-3 text-white font-semibold transition-all duration-300"
+    onClick={() => setOpen(false)}
+  >
+    Book Now
+  </Link>
+  <Link
+    href="/service-quote" 
+    className="block text-center rounded-lg bg-[#079447] hover:bg-[#08A855] px-6 py-3 text-white font-semibold transition-all duration-300"
+    onClick={() => setOpen(false)}
+  >
+    Request a Quote
+  </Link>
+</div>
         </nav>
       </div>
     </>

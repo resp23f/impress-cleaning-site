@@ -48,7 +48,7 @@ function createGiftCertificateEmail(giftData) {
                 Dear ${recipientName},
               </p>
               <p style="margin: 0 0 40px; color: #4a5568; font-size: 16px; line-height: 1.8; font-weight: 300;">
-                You have received an exclusive gift certificate for our premium cleaning services.
+              Someone special has chosen to gift you the luxury of a professionally cleaned home or business.
               </p>
 
               <!-- Premium Gift Amount -->
@@ -88,7 +88,7 @@ function createGiftCertificateEmail(giftData) {
                   </p>
                   <p style="margin: 0; padding-left: 25px; position: relative;">
                     <span style="position: absolute; left: 0; color: #d4af37; font-weight: 600;">4.</span>
-                    Experience our premium cleaning service
+                    Experience our Impressive Cleaning Service
                   </p>
                 </div>
               </div>
@@ -110,7 +110,7 @@ function createGiftCertificateEmail(giftData) {
             <td style="padding: 0 50px 50px;">
               <div style="background-color: #fffef7; border-left: 3px solid #d4af37; padding: 25px 30px; border-radius: 2px;">
                 <p style="margin: 0; color: #5a4a2a; font-size: 14px; line-height: 1.7; font-weight: 300;">
-                  <strong style="font-weight: 600;">Important Notice:</strong> This certificate never expires. Please retain this email as verification of your gift. For inquiries, please contact our team.
+                  <strong style="font-weight: 600;">Important Notice:</strong> This certificate never expires. Book now for priority scheduling during our busy season! For inquiries, please contact our team.
                 </p>
               </div>
             </td>
@@ -121,7 +121,7 @@ function createGiftCertificateEmail(giftData) {
             <td style="padding: 40px 50px; background-color: #1a1a1a; text-align: center;">
               <div style="border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 25px; margin-bottom: 25px;">
                 <p style="margin: 0 0 5px; color: #ffffff; font-size: 20px; font-weight: 300; letter-spacing: 2px;">IMPRESS CLEANING SERVICES</p>
-                <p style="margin: 0; color: #a0a0a0; font-size: 13px; font-weight: 300; letter-spacing: 1px;">Premium Home & Business Cleaning</p>
+                <p style="margin: 0; color: #a0a0a0; font-size: 13px; font-weight: 300; letter-spacing: 1px;">Residential and Commercial Cleaning Service</p>
               </div>
               <div style="margin: 0 0 25px;">
                 <a href="mailto:gifts@impressyoucleaning.com" style="color: #d4af37; text-decoration: none; font-size: 14px; font-weight: 300; letter-spacing: 0.5px;">gifts@impressyoucleaning.com</a>
@@ -168,7 +168,7 @@ export async function POST(request) {
 
     console.log('Sending email to:', recipientEmail);
     const emailResponse = await resend.emails.send({
-      from: 'Impress Cleaning Gifts <gifts@impressyoucleaning.com>',
+      from: 'Impress Cleaning Services Gift Certificate <gifts@impressyoucleaning.com>',
       to: recipientEmail,
       subject: `Your $${amount} Gift Certificate from ${senderName}`,
       html: emailHtml,
