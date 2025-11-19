@@ -279,7 +279,7 @@ function WhyChoose() {
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
                   
-                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300 group-hover:-translate-y-2">
+                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-2xl group-hover:shadow-green-500/10 p-6 transition-all duration-300 group-hover:-translate-y-2">  
                     <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
                     </div>
@@ -472,14 +472,26 @@ function HowItWorks() {
           <div 
             ref={scrollRef}
             className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
-            >
+            onWheel={(e) => {
+              const container = e.currentTarget;
+              const atStart = container.scrollLeft === 0;
+              const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
+              
+              // Allow page scroll if trying to scroll vertically or at edges
+              if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
+                return; // Let the page scroll
+              }
+              
+              e.stopPropagation();
+            }}
+                        >
             {steps.map((step, i) => (
               <div 
                 key={step.title}
                 data-card
                 className="flex-shrink-0 w-[340px] snap-center"
                 >
-                <div className="relative h-full group">
+                <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-2xl group-hover:shadow-green-500/10 p-6 transition-all duration-300 group-hover:-translate-y-2">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                     <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <span className="text-2xl font-bold text-white">{i + 1}</span>
@@ -519,7 +531,20 @@ function HowItWorks() {
 
 {/* Mobile: Horizontal scroll carousel */}
 <div className="md:hidden">
-  <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8">
+    <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8"
+      onWheel={(e) => {
+        const container = e.currentTarget;
+        const atStart = container.scrollLeft === 0;
+        const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
+        
+        // Allow page scroll if trying to scroll vertically or at edges
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
+          return; // Let the page scroll
+        }
+        
+        e.stopPropagation();
+      }}
+    >
     {steps.map((step, i) => (
       <div 
         key={step.title}
