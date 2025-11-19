@@ -1,4 +1,4 @@
-import { SquareClient, SquareEnvironment } from 'square';
+import Stripe from 'stripe';
 import crypto from 'crypto';
 
 // Generate a unique gift certificate code
@@ -10,30 +10,17 @@ function generateGiftCode() {
 
 export async function POST(request) {
   try {
-    // Check if Square is configured
-    if (!process.env.SQUARE_ACCESS_TOKEN) {
-      console.error('SQUARE_ACCESS_TOKEN is not configured');
+    // Check if Stripe is configured
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('STRIPE_SECRET_KEY is not configured');
       return Response.json(
         { error: 'Payment service not configured' },
         { status: 500 }
       );
     }
 
-    if (!process.env.SQUARE_LOCATION_ID) {
-      console.error('SQUARE_LOCATION_ID is not configured');
-      return Response.json(
-        { error: 'Payment service not configured' },
-        { status: 500 }
-      );
-    }
-
-    // Create Square client with fresh environment variables
-    const squareClient = new SquareClient({
-      environment: process.env.SQUARE_ENVIRONMENT === 'production'
-        ? SquareEnvironment.Production
-        : SquareEnvironment.Sandbox,
-      accessToken: process.env.SQUARE_ACCESS_TOKEN,
-    });
+    // Initialize Stripe
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     const body = await request.json();
     const { recipientName, recipientEmail, senderName, message, amount } = body;
@@ -58,14 +45,10 @@ export async function POST(request) {
     // Generate unique gift certificate code
     const giftCode = generateGiftCode();
 
-    // Create idempotency key for Square
-    const idempotencyKey = crypto.randomUUID();
-
     // Prepare the site URL
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
-    // Store gift certificate data in the checkout session
-    // We'll encode the data in the reference_id field
+    // Store gift certificate data to pass through the checkout
     const giftData = {
       code: giftCode,
       recipientName,
@@ -77,52 +60,45 @@ export async function POST(request) {
 
     const encodedGiftData = Buffer.from(JSON.stringify(giftData)).toString('base64');
 
-    // Prepare the request body
-    const requestBody = {
-      idempotencyKey,
-      order: {
-        locationId: process.env.SQUARE_LOCATION_ID,
-        lineItems: [
-          {
-            name: 'Gift Certificate',
-            quantity: '1',
-            basePriceMoney: {
-              amount: BigInt(amountInCents),
-              currency: 'USD',
-            },
-            note: `Gift Certificate for ${recipientName}`,
-          },
-        ],
-        // Store gift certificate data in the reference_id
-        referenceId: encodedGiftData.substring(0, 40), // Square has a 40 char limit
-      },
-      checkoutOptions: {
-        redirectUrl: `${siteUrl}/gift-certificate/success?data=${encodeURIComponent(encodedGiftData)}`,
-        askForShippingAddress: false,
-      },
-      prePopulatedData: {
-        buyerEmail: recipientEmail,
-      },
-    };
-
-    console.log('Creating Square payment link with:', {
-      locationId: process.env.SQUARE_LOCATION_ID,
+    console.log('Creating Stripe checkout session with:', {
       amount: amountInCents,
       recipientEmail,
-      hasAccessToken: !!process.env.SQUARE_ACCESS_TOKEN,
-      tokenLength: process.env.SQUARE_ACCESS_TOKEN?.length,
-      environment: process.env.SQUARE_ENVIRONMENT,
+      hasSecretKey: !!process.env.STRIPE_SECRET_KEY,
     });
 
-    // Create checkout session with Square
-    const checkoutResponse = await squareClient.checkout.paymentLinks.create(requestBody);
+    // Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Gift Certificate',
+              description: `Gift Certificate for ${recipientName}`,
+            },
+            unit_amount: amountInCents,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${siteUrl}/gift-certificate/success?data=${encodeURIComponent(encodedGiftData)}`,
+      cancel_url: `${siteUrl}/gift-certificate?canceled=true`,
+      customer_email: recipientEmail,
+      metadata: {
+        giftCode,
+        recipientName,
+        recipientEmail,
+        senderName,
+        amount: amount.toString(),
+      },
+    });
 
-    if (!checkoutResponse.result.paymentLink) {
-      throw new Error('Failed to create checkout session');
-    }
+    console.log('Stripe checkout session created:', session.id);
 
     return Response.json({
-      checkoutUrl: checkoutResponse.result.paymentLink.url,
+      checkoutUrl: session.url,
       giftCode,
     });
 
@@ -131,21 +107,9 @@ export async function POST(request) {
     console.error('Error details:', {
       message: error.message,
       name: error.name,
-      errors: error.errors,
+      type: error.type,
       statusCode: error.statusCode,
     });
-
-    // Handle Square API errors
-    if (error.errors) {
-      console.error('Square API errors:', JSON.stringify(error.errors, null, 2));
-      return Response.json(
-        {
-          error: 'Payment service error. Please try again.',
-          details: process.env.NODE_ENV === 'development' ? error.errors : null
-        },
-        { status: 500 }
-      );
-    }
 
     return Response.json(
       {

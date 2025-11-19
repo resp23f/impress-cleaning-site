@@ -18,7 +18,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "resend": "^6.5.0",
-    "square": "^43.2.0"
+    "square": "^43.2.0",
+    "stripe": "^20.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

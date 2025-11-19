@@ -240,7 +240,7 @@ export default function GiftCertificatePage() {
             </button>
 
             <p className="text-center text-sm text-gray-500">
-              You will be redirected to Square for secure payment
+              You will be redirected to Stripe for secure payment
             </p>
           </form>
         </div>
@@ -255,7 +255,7 @@ export default function GiftCertificatePage() {
             </li>
             <li className="flex items-start">
               <span className="font-semibold text-blue-600 mr-2">2.</span>
-              <span>Complete payment securely through Square</span>
+              <span>Complete payment securely through Stripe</span>
             </li>
             <li className="flex items-start">
               <span className="font-semibold text-blue-600 mr-2">3.</span>
