@@ -5,9 +5,11 @@ export async function GET(request) {
     console.log('Testing Square credentials...');
     console.log('Has token:', !!process.env.SQUARE_ACCESS_TOKEN);
     console.log('Token length:', process.env.SQUARE_ACCESS_TOKEN?.length);
+    console.log('Token first 10 chars:', process.env.SQUARE_ACCESS_TOKEN?.substring(0, 10));
     console.log('Environment:', process.env.SQUARE_ENVIRONMENT);
     console.log('Location ID:', process.env.SQUARE_LOCATION_ID);
 
+    // Create Square client with fresh environment variables
     const client = new SquareClient({
       accessToken: process.env.SQUARE_ACCESS_TOKEN,
       environment: process.env.SQUARE_ENVIRONMENT === 'production'

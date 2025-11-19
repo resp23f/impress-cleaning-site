@@ -1,13 +1,6 @@
 import { SquareClient, SquareEnvironment } from 'square';
 import crypto from 'crypto';
 
-const squareClient = new SquareClient({
-  accessToken: process.env.SQUARE_ACCESS_TOKEN,
-  environment: process.env.SQUARE_ENVIRONMENT === 'production'
-    ? SquareEnvironment.Production
-    : SquareEnvironment.Sandbox,
-});
-
 // Generate a unique gift certificate code
 function generateGiftCode() {
   const timestamp = Date.now().toString(36).toUpperCase();
@@ -33,6 +26,14 @@ export async function POST(request) {
         { status: 500 }
       );
     }
+
+    // Create Square client with fresh environment variables
+    const squareClient = new SquareClient({
+      accessToken: process.env.SQUARE_ACCESS_TOKEN,
+      environment: process.env.SQUARE_ENVIRONMENT === 'production'
+        ? SquareEnvironment.Production
+        : SquareEnvironment.Sandbox,
+    });
 
     const body = await request.json();
     const { recipientName, recipientEmail, senderName, message, amount } = body;
