@@ -23,10 +23,10 @@ export async function POST(request) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     const body = await request.json();
-    const { recipientName, recipientEmail, senderName, message, amount } = body;
+    const { recipientName, recipientEmail, senderName, buyerEmail, message, amount } = body;
 
     // Validate required fields
-    if (!recipientName || !recipientEmail || !senderName || !amount) {
+    if (!recipientName || !recipientEmail || !senderName || !buyerEmail || !amount) {
       return Response.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -63,6 +63,7 @@ export async function POST(request) {
     console.log('Creating Stripe checkout session with:', {
       amount: amountInCents,
       recipientEmail,
+      buyerEmail,
       hasSecretKey: !!process.env.STRIPE_SECRET_KEY,
     });
 
@@ -85,12 +86,13 @@ export async function POST(request) {
       mode: 'payment',
       success_url: `${siteUrl}/gift-certificate/success?data=${encodeURIComponent(encodedGiftData)}`,
       cancel_url: `${siteUrl}/gift-certificate?canceled=true`,
-      customer_email: recipientEmail,
+      customer_email: buyerEmail,
       metadata: {
         giftCode,
         recipientName,
         recipientEmail,
         senderName,
+        buyerEmail,
         amount: amount.toString(),
       },
     });
