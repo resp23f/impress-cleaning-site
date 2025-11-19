@@ -29,7 +29,9 @@ export async function POST(request) {
 
     // Create Square client with fresh environment variables
     const squareClient = new SquareClient({
-      accessToken: process.env.SQUARE_ACCESS_TOKEN,
+      bearerAuthCredentials: {
+        accessToken: process.env.SQUARE_ACCESS_TOKEN,
+      },
       environment: process.env.SQUARE_ENVIRONMENT === 'production'
         ? SquareEnvironment.Production
         : SquareEnvironment.Sandbox,
