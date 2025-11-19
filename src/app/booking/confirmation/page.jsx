@@ -197,7 +197,7 @@ function ConfirmationContent() {
             </div>
           </div>
 
-          <div className="bg-navy text-white rounded-2xl shadow-lg p-6 md:p-8 text-center">
+          <div className="bg-[#1C294E] text-white rounded-2xl shadow-lg p-6 md:p-8 text-center">
             <h2 className="text-xl md:text-2xl font-display font-bold mb-3">Questions About Your Booking?</h2>
             <p className="font-manrope mb-6 text-sm md:text-base opacity-90">
               Our team is here to help! Feel free to reach out anytime.
