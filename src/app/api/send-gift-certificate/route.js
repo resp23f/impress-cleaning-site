@@ -13,102 +13,121 @@ function createGiftCertificateEmail(giftData) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gift Certificate from ${senderName}</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f4f6; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; font-family: 'Georgia', 'Times New Roman', serif; background-color: #f8f9fa;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; padding: 50px 20px;">
     <tr>
       <td align="center">
         <!-- Main Container -->
-        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
+        <table width="650" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); overflow: hidden;">
 
-          <!-- Header with Gradient -->
+          <!-- Elegant Header -->
           <tr>
-            <td style="background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); padding: 40px 30px; text-align: center;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold;">🎁 You've Received a Gift!</h1>
-              <p style="margin: 10px 0 0; color: #e0e7ff; font-size: 16px;">A special gift from ${senderName}</p>
+            <td style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 50%, #1a4d2e 100%); padding: 60px 40px; text-align: center; position: relative;">
+              <div style="border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: 20px; margin-bottom: 20px;">
+                <h1 style="margin: 0; color: #ffffff; font-size: 18px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase;">Impress Cleaning Services</h1>
+              </div>
+              <h2 style="margin: 0; color: #d4af37; font-size: 42px; font-weight: 300; letter-spacing: 1px;">A Gift For You</h2>
+              <p style="margin: 15px 0 0; color: #e8f5e9; font-size: 16px; font-weight: 300; letter-spacing: 0.5px;">From ${senderName}</p>
             </td>
           </tr>
 
-          <!-- Personal Message (if provided) -->
+          <!-- Personal Message -->
           ${message ? `
           <tr>
-            <td style="padding: 30px 30px 20px; background-color: #eff6ff; border-bottom: 1px solid #dbeafe;">
-              <p style="margin: 0 0 8px; color: #1e40af; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Personal Message</p>
-              <p style="margin: 0; color: #1e3a8a; font-size: 16px; line-height: 1.6; font-style: italic;">"${message}"</p>
+            <td style="padding: 40px 50px; background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-bottom: 1px solid #e8e8e8;">
+              <p style="margin: 0 0 12px; color: #1a4d2e; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">A Personal Note</p>
+              <p style="margin: 0; color: #2d3748; font-size: 17px; line-height: 1.8; font-style: italic; font-family: 'Georgia', serif;">"${message}"</p>
             </td>
           </tr>
           ` : ''}
 
-          <!-- Gift Certificate Details -->
+          <!-- Main Content -->
           <tr>
-            <td style="padding: 40px 30px; text-align: center;">
-              <p style="margin: 0 0 24px; color: #4b5563; font-size: 18px;">
+            <td style="padding: 50px 50px 40px; text-align: center;">
+              <p style="margin: 0 0 30px; color: #2d3748; font-size: 20px; font-weight: 300; font-family: 'Georgia', serif;">
                 Dear ${recipientName},
               </p>
-              <p style="margin: 0 0 32px; color: #6b7280; font-size: 16px; line-height: 1.6;">
-                ${senderName} has sent you a gift certificate for our professional cleaning services!
+              <p style="margin: 0 0 40px; color: #4a5568; font-size: 16px; line-height: 1.8; font-weight: 300;">
+                You have received an exclusive gift certificate for our premium cleaning services.
               </p>
 
-              <!-- Gift Amount Box -->
-              <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 12px; padding: 24px; margin: 0 0 24px;">
-                <p style="margin: 0 0 8px; color: #0369a1; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Gift Value</p>
-                <p style="margin: 0; color: #0c4a6e; font-size: 48px; font-weight: bold;">$${amount}</p>
+              <!-- Premium Gift Amount -->
+              <div style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 100%); border-radius: 4px; padding: 40px; margin: 0 0 40px; box-shadow: 0 4px 16px rgba(26, 77, 46, 0.2);">
+                <p style="margin: 0 0 12px; color: #d4af37; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Certificate Value</p>
+                <p style="margin: 0; color: #ffffff; font-size: 56px; font-weight: 300; letter-spacing: -1px;">$${amount}</p>
               </div>
 
-              <!-- Gift Code Box -->
-              <div style="background-color: #fafafa; border: 2px dashed #d1d5db; border-radius: 12px; padding: 24px; margin: 0 0 32px;">
-                <p style="margin: 0 0 12px; color: #6b7280; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Your Gift Certificate Code</p>
-                <p style="margin: 0; color: #1f2937; font-size: 24px; font-weight: bold; font-family: 'Courier New', monospace; letter-spacing: 2px;">${code}</p>
-                <p style="margin: 12px 0 0; color: #9ca3af; font-size: 12px;">Save this code to redeem your gift</p>
+              <!-- Elegant Code Display -->
+              <div style="background-color: #fafafa; border: 1px solid #e0e0e0; border-radius: 2px; padding: 35px 30px; margin: 0 0 40px;">
+                <p style="margin: 0 0 18px; color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Your Certificate Code</p>
+                <div style="background-color: #ffffff; border: 2px solid #1a4d2e; border-radius: 2px; padding: 20px; margin: 0 0 18px;">
+                  <p style="margin: 0; color: #1a4d2e; font-size: 28px; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: 3px;">${code}</p>
+                </div>
+                <p style="margin: 0; color: #a0aec0; font-size: 13px; font-weight: 300;">Please retain this code for redemption</p>
               </div>
             </td>
           </tr>
 
-          <!-- How to Redeem Section -->
+          <!-- Redemption Instructions -->
           <tr>
-            <td style="padding: 0 30px 40px;">
-              <div style="background-color: #f9fafb; border-radius: 12px; padding: 24px;">
-                <h2 style="margin: 0 0 16px; color: #1f2937; font-size: 20px; font-weight: bold;">How to Redeem Your Gift</h2>
-                <ol style="margin: 0; padding-left: 20px; color: #4b5563; font-size: 15px; line-height: 1.8;">
-                  <li style="margin-bottom: 8px;">Visit our website or call us to schedule your cleaning service</li>
-                  <li style="margin-bottom: 8px;">Provide your gift certificate code: <strong>${code}</strong></li>
-                  <li style="margin-bottom: 8px;">We'll apply the $${amount} credit to your service</li>
-                  <li>Enjoy your sparkling clean home!</li>
-                </ol>
+            <td style="padding: 0 50px 50px;">
+              <div style="background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%); border: 1px solid #e8e8e8; border-radius: 2px; padding: 35px 40px;">
+                <h3 style="margin: 0 0 25px; color: #1a4d2e; font-size: 22px; font-weight: 400; letter-spacing: 0.5px;">How to Redeem</h3>
+                <div style="color: #4a5568; font-size: 15px; line-height: 2; font-weight: 300;">
+                  <p style="margin: 0 0 15px; padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #d4af37; font-weight: 600;">1.</span>
+                    Contact us via phone or our website to schedule your service
+                  </p>
+                  <p style="margin: 0 0 15px; padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #d4af37; font-weight: 600;">2.</span>
+                    Provide your certificate code: <strong style="color: #1a4d2e;">${code}</strong>
+                  </p>
+                  <p style="margin: 0 0 15px; padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #d4af37; font-weight: 600;">3.</span>
+                    Your $${amount} credit will be applied to your service
+                  </p>
+                  <p style="margin: 0; padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #d4af37; font-weight: 600;">4.</span>
+                    Experience our premium cleaning service
+                  </p>
+                </div>
               </div>
             </td>
           </tr>
 
           <!-- CTA Button -->
           <tr>
-            <td style="padding: 0 30px 40px; text-align: center;">
-              <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://impresscleaning.com'}"
-                 style="display: inline-block; background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); color: #ffffff; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);">
-                Schedule Your Cleaning
+            <td style="padding: 0 50px 50px; text-align: center;">
+              <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'}"
+                 style="display: inline-block; background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 100%); color: #ffffff; text-decoration: none; padding: 18px 55px; border-radius: 2px; font-size: 15px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);">
+                Schedule Service
               </a>
             </td>
           </tr>
 
-          <!-- Important Notes -->
+          <!-- Important Notice -->
           <tr>
-            <td style="padding: 0 30px 40px;">
-              <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 4px;">
-                <p style="margin: 0; color: #92400e; font-size: 13px; line-height: 1.6;">
-                  <strong>Important:</strong> This gift certificate does not expire. Keep this email safe as proof of your gift certificate. If you have any questions, please contact us.
+            <td style="padding: 0 50px 50px;">
+              <div style="background-color: #fffef7; border-left: 3px solid #d4af37; padding: 25px 30px; border-radius: 2px;">
+                <p style="margin: 0; color: #5a4a2a; font-size: 14px; line-height: 1.7; font-weight: 300;">
+                  <strong style="font-weight: 600;">Important Notice:</strong> This certificate never expires. Please retain this email as verification of your gift. For inquiries, please contact our team.
                 </p>
               </div>
             </td>
           </tr>
 
-          <!-- Footer -->
+          <!-- Elegant Footer -->
           <tr>
-            <td style="padding: 30px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center;">
-              <p style="margin: 0 0 8px; color: #1f2937; font-size: 16px; font-weight: 600;">Impress Cleaning Services</p>
-              <p style="margin: 0 0 16px; color: #6b7280; font-size: 14px;">Professional cleaning for your home or business</p>
-              <div style="margin: 0 0 16px;">
-                <a href="mailto:contact@impresscleaning.com" style="color: #2563eb; text-decoration: none; font-size: 14px;">contact@impresscleaning.com</a>
+            <td style="padding: 40px 50px; background-color: #1a1a1a; text-align: center;">
+              <div style="border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 25px; margin-bottom: 25px;">
+                <p style="margin: 0 0 5px; color: #ffffff; font-size: 20px; font-weight: 300; letter-spacing: 2px;">IMPRESS CLEANING SERVICES</p>
+                <p style="margin: 0; color: #a0a0a0; font-size: 13px; font-weight: 300; letter-spacing: 1px;">Premium Home & Business Cleaning</p>
               </div>
-              <p style="margin: 0; color: #9ca3af; font-size: 12px;">
-                © ${new Date().getFullYear()} Impress Cleaning Services. All rights reserved.
+              <div style="margin: 0 0 25px;">
+                <a href="mailto:gifts@impressyoucleaning.com" style="color: #d4af37; text-decoration: none; font-size: 14px; font-weight: 300; letter-spacing: 0.5px;">gifts@impressyoucleaning.com</a>
+              </div>
+              <p style="margin: 0; color: #666666; font-size: 12px; font-weight: 300;">
+                © ${new Date().getFullYear()} Impress Cleaning Services. All Rights Reserved.
               </p>
             </td>
           </tr>
@@ -129,7 +148,6 @@ export async function POST(request) {
 
     console.log('Attempting to send gift certificate:', { code, recipientName, recipientEmail, senderName, amount });
 
-    // Validate required fields
     if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
       console.error('Missing required fields:', { code, recipientName, recipientEmail, senderName, amount });
       return Response.json(
@@ -138,7 +156,6 @@ export async function POST(request) {
       );
     }
 
-    // Check if Resend API key is configured
     if (!process.env.RESEND_API_KEY_STAGING) {
       console.error('RESEND_API_KEY_STAGING is not configured');
       return Response.json(
@@ -147,17 +164,13 @@ export async function POST(request) {
       );
     }
 
-    // Create the email HTML
     const emailHtml = createGiftCertificateEmail(giftData);
 
-    // Send email using Resend
-    // Using Resend's verified onboarding domain for testing
-    // TODO: Replace with your verified domain once set up in Resend
     console.log('Sending email to:', recipientEmail);
     const emailResponse = await resend.emails.send({
-      from: 'Impress Cleaning <onboarding@resend.dev>',
+      from: 'Impress Cleaning Gifts <gifts@impressyoucleaning.com>',
       to: recipientEmail,
-      subject: `🎁 Gift Certificate from ${senderName} - $${amount}`,
+      subject: `Your $${amount} Gift Certificate from ${senderName}`,
       html: emailHtml,
     });
 
@@ -184,7 +197,6 @@ export async function POST(request) {
       stack: error.stack
     });
 
-    // Log Resend-specific errors
     if (error.message?.includes('API')) {
       console.error('Resend API error detected');
     }
