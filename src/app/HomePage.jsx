@@ -230,9 +230,13 @@ function WhyChoose() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <StaggerItem>
+    <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24 relative overflow-hidden">
+  {/* Add these decorative elements */}
+  <div className="absolute top-20 left-10 w-72 h-72 bg-[#079447]/5 rounded-full blur-3xl" />
+  <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+  
+  <div className="mx-auto max-w-7xl px-4 md:px-6">
+            <StaggerItem>
           <div className="text-center mb-12">
             <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
               <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Why Choose Us</span>
