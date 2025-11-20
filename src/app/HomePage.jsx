@@ -575,7 +575,7 @@ return (
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#079447]/5 rounded-full blur-3xl" />
         
         <div className="container mx-auto mb-12 md:max-w-[1800px]">
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-center text-slate-900">
+          <h2 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]"> 
             What Our Clients Are Saying
           </h2>
         </div>
@@ -589,10 +589,10 @@ return (
                     key={`set-${setIndex}-${index}`} 
                     className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block"
                   >
-                    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-medium'}`}>
+                    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-medium font-manrope'}`}>
                       "{testimonial.text}"
                     </p>
-                    <p className="text-slate-500 font-playfair text-[13px] md:text-[14px] font-normal">
+                    <p className="text-slate-500 text-[13px] md:text-[14px] font-manrope italic">
                       – {testimonial.author}
                     </p>
                   </div>
