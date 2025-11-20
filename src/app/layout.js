@@ -23,7 +23,15 @@ const onest = Onest({
   display: "swap",
 });
 
+// ✅ SEPARATE viewport export
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#FAFAF8',
+};
 
+// ✅ metadata WITHOUT viewport and themeColor
 export const metadata = {
   title: "Impress Cleaning Services - Residential Cleaning Service",
   description: "Residential cleaning services in Central Texas. Reliable and Trusted.",
@@ -37,15 +45,9 @@ export const metadata = {
       { url: '/apple-touch-icon.png' },
     ],
   },
-  themeColor: '#FAFAF8',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-  },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    viewportFit: 'cover',
   },
 };
 
