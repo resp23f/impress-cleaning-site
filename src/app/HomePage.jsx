@@ -263,19 +263,8 @@ function WhyChoose() {
 
           <div 
             ref={scrollRef}
-            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
-            onWheel={(e) => {
-              const container = e.currentTarget;
-              const atStart = container.scrollLeft === 0;
-              const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
-              
-              if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
-                return;
-              }
-              
-              e.stopPropagation();
-            }}
-          >
+            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8" 
+         >
             {cards.map((c, index) => (
               <div 
                 key={c.t}
@@ -474,17 +463,6 @@ function HowItWorks() {
           <div 
             ref={scrollRef}
             className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
-            onWheel={(e) => {
-              const container = e.currentTarget;
-              const atStart = container.scrollLeft === 0;
-              const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
-              
-              if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
-                return;
-              }
-              
-              e.stopPropagation();
-            }}
           >
             {steps.map((step, i) => (
               <div 
