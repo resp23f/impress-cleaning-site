@@ -109,21 +109,6 @@ function Hero() {
               {/* Wire/String */}
               <path d="M0,30 Q150,10 300,30 T600,30 T900,30 T1200,30" stroke="#2d5016" strokeWidth="2" fill="none" />
               
-              {/* Lights - alternating colors */}
-              <circle cx="50" cy="30" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
-              <circle cx="150" cy="10" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
-              <circle cx="250" cy="30" r="6" fill="#ffff00" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
-              <circle cx="350" cy="20" r="6" fill="#0000ff" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
-              <circle cx="450" cy="30" r="6" fill="#ff00ff" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
-              <circle cx="550" cy="15" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
-              <circle cx="650" cy="30" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
-              <circle cx="750" cy="20" r="6" fill="#ffff00" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
-              <circle cx="850" cy="30" r="6" fill="#0000ff" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
-              <circle cx="950" cy="10" r="6" fill="#ff00ff" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
-              <circle cx="1050" cy="30" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
-              <circle cx="1150" cy="20" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
-            </svg>
-          </div>
 
 
           <div className="relative z-10">
