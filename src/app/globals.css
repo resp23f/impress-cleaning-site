@@ -145,10 +145,9 @@ select.no-native::-ms-expand {
   padding-right: 1rem;
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+@media (max-width: 768px) {
+  body {
+    padding-top: 80px; /* Space for fixed header */
   }
 }
 
