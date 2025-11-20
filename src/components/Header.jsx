@@ -131,7 +131,7 @@ function SiteHeader() {
                 <Link
                   href="/booking" 
                   className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
-                  style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
+                  style={{ padding: 'clamp(4px, 0.7vw, 10px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.6vw, 19px)' }}
                 >
                   Book Now
                 </Link>
