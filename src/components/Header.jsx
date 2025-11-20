@@ -71,20 +71,19 @@ function SiteHeader() {
             
             {/* ========== LOGO - FIXED POSITIONING ========== */}
             <Link 
-              href="/" 
-              className="flex items-center select-none shrink-0 relative z-10" 
-              aria-label="Impress Cleaning Home"
-            >
-              <Image
-                src="/three-dimensionlogo.png"
-                alt="Impress Cleaning Services"
-                width={200}
-                height={120}
-                className="h-[65px] w-auto md:h-[75px] lg:h-[90px] xl:h-[115px] 2xl:h-[130px] object-contain"
-                priority
-              />
-            </Link>
-
+  href="/" 
+  className="flex items-center select-none shrink-0 relative z-10 md:-ml-2 lg:-ml-4 xl:-ml-6" 
+  aria-label="Impress Cleaning Home"
+>
+  <Image
+    src="/three-dimensionlogo.png"
+    alt="Impress Cleaning Services"
+    width={260}
+    height={156}
+    className="h-[85px] w-auto md:h-[95px] lg:h-[110px] xl:h-[130px] 2xl:h-[145px] object-contain"
+    priority
+  />
+</Link>
             {/* ========== HAMBURGER MENU Icon (Mobile Only) ========== */}
 <button
   type="button"

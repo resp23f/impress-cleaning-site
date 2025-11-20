@@ -96,59 +96,70 @@ function Hero() {
   return (
     <StaggerItem>
       <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
-        <div className="relative min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] w-full overflow-hidden">
+        <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
           <img
             src="/hero-cleaners1.jpg"
             alt="Impress Cleaning pro team"
             className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />
+          
           <div className="relative z-10">
-            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
-              <div className="grid md:grid-cols-2 items-center md:items-center items-end min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] pb-8 md:pb-0">
-                <div>
-                  <div 
-                    className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" 
-                    style={{ transform: 'translateY(0)' }}
-                  >
-                    <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)', textShadow: '1px 1px 3px rgba(0, 0, 0, 0.4)' }}>
-                      We'll Make Your Space Shine
-                      <span className="block text-white mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)' }}>So You Can Focus On What Matters Most.</span>
-                    </h1>
-                    <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                      <a 
-                        href="tel:+15122775364"
-                        className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
-                        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(1rem, 1.8vw, 1.25rem)' }}
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="white" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.8} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        Call Now
-                      </a>
+            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
+              <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] py-12 md:py-16">
+                
+                <div className="max-w-[650px]">
+                  {/* Headline with better line breaks and spacing */}
+                  <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight" 
+                      style={{ 
+                        fontSize: 'clamp(2rem, 5vw, 4rem)', 
+                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)',
+                        letterSpacing: '-0.02em'
+                      }}>
+                    We'll Make Your Space&nbsp;Shine
+                    <span className="block mt-2">
+                      So You Can Focus On What Matters&nbsp;Most.
+                    </span>
+                  </h1>
+                  
+                  {/* CTAs with better spacing and hierarchy */}
+                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                    <a 
+                      href="tel:+15122775364"
+                      className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group"
+                      style={{ 
+                        padding: 'clamp(0.85rem, 2.2vw, 1.1rem) clamp(1.75rem, 3.5vw, 2.25rem)', 
+                        fontSize: 'clamp(1.05rem, 2vw, 1.3rem)' 
+                      }}
+                    >
+                      <svg className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform" fill="none" stroke="white" viewBox="0 0 24 24" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      Call Now
+                    </a>
 
-                      <Link
-                        href="/service-quote"
-                        className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
-                        style={{ padding: 'clamp(0.6rem, 1.5vw, 0.75rem) clamp(1.2rem, 2.5vw, 1.5rem)', fontSize: 'clamp(1rem, 1.8vw, 1.25rem)' }}
+                    <Link
+                      href="/service-quote"
+                      className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group"
+                      style={{ 
+                        padding: 'clamp(0.85rem, 2.2vw, 1.1rem) clamp(1.75rem, 3.5vw, 2.25rem)', 
+                        fontSize: 'clamp(1.05rem, 2vw, 1.3rem)' 
+                      }}
+                    >
+                      Request Free Quote
+                      <svg
+                        className="w-5 h-5 ml-2.5 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="white"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2.5"
                       >
-                        Request Free Quote
-                        <svg
-                            className="w-6 h-6 ml-2"
-                            fill="none"
-                            stroke="white"
-                            viewBox="0 0 24 24"
-                            strokeWidth="2.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                      >
-                            <polyline points="9 5 16 12 9 19" />
-                        </svg>
-                      </Link>
-                    </div>
+                        <polyline points="9 5 16 12 9 19" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </Link>
                   </div>
-                  <div className="hidden lg:block" />
                 </div>
+                
               </div>
             </div>
           </div>
@@ -157,6 +168,7 @@ function Hero() {
     </StaggerItem>
   );
 }
+
 
 function WhyChoose() {
   const scrollRef = React.useRef(null);
