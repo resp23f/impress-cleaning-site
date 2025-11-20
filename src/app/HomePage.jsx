@@ -111,7 +111,7 @@ function Hero() {
                     className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" 
                     style={{ transform: 'translateY(0)' }}
                   >
-                    <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)' }}>
+                    <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)', textShadow: '1px 1px 3px rgba(0, 0, 0, 0.4)' }}>
                       We'll Make Your Space Shine
                       <span className="block text-white mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)' }}>So You Can Focus On What Matters Most.</span>
                     </h1>
