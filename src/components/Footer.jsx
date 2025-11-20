@@ -7,7 +7,7 @@ function SocialIcon({ href, label, children }) {
     <a
       href={href}
       aria-label={label}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-600 transition hover:scale-105 hover:border-[#079447] hover:bg-slate-700"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 transition hover:scale-105 hover:border-[#079447] hover:bg-slate-100"
     >
       {children}
     </a>
@@ -18,7 +18,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   
   return (
-    <footer className="relative z-10 bg-slate-900 text-slate-300 py-16 px-6 md:px-8 border-t border-slate-800">
+    <footer className="relative z-10 bg-gray-100 text-slate-700 py-16 px-6 md:px-8 border-t border-slate-200">
       <div className="max-w-7xl mx-auto">
         
         {/* Top Section - Logo and Navigation */}
@@ -26,27 +26,30 @@ export default function Footer() {
           
           {/* Logo and Company Info */}
           <div className="md:col-span-1 flex flex-col items-center md:items-start">
-            <Link href="/" className="mb-6">
+            <Link href="/" className="mb-3">
               <Image
-                src="/logo_impress_white.png"
+                src="/logo_impress_green.png"
                 alt="Impress Cleaning Services"
-                width={180}
-                height={108}
-                className="w-auto h-16 md:h-18"
+                width={220}
+                height={132}
+                className="w-auto h-20 md:h-24"
               />
             </Link>
+            <p className="font-playfair italic text-sm text-slate-600 text-center md:text-left">
+              Impress Every Time
+            </p>
           </div>
 
           {/* Services Column */}
           <div className="text-center md:text-left">
-            <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-400 uppercase tracking-widest">
+            <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-500 uppercase tracking-widest">
               Services
             </h4>
-            <ul className="font-manrope space-y-3 text-sm">
+            <ul className="font-manrope space-y-3 text-sm text-slate-700">
               <li>
                 <Link 
                   href="/residential-section" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Residential
                 </Link>
@@ -54,7 +57,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/commercial" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Commercial
                 </Link>
@@ -64,14 +67,14 @@ export default function Footer() {
 
           {/* Company Column */}
           <div className="text-center md:text-left">
-            <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-400 uppercase tracking-widest">
+            <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-500 uppercase tracking-widest">
               Company
             </h4>
-            <ul className="font-manrope space-y-3 text-sm">
+            <ul className="font-manrope space-y-3 text-sm text-slate-700">
               <li>
                 <Link 
                   href="/about-us" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   About Us
                 </Link>
@@ -79,7 +82,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/careers" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Apply
                 </Link>
@@ -87,7 +90,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/aplicar" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Aplicar
                 </Link>
@@ -95,7 +98,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/service-quote" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Contact Us
                 </Link>
@@ -105,14 +108,14 @@ export default function Footer() {
 
           {/* Resources Column */}
           <div className="text-center md:text-left">
-            <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-400 uppercase tracking-widest">
+            <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-500 uppercase tracking-widest">
               Resources
             </h4>
-            <ul className="font-manrope space-y-3 text-sm">
+            <ul className="font-manrope space-y-3 text-sm text-slate-700">
               <li>
                 <Link 
                   href="/faq" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   FAQ
                 </Link>
@@ -120,7 +123,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/gift-certificates" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Gift Certificates
                 </Link>
@@ -128,7 +131,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/cleaning-tips" 
-                  className="hover:text-white transition-colors duration-200 block"
+                  className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Cleaning Tips
                 </Link>
@@ -139,18 +142,18 @@ export default function Footer() {
         </div>
 
         {/* Contact and Social Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 py-8 border-t border-slate-800">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 py-8 border-t border-slate-200">
           
           {/* Phone and Email - Left Side */}
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6">
             {/* Phone */}
             <a 
               href="tel:+15122775364" 
-              className="inline-flex items-center gap-2 text-sm font-manrope text-slate-300 hover:text-[#079447] transition"
+              className="inline-flex items-center gap-2 text-sm font-manrope text-slate-700 hover:text-[#079447] transition"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
-                className="w-4 h-4" 
+                className="w-4 h-4 text-[#079447]" 
                 viewBox="0 0 24 24" 
                 fill="none" 
                 stroke="currentColor" 
@@ -166,11 +169,11 @@ export default function Footer() {
             {/* Email */}
             <a 
               href="mailto:admin@impressyoucleaning.com" 
-              className="inline-flex items-center gap-2 text-sm font-manrope text-slate-300 hover:text-[#079447] transition"
+              className="inline-flex items-center gap-2 text-sm font-manrope text-slate-700 hover:text-[#079447] transition"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
-                className="w-4 h-4" 
+                className="w-4 h-4 text-[#079447]" 
                 viewBox="0 0 24 24" 
                 fill="none" 
                 stroke="currentColor" 
@@ -191,7 +194,7 @@ export default function Footer() {
               href="https://www.facebook.com/share/19vUj9gptf/?mibextid=wwXIfr" 
               label="Facebook"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2.5v-2.9h2.5V9.5c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6v1.9h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z" />
               </svg>
             </SocialIcon>
@@ -200,7 +203,7 @@ export default function Footer() {
               href="https://instagram.com" 
               label="Instagram"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z" />
               </svg>
             </SocialIcon>
@@ -209,7 +212,7 @@ export default function Footer() {
               href="#" 
               label="Nextdoor"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16.5 3h-9A4.5 4.5 0 003 7.5v9A4.5 4.5 0 007.5 21h9a4.5 4.5 0 004.5-4.5v-9A4.5 4.5 0 0016.5 3zm-4.8 14.5c-2.7 0-4.9-2.2-4.9-4.9s2.2-4.9 4.9-4.9c2 0 3.7 1.2 4.4 2.9h-2.1c-.5-.8-1.4-1.3-2.3-1.3-1.6 0-2.9 1.3-2.9 2.9s1.3 2.9 2.9 2.9c.9 0 1.8-.5 2.3-1.3h2.1c-.7 1.7-2.4 2.9-4.4 2.9z" />
               </svg>
             </SocialIcon>
@@ -218,7 +221,7 @@ export default function Footer() {
               href="#" 
               label="Yelp"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86l-1.43.74.75-1.42-1.42-.75 1.43-.74-.75-1.43 1.42.75.74-1.43.75 1.43 1.42-.75-.74 1.43 1.42.75-1.43.74.75 1.42-1.42-.75-.75 1.43z" />
               </svg>
             </SocialIcon>
@@ -227,7 +230,7 @@ export default function Footer() {
               href="#" 
               label="Google"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
@@ -238,8 +241,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="text-center pt-6 border-t border-slate-800">
-          <p className="text-xs text-slate-400 font-manrope">
+        <div className="text-center pt-6 border-t border-slate-200">
+          <p className="text-xs text-slate-500 font-manrope">
             &copy; {year} Impress Cleaning Services LLC. All rights reserved.
           </p>
         </div>
