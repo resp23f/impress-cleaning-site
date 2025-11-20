@@ -347,10 +347,6 @@ function WhyChoose() {
 }
 
 function HowItWorks() {
-  const scrollRef = React.useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
-  const [canScrollRight, setCanScrollRight] = React.useState(true);
-
   const steps = [
     {
       title: 'Request Your Quote', 
@@ -389,51 +385,15 @@ function HowItWorks() {
       )
     },
   ];
-
-  const updateArrows = () => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    const { scrollLeft, scrollWidth, clientWidth } = container;
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-  };
-
-  React.useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    updateArrows();
-    container.addEventListener('scroll', updateArrows);
-    window.addEventListener('resize', updateArrows);
-    
-    return () => {
-      container.removeEventListener('scroll', updateArrows);
-      window.removeEventListener('resize', updateArrows);
-    };
-  }, []);
-
-  const scroll = (direction) => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
-    const scrollAmount = cardWidth + 32;
-    
-    container.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    });
-  };
   
   return (
     <section className="bg-white py-16 md:py-24 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
       
-      <div className="mx-auto max-w-7xl px-4 md:px-6 relative">
+      <div className="mx-auto max-w-5xl px-4 md:px-6 relative">
         <StaggerItem>
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
               <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Our Process</span>
             </div>
@@ -446,107 +406,47 @@ function HowItWorks() {
           </div>
         </StaggerItem>
 
-        {/* Desktop: Scrollable with arrows */}
-        <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
-          {canScrollLeft && (
-            <button
-              onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
-              aria-label="Scroll left"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-          )}
-
-          <div 
-            ref={scrollRef}
-            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
-          >
-            {steps.map((step, i) => (
-              <div 
-                key={step.title}
-                data-card
-                className="flex-shrink-0 w-[340px] snap-center"
-              >
-                <div className="relative h-full group">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-2xl font-bold text-white">{i + 1}</span>
-                    </div>
-                  </div>
-
-                  <div className="relative pt-10 h-full rounded-2xl bg-white border border-gray-200/50 group-hover:border-[#079447]/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] px-6 py-8 transition-all duration-500 group-hover:-translate-y-2">
-                    <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors duration-300">
-                      {step.icon}
-                    </div>
-
-                    <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {canScrollRight && (
-            <button
-              onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
-              aria-label="Scroll right"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          )}
-        </div>
-
-        {/* Mobile: Horizontal scroll carousel */}
-        <div className="md:hidden">
-          <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8">
-            {steps.map((step, i) => (
-              <div 
-                key={step.title}
-                className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
-              >
-                <div className="relative h-full">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
-                      <span className="text-2xl font-bold text-white">{i + 1}</span>
-                    </div>
-                  </div>
-
-                  <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
-                    <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
-                      {step.icon}
-                    </div>
-
-                    <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Vertical Timeline - Desktop & Mobile */}
+        <div className="relative">
+          {/* Timeline Line */}
+          <div className="hidden md:block absolute left-[50%] top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#079447] via-[#079447] to-[#079447]/20" />
           
-          <div className="flex justify-center gap-2 mt-4">
-            {steps.map((_, index) => (
-              <div 
-                key={index}
-                className="w-2 h-2 rounded-full bg-gray-300"
-              />
-            ))}
-          </div>
+          {steps.map((step, i) => (
+            <StaggerItem key={step.title} delay={i * 100}>
+              <div className={`relative flex items-center gap-8 mb-12 md:mb-16 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                
+                {/* Content Side */}
+                <div className={`flex-1 ${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+                  <div className="bg-white p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(7,148,71,0.15)] transition-all duration-300 hover:-translate-y-1">
+                    <div className={`flex items-center gap-4 mb-4 ${i % 2 === 0 ? 'md:justify-end' : 'md:justify-start'} justify-start`}>
+                      <div className="w-12 h-12 bg-[#079447]/10 rounded-xl flex items-center justify-center text-[#079447]">
+                        {step.icon}
+                      </div>
+                      <h3 className="font-display font-bold text-2xl text-[#18335A]">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Timeline Circle */}
+                <div className="hidden md:flex absolute left-[50%] -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full items-center justify-center shadow-lg shadow-green-500/30 z-10 border-4 border-white">
+                  <span className="text-2xl font-bold text-white">{i + 1}</span>
+                </div>
+
+                {/* Mobile Number Badge */}
+                <div className="md:hidden absolute -left-2 top-6 w-10 h-10 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg z-10">
+                  <span className="text-lg font-bold text-white">{i + 1}</span>
+                </div>
+
+                {/* Spacer for Desktop */}
+                <div className="hidden md:block flex-1" />
+              </div>
+            </StaggerItem>
+          ))}
         </div>
 
         <StaggerItem delay={500}>
@@ -566,6 +466,7 @@ function HowItWorks() {
     </section>  
   );
 }
+
 
 function SocialProof() {
   const scrollRef = React.useRef(null);
