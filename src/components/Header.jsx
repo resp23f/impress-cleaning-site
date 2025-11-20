@@ -102,7 +102,7 @@ function SiteHeader() {
             {/* ========== NAVIGATION MENU WITH FLUID SIZING (Desktop Only) ========== */}
             <nav 
               className="hidden md:flex md:flex-1 md:items-center md:justify-center font-display font-medium text-navy whitespace-nowrap" 
-              style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.8vw, 28px)' }} 
+              style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.3vw, 21px)' }} 
               aria-label="Primary"
             >
               <Link href="/" className="hover:text-green transition-colors duration-200 font-display">
@@ -127,8 +127,8 @@ function SiteHeader() {
 
 
               {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
-              <div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)' }}>
-                <Link
+<div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)', marginLeft: 'clamp(24px, 3vw, 48px)' }}> // Added marginLeft here
+                  <Link
                   href="/booking" 
                   className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
                   style={{ padding: 'clamp(6px, 0.8vw, 12px) clamp(14px, 1.8vw, 28px)', fontSize: 'clamp(13px, 2vw, 24px)' }}
@@ -148,7 +148,7 @@ function SiteHeader() {
         </div>
       </header>
 
-      
+
       {/* ========== MOBILE MENU OVERLAY ========== */}
       {open && (
         <div 
