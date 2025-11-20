@@ -145,9 +145,10 @@ select.no-native::-ms-expand {
   padding-right: 1rem;
 }
 
+/* Mobile adjustments */
 @media (max-width: 768px) {
   body {
-    padding-top: 80px; /* Space for fixed header */
+    padding-top: 0; /* No padding - let content flow naturally */
   }
 }
 
@@ -173,16 +174,11 @@ select.no-native::-ms-expand {
 .font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
 }
+
 /* iOS safe area support for notch */
 @supports (padding: max(0px)) {
   header {
     padding-top: max(env(safe-area-inset-top), 0px);
-  }
-  
-  @media (max-width: 768px) {
-    body {
-      padding-top: calc(80px + env(safe-area-inset-top));
-    }
   }
 }
 
