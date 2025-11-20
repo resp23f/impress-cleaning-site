@@ -589,7 +589,7 @@ return (
                     key={`set-${setIndex}-${index}`} 
                     className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block"
                   >
-                    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-medium font-manrope'}`}>
+                    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-manrope'}`}>
                       "{testimonial.text}"
                     </p>
                     <p className="text-slate-500 text-[13px] md:text-[14px] font-manrope italic">
