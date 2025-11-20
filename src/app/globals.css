@@ -148,7 +148,12 @@ select.no-native::-ms-expand {
 /* Mobile adjustments */
 @media (max-width: 768px) {
   body {
-    padding-top: 0; /* No padding - let content flow naturally */
+    padding-top: 0;
+  }
+  
+  /* Add padding only to hero section */
+  main > section:first-child {
+    padding-top: 80px;
   }
 }
 
