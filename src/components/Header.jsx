@@ -61,10 +61,9 @@ function SiteHeader() {
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
 <header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
   isScrolled 
-    ? 'bg-white/98 backdrop-blur-md shadow-lg' 
-    : 'bg-background'
+    ? 'bg-white backdrop-blur-md shadow-lg' 
+    : 'bg-white'
 }`}>
-  <div className="absolute inset-x-0 top-[-50px] h-[50px] bg-inherit -z-10"></div>
   
             {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
         <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>          

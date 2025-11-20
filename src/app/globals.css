@@ -148,15 +148,9 @@ select.no-native::-ms-expand {
 /* Mobile adjustments */
 @media (max-width: 768px) {
   body {
-    padding-top: 0;
-  }
-  
-  /* Add padding only to hero section */
-  main > section:first-child {
-    padding-top: 80px;
+    padding-top: calc(80px + env(safe-area-inset-top, 0px));
   }
 }
-
 @media (min-width: 1280px) {
   .container {
     padding-left: 3rem;
@@ -185,8 +179,21 @@ select.no-native::-ms-expand {
   header {
     padding-top: max(env(safe-area-inset-top), 0px);
   }
+  
+  /* Make safe area white on mobile */
+  @media (max-width: 768px) {
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: env(safe-area-inset-top, 0px);
+      background: white;
+      z-index: 51;
+    }
+  }
 }
-
 /* Allow page scroll even when clicking/dragging carousel cards */
 .carousel-card {
   pointer-events: auto;
