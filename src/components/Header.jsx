@@ -43,7 +43,6 @@ function SiteHeader() {
 {/* ========== TOP BAR (Gift Certificates | Careers | Aplicar) - DESKTOP ONLY ========== */}
 <div className="hidden md:block bg-background border-b border-gray-100">
   <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] text-gray-600 font-bold">
-    <span className="text-gray-300 font-bold">•</span>
     <Link href="/apply" className="hover:text-green transition-colors">
       Careers
     </Link>
