@@ -552,7 +552,7 @@ function HowItWorks() {
         <StaggerItem delay={500}>
           <div className="mt-12 text-center">
             <Link
-              href="/service-quote"
+              href="/residential-section"
               className="inline-flex items-center justify-center px-8 py-4 bg-[#079447] text-white rounded-lg font-bold text-lg hover:bg-[#08A855] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
             >
               Get Started Today
