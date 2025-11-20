@@ -519,19 +519,21 @@ function SocialProof() {
       <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
         <div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
           <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-white">
-            Why Texas Families Trust Impress
+
+
+Why Texas Families Trust Impress
           </h3>
 
           <div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
             {proofCards.map((card, index) => (
               <div 
                 key={index}
-                className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col"
+                className="rounded-2xl bg-white p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col border-t-4 border-[#079447]"
               >
-                <div className="font-manrope font-semibold text-[18px] md:text-[20px] lg:text-[22px] mb-2">
+                <div className="font-manrope font-semibold text-[18px] md:text-[20px] lg:text-[22px] mb-2 text-[#1e293b]">
                   {card.title}
                 </div>
-                <div className="font-manrope font-regular text-[15px] md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">
+                <div className="font-manrope font-regular text-[15px] md:text-[16px] lg:text-[17px] text-[#475569] leading-relaxed tracking-normal break-words">
                   {card.description}
                 </div>
               </div>
@@ -542,7 +544,7 @@ function SocialProof() {
             {proofCards.map((_, index) => (
               <div 
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${activeIndex === index ? 'bg-white' : 'bg-white/50'}`}
+                className={`w-2 h-2 rounded-full transition-colors ${activeIndex === index ? 'bg-[#079447]' : 'bg-gray-400'}`}
               />
             ))}
           </div>
