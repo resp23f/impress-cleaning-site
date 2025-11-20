@@ -104,43 +104,41 @@ function Hero() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
           <div className="relative z-10">
-<div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
-<div className="grid md:grid-cols-2 items-center md:items-center items-end min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] pb-8 md:pb-0">
-    <div>
-<div 
-className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" 
-style={{ transform: 'translateY(0)' }}
->      <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)'
- }}>
-                  We'll Make Your Space Shine
-                  <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
- </h1>
-    <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                                <a 
-        href="tel:+15122775364"
-        className="inline-flex items-center justify-center bg-slate-800 text-white rounded-lg font-bold border-2 border-slate-700 hover:bg-slate-700 hover:border-slate-600 transition-all duration-300"
-        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
-      >
-        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    Call Now
-                  </a>
+            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
+              <div className="grid md:grid-cols-2 items-center md:items-center items-end min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] pb-8 md:pb-0">
+                <div>
+                  <div 
+                    className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" 
+                    style={{ transform: 'translateY(0)' }}
+                  >
+                    <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)' }}>
+                      We'll Make Your Space Shine
+                      <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
+                    </h1>
+                    <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+                      <a 
+                        href="tel:+15122775364"
+                        className="inline-flex items-center justify-center bg-slate-800 text-white rounded-lg font-bold border-2 border-slate-700 hover:bg-slate-700 hover:border-slate-600 transition-all duration-300"
+                        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
+                      >
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        Call Now
+                      </a>
 
-                  <Link
-                  href="/service-quote"
-                  className="inline-flex items-center justify-center bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
-                  style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }} >
-                  Request Free Quote
-                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-
+                      <Link
+                        href="/service-quote"
+                        className="inline-flex items-center justify-center bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
+                        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
+                      >
+                        Request Free Quote
+                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </Link>
+                    </div>
                   </div>
-                  </div>
-
-                  {/* Right column kept for layout balance; remove if you want text to span full width */}
                   <div className="hidden lg:block" />
                 </div>
               </div>
@@ -221,7 +219,7 @@ function WhyChoose() {
     if (!container) return;
     
     const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
-    const scrollAmount = cardWidth + 24; // card width + gap
+    const scrollAmount = cardWidth + 24;
     
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
@@ -231,12 +229,11 @@ function WhyChoose() {
 
   return (
     <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24 relative overflow-hidden">
-  {/* Add these decorative elements */}
-  <div className="absolute top-20 left-10 w-72 h-72 bg-[#079447]/5 rounded-full blur-3xl" />
-  <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-  
-  <div className="mx-auto max-w-7xl px-4 md:px-6">
-            <StaggerItem>
+      <div className="absolute top-20 left-10 w-72 h-72 bg-[#079447]/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+      
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <StaggerItem>
           <div className="text-center mb-12">
             <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
               <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Why Choose Us</span>
@@ -252,7 +249,6 @@ function WhyChoose() {
 
         {/* Desktop: Scrollable with arrows */}
         <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
-        {/* Left Arrow */}
           {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
@@ -265,21 +261,31 @@ function WhyChoose() {
             </button>
           )}
 
-          {/* Scrollable Container */}
           <div 
             ref={scrollRef}
             className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
-            >
+            onWheel={(e) => {
+              const container = e.currentTarget;
+              const atStart = container.scrollLeft === 0;
+              const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
+              
+              if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
+                return;
+              }
+              
+              e.stopPropagation();
+            }}
+          >
             {cards.map((c, index) => (
               <div 
                 key={c.t}
                 data-card
                 className="flex-shrink-0 w-[340px] snap-center"
-                >
+              >
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
                   
-                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-2xl group-hover:shadow-green-500/10 p-6 transition-all duration-300 group-hover:-translate-y-2">  
+                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300 group-hover:-translate-y-2">
                     <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
                     </div>
@@ -296,7 +302,6 @@ function WhyChoose() {
             ))}
           </div>
 
-          {/* Right Arrow */}
           {canScrollRight && (
             <button
               onClick={() => scroll('right')}
@@ -310,44 +315,43 @@ function WhyChoose() {
           )}
         </div>
 
-{/* Mobile: Horizontal scroll carousel */}
-<div className="md:hidden">
-  <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4 px-4">
-    {cards.map((c, index) => (
-      <div 
-        key={c.t}
-        className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
-      >
-        <div className="group relative h-full">
-          <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 rounded-2xl transition-opacity duration-300`} />
+        {/* Mobile: Horizontal scroll carousel */}
+        <div className="md:hidden">
+          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4 px-4">
+            {cards.map((c, index) => (
+              <div 
+                key={c.t}
+                className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
+              >
+                <div className="group relative h-full">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 rounded-2xl transition-opacity duration-300`} />
+                  
+                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm p-6">
+                    <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                      <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
+                    </div>
+                    
+                    <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
+                      {c.t}
+                    </h3>
+                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
+                      {c.d}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
           
-          <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm p-6">
-            <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
-              <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
-            </div>
-            
-            <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
-              {c.t}
-            </h3>
-            <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
-              {c.d}
-            </p>
+          <div className="flex justify-center gap-2 mt-4">
+            {cards.map((_, index) => (
+              <div 
+                key={index}
+                className="w-2 h-2 rounded-full bg-gray-300"
+              />
+            ))}
           </div>
         </div>
-      </div>
-    ))}
-  </div>
-  
-  {/* Dot indicators */}
-  <div className="flex justify-center gap-2 mt-4">
-    {cards.map((_, index) => (
-      <div 
-        key={index}
-        className="w-2 h-2 rounded-full bg-gray-300"
-      />
-    ))}
-  </div>
-</div>
       </div>
     </section>
   );
@@ -425,7 +429,7 @@ function HowItWorks() {
     if (!container) return;
     
     const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
-    const scrollAmount = cardWidth + 32; // card width + gap
+    const scrollAmount = cardWidth + 32;
     
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
@@ -455,7 +459,6 @@ function HowItWorks() {
 
         {/* Desktop: Scrollable with arrows */}
         <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
-          {/* Left Arrow */}
           {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
@@ -468,7 +471,6 @@ function HowItWorks() {
             </button>
           )}
 
-          {/* Scrollable Container */}
           <div 
             ref={scrollRef}
             className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
@@ -477,21 +479,20 @@ function HowItWorks() {
               const atStart = container.scrollLeft === 0;
               const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
               
-              // Allow page scroll if trying to scroll vertically or at edges
               if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
-                return; // Let the page scroll
+                return;
               }
               
               e.stopPropagation();
             }}
-                        >
+          >
             {steps.map((step, i) => (
               <div 
                 key={step.title}
                 data-card
                 className="flex-shrink-0 w-[340px] snap-center"
-                >
-                <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-2xl group-hover:shadow-green-500/10 p-6 transition-all duration-300 group-hover:-translate-y-2">
+              >
+                <div className="relative h-full group">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                     <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <span className="text-2xl font-bold text-white">{i + 1}</span>
@@ -515,7 +516,6 @@ function HowItWorks() {
             ))}
           </div>
 
-          {/* Right Arrow */}
           {canScrollRight && (
             <button
               onClick={() => scroll('right')}
@@ -529,63 +529,48 @@ function HowItWorks() {
           )}
         </div>
 
-{/* Mobile: Horizontal scroll carousel */}
-<div className="md:hidden">
-    <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8"
-      onWheel={(e) => {
-        const container = e.currentTarget;
-        const atStart = container.scrollLeft === 0;
-        const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
-        
-        // Allow page scroll if trying to scroll vertically or at edges
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX) || (atStart && e.deltaX < 0) || (atEnd && e.deltaX > 0)) {
-          return; // Let the page scroll
-        }
-        
-        e.stopPropagation();
-      }}
-    >
-    {steps.map((step, i) => (
-      <div 
-        key={step.title}
-        className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
-      >
-        <div className="relative h-full">
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-2xl font-bold text-white">{i + 1}</span>
-            </div>
+        {/* Mobile: Horizontal scroll carousel */}
+        <div className="md:hidden">
+          <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8">
+            {steps.map((step, i) => (
+              <div 
+                key={step.title}
+                className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
+              >
+                <div className="relative h-full">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
+                      <span className="text-2xl font-bold text-white">{i + 1}</span>
+                    </div>
+                  </div>
+
+                  <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
+                    <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
+                      {step.icon}
+                    </div>
+
+                    <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
+                      {step.title}
+                    </h3>
+                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-
-          <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
-            <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
-              {step.icon}
-            </div>
-
-            <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
-              {step.title}
-            </h3>
-            <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
-              {step.description}
-            </p>
+          
+          <div className="flex justify-center gap-2 mt-4">
+            {steps.map((_, index) => (
+              <div 
+                key={index}
+                className="w-2 h-2 rounded-full bg-gray-300"
+              />
+            ))}
           </div>
         </div>
-      </div>
-    ))}
-  </div>
-  
-  {/* Dot indicators */}
-  <div className="flex justify-center gap-2 mt-4">
-    {steps.map((_, index) => (
-      <div 
-        key={index}
-        className="w-2 h-2 rounded-full bg-gray-300"
-      />
-    ))}
-  </div>
- </div>
 
-        {/* CTA below steps */}
         <StaggerItem delay={500}>
           <div className="mt-12 text-center">
             <Link
@@ -600,10 +585,9 @@ function HowItWorks() {
           </div>
         </StaggerItem>
       </div>
-    </section>
+    </section>  
   );
 }
-
 
 function SocialProof() {
   const scrollRef = React.useRef(null);
@@ -615,9 +599,7 @@ function SocialProof() {
     
     const handleScroll = () => {
       const scrollLeft = scrollContainer.scrollLeft;
-      
-      // Calculate which card is currently visible
-      const cardWidth = 300 + 16; // card width + gap
+      const cardWidth = 300 + 16;
       const currentIndex = Math.round(scrollLeft / cardWidth);
       setActiveIndex(currentIndex);
     };
@@ -669,7 +651,6 @@ function SocialProof() {
             ))}
           </div>
 
-          {/* Scroll Indicators - Only visible on mobile/tablet */}
           <div className="flex justify-center gap-2 mt-6 md:hidden">
             {proofCards.map((_, index) => (
               <div 
@@ -702,18 +683,19 @@ function TestimonialsSection() {
 
   return (
     <StaggerItem>
-      <section className="bg-white py-12 md:py-16">
+      <section className="bg-white py-12 md:py-16 relative overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#079447]/5 rounded-full blur-3xl" />
+        
         <div className="container mx-auto mb-12 md:max-w-[1800px]">
           <h2 className="font-display text-4xl md:text-5xl font-extrabold text-center text-slate-900">
             What Our Clients Are Saying
           </h2>
         </div>
         
-        {/* Scrolling container */}
         <div className="relative max-w-full mx-auto">
           <div className="overflow-hidden">
             <div className="flex animate-scroll -translate-x-[10%]">
-              {/* Render testimonials 12 times for smoother infinite scroll */}
               {[...Array(12)].map((_, setIndex) => (
                 testimonials.map((testimonial, index) => (
                   <div 
@@ -731,9 +713,8 @@ function TestimonialsSection() {
               ))}
             </div>
           </div>
-        </div>    
+        </div>
 
-        {/* Custom CSS for animation */}
         <style jsx>{`
           @keyframes scroll {
             0% {
