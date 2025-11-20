@@ -411,7 +411,7 @@ function HowItWorks() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
       
-      <div className="mx-auto max-w-5xl px-4 md:px-6 relative">
+      <div className="mx-auto max-w-5xl px-8 sm:px-10 md:px-12 lg:px-16 relative">
         <StaggerItem>
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
