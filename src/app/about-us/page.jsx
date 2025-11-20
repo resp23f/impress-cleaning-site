@@ -58,14 +58,6 @@ export default function AboutPage() {
               </div>
 
               <div className="relative">
-                <div className="aspect-square bg-gradient-to-br from-[#079447]/10 to-[#001F3F]/10 rounded-3xl flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <svg className="w-32 h-32 text-[#001F3F]/30 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <p className="text-gray-500"></p>
-                  </div>
-                </div>
                 {/* Decorative elements */}
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#079447]/20 rounded-full blur-2xl"></div>
                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-[#001F3F]/20 rounded-full blur-2xl"></div>

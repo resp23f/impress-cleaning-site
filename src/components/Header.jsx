@@ -59,12 +59,13 @@ function SiteHeader() {
 
 
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-<header className={`sticky top-0 z-50 transition-all duration-300 [transform:translateZ(0)] [backface-visibility:hidden] ${
+<header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 [transform:translateZ(0)] [backface-visibility:hidden] ${
   isScrolled 
     ? 'bg-white/95 backdrop-blur-md shadow-lg' 
     : 'bg-background'
-}`}>        
-        {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
+}`}>
+  
+          {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
         <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>          
           <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
             
@@ -84,24 +85,19 @@ function SiteHeader() {
               />
             </Link>
 
-            {/* ========== HAMBURGER MENU (Mobile Only) ========== */}
-            <button
-              type="button"
-              aria-label="Toggle navigation"
-              onClick={() => setOpen((prev) => !prev)}
-              className={`md:hidden inline-flex items-center justify-center w-10 h-10 hover:text-green transition-colors relative z-10 ${
-                isScrolled ? 'text-navy' : 'text-navy'
-              }`}            >
-              {open ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
+            {/* ========== HAMBURGER MENU Icon (Mobile Only) ========== */}
+<button
+  type="button"
+  aria-label="Toggle navigation"
+  onClick={() => setOpen((prev) => !prev)}
+  className={`md:hidden inline-flex items-center justify-center w-10 h-10 hover:text-green transition-colors relative z-10 ${
+    isScrolled ? 'text-navy' : 'text-navy'
+  }`}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
 
             {/* ========== NAVIGATION MENU WITH FLUID SIZING (Desktop Only) ========== */}
             <nav 

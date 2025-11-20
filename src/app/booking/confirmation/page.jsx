@@ -202,26 +202,29 @@ function ConfirmationContent() {
             <p className="font-manrope mb-6 text-sm md:text-base opacity-90">
               Our team is here to help! Feel free to reach out anytime.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+<div className="flex flex-col sm:flex-row gap-4 justify-center">
+  
+<a href="mailto:contact@impressyoucleaning.com"
+className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#08A855] rounded-lg font-manrope font-semibold transition-all hover:scale-105"
+> 
+<Mail className="w-5 h-5" /> 
+Email Us
+</a> 
+
+<Link
+href="/"
+className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-navy hover:bg-gray-100 rounded-lg font-manrope font-semibold transition-all hover:scale-105"
+>
+<Home className="w-5 h-5" />
+Back to Home
+</Link>
+</div>
+</div>
+ </div>
               
-                href="mailto:contact@impressyoucleaning.com"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#08A855] rounded-lg font-manrope font-semibold transition-all hover:scale-105"
-                <Mail className="w-5 h-5" />
-                Email Us
-              
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-navy hover:bg-gray-100 rounded-lg font-manrope font-semibold transition-all hover:scale-105"
-              >
-                <Home className="w-5 h-5" />
-                Back to Home
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+ </section>
+</div>
+);
 }
 
 export default function ConfirmationPage() {
