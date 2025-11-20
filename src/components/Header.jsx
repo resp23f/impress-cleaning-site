@@ -125,16 +125,6 @@ function SiteHeader() {
                 About Us
               </Link>
 
-              {/* ADD THIS PHONE NUMBER */}
-              <a 
-                href="tel:+15122775364"
-                className="hover:text-green transition-colors duration-200 font-display flex items-center gap-2"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span>(512) 277-5364</span>
-              </a>
 
               {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
               <div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)' }}>
@@ -145,13 +135,13 @@ function SiteHeader() {
                 >
                   Book Now
                 </Link>
-                <Link
-                  href="/service-quote" 
+                <a 
+                href="tel:+15122775364"
                   className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
                   style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
                 >
-                  Request a Quote
-                </Link>
+                  (512) 277-5364
+                </a>
               </div>
                           </nav>
           </div>
