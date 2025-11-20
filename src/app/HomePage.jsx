@@ -86,7 +86,7 @@ export default function ImpressCleaningSite() {
       <Hero />
       <WhyChoose />
       <HowItWorks />
-      <SocialProof />
+      <WhyFamiliesChooseUs />
       <TestimonialsSection />
     </main>
   );
@@ -476,7 +476,7 @@ function HowItWorks() {
 }
 
 
-function SocialProof() {
+function WhyFamiliesChooseUs() {
   const scrollRef = React.useRef(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
   
@@ -516,12 +516,10 @@ function SocialProof() {
   
   return (
     <StaggerItem>
-      <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
+      <section className="bg-gray-50 py-12 md:py-16 mb-16 md:mb-24 md:overflow-hidden">
         <div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
-          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-white">
-
-
-Why Texas Families Trust Impress
+          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]">
+            Why Texas Families Trust Impress
           </h3>
 
           <div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
@@ -570,7 +568,7 @@ function TestimonialsSection() {
     }
   ];
 
-  return (
+return (
     <StaggerItem>
       <section className="bg-white py-12 md:py-16 relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
@@ -591,10 +589,10 @@ function TestimonialsSection() {
                     key={`set-${setIndex}-${index}`} 
                     className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block"
                   >
-                    <p className={`text-slate-900 text-lg md:text-xl font-manrope mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+                    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-medium'}`}>
                       "{testimonial.text}"
                     </p>
-                    <p className="text-slate-600 font-playfair text-base md:text-lg">
+                    <p className="text-slate-500 font-playfair text-[13px] md:text-[14px] font-normal">
                       – {testimonial.author}
                     </p>
                   </div>
@@ -603,6 +601,7 @@ function TestimonialsSection() {
             </div>
           </div>
         </div>
+
 
         <style jsx>{`
           @keyframes scroll {
