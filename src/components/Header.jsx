@@ -42,71 +42,62 @@ function SiteHeader() {
     <>
 {/* ========== TOP BAR (Gift Certificates | Careers | Aplicar) - DESKTOP ONLY ========== */}
 <div className="hidden md:block bg-background border-b border-gray-100">
-  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] text-gray-600">
-    <Link href="/gift-certificate" className="hover:text-green transition-colors">
-      Gift Certificates
-    </Link>
-    <span className="text-gray-300">•</span>
-    <Link href="/apply" className="hover:text-green transition-colors">
-      Careers
-    </Link>
-    <span className="text-gray-300">•</span>
+  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] text-gray-600 font-bold">
     <Link href="/aplicar" className="hover:text-green transition-colors">
-      Aplicar
+    Aplicar
+    </Link>
+    <span className="text-gray-300 font-bold">•</span>
+    <Link href="/apply" className="hover:text-green transition-colors">
+      Apply
     </Link>
   </div>
 </div>
 
 
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-<header className={`sticky top-0 z-50 transition-all duration-300 [transform:translateZ(0)] [backface-visibility:hidden] ${
+<header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
   isScrolled 
-    ? 'bg-white/95 backdrop-blur-md shadow-lg' 
-    : 'bg-background'
-}`}>        
-        {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
+    ? 'bg-white backdrop-blur-md shadow-lg' 
+    : 'bg-white'
+}`}>
+  
+            {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
         <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>          
           <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
             
             {/* ========== LOGO - FIXED POSITIONING ========== */}
             <Link 
-              href="/" 
-              className="flex items-center select-none shrink-0 relative z-10" 
-              aria-label="Impress Cleaning Home"
-            >
-              <Image
-                src="/impress-cleaning-background.png"
-                alt="Impress Cleaning Services"
-                width={170}
-                height={100}
-                className="h-[60px] w-auto md:h-[70px] lg:h-[85px] xl:h-[95px] 2xl:h-[110px] object-contain"
-                priority
-              />
-            </Link>
-
-            {/* ========== HAMBURGER MENU (Mobile Only) ========== */}
-            <button
-              type="button"
-              aria-label="Toggle navigation"
-              onClick={() => setOpen((prev) => !prev)}
-              className={`md:hidden inline-flex items-center justify-center w-10 h-10 hover:text-green transition-colors relative z-10 ${
-                isScrolled ? 'text-navy' : 'text-navy'
-              }`}            >
-              {open ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
+  href="/" 
+  className="flex items-center select-none shrink-0 relative z-10 md:-ml-2 lg:-ml-4 xl:-ml-6" 
+  aria-label="Impress Cleaning Home"
+>
+<Image
+src="/three-dimensionlogo.png"
+alt="Impress Cleaning Services"
+width={350}
+height={210}
+className="h-[115px] w-auto md:h-[135px] lg:h-[155px] xl:h-[175px] 2xl:h-[195px] object-contain"
+priority
+/>
+</Link>
+            {/* ========== HAMBURGER MENU Icon (Mobile Only) ========== */}
+<button
+  type="button"
+  aria-label="Toggle navigation"
+  onClick={() => setOpen((prev) => !prev)}
+  className={`md:hidden inline-flex items-center justify-center w-10 h-10 hover:text-green transition-colors relative z-10 ${
+    isScrolled ? 'text-navy' : 'text-navy'
+  }`}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
 
             {/* ========== NAVIGATION MENU WITH FLUID SIZING (Desktop Only) ========== */}
             <nav 
               className="hidden md:flex md:flex-1 md:items-center md:justify-center font-display font-medium text-navy whitespace-nowrap" 
-              style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.8vw, 28px)' }} 
+              style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.3vw, 21px)' }} 
               aria-label="Primary"
             >
               <Link href="/" className="hover:text-green transition-colors duration-200 font-display">
@@ -121,7 +112,11 @@ function SiteHeader() {
                 Commercial
               </Link>
 
-              <Link href="/faq" className="hover:text-green transition-colors duration-200 font-display">
+              <Link href="/gift-certificate" className="hover:text-green transition-colors duration-200 font-display">
+              Gift Certificates
+            </Link>
+
+            <Link href="/faq" className="hover:text-green transition-colors duration-200 font-display">
                 FAQ
               </Link>
               
@@ -129,27 +124,29 @@ function SiteHeader() {
                 About Us
               </Link>
 
+
               {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
-              <div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)' }}>
-                <Link
+<div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)', marginLeft: 'clamp(24px, 3vw, 48px)' }}>
+                  <Link
                   href="/booking" 
                   className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
-                  style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
+                  style={{ padding: 'clamp(6px, 0.8vw, 12px) clamp(14px, 1.8vw, 28px)', fontSize: 'clamp(13px, 2vw, 24px)' }}
                 >
                   Book Now
                 </Link>
-                <Link
-                  href="/service-quote" 
-                  className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
-                  style={{ padding: 'clamp(4px, 0.8vw, 12px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.3vw, 16px)' }}
+                <a 
+                  href="tel:+15122775364"
+                  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300 border-2 font-manrope text-[#079447] border-[#079447] hover:bg-[#079447] hover:text-white" 
+                  style={{ padding: 'clamp(4px, 0.7vw, 10px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.7vw, 20px)' }}
                 >
-                  Request a Quote
-                </Link>
+                  (512) 277-5364
+                </a>
               </div>
                           </nav>
           </div>
         </div>
       </header>
+
 
       {/* ========== MOBILE MENU OVERLAY ========== */}
       {open && (

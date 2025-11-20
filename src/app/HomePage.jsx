@@ -86,7 +86,7 @@ export default function ImpressCleaningSite() {
       <Hero />
       <WhyChoose />
       <HowItWorks />
-      <SocialProof />
+      <WhyFamiliesChooseUs />
       <TestimonialsSection />
     </main>
   );
@@ -96,51 +96,71 @@ function Hero() {
   return (
     <StaggerItem>
       <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
-        <div className="relative min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] w-full overflow-hidden">
+        <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
+
           <img
             src="/hero-cleaners1.jpg"
             alt="Impress Cleaning pro team"
             className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
+              
           <div className="relative z-10">
-            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-8">
-              <div className="grid md:grid-cols-2 items-center md:items-center items-end min-h-[60vh] md:min-h-[70vh] 2xl:min-h-[78vh] pb-8 md:pb-0">
-                <div>
-                  <div 
-                    className="max-w-full md:max-w-[500px] lg:max-w-[550px] 2xl:max-w-[650px]" 
-                    style={{ transform: 'translateY(0)' }}
-                  >
-                    <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)' }}>
-                      We'll Make Your Space Shine
-                      <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
-                    </h1>
-                    <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                      <a 
-                        href="tel:+15122775364"
-                        className="inline-flex items-center justify-center bg-slate-800 text-white rounded-lg font-bold border-2 border-slate-700 hover:bg-slate-700 hover:border-slate-600 transition-all duration-300"
-                        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        Call Now
-                      </a>
+<div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
+  <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-32 pb-12 md:py-16">
+                
+                <div className="max-w-[650px]">
+                  {/* Headline with better line breaks and spacing */}
+                  <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight" 
+                      style={{ 
+                        fontSize: 'clamp(2rem, 5vw, 4rem)', 
+                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)',
+                        letterSpacing: '-0.02em'
+                      }}>
+                    We'll Make Your Space&nbsp;Shine
+                    <span className="block mt-2">
+                      So You Can Focus On What Matters&nbsp;Most.
+                    </span>
+                  </h1>
+                  
+                  {/* CTAs with better spacing and hierarchy */}
+                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                    <a 
+                      href="tel:+15122775364"
+                      className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group"
+                      style={{ 
+                        padding: 'clamp(0.85rem, 2.2vw, 1.1rem) clamp(1.75rem, 3.5vw, 2.25rem)', 
+                        fontSize: 'clamp(1.05rem, 2vw, 1.3rem)' 
+                      }}
+                    >
+                      <svg className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform" fill="none" stroke="white" viewBox="0 0 24 24" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      Call Now
+                    </a>
 
-                      <Link
-                        href="/service-quote"
-                        className="inline-flex items-center justify-center bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
-                        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
+                    <Link
+                      href="/service-quote"
+                      className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group"
+                      style={{ 
+                        padding: 'clamp(0.85rem, 2.2vw, 1.1rem) clamp(1.75rem, 3.5vw, 2.25rem)', 
+                        fontSize: 'clamp(1.05rem, 2vw, 1.3rem)' 
+                      }}
+                    >
+                      Request Free Quote
+                      <svg
+                        className="w-5 h-5 ml-2.5 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="white"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2.5"
                       >
-                        Request Free Quote
-                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </Link>
-                    </div>
+                        <polyline points="9 5 16 12 9 19" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </Link>
                   </div>
-                  <div className="hidden lg:block" />
                 </div>
+                
               </div>
             </div>
           </div>
@@ -149,6 +169,7 @@ function Hero() {
     </StaggerItem>
   );
 }
+
 
 function WhyChoose() {
   const scrollRef = React.useRef(null);
@@ -239,10 +260,10 @@ function WhyChoose() {
               <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Why Choose Us</span>
             </div>
             <h2 className="font-display text-4xl md:text-5xl lg:text-5xl font-bold leading-tight tracking-tight text-[#18335A] mb-4">
-              Why Choose Impress Cleaning Services
+              The Impress Difference
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Four reasons families trust us to care for their homes
+              Four reasons families choose us to care for their homes
             </p>
           </div>
         </StaggerItem>
@@ -347,10 +368,6 @@ function WhyChoose() {
 }
 
 function HowItWorks() {
-  const scrollRef = React.useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
-  const [canScrollRight, setCanScrollRight] = React.useState(true);
-
   const steps = [
     {
       title: 'Request Your Quote', 
@@ -389,51 +406,15 @@ function HowItWorks() {
       )
     },
   ];
-
-  const updateArrows = () => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    const { scrollLeft, scrollWidth, clientWidth } = container;
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-  };
-
-  React.useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    updateArrows();
-    container.addEventListener('scroll', updateArrows);
-    window.addEventListener('resize', updateArrows);
-    
-    return () => {
-      container.removeEventListener('scroll', updateArrows);
-      window.removeEventListener('resize', updateArrows);
-    };
-  }, []);
-
-  const scroll = (direction) => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
-    const scrollAmount = cardWidth + 32;
-    
-    container.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    });
-  };
   
   return (
     <section className="bg-white py-16 md:py-24 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
       
-      <div className="mx-auto max-w-7xl px-4 md:px-6 relative">
+      <div className="mx-auto max-w-5xl px-8 sm:px-10 md:px-12 lg:px-16 relative">
         <StaggerItem>
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
               <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Our Process</span>
             </div>
@@ -446,107 +427,47 @@ function HowItWorks() {
           </div>
         </StaggerItem>
 
-        {/* Desktop: Scrollable with arrows */}
-        <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
-          {canScrollLeft && (
-            <button
-              onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
-              aria-label="Scroll left"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-          )}
-
-          <div 
-            ref={scrollRef}
-            className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8"
-          >
-            {steps.map((step, i) => (
-              <div 
-                key={step.title}
-                data-card
-                className="flex-shrink-0 w-[340px] snap-center"
-              >
-                <div className="relative h-full group">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-2xl font-bold text-white">{i + 1}</span>
-                    </div>
-                  </div>
-
-                  <div className="relative pt-10 h-full rounded-2xl bg-white border border-gray-200/50 group-hover:border-[#079447]/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] px-6 py-8 transition-all duration-500 group-hover:-translate-y-2">
-                    <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors duration-300">
-                      {step.icon}
-                    </div>
-
-                    <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {canScrollRight && (
-            <button
-              onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 hover:scale-110"
-              aria-label="Scroll right"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          )}
-        </div>
-
-        {/* Mobile: Horizontal scroll carousel */}
-        <div className="md:hidden">
-          <div className="flex overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide pb-4 px-4 pt-8">
-            {steps.map((step, i) => (
-              <div 
-                key={step.title}
-                className="flex-shrink-0 w-[85vw] max-w-[340px] snap-center"
-              >
-                <div className="relative h-full">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg">
-                      <span className="text-2xl font-bold text-white">{i + 1}</span>
-                    </div>
-                  </div>
-
-                  <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm px-6 py-8">
-                    <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447]">
-                      {step.icon}
-                    </div>
-
-                    <h3 className="font-manrope font-bold text-xl text-[#18335A] text-center mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed text-center">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Vertical Timeline - Desktop & Mobile */}
+        <div className="relative">
+          {/* Timeline Line */}
+          <div className="hidden md:block absolute left-[50%] top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#079447] via-[#079447] to-[#079447]/20" />
           
-          <div className="flex justify-center gap-2 mt-4">
-            {steps.map((_, index) => (
-              <div 
-                key={index}
-                className="w-2 h-2 rounded-full bg-gray-300"
-              />
-            ))}
-          </div>
+          {steps.map((step, i) => (
+            <StaggerItem key={step.title} delay={i * 100}>
+              <div className={`relative flex items-center gap-8 mb-12 md:mb-16 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                
+                {/* Content Side */}
+                <div className={`flex-1 ${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+                  <div className="bg-white p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(7,148,71,0.15)] transition-all duration-300 hover:-translate-y-1">
+                    <div className={`flex items-center gap-4 mb-4 ${i % 2 === 0 ? 'md:justify-end' : 'md:justify-start'} justify-start`}>
+                      <div className="w-12 h-12 bg-[#079447]/10 rounded-xl flex items-center justify-center text-[#079447]">
+                        {step.icon}
+                      </div>
+                      <h3 className="font-display font-bold text-2xl text-[#18335A]">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <p className="font-manrope text-base text-[#2C3A4B] leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Timeline Circle */}
+                <div className="hidden md:flex absolute left-[50%] -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full items-center justify-center shadow-lg shadow-green-500/30 z-10 border-4 border-white">
+                  <span className="text-2xl font-bold text-white">{i + 1}</span>
+                </div>
+
+                {/* Mobile Number Badge */}
+                <div className="md:hidden absolute -left-2 top-6 w-10 h-10 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg z-10">
+                  <span className="text-lg font-bold text-white">{i + 1}</span>
+                </div>
+
+                {/* Spacer for Desktop */}
+                <div className="hidden md:block flex-1" />
+              </div>
+            </StaggerItem>
+          ))}
         </div>
 
         <StaggerItem delay={500}>
@@ -555,7 +476,7 @@ function HowItWorks() {
               href="/residential-section"
               className="inline-flex items-center justify-center px-8 py-4 bg-[#079447] text-white rounded-lg font-bold text-lg hover:bg-[#08A855] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
             >
-              Get Started Today
+              Learn More
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -567,7 +488,8 @@ function HowItWorks() {
   );
 }
 
-function SocialProof() {
+
+function WhyFamiliesChooseUs() {
   const scrollRef = React.useRef(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
   
@@ -588,7 +510,7 @@ function SocialProof() {
 
   const proofCards = [
     {
-      title: 'Texas Homes. Texas Trust.',
+      title: 'Principles That Matter.',
       description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.'
     },
     {
@@ -600,16 +522,16 @@ function SocialProof() {
       description: 'We\'re more than a cleaning company. We\'re neighbors who take pride in helping families enjoy their homes.'
     },
     {
-      title: 'Guaranteed Peace of Mind.',
+      title: 'Peace of Mind.',
       description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.'
     }
   ];
   
   return (
     <StaggerItem>
-      <section className="bg-[#0B2850] py-12 md:py-16 mb-16 md:mb-24 text-white md:overflow-hidden">
+      <section className="bg-gray-50 py-12 md:py-16 mb-16 md:mb-24 md:overflow-hidden">
         <div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
-          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-white">
+          <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]">
             Why Texas Families Trust Impress
           </h3>
 
@@ -617,12 +539,12 @@ function SocialProof() {
             {proofCards.map((card, index) => (
               <div 
                 key={index}
-                className="rounded-2xl ring-1 ring-[#4A5568] bg-white/5 p-8 shadow-sm min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col"
+                className="rounded-2xl bg-white p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col border-t-4 border-[#079447]"
               >
-                <div className="font-manrope font-semibold text-[18px] md:text-[20px] lg:text-[22px] mb-2">
+                <div className="font-manrope font-semibold text-[18px] md:text-[20px] lg:text-[22px] mb-2 text-[#1e293b]">
                   {card.title}
                 </div>
-                <div className="font-manrope font-regular text-[15px] md:text-[16px] lg:text-[17px] text-white/90 leading-relaxed tracking-normal break-words">
+                <div className="font-manrope font-regular text-[15px] md:text-[16px] lg:text-[17px] text-[#475569] leading-relaxed tracking-normal break-words">
                   {card.description}
                 </div>
               </div>
@@ -633,7 +555,7 @@ function SocialProof() {
             {proofCards.map((_, index) => (
               <div 
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${activeIndex === index ? 'bg-white' : 'bg-white/50'}`}
+                className={`w-2 h-2 rounded-full transition-colors ${activeIndex === index ? 'bg-[#079447]' : 'bg-gray-400'}`}
               />
             ))}
           </div>
@@ -659,14 +581,14 @@ function TestimonialsSection() {
     }
   ];
 
-  return (
+return (
     <StaggerItem>
       <section className="bg-white py-12 md:py-16 relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#079447]/5 rounded-full blur-3xl" />
         
         <div className="container mx-auto mb-12 md:max-w-[1800px]">
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-center text-slate-900">
+          <h2 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]"> 
             What Our Clients Are Saying
           </h2>
         </div>
@@ -680,10 +602,10 @@ function TestimonialsSection() {
                     key={`set-${setIndex}-${index}`} 
                     className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block"
                   >
-                    <p className={`text-slate-900 text-lg md:text-xl font-manrope mb-3 leading-relaxed max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-bold' : 'font-normal'}`}>
+                    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-medium font-manrope'}`}>
                       "{testimonial.text}"
                     </p>
-                    <p className="text-slate-600 font-playfair text-base md:text-lg">
+                    <p className="text-slate-500 text-[13px] md:text-[14px] font-manrope italic">
                       – {testimonial.author}
                     </p>
                   </div>
@@ -692,6 +614,7 @@ function TestimonialsSection() {
             </div>
           </div>
         </div>
+
 
         <style jsx>{`
           @keyframes scroll {

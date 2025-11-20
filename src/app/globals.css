@@ -145,13 +145,12 @@ select.no-native::-ms-expand {
   padding-right: 1rem;
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-top: calc(80px + env(safe-area-inset-top, 0px));
   }
 }
-
 @media (min-width: 1280px) {
   .container {
     padding-left: 3rem;
@@ -173,4 +172,35 @@ select.no-native::-ms-expand {
 .font-sans,
 .font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
+}
+
+/* iOS safe area support for notch */
+@supports (padding: max(0px)) {
+  header {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  
+  /* Make safe area white on mobile */
+  @media (max-width: 768px) {
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: env(safe-area-inset-top, 0px);
+      background: white;
+      z-index: 51;
+    }
+  }
+}
+/* Allow page scroll even when clicking/dragging carousel cards */
+.carousel-card {
+  pointer-events: auto;
+  user-select: none;
+}
+
+.carousel-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
