@@ -59,12 +59,11 @@ function SiteHeader() {
 
 
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-<header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 [transform:translateZ(0)] [backface-visibility:hidden] ${
+<header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 [transform:translateZ(0)] [backface-visibility:hidden] pt-safe ${
   isScrolled 
     ? 'bg-white/95 backdrop-blur-md shadow-lg' 
     : 'bg-background'
-}`}>
-  
+}`}>  
           {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
         <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>          
           <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
