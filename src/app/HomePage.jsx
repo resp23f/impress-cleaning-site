@@ -497,7 +497,7 @@ function SocialProof() {
 
   const proofCards = [
     {
-      title: 'Built on Trust.',
+      title: 'Principles That Matter.',
       description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.'
     },
     {
@@ -509,7 +509,7 @@ function SocialProof() {
       description: 'We\'re more than a cleaning company. We\'re neighbors who take pride in helping families enjoy their homes.'
     },
     {
-      title: 'Guaranteed Peace of Mind.',
+      title: 'Peace of Mind.',
       description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.'
     }
   ];
