@@ -75,14 +75,14 @@ function SiteHeader() {
   className="flex items-center select-none shrink-0 relative z-10 md:-ml-2 lg:-ml-4 xl:-ml-6" 
   aria-label="Impress Cleaning Home"
 >
-  <Image
-    src="/three-dimensionlogo.png"
-    alt="Impress Cleaning Services"
-    width={260}
-    height={156}
-    className="h-[85px] w-auto md:h-[95px] lg:h-[110px] xl:h-[130px] 2xl:h-[145px] object-contain"
-    priority
-  />
+<Image
+src="/three-dimensionlogo.png"
+alt="Impress Cleaning Services"
+width={350}
+height={210}
+className="h-[115px] w-auto md:h-[135px] lg:h-[155px] xl:h-[175px] 2xl:h-[195px] object-contain"
+priority
+/>
 </Link>
             {/* ========== HAMBURGER MENU Icon (Mobile Only) ========== */}
 <button
