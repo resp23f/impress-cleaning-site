@@ -250,7 +250,7 @@ function WhyChoose() {
               Why Choose Impress Cleaning Services
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Four reasons families trust us to care for their homes
+              Four reasons families choose us to care for their homes
             </p>
           </div>
         </StaggerItem>
@@ -497,7 +497,7 @@ function SocialProof() {
 
   const proofCards = [
     {
-      title: 'Texas Homes. Texas Trust.',
+      title: 'Built on Trust.',
       description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.'
     },
     {
