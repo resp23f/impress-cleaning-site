@@ -274,7 +274,7 @@ function WhyChoose() {
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
                   
-                  <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl p-6 transition-all duration-300 group-hover:-translate-y-2">
+                  <div className="relative h-full rounded-2xl bg-white border border-gray-200/50 group-hover:border-[#079447]/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] p-6 transition-all duration-500 group-hover:-translate-y-2">
                     <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
                     </div>
@@ -477,7 +477,7 @@ function HowItWorks() {
                     </div>
                   </div>
 
-                  <div className="relative pt-10 h-full rounded-2xl bg-white border-2 border-gray-200 group-hover:border-[#079447] shadow-sm group-hover:shadow-xl px-6 py-8 transition-all duration-300 group-hover:-translate-y-2">
+                  <div className="relative pt-10 h-full rounded-2xl bg-white border border-gray-200/50 group-hover:border-[#079447]/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] px-6 py-8 transition-all duration-500 group-hover:-translate-y-2">
                     <div className="w-16 h-16 bg-[#079447]/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-[#079447] group-hover:bg-[#079447] group-hover:text-white transition-colors duration-300">
                       {step.icon}
                     </div>
