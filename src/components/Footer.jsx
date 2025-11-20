@@ -28,7 +28,7 @@ export default function Footer() {
           <div className="md:col-span-1 flex flex-col items-center md:items-start">
             <Link href="/" className="mb-3">
               <Image
-                src="/logo_impress_green.png"
+                src="/three-dimensionlogo.png"
                 alt="Impress Cleaning Services"
                 width={220}
                 height={132}

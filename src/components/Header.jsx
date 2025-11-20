@@ -78,9 +78,9 @@ function SiteHeader() {
               <Image
                 src="/three-dimensionlogo.png"
                 alt="Impress Cleaning Services"
-                width={170}
-                height={100}
-                className="h-[60px] w-auto md:h-[70px] lg:h-[85px] xl:h-[95px] 2xl:h-[110px] object-contain"
+                width={200}
+                height={120}
+                className="h-[65px] w-auto md:h-[75px] lg:h-[90px] xl:h-[115px] 2xl:h-[130px] object-contain"
                 priority
               />
             </Link>
