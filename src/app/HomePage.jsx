@@ -103,6 +103,49 @@ function Hero() {
             className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />
+          {/* TOP Christmas Lights */}
+          <div className="absolute top-0 left-0 right-0 h-12 md:h-16 pointer-events-none z-20">
+            <svg className="w-full h-full" viewBox="0 0 1200 60" preserveAspectRatio="none">
+              {/* Wire/String */}
+              <path d="M0,30 Q150,10 300,30 T600,30 T900,30 T1200,30" stroke="#2d5016" strokeWidth="2" fill="none" />
+              
+              {/* Lights - alternating colors */}
+              <circle cx="50" cy="30" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
+              <circle cx="150" cy="10" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
+              <circle cx="250" cy="30" r="6" fill="#ffff00" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
+              <circle cx="350" cy="20" r="6" fill="#0000ff" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
+              <circle cx="450" cy="30" r="6" fill="#ff00ff" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
+              <circle cx="550" cy="15" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
+              <circle cx="650" cy="30" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
+              <circle cx="750" cy="20" r="6" fill="#ffff00" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
+              <circle cx="850" cy="30" r="6" fill="#0000ff" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
+              <circle cx="950" cy="10" r="6" fill="#ff00ff" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
+              <circle cx="1050" cy="30" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
+              <circle cx="1150" cy="20" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
+            </svg>
+          </div>
+
+          {/* BOTTOM Christmas Lights */}
+          <div className="absolute bottom-0 left-0 right-0 h-12 md:h-16 pointer-events-none z-20">
+            <svg className="w-full h-full" viewBox="0 0 1200 60" preserveAspectRatio="none">
+              {/* Wire/String */}
+              <path d="M0,30 Q150,50 300,30 T600,30 T900,30 T1200,30" stroke="#2d5016" strokeWidth="2" fill="none" />
+              
+              {/* Lights - alternating colors */}
+              <circle cx="75" cy="40" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0.2s', animationDuration: '1.5s' }} />
+              <circle cx="175" cy="50" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.5s', animationDuration: '1.5s' }} />
+              <circle cx="275" cy="30" r="6" fill="#0000ff" className="animate-pulse" style={{ animationDelay: '0.8s', animationDuration: '1.5s' }} />
+              <circle cx="375" cy="40" r="6" fill="#ffff00" className="animate-pulse" style={{ animationDelay: '0.1s', animationDuration: '1.5s' }} />
+              <circle cx="475" cy="25" r="6" fill="#ff00ff" className="animate-pulse" style={{ animationDelay: '0.4s', animationDuration: '1.5s' }} />
+              <circle cx="575" cy="50" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.7s', animationDuration: '1.5s' }} />
+              <circle cx="675" cy="30" r="6" fill="#00ff00" className="animate-pulse" style={{ animationDelay: '0s', animationDuration: '1.5s' }} />
+              <circle cx="775" cy="45" r="6" fill="#0000ff" className="animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '1.5s' }} />
+              <circle cx="875" cy="30" r="6" fill="#ffff00" className="animate-pulse" style={{ animationDelay: '0.6s', animationDuration: '1.5s' }} />
+              <circle cx="975" cy="50" r="6" fill="#ff00ff" className="animate-pulse" style={{ animationDelay: '0.9s', animationDuration: '1.5s' }} />
+              <circle cx="1075" cy="35" r="6" fill="#ff0000" className="animate-pulse" style={{ animationDelay: '0.2s', animationDuration: '1.5s' }} />
+            </svg>
+          </div>
+
           
           <div className="relative z-10">
 <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
