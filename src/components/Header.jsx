@@ -61,7 +61,7 @@ function SiteHeader() {
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
 <header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
   isScrolled 
-    ? 'bg-[#FAFAF8/98] backdrop-blur-md shadow-lg' 
+    ? 'bg-white/98 backdrop-blur-md shadow-lg' 
     : 'bg-background'
 }`}>
   <div className="absolute inset-x-0 top-[-50px] h-[50px] bg-inherit -z-10"></div>
