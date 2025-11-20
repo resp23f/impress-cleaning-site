@@ -113,12 +113,12 @@ function Hero() {
                   >
                     <h1 className="font-display font-bold text-white mb-4 sm:mb-6 leading-[1.1]" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)', textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)' }}>
                       We'll Make Your Space Shine
-                      <span className="block text-green-400 mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}>So You Can Focus On What Matters Most.</span>
+                      <span className="block text-[#079447] mt-1 sm:mt-2" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)' }}>So You Can Focus On What Matters Most.</span>
                     </h1>
                     <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
                       <a 
                         href="tel:+15122775364"
-                        className="inline-flex items-center justify-center bg-slate-800 text-white rounded-lg font-bold border-2 border-slate-700 hover:bg-slate-700 hover:border-slate-600 transition-all duration-300"
+                        className="inline-flex items-center justify-center bg-[#079447]text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
                         style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
                       >
                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,8 +129,8 @@ function Hero() {
 
                       <Link
                         href="/service-quote"
-                        className="inline-flex items-center justify-center bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
-                        style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
+                        className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105"
+                        style={{ padding: 'clamp(0.6rem, 1.5vw, 0.75rem) clamp(1.2rem, 2.5vw, 1.5rem)', fontSize: 'clamp(1rem, 1.8vw, 1.25rem)' }}
                       >
                         Request Free Quote
                         <svg

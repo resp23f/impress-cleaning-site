@@ -25,8 +25,8 @@ const onest = Onest({
 
 
 export const metadata = {
-  title: "Impress Cleaning Services - Residential Janitorial Service",
-  description: "Professional cleaning services in Central Texas. Reliable and trusted.",
+  title: "Impress Cleaning Services - Residential Cleaning Service",
+  description: "Residential cleaning services in Central Texas. Reliable and Trusted.",
   icons: {
     icon: [
       { url: '/favicon.png' },
