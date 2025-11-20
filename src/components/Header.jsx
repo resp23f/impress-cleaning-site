@@ -76,7 +76,7 @@ function SiteHeader() {
               aria-label="Impress Cleaning Home"
             >
               <Image
-                src="/impress-cleaning-background.png"
+                src="/three-dimensionlogo.png"
                 alt="Impress Cleaning Services"
                 width={170}
                 height={100}
@@ -127,7 +127,7 @@ function SiteHeader() {
 
 
               {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
-<div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)', marginLeft: 'clamp(24px, 3vw, 48px)' }}> // Added marginLeft here
+<div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)', marginLeft: 'clamp(24px, 3vw, 48px)' }}>
                   <Link
                   href="/booking" 
                   className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope" 
