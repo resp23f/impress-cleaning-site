@@ -173,3 +173,26 @@ select.no-native::-ms-expand {
 .font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
 }
+/* iOS safe area support for notch */
+@supports (padding: max(0px)) {
+  header {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      padding-top: calc(80px + env(safe-area-inset-top));
+    }
+  }
+}
+
+/* Allow page scroll even when clicking/dragging carousel cards */
+.carousel-card {
+  pointer-events: auto;
+  user-select: none;
+}
+
+.carousel-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}

@@ -25,8 +25,8 @@ const onest = Onest({
 
 
 export const metadata = {
-  title: "Impress Cleaning Services - Professional Janitorial Service",
-  description: "Professional cleaning services in Central Texas. Reliable and trusted for over 15 years.",
+  title: "Impress Cleaning Services - Residential Janitorial Service",
+  description: "Professional cleaning services in Central Texas. Reliable and trusted.",
   icons: {
     icon: [
       { url: '/favicon.png' },
@@ -37,8 +37,17 @@ export const metadata = {
       { url: '/apple-touch-icon.png' },
     ],
   },
+  themeColor: '#FAFAF8',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    viewportFit: 'cover',
+  },
 };
-
 
 export default function RootLayout({ children }) {
   return (
