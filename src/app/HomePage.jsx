@@ -247,7 +247,7 @@ function WhyChoose() {
               <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Why Choose Us</span>
             </div>
             <h2 className="font-display text-4xl md:text-5xl lg:text-5xl font-bold leading-tight tracking-tight text-[#18335A] mb-4">
-              Why Choose Impress Cleaning Services
+              The Impress Difference
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Four reasons families choose us to care for their homes
