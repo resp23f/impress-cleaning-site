@@ -463,7 +463,7 @@ function HowItWorks() {
               href="/residential-section"
               className="inline-flex items-center justify-center px-8 py-4 bg-[#079447] text-white rounded-lg font-bold text-lg hover:bg-[#08A855] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
             >
-              Get Started Today
+              Learn More
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
