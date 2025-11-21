@@ -6,8 +6,9 @@ import {
   Search, Filter, Moon, Sun, Heart, Share2, Check, Clock, Star,
   ChevronDown, ChevronUp, Sparkles, Home, Bath, Bed, Sofa, Shirt,
   Briefcase, Calendar, ShoppingCart, Printer, X, Tag, Leaf, DollarSign,
-  PawPrint, AlertCircle, Droplet, Wind, Thermometer, Award, TrendingUp,
-  BookOpen, Download, CheckCircle, BarChart3
+  PawPrint, AlertCircle, BookOpen, Download, CheckCircle, BarChart3,
+  ChefHat, Droplets, Wind, Lamp, WashingMachine, Monitor, CircleDot,
+  TrendingUp, Award, Info
 } from 'lucide-react';
 
 // Comprehensive Cleaning Tips Data
@@ -22,7 +23,7 @@ const cleaningTipsData = [
     time: 45,
     frequency: 'monthly',
     tags: ['eco-friendly', 'allergen-free'],
-    icon: '🧊',
+    icon: 'ChefHat',
     rating: 4.8,
     steps: [
       'Remove all food items and check expiration dates',
@@ -47,7 +48,7 @@ const cleaningTipsData = [
     time: 10,
     frequency: 'weekly',
     tags: ['eco-friendly', 'budget-friendly'],
-    icon: '🍋',
+    icon: 'ChefHat',
     rating: 4.9,
     steps: [
       'Fill microwave-safe bowl with 1 cup water',
@@ -71,7 +72,7 @@ const cleaningTipsData = [
     time: 60,
     frequency: 'quarterly',
     tags: ['deep-clean'],
-    icon: '🚪',
+    icon: 'Home',
     rating: 4.6,
     steps: [
       'Mix 1 cup warm water with 2 tbsp dish soap',
@@ -96,7 +97,7 @@ const cleaningTipsData = [
     time: 15,
     frequency: 'weekly',
     tags: ['quick-tip'],
-    icon: '✨',
+    icon: 'Sparkles',
     rating: 4.7,
     steps: [
       'Identify the grain direction of the steel',
@@ -118,7 +119,7 @@ const cleaningTipsData = [
     time: 30,
     frequency: 'monthly',
     tags: ['eco-friendly', 'allergen-free'],
-    icon: '🍽️',
+    icon: 'ChefHat',
     rating: 4.8,
     steps: [
       'Remove and clean the filter under hot water',
@@ -142,7 +143,7 @@ const cleaningTipsData = [
     time: 5,
     frequency: 'weekly',
     tags: ['eco-friendly', 'budget-friendly'],
-    icon: '🍊',
+    icon: 'Droplets',
     rating: 4.9,
     steps: [
       'Cut lemon or orange into small pieces',
@@ -167,7 +168,7 @@ const cleaningTipsData = [
     time: 20,
     frequency: 'weekly',
     tags: ['allergen-free'],
-    icon: '🚽',
+    icon: 'Droplets',
     rating: 4.7,
     steps: [
       'Pour 1 cup baking soda into bowl',
@@ -192,7 +193,7 @@ const cleaningTipsData = [
     time: 45,
     frequency: 'monthly',
     tags: ['deep-clean'],
-    icon: '🚿',
+    icon: 'Bath',
     rating: 4.6,
     steps: [
       'Make paste: 3 parts baking soda, 1 part water',
@@ -217,7 +218,7 @@ const cleaningTipsData = [
     time: 10,
     frequency: 'weekly',
     tags: ['eco-friendly', 'budget-friendly'],
-    icon: '🪞',
+    icon: 'Sparkles',
     rating: 4.8,
     steps: [
       'Mix equal parts white vinegar and water in spray bottle',
@@ -239,7 +240,7 @@ const cleaningTipsData = [
     time: 15,
     frequency: 'monthly',
     tags: ['eco-friendly', 'budget-friendly'],
-    icon: '💧',
+    icon: 'Droplets',
     rating: 4.9,
     steps: [
       'Fill plastic bag with white vinegar',
@@ -264,7 +265,7 @@ const cleaningTipsData = [
     time: 30,
     frequency: 'quarterly',
     tags: ['allergen-free', 'deep-clean'],
-    icon: '🌪️',
+    icon: 'Wind',
     rating: 4.5,
     steps: [
       'Turn off power at circuit breaker',
@@ -289,7 +290,7 @@ const cleaningTipsData = [
     time: 10,
     frequency: 'weekly',
     tags: ['quick-tip'],
-    icon: '🚰',
+    icon: 'Sparkles',
     rating: 4.7,
     steps: [
       'Spray sink with all-purpose cleaner',
@@ -315,7 +316,7 @@ const cleaningTipsData = [
     time: 60,
     frequency: 'quarterly',
     tags: ['allergen-free', 'deep-clean'],
-    icon: '🛏️',
+    icon: 'Bed',
     rating: 4.8,
     steps: [
       'Strip all bedding and wash in hot water',
@@ -341,7 +342,7 @@ const cleaningTipsData = [
     time: 90,
     frequency: 'seasonally',
     tags: ['allergen-free', 'deep-clean'],
-    icon: '👔',
+    icon: 'Home',
     rating: 4.6,
     steps: [
       'Remove everything from closet',
@@ -367,7 +368,7 @@ const cleaningTipsData = [
     time: 15,
     frequency: 'monthly',
     tags: ['allergen-free', 'quick-tip'],
-    icon: '💨',
+    icon: 'Wind',
     rating: 4.7,
     steps: [
       'Turn off fan and let blades stop completely',
@@ -392,7 +393,7 @@ const cleaningTipsData = [
     time: 40,
     frequency: 'monthly',
     tags: ['allergen-free'],
-    icon: '📐',
+    icon: 'Home',
     rating: 4.5,
     steps: [
       'Vacuum baseboards with brush attachment first',
@@ -417,7 +418,7 @@ const cleaningTipsData = [
     time: 20,
     frequency: 'monthly',
     tags: ['allergen-free', 'quick-tip'],
-    icon: '🪟',
+    icon: 'Lamp',
     rating: 4.6,
     steps: [
       'Vacuum curtains/drapes with upholstery attachment',
@@ -441,7 +442,7 @@ const cleaningTipsData = [
     time: 25,
     frequency: 'quarterly',
     tags: ['allergen-free', 'deep-clean'],
-    icon: '🧹',
+    icon: 'Bed',
     rating: 4.7,
     steps: [
       'Move bed away from wall if possible',
@@ -468,7 +469,7 @@ const cleaningTipsData = [
     time: 60,
     frequency: 'quarterly',
     tags: ['allergen-free', 'pet-friendly'],
-    icon: '🛋️',
+    icon: 'Sofa',
     rating: 4.8,
     steps: [
       'Check furniture tag for cleaning code (W, S, W/S, or X)',
@@ -495,7 +496,7 @@ const cleaningTipsData = [
     time: 15,
     frequency: 'weekly',
     tags: ['quick-tip'],
-    icon: '📺',
+    icon: 'Monitor',
     rating: 4.7,
     steps: [
       'Turn off and unplug all electronics',
@@ -520,7 +521,7 @@ const cleaningTipsData = [
     time: 90,
     frequency: 'seasonally',
     tags: ['allergen-free', 'pet-friendly', 'deep-clean'],
-    icon: '🧼',
+    icon: 'Home',
     rating: 4.6,
     steps: [
       'Vacuum thoroughly in multiple directions',
@@ -546,7 +547,7 @@ const cleaningTipsData = [
     time: 30,
     frequency: 'bi-weekly',
     tags: ['allergen-free', 'quick-tip'],
-    icon: '📚',
+    icon: 'BookOpen',
     rating: 4.5,
     steps: [
       'Remove all items from one shelf at a time',
@@ -571,7 +572,7 @@ const cleaningTipsData = [
     time: 45,
     frequency: 'seasonally',
     tags: ['eco-friendly', 'deep-clean'],
-    icon: '🪟',
+    icon: 'Sparkles',
     rating: 4.7,
     steps: [
       'Remove window screens and wash separately',
@@ -597,7 +598,7 @@ const cleaningTipsData = [
     time: 10,
     frequency: 'daily',
     tags: ['quick-tip', 'budget-friendly'],
-    icon: '☕',
+    icon: 'Home',
     rating: 4.6,
     steps: [
       'Clear all items from surface',
@@ -624,7 +625,7 @@ const cleaningTipsData = [
     time: 40,
     frequency: 'monthly',
     tags: ['eco-friendly', 'allergen-free'],
-    icon: '🧺',
+    icon: 'WashingMachine',
     rating: 4.9,
     steps: [
       'Run empty cycle with 2 cups white vinegar (hot water)',
@@ -649,7 +650,7 @@ const cleaningTipsData = [
     time: 30,
     frequency: 'quarterly',
     tags: ['deep-clean', 'safety'],
-    icon: '🔥',
+    icon: 'AlertCircle',
     rating: 5.0,
     steps: [
       'Unplug dryer and pull away from wall',
@@ -674,7 +675,7 @@ const cleaningTipsData = [
     time: 15,
     frequency: 'monthly',
     tags: ['quick-tip'],
-    icon: '👔',
+    icon: 'Shirt',
     rating: 4.5,
     steps: [
       'Unplug iron and let cool completely',
@@ -699,7 +700,7 @@ const cleaningTipsData = [
     time: 10,
     frequency: 'as-needed',
     tags: ['budget-friendly', 'eco-friendly'],
-    icon: '🎨',
+    icon: 'Droplets',
     rating: 4.8,
     steps: [
       'Identify stain type (protein, oil, tannin, dye)',
@@ -725,7 +726,7 @@ const cleaningTipsData = [
     time: 60,
     frequency: 'seasonally',
     tags: ['organization'],
-    icon: '📦',
+    icon: 'WashingMachine',
     rating: 4.6,
     steps: [
       'Remove everything from laundry room',
@@ -752,7 +753,7 @@ const cleaningTipsData = [
     time: 5,
     frequency: 'weekly',
     tags: ['eco-friendly', 'budget-friendly'],
-    icon: '🌸',
+    icon: 'Sparkles',
     rating: 4.7,
     steps: [
       'Don\'t overload washer - clothes need room to move',
@@ -779,7 +780,7 @@ const cleaningTipsData = [
     time: 45,
     frequency: 'monthly',
     tags: ['organization', 'productivity'],
-    icon: '💼',
+    icon: 'Briefcase',
     rating: 4.7,
     steps: [
       'Clear everything off desk surface',
@@ -806,7 +807,7 @@ const cleaningTipsData = [
     time: 10,
     frequency: 'weekly',
     tags: ['allergen-free', 'quick-tip'],
-    icon: '⌨️',
+    icon: 'Monitor',
     rating: 4.8,
     steps: [
       'Unplug keyboard or turn off wireless',
@@ -831,7 +832,7 @@ const cleaningTipsData = [
     time: 90,
     frequency: 'annually',
     tags: ['organization', 'deep-clean'],
-    icon: '📁',
+    icon: 'Briefcase',
     rating: 4.5,
     steps: [
       'Remove all files and documents',
@@ -858,7 +859,7 @@ const cleaningTipsData = [
     time: 5,
     frequency: 'weekly',
     tags: ['quick-tip'],
-    icon: '🖥️',
+    icon: 'Monitor',
     rating: 4.6,
     steps: [
       'Turn off monitor and let cool',
@@ -883,7 +884,7 @@ const cleaningTipsData = [
     time: 30,
     frequency: 'quarterly',
     tags: ['maintenance'],
-    icon: '🪑',
+    icon: 'Briefcase',
     rating: 4.6,
     steps: [
       'Vacuum chair thoroughly (seat, back, crevices)',
@@ -909,7 +910,7 @@ const cleaningTipsData = [
     time: 15,
     frequency: 'monthly',
     tags: ['maintenance', 'quick-tip'],
-    icon: '🖨️',
+    icon: 'Monitor',
     rating: 4.4,
     steps: [
       'Unplug equipment before cleaning',
@@ -1062,25 +1063,44 @@ const productRecommendations = [
   }
 ];
 
+// Icon mapping
+const iconComponents = {
+  ChefHat,
+  Droplets,
+  Bath,
+  Sparkles,
+  Wind,
+  Bed,
+  Home,
+  Lamp,
+  Sofa,
+  Monitor,
+  BookOpen,
+  WashingMachine,
+  AlertCircle,
+  Shirt,
+  Briefcase
+};
+
 // Main Component
 export default function CleaningTipsPage() {
   // State Management
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('all');
-  const [selectedType, setSelectedType] = useState('all'); // all, quick, deep
+  const [selectedType, setSelectedType] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [expandedTip, setExpandedTip] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [completedTips, setCompletedTips] = useState([]);
   const [activeSection, setActiveSection] = useState('tips');
-  const [sortBy, setSortBy] = useState('rating'); // rating, time, difficulty
+  const [sortBy, setSortBy] = useState('rating');
   const [showFilters, setShowFilters] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [showSchedule, setShowSchedule] = useState(false);
+  const [showShoppingList, setShowShoppingList] = useState(false);
 
-  // Load from localStorage on mount
+  // Load from localStorage
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -1093,7 +1113,7 @@ export default function CleaningTipsPage() {
     setShoppingList(savedShoppingList);
   }, []);
 
-  // Save to localStorage on changes
+  // Save to localStorage
   useEffect(() => {
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
@@ -1114,7 +1134,6 @@ export default function CleaningTipsPage() {
   const filteredTips = useMemo(() => {
     let filtered = cleaningTipsData;
 
-    // Filter by search
     if (searchQuery) {
       filtered = filtered.filter(tip =>
         tip.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1123,29 +1142,24 @@ export default function CleaningTipsPage() {
       );
     }
 
-    // Filter by room
     if (selectedRoom !== 'all') {
       filtered = filtered.filter(tip => tip.room === selectedRoom);
     }
 
-    // Filter by type
     if (selectedType !== 'all') {
       filtered = filtered.filter(tip => tip.type === selectedType);
     }
 
-    // Filter by difficulty
     if (selectedDifficulty !== 'all') {
       filtered = filtered.filter(tip => tip.difficulty === selectedDifficulty);
     }
 
-    // Filter by tags
     if (selectedTags.length > 0) {
       filtered = filtered.filter(tip =>
         selectedTags.every(tag => tip.tags.includes(tag))
       );
     }
 
-    // Sort
     filtered.sort((a, b) => {
       if (sortBy === 'rating') return b.rating - a.rating;
       if (sortBy === 'time') return a.time - b.time;
@@ -1198,144 +1212,158 @@ export default function CleaningTipsPage() {
 
   const getRoomIcon = (room) => {
     const icons = {
-      kitchen: <Home className="w-5 h-5" />,
-      bathroom: <Bath className="w-5 h-5" />,
-      bedroom: <Bed className="w-5 h-5" />,
-      living: <Sofa className="w-5 h-5" />,
-      laundry: <Shirt className="w-5 h-5" />,
-      office: <Briefcase className="w-5 h-5" />
+      kitchen: <ChefHat className="w-4 h-4" />,
+      bathroom: <Bath className="w-4 h-4" />,
+      bedroom: <Bed className="w-4 h-4" />,
+      living: <Sofa className="w-4 h-4" />,
+      laundry: <WashingMachine className="w-4 h-4" />,
+      office: <Briefcase className="w-4 h-4" />
     };
-    return icons[room] || <Home className="w-5 h-5" />;
+    return icons[room] || <Home className="w-4 h-4" />;
   };
 
   const getDifficultyColor = (difficulty) => {
     const colors = {
-      easy: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      hard: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+      easy: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800',
+      medium: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800',
+      hard: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-400 dark:border-rose-800'
     };
     return colors[difficulty] || colors.easy;
   };
 
   const getTypeColor = (type) => {
     return type === 'quick'
-      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-      : 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
+      ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-400 dark:border-blue-800'
+      : 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800';
   };
 
   const allTags = ['eco-friendly', 'budget-friendly', 'allergen-free', 'pet-friendly', 'quick-tip', 'deep-clean'];
 
   const completionPercentage = (completedTips.length / cleaningTipsData.length) * 100;
 
+  const getIconComponent = (iconName) => {
+    const Icon = iconComponents[iconName] || CircleDot;
+    return <Icon className="w-5 h-5" />;
+  };
+
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'}`}>
+    <div className={`min-h-screen ${darkMode ? 'dark bg-gray-950' : 'bg-white'} transition-colors duration-200`}>
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-950 dark:via-gray-950 dark:to-blue-950/10"></div>
+
+        {/* Geometric shapes */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100/20 dark:bg-blue-900/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-60 -left-40 w-80 h-80 bg-purple-100/20 dark:bg-purple-900/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl"
           >
-            <div className="flex justify-center mb-6">
-              <Sparkles className="w-16 h-16" />
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
-              Your Complete Cleaning Guide
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">
+              Professional Cleaning Solutions
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              Professional tips, room-by-room guides, and expert tricks for a spotless home
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+              Expert-curated cleaning guides and maintenance schedules for every room in your home. Trusted by professionals, designed for results.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full">
-                <CheckCircle className="w-5 h-5" />
-                <span>{completedTips.length} tasks completed</span>
+
+            {completedTips.length > 0 && (
+              <div className="flex items-center gap-6 text-sm">
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                  <span>{completedTips.length} tasks completed</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span>{favorites.length} saved</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full">
-                <Heart className="w-5 h-5" />
-                <span>{favorites.length} favorites saved</span>
-              </div>
-            </div>
+            )}
           </motion.div>
         </div>
       </div>
 
-      {/* Sticky Navigation */}
-      <div className="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-md">
+      {/* Navigation */}
+      <div className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
-            <div className="flex items-center gap-4 overflow-x-auto">
-              {['tips', 'seasonal', 'products', 'schedule'].map((section) => (
+            <nav className="flex items-center gap-1">
+              {[
+                { id: 'tips', label: 'Cleaning Tips', icon: Sparkles },
+                { id: 'seasonal', label: 'Seasonal', icon: Calendar },
+                { id: 'products', label: 'Products', icon: Award },
+                { id: 'schedule', label: 'Schedule', icon: BarChart3 }
+              ].map((section) => (
                 <button
-                  key={section}
-                  onClick={() => setActiveSection(section)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${
-                    activeSection === section
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
+                    activeSection === section.id
+                      ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900'
                   }`}
                 >
-                  {section === 'tips' && <Sparkles className="inline w-4 h-4 mr-2" />}
-                  {section === 'seasonal' && <Calendar className="inline w-4 h-4 mr-2" />}
-                  {section === 'products' && <Award className="inline w-4 h-4 mr-2" />}
-                  {section === 'schedule' && <Printer className="inline w-4 h-4 mr-2" />}
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                  <section.icon className="w-4 h-4" />
+                  {section.label}
                 </button>
               ))}
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                aria-label="Toggle dark mode"
-              >
-                {darkMode ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5 text-gray-700" />}
-              </button>
+            </nav>
+
+            <div className="flex items-center gap-2">
               {shoppingList.length > 0 && (
                 <button
-                  onClick={() => setShowSchedule(true)}
-                  className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                  aria-label="Shopping list"
+                  onClick={() => setShowShoppingList(true)}
+                  className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors"
                 >
-                  <ShoppingCart className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <ShoppingCart className="w-5 h-5" />
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {shoppingList.length}
                   </span>
                 </button>
               )}
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors"
+              >
+                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Progress Tracker */}
         {completedTips.length > 0 && activeSection === 'tips' && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg"
+            className="mb-10 bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-900 dark:to-gray-900/50 rounded-2xl p-8 border border-gray-200 dark:border-gray-800"
           >
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Your Progress</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Overall Progress</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {completedTips.length} of {cleaningTipsData.length} tips completed
+                  {completedTips.length} of {cleaningTipsData.length} completed
                 </p>
               </div>
-              <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">
                 {Math.round(completionPercentage)}%
               </div>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+            <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${completionPercentage}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
-                className="h-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-full"
+                className="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
               />
             </div>
           </motion.div>
@@ -1345,26 +1373,26 @@ export default function CleaningTipsPage() {
         {activeSection === 'tips' && (
           <>
             {/* Search and Filters */}
-            <div className="mb-8 space-y-4">
-              {/* Search Bar */}
+            <div className="mb-10 space-y-4">
+              {/* Search */}
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Search cleaning tips, supplies, or techniques..."
+                  placeholder="Search cleaning tips..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-purple-500 dark:focus:border-purple-400 focus:outline-none transition-colors text-lg"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500 focus:border-gray-900 dark:focus:border-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-900 transition-all"
                 />
               </div>
 
               {/* Filter Toggle */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-purple-500 transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors text-sm font-medium"
               >
-                <Filter className="w-5 h-5" />
-                {showFilters ? 'Hide Filters' : 'Show Filters'}
+                <Filter className="w-4 h-4" />
+                {showFilters ? 'Hide' : 'Show'} Filters
               </button>
 
               {/* Filters */}
@@ -1374,20 +1402,20 @@ export default function CleaningTipsPage() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg space-y-6"
+                    className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 space-y-6"
                   >
                     {/* Room Filter */}
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Room</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Room</h4>
                       <div className="flex flex-wrap gap-2">
                         {['all', 'kitchen', 'bathroom', 'bedroom', 'living', 'laundry', 'office'].map((room) => (
                           <button
                             key={room}
                             onClick={() => setSelectedRoom(room)}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
                               selectedRoom === room
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
+                                : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
                             }`}
                           >
                             {room === 'all' ? 'All Rooms' : room.charAt(0).toUpperCase() + room.slice(1)}
@@ -1396,49 +1424,50 @@ export default function CleaningTipsPage() {
                       </div>
                     </div>
 
-                    {/* Type Filter */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Type</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {['all', 'quick', 'deep'].map((type) => (
-                          <button
-                            key={type}
-                            onClick={() => setSelectedType(type)}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                              selectedType === type
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {type === 'all' ? 'All Types' : type === 'quick' ? 'Quick Tips' : 'Deep Clean'}
-                          </button>
-                        ))}
+                    {/* Type & Difficulty */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Type</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {['all', 'quick', 'deep'].map((type) => (
+                            <button
+                              key={type}
+                              onClick={() => setSelectedType(type)}
+                              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
+                                selectedType === type
+                                  ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
+                                  : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+                              }`}
+                            >
+                              {type === 'all' ? 'All' : type === 'quick' ? 'Quick' : 'Deep Clean'}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Difficulty</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {['all', 'easy', 'medium'].map((diff) => (
+                            <button
+                              key={diff}
+                              onClick={() => setSelectedDifficulty(diff)}
+                              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
+                                selectedDifficulty === diff
+                                  ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
+                                  : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+                              }`}
+                            >
+                              {diff.charAt(0).toUpperCase() + diff.slice(1)}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Difficulty Filter */}
+                    {/* Tags */}
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Difficulty</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {['all', 'easy', 'medium', 'hard'].map((diff) => (
-                          <button
-                            key={diff}
-                            onClick={() => setSelectedDifficulty(diff)}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                              selectedDifficulty === diff
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {diff.charAt(0).toUpperCase() + diff.slice(1)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Tags Filter */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Tags</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Tags</h4>
                       <div className="flex flex-wrap gap-2">
                         {allTags.map((tag) => (
                           <button
@@ -1448,37 +1477,35 @@ export default function CleaningTipsPage() {
                                 prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
                               );
                             }}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
                               selectedTags.includes(tag)
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
+                                : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
                             }`}
                           >
-                            {tag === 'eco-friendly' && <Leaf className="w-4 h-4" />}
-                            {tag === 'budget-friendly' && <DollarSign className="w-4 h-4" />}
-                            {tag === 'pet-friendly' && <PawPrint className="w-4 h-4" />}
+                            {tag === 'eco-friendly' && <Leaf className="w-3.5 h-3.5" />}
+                            {tag === 'budget-friendly' && <DollarSign className="w-3.5 h-3.5" />}
+                            {tag === 'pet-friendly' && <PawPrint className="w-3.5 h-3.5" />}
                             {tag.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                           </button>
                         ))}
                       </div>
                     </div>
 
-                    {/* Sort By */}
+                    {/* Sort */}
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Sort By</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Sort By</h4>
                       <div className="flex flex-wrap gap-2">
                         {['rating', 'time', 'difficulty'].map((sort) => (
                           <button
                             key={sort}
                             onClick={() => setSortBy(sort)}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
                               sortBy === sort
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
+                                : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
                             }`}
                           >
-                            {sort === 'rating' && <Star className="inline w-4 h-4 mr-1" />}
-                            {sort === 'time' && <Clock className="inline w-4 h-4 mr-1" />}
                             {sort.charAt(0).toUpperCase() + sort.slice(1)}
                           </button>
                         ))}
@@ -1490,87 +1517,77 @@ export default function CleaningTipsPage() {
             </div>
 
             {/* Tips Grid */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
               <AnimatePresence mode="popLayout">
                 {filteredTips.map((tip, index) => (
                   <motion.div
                     key={tip.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden ${
-                      completedTips.includes(tip.id) ? 'ring-2 ring-green-500' : ''
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2, delay: index * 0.03 }}
+                    className={`group bg-white dark:bg-gray-900 rounded-2xl border hover:shadow-xl transition-all duration-300 overflow-hidden ${
+                      completedTips.includes(tip.id)
+                        ? 'border-emerald-300 dark:border-emerald-800 shadow-lg shadow-emerald-100 dark:shadow-emerald-950'
+                        : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
                     }`}
                   >
                     {/* Card Header */}
-                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="text-4xl">{tip.icon}</div>
-                        <div className="flex gap-2">
+                    <div className="p-6 border-b border-gray-100 dark:border-gray-800">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300">
+                          {getIconComponent(tip.icon)}
+                        </div>
+                        <div className="flex gap-1.5">
                           <button
                             onClick={() => toggleFavorite(tip.id)}
-                            className={`p-2 rounded-lg transition-colors ${
+                            className={`p-2 rounded-lg transition-all ${
                               favorites.includes(tip.id)
-                                ? 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                ? 'bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400'
+                                : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300'
                             }`}
-                            aria-label="Add to favorites"
                           >
-                            <Heart className={`w-5 h-5 ${favorites.includes(tip.id) ? 'fill-current' : ''}`} />
+                            <Heart className={`w-4 h-4 ${favorites.includes(tip.id) ? 'fill-current' : ''}`} />
                           </button>
                           <button
                             onClick={() => toggleCompleted(tip.id)}
-                            className={`p-2 rounded-lg transition-colors ${
+                            className={`p-2 rounded-lg transition-all ${
                               completedTips.includes(tip.id)
-                                ? 'bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400'
+                                : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300'
                             }`}
-                            aria-label="Mark as completed"
                           >
-                            <Check className={`w-5 h-5 ${completedTips.includes(tip.id) ? 'font-bold' : ''}`} />
+                            <Check className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
 
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 leading-tight">
                         {tip.title}
                       </h3>
 
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getTypeColor(tip.type)}`}>
-                          {tip.type === 'quick' ? 'Quick Tip' : 'Deep Clean'}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getTypeColor(tip.type)}`}>
+                          {tip.type === 'quick' ? 'Quick' : 'Deep Clean'}
                         </span>
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getDifficultyColor(tip.difficulty)}`}>
+                        <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getDifficultyColor(tip.difficulty)}`}>
                           {tip.difficulty.charAt(0).toUpperCase() + tip.difficulty.slice(1)}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>{tip.time} min</span>
+                      <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>{tip.time}m</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <div className="flex items-center gap-1.5">
+                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                           <span>{tip.rating}</span>
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           {getRoomIcon(tip.room)}
                           <span className="capitalize">{tip.room}</span>
                         </div>
-                      </div>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {tip.tags.map((tag) => (
-                          <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md text-xs flex items-center gap-1">
-                            {tag === 'eco-friendly' && <Leaf className="w-3 h-3" />}
-                            {tag === 'budget-friendly' && <DollarSign className="w-3 h-3" />}
-                            {tag === 'pet-friendly' && <PawPrint className="w-3 h-3" />}
-                            {tag.split('-').join(' ')}
-                          </span>
-                        ))}
                       </div>
                     </div>
 
@@ -1578,10 +1595,10 @@ export default function CleaningTipsPage() {
                     <div className="p-6">
                       <button
                         onClick={() => setExpandedTip(expandedTip === tip.id ? null : tip.id)}
-                        className="w-full flex items-center justify-between text-left font-semibold text-gray-900 dark:text-white mb-4 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                        className="w-full flex items-center justify-between text-sm font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors mb-4"
                       >
-                        <span>View Steps & Details</span>
-                        {expandedTip === tip.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                        <span>View Details</span>
+                        {expandedTip === tip.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </button>
 
                       <AnimatePresence>
@@ -1590,21 +1607,21 @@ export default function CleaningTipsPage() {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="space-y-4"
+                            className="space-y-5"
                           >
                             {/* Steps */}
                             <div>
-                              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                 <BookOpen className="w-4 h-4" />
                                 Steps
                               </h4>
-                              <ol className="space-y-2">
+                              <ol className="space-y-2.5">
                                 {tip.steps.map((step, idx) => (
                                   <li key={idx} className="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
-                                    <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                    <span className="flex-shrink-0 w-5 h-5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-xs font-semibold mt-0.5">
                                       {idx + 1}
                                     </span>
-                                    <span className="flex-1">{step}</span>
+                                    <span className="flex-1 leading-relaxed">{step}</span>
                                   </li>
                                 ))}
                               </ol>
@@ -1612,22 +1629,22 @@ export default function CleaningTipsPage() {
 
                             {/* Supplies */}
                             <div>
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                              <div className="flex items-center justify-between mb-3">
+                                <h4 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                                   <ShoppingCart className="w-4 h-4" />
-                                  Supplies Needed
+                                  Supplies
                                 </h4>
                                 <button
                                   onClick={() => addToShoppingList(tip.supplies)}
-                                  className="text-xs px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                                  className="text-xs px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors font-medium"
                                 >
-                                  Add to List
+                                  Add All
                                 </button>
                               </div>
-                              <ul className="space-y-1">
+                              <ul className="space-y-1.5">
                                 {tip.supplies.map((supply, idx) => (
                                   <li key={idx} className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 bg-purple-600 rounded-full"></span>
+                                    <CircleDot className="w-1.5 h-1.5 fill-gray-400" />
                                     {supply}
                                   </li>
                                 ))}
@@ -1635,12 +1652,12 @@ export default function CleaningTipsPage() {
                             </div>
 
                             {/* Pro Tip */}
-                            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 p-4 rounded-lg border-l-4 border-yellow-500">
-                              <div className="flex gap-2">
-                                <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                            <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 p-4 rounded-xl border border-amber-200 dark:border-amber-900">
+                              <div className="flex gap-3">
+                                <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                                 <div>
-                                  <h5 className="font-semibold text-yellow-900 dark:text-yellow-200 mb-1">Pro Tip</h5>
-                                  <p className="text-sm text-yellow-800 dark:text-yellow-300">{tip.proTip}</p>
+                                  <h5 className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-1">Pro Tip</h5>
+                                  <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">{tip.proTip}</p>
                                 </div>
                               </div>
                             </div>
@@ -1648,16 +1665,16 @@ export default function CleaningTipsPage() {
                             {/* Frequency */}
                             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                               <Calendar className="w-4 h-4" />
-                              <span>Recommended frequency: <strong className="text-gray-900 dark:text-white capitalize">{tip.frequency}</strong></span>
+                              <span>Recommended: <strong className="text-gray-900 dark:text-white capitalize">{tip.frequency}</strong></span>
                             </div>
 
-                            {/* Share Button */}
+                            {/* Share */}
                             <button
                               onClick={() => shareTip(tip)}
-                              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
                             >
                               <Share2 className="w-4 h-4" />
-                              Share This Tip
+                              Share
                             </button>
                           </motion.div>
                         )}
@@ -1669,9 +1686,9 @@ export default function CleaningTipsPage() {
             </div>
 
             {filteredTips.length === 0 && (
-              <div className="text-center py-12">
-                <AlertCircle className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No tips found</h3>
+              <div className="text-center py-16">
+                <AlertCircle className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No tips found</h3>
                 <p className="text-gray-600 dark:text-gray-400">Try adjusting your filters or search query</p>
               </div>
             )}
@@ -1680,28 +1697,28 @@ export default function CleaningTipsPage() {
 
         {/* Seasonal Section */}
         {activeSection === 'seasonal' && (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2">
             {Object.entries(seasonalChecklists).map(([season, data]) => (
               <motion.div
                 key={season}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+                className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-4xl">{data.icon}</span>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl">{data.icon}</span>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{data.title}</h3>
                 </div>
-                <ul className="space-y-2">
+                <ul className="space-y-3 mb-6">
                   {data.tasks.map((task, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-                      <Check className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                      <span>{task}</span>
+                      <Check className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm leading-relaxed">{task}</span>
                     </li>
                   ))}
                 </ul>
-                <button className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all">
-                  <Download className="w-5 h-5" />
+                <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors font-medium">
+                  <Download className="w-4 h-4" />
                   Download Checklist
                 </button>
               </motion.div>
@@ -1717,47 +1734,47 @@ export default function CleaningTipsPage() {
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+                transition={{ delay: idx * 0.05 }}
+                className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-semibold">
+                  <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium">
                     {product.category}
                   </span>
                   <div className="flex gap-2">
                     {product.ecoFriendly && (
-                      <span className="p-1.5 bg-green-100 dark:bg-green-900 rounded-full" title="Eco-friendly">
-                        <Leaf className="w-4 h-4 text-green-600 dark:text-green-400" />
+                      <span className="p-1.5 bg-emerald-50 dark:bg-emerald-950 rounded-lg">
+                        <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       </span>
                     )}
                     {product.budgetFriendly && (
-                      <span className="p-1.5 bg-blue-100 dark:bg-blue-900 rounded-full" title="Budget-friendly">
+                      <span className="p-1.5 bg-blue-50 dark:bg-blue-950 rounded-lg">
                         <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </span>
                     )}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{product.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{product.bestFor}</p>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{product.name}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">{product.bestFor}</p>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold text-green-700 dark:text-green-400 text-sm mb-2">Pros:</h4>
-                    <ul className="space-y-1">
+                    <h4 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mb-2">Pros</h4>
+                    <ul className="space-y-1.5">
                       {product.pros.map((pro, i) => (
                         <li key={i} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                          <Check className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                           {pro}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-red-700 dark:text-red-400 text-sm mb-2">Cons:</h4>
-                    <ul className="space-y-1">
+                    <h4 className="text-sm font-semibold text-rose-700 dark:text-rose-400 mb-2">Cons</h4>
+                    <ul className="space-y-1.5">
                       {product.cons.map((con, i) => (
                         <li key={i} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                          <X className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                          <X className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
                           {con}
                         </li>
                       ))}
@@ -1771,25 +1788,25 @@ export default function CleaningTipsPage() {
 
         {/* Schedule Section */}
         {activeSection === 'schedule' && (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-              <Calendar className="w-8 h-8 text-purple-600" />
-              Your Cleaning Schedule
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+              <Calendar className="w-8 h-8" />
+              Cleaning Schedule
             </h2>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {['daily', 'weekly', 'monthly', 'quarterly'].map((freq) => {
                 const tasksForFrequency = cleaningTipsData.filter(tip => tip.frequency === freq);
                 return (
-                  <div key={freq} className="space-y-3">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white capitalize pb-2 border-b-2 border-purple-600">
+                  <div key={freq} className="space-y-4">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white capitalize pb-3 border-b-2 border-gray-900 dark:border-white">
                       {freq}
                     </h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {tasksForFrequency.map((tip) => (
-                        <li key={tip.id} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                          <span className="text-lg">{tip.icon}</span>
-                          <span>{tip.title}</span>
+                        <li key={tip.id} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2.5">
+                          <div className="w-1 h-1 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                          <span className="leading-relaxed">{tip.title}</span>
                         </li>
                       ))}
                     </ul>
@@ -1798,9 +1815,9 @@ export default function CleaningTipsPage() {
               })}
             </div>
 
-            <button className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all text-lg font-semibold">
-              <Printer className="w-6 h-6" />
-              Print Full Schedule
+            <button className="mt-10 w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-base font-semibold">
+              <Printer className="w-5 h-5" />
+              Print Schedule
             </button>
           </div>
         )}
@@ -1808,43 +1825,43 @@ export default function CleaningTipsPage() {
 
       {/* Shopping List Modal */}
       <AnimatePresence>
-        {showSchedule && shoppingList.length > 0 && (
+        {showShoppingList && shoppingList.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setShowSchedule(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowShoppingList(false)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-md w-full max-h-[80vh] overflow-y-auto"
+              className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 max-w-md w-full max-h-[80vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                  <ShoppingCart className="w-7 h-7 text-purple-600" />
+                  <ShoppingCart className="w-6 h-6" />
                   Shopping List
                 </h3>
                 <button
-                  onClick={() => setShowSchedule(false)}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => setShowShoppingList(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                 >
-                  <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                  <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </button>
               </div>
 
               <ul className="space-y-2 mb-6">
                 {shoppingList.map((item, idx) => (
-                  <li key={idx} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <span className="text-gray-900 dark:text-white">{item}</span>
+                  <li key={idx} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <span className="text-gray-900 dark:text-white text-sm">{item}</span>
                     <button
                       onClick={() => removeFromShoppingList(item)}
-                      className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 p-1 rounded transition-colors"
+                      className="text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950 p-1.5 rounded transition-colors"
                     >
-                      <X className="w-5 h-5" />
+                      <X className="w-4 h-4" />
                     </button>
                   </li>
                 ))}
@@ -1854,9 +1871,9 @@ export default function CleaningTipsPage() {
                 onClick={() => {
                   const text = shoppingList.join('\n');
                   navigator.clipboard.writeText(text);
-                  alert('Shopping list copied to clipboard!');
+                  alert('Shopping list copied!');
                 }}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all font-semibold"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors font-semibold"
               >
                 <Download className="w-5 h-5" />
                 Copy to Clipboard
@@ -1867,11 +1884,11 @@ export default function CleaningTipsPage() {
       </AnimatePresence>
 
       {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <footer className="border-t border-gray-200 dark:border-gray-800 mt-20 bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center text-gray-600 dark:text-gray-400">
-            <p className="mb-2">💡 Pro tip: Consistency is key! Set reminders for your cleaning tasks.</p>
-            <p className="text-sm">Made with ❤️ for a cleaner, happier home</p>
+            <p className="mb-2 text-sm">Professional cleaning solutions for modern homes</p>
+            <p className="text-sm">© 2024 Cleaning Tips. All rights reserved.</p>
           </div>
         </div>
       </footer>
