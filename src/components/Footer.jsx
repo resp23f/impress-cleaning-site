@@ -122,7 +122,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/gift-certificates" 
+                  href="/gift-certificate" 
                   className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Gift Certificates
