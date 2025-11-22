@@ -4,11 +4,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, Moon, Sun, Heart, Share2, Check, Clock, Star,
-  ChevronDown, ChevronUp, Sparkles, Home, Bath, Bed, Sofa, Shirt,
-  Briefcase, Calendar, ShoppingCart, Printer, X, Tag, Leaf, DollarSign,
+  ChevronDown, ChevronRight, Sparkles, Home, Bath, Bed, Sofa, Shirt,
+  Briefcase, Calendar, ShoppingCart, Printer, X, Leaf, DollarSign,
   PawPrint, AlertCircle, BookOpen, Download, CheckCircle, BarChart3,
   ChefHat, Droplets, Wind, Lamp, WashingMachine, Monitor, CircleDot,
-  TrendingUp, Award, Info
+  Award, ArrowRight, Shield, TrendingUp
 } from 'lucide-react';
 
 // Comprehensive Cleaning Tips Data
@@ -929,6 +929,82 @@ const cleaningTipsData = [
   }
 ];
 
+// Room sections configuration
+const roomSections = [
+  {
+    id: 'general',
+    title: 'General Household Cleaning',
+    description: 'Essential cleaning tips and techniques for maintaining a clean, healthy home. Learn the basics of effective cleaning routines and best practices.',
+    icon: Home,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'kitchen',
+    title: 'Kitchen Cleaning',
+    description: 'Keep your kitchen sparkling clean and sanitary. From appliances to countertops, discover professional techniques for a pristine cooking space.',
+    icon: ChefHat,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'bathroom',
+    title: 'Bathroom Cleaning',
+    description: 'Achieve a spa-like bathroom with our deep cleaning guides. Tackle mold, mildew, and hard water stains with confidence.',
+    icon: Bath,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'bedroom',
+    title: 'Bedroom Cleaning',
+    description: 'Create a peaceful, allergen-free sleeping environment. Learn how to clean mattresses, organize closets, and maintain fresh bedrooms.',
+    icon: Bed,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'living',
+    title: 'Living Room Cleaning',
+    description: 'Keep your living spaces welcoming and pristine. Expert tips for upholstery, carpets, and entertainment areas.',
+    icon: Sofa,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'laundry',
+    title: 'Laundry Room Cleaning',
+    description: 'Maintain your laundry appliances and master stain removal. Keep your laundry room efficient and fresh-smelling.',
+    icon: WashingMachine,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'office',
+    title: 'Home Office Cleaning',
+    description: 'Create a productive, organized workspace. Learn to clean electronics, manage cables, and maintain a clutter-free desk.',
+    icon: Briefcase,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'spring',
+    title: 'Spring Cleaning Guide',
+    description: 'Complete spring cleaning checklist and deep cleaning strategies. Refresh your entire home for the new season.',
+    icon: Sparkles,
+    color: 'text-pink-600',
+    tips: []
+  },
+  {
+    id: 'move',
+    title: 'Move-In/Move-Out Cleaning',
+    description: 'Comprehensive cleaning guide for moving. Ensure your old home sparkles and your new home is pristine.',
+    icon: TrendingUp,
+    color: 'text-pink-600',
+    tips: []
+  }
+];
+
 // Seasonal Cleaning Checklists
 const seasonalChecklists = {
   spring: {
@@ -947,60 +1023,6 @@ const seasonalChecklists = {
       'Wash curtains and bedding',
       'Clean light fixtures and ceiling fans',
       'Organize garage and shed'
-    ]
-  },
-  summer: {
-    title: 'Summer Refresh',
-    icon: '☀️',
-    tasks: [
-      'Clean and maintain air conditioning units',
-      'Organize outdoor spaces',
-      'Clean grill and patio furniture',
-      'Declutter and donate unused items',
-      'Deep clean refrigerator and freezer',
-      'Wash exterior windows',
-      'Clean and organize garage',
-      'Vacuum and clean outdoor rugs',
-      'Service lawn equipment',
-      'Clean and inspect deck/patio',
-      'Organize summer sports equipment',
-      'Deep clean bathroom grout'
-    ]
-  },
-  fall: {
-    title: 'Fall Preparation',
-    icon: '🍂',
-    tasks: [
-      'Clean and store summer items',
-      'Deep clean fireplace and chimney',
-      'Check and replace furnace filters',
-      'Clean gutters of fallen leaves',
-      'Wash and store outdoor furniture',
-      'Deep clean kitchen before holidays',
-      'Organize pantry and check expiration dates',
-      'Vacuum/clean heating vents',
-      'Wash heavy blankets and comforters',
-      'Clean and organize coat closet',
-      'Inspect and clean dryer vents',
-      'Prepare guest rooms for holiday visitors'
-    ]
-  },
-  winter: {
-    title: 'Winter Deep Clean',
-    icon: '❄️',
-    tasks: [
-      'Deep clean and organize holiday decorations',
-      'Clean baseboards and molding',
-      'Organize and declutter paperwork',
-      'Deep clean bathrooms',
-      'Vacuum under furniture and beds',
-      'Clean inside kitchen cabinets',
-      'Organize closets and donate',
-      'Deep clean entryway and mudroom',
-      'Wash throw pillows and blankets',
-      'Clean and organize basement/attic',
-      'Service major appliances',
-      'Plan and prep for spring cleaning'
     ]
   }
 };
@@ -1087,17 +1109,12 @@ export default function CleaningTipsPage() {
   // State Management
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRoom, setSelectedRoom] = useState('all');
-  const [selectedType, setSelectedType] = useState('all');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [expandedSection, setExpandedSection] = useState(null);
   const [expandedTip, setExpandedTip] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [completedTips, setCompletedTips] = useState([]);
   const [activeSection, setActiveSection] = useState('tips');
-  const [sortBy, setSortBy] = useState('rating');
-  const [showFilters, setShowFilters] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
   const [showShoppingList, setShowShoppingList] = useState(false);
 
   // Load from localStorage
@@ -1130,48 +1147,25 @@ export default function CleaningTipsPage() {
     localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
   }, [shoppingList]);
 
-  // Filtered and Sorted Tips
-  const filteredTips = useMemo(() => {
-    let filtered = cleaningTipsData;
+  // Organize tips by room
+  const tipsByRoom = useMemo(() => {
+    const organized = {
+      kitchen: [],
+      bathroom: [],
+      bedroom: [],
+      living: [],
+      laundry: [],
+      office: []
+    };
 
-    if (searchQuery) {
-      filtered = filtered.filter(tip =>
-        tip.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tip.steps.some(step => step.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        tip.supplies.some(supply => supply.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
-
-    if (selectedRoom !== 'all') {
-      filtered = filtered.filter(tip => tip.room === selectedRoom);
-    }
-
-    if (selectedType !== 'all') {
-      filtered = filtered.filter(tip => tip.type === selectedType);
-    }
-
-    if (selectedDifficulty !== 'all') {
-      filtered = filtered.filter(tip => tip.difficulty === selectedDifficulty);
-    }
-
-    if (selectedTags.length > 0) {
-      filtered = filtered.filter(tip =>
-        selectedTags.every(tag => tip.tags.includes(tag))
-      );
-    }
-
-    filtered.sort((a, b) => {
-      if (sortBy === 'rating') return b.rating - a.rating;
-      if (sortBy === 'time') return a.time - b.time;
-      if (sortBy === 'difficulty') {
-        const diffOrder = { easy: 1, medium: 2, hard: 3 };
-        return diffOrder[a.difficulty] - diffOrder[b.difficulty];
+    cleaningTipsData.forEach(tip => {
+      if (organized[tip.room]) {
+        organized[tip.room].push(tip);
       }
-      return 0;
     });
 
-    return filtered;
-  }, [searchQuery, selectedRoom, selectedType, selectedDifficulty, selectedTags, sortBy]);
+    return organized;
+  }, []);
 
   // Helper Functions
   const toggleFavorite = (tipId) => {
@@ -1237,8 +1231,6 @@ export default function CleaningTipsPage() {
       : 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800';
   };
 
-  const allTags = ['eco-friendly', 'budget-friendly', 'allergen-free', 'pet-friendly', 'quick-tip', 'deep-clean'];
-
   const completionPercentage = (completedTips.length / cleaningTipsData.length) * 100;
 
   const getIconComponent = (iconName) => {
@@ -1246,14 +1238,16 @@ export default function CleaningTipsPage() {
     return <Icon className="w-5 h-5" />;
   };
 
+  const toggleSection = (sectionId) => {
+    setExpandedSection(expandedSection === sectionId ? null : sectionId);
+  };
+
   return (
     <div className={`min-h-screen ${darkMode ? 'dark bg-gray-950' : 'bg-white'} transition-colors duration-200`}>
       {/* Hero Section */}
       <div className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800">
-        {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-950 dark:via-gray-950 dark:to-blue-950/10"></div>
 
-        {/* Geometric shapes */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100/20 dark:bg-blue-900/5 rounded-full blur-3xl"></div>
           <div className="absolute top-60 -left-40 w-80 h-80 bg-purple-100/20 dark:bg-purple-900/5 rounded-full blur-3xl"></div>
@@ -1296,7 +1290,6 @@ export default function CleaningTipsPage() {
             <nav className="flex items-center gap-1">
               {[
                 { id: 'tips', label: 'Cleaning Tips', icon: Sparkles },
-                { id: 'seasonal', label: 'Seasonal', icon: Calendar },
                 { id: 'products', label: 'Products', icon: Award },
                 { id: 'schedule', label: 'Schedule', icon: BarChart3 }
               ].map((section) => (
@@ -1322,7 +1315,7 @@ export default function CleaningTipsPage() {
                   className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors"
                 >
                   <ShoppingCart className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-pink-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {shoppingList.length}
                   </span>
                 </button>
@@ -1340,389 +1333,237 @@ export default function CleaningTipsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Progress Tracker */}
-        {completedTips.length > 0 && activeSection === 'tips' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-10 bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-900 dark:to-gray-900/50 rounded-2xl p-8 border border-gray-200 dark:border-gray-800"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Overall Progress</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {completedTips.length} of {cleaningTipsData.length} completed
-                </p>
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                {Math.round(completionPercentage)}%
-              </div>
-            </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${completionPercentage}%` }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
-              />
-            </div>
-          </motion.div>
-        )}
-
         {/* Tips Section */}
         {activeSection === 'tips' && (
-          <>
-            {/* Search and Filters */}
-            <div className="mb-10 space-y-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search cleaning tips..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500 focus:border-gray-900 dark:focus:border-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-900 transition-all"
-                />
-              </div>
+          <div className="space-y-8">
+            {/* Room Sections */}
+            {roomSections.map((section, index) => {
+              const roomTips = tipsByRoom[section.id] || [];
+              const isExpanded = expandedSection === section.id;
+              const SectionIcon = section.icon;
 
-              {/* Filter Toggle */}
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors text-sm font-medium"
-              >
-                <Filter className="w-4 h-4" />
-                {showFilters ? 'Hide' : 'Show'} Filters
-              </button>
-
-              {/* Filters */}
-              <AnimatePresence>
-                {showFilters && (
+              return (
+                <React.Fragment key={section.id}>
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 space-y-6"
-                  >
-                    {/* Room Filter */}
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Room</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {['all', 'kitchen', 'bathroom', 'bedroom', 'living', 'laundry', 'office'].map((room) => (
-                          <button
-                            key={room}
-                            onClick={() => setSelectedRoom(room)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
-                              selectedRoom === room
-                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
-                                : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-                            }`}
-                          >
-                            {room === 'all' ? 'All Rooms' : room.charAt(0).toUpperCase() + room.slice(1)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Type & Difficulty */}
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Type</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {['all', 'quick', 'deep'].map((type) => (
-                            <button
-                              key={type}
-                              onClick={() => setSelectedType(type)}
-                              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
-                                selectedType === type
-                                  ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
-                                  : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-                              }`}
-                            >
-                              {type === 'all' ? 'All' : type === 'quick' ? 'Quick' : 'Deep Clean'}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Difficulty</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {['all', 'easy', 'medium'].map((diff) => (
-                            <button
-                              key={diff}
-                              onClick={() => setSelectedDifficulty(diff)}
-                              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
-                                selectedDifficulty === diff
-                                  ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
-                                  : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-                              }`}
-                            >
-                              {diff.charAt(0).toUpperCase() + diff.slice(1)}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tags */}
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Tags</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {allTags.map((tag) => (
-                          <button
-                            key={tag}
-                            onClick={() => {
-                              setSelectedTags(prev =>
-                                prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-                              );
-                            }}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
-                              selectedTags.includes(tag)
-                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
-                                : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-                            }`}
-                          >
-                            {tag === 'eco-friendly' && <Leaf className="w-3.5 h-3.5" />}
-                            {tag === 'budget-friendly' && <DollarSign className="w-3.5 h-3.5" />}
-                            {tag === 'pet-friendly' && <PawPrint className="w-3.5 h-3.5" />}
-                            {tag.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Sort */}
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Sort By</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {['rating', 'time', 'difficulty'].map((sort) => (
-                          <button
-                            key={sort}
-                            onClick={() => setSortBy(sort)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
-                              sortBy === sort
-                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-gray-900 dark:border-white'
-                                : 'bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-                            }`}
-                          >
-                            {sort.charAt(0).toUpperCase() + sort.slice(1)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Tips Grid */}
-            <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
-              <AnimatePresence mode="popLayout">
-                {filteredTips.map((tip, index) => (
-                  <motion.div
-                    key={tip.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2, delay: index * 0.03 }}
-                    className={`group bg-white dark:bg-gray-900 rounded-2xl border hover:shadow-xl transition-all duration-300 overflow-hidden ${
-                      completedTips.includes(tip.id)
-                        ? 'border-emerald-300 dark:border-emerald-800 shadow-lg shadow-emerald-100 dark:shadow-emerald-950'
-                        : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
-                    }`}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden"
                   >
-                    {/* Card Header */}
-                    <div className="p-6 border-b border-gray-100 dark:border-gray-800">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300">
-                          {getIconComponent(tip.icon)}
+                    {/* Section Header */}
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className="w-full p-8 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    >
+                      <div className="flex items-start gap-4 text-left flex-1">
+                        <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center flex-shrink-0">
+                          <SectionIcon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
                         </div>
-                        <div className="flex gap-1.5">
-                          <button
-                            onClick={() => toggleFavorite(tip.id)}
-                            className={`p-2 rounded-lg transition-all ${
-                              favorites.includes(tip.id)
-                                ? 'bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400'
-                                : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300'
-                            }`}
-                          >
-                            <Heart className={`w-4 h-4 ${favorites.includes(tip.id) ? 'fill-current' : ''}`} />
-                          </button>
-                          <button
-                            onClick={() => toggleCompleted(tip.id)}
-                            className={`p-2 rounded-lg transition-all ${
-                              completedTips.includes(tip.id)
-                                ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400'
-                                : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300'
-                            }`}
-                          >
-                            <Check className="w-4 h-4" />
-                          </button>
+                        <div className="flex-1">
+                          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400 mb-2">
+                            {section.title}
+                          </h2>
+                          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            {section.description}
+                          </p>
+                          <div className="mt-4 flex items-center gap-2 text-pink-600 dark:text-pink-400 font-medium">
+                            <span>{isExpanded ? 'Hide Details' : 'Learn More'}</span>
+                            {isExpanded ? (
+                              <ChevronDown className="w-5 h-5" />
+                            ) : (
+                              <ArrowRight className="w-5 h-5" />
+                            )}
+                          </div>
                         </div>
                       </div>
+                    </button>
 
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 leading-tight">
-                        {tip.title}
-                      </h3>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getTypeColor(tip.type)}`}>
-                          {tip.type === 'quick' ? 'Quick' : 'Deep Clean'}
-                        </span>
-                        <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getDifficultyColor(tip.difficulty)}`}>
-                          {tip.difficulty.charAt(0).toUpperCase() + tip.difficulty.slice(1)}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                        <div className="flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>{tip.time}m</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          <span>{tip.rating}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          {getRoomIcon(tip.room)}
-                          <span className="capitalize">{tip.room}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Expandable Content */}
-                    <div className="p-6">
-                      <button
-                        onClick={() => setExpandedTip(expandedTip === tip.id ? null : tip.id)}
-                        className="w-full flex items-center justify-between text-sm font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors mb-4"
-                      >
-                        <span>View Details</span>
-                        {expandedTip === tip.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      </button>
-
-                      <AnimatePresence>
-                        {expandedTip === tip.id && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="space-y-5"
-                          >
-                            {/* Steps */}
-                            <div>
-                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                                <BookOpen className="w-4 h-4" />
-                                Steps
-                              </h4>
-                              <ol className="space-y-2.5">
-                                {tip.steps.map((step, idx) => (
-                                  <li key={idx} className="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
-                                    <span className="flex-shrink-0 w-5 h-5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-xs font-semibold mt-0.5">
-                                      {idx + 1}
-                                    </span>
-                                    <span className="flex-1 leading-relaxed">{step}</span>
-                                  </li>
-                                ))}
-                              </ol>
-                            </div>
-
-                            {/* Supplies */}
-                            <div>
-                              <div className="flex items-center justify-between mb-3">
-                                <h4 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                  <ShoppingCart className="w-4 h-4" />
-                                  Supplies
-                                </h4>
-                                <button
-                                  onClick={() => addToShoppingList(tip.supplies)}
-                                  className="text-xs px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors font-medium"
+                    {/* Expanded Content */}
+                    <AnimatePresence>
+                      {isExpanded && roomTips.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="border-t border-gray-200 dark:border-gray-800"
+                        >
+                          <div className="p-8">
+                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                              {roomTips.map((tip) => (
+                                <div
+                                  key={tip.id}
+                                  className={`bg-gray-50 dark:bg-gray-800 rounded-xl border hover:shadow-lg transition-all duration-300 overflow-hidden ${
+                                    completedTips.includes(tip.id)
+                                      ? 'border-emerald-300 dark:border-emerald-800 shadow-md shadow-emerald-100 dark:shadow-emerald-950'
+                                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                  }`}
                                 >
-                                  Add All
-                                </button>
-                              </div>
-                              <ul className="space-y-1.5">
-                                {tip.supplies.map((supply, idx) => (
-                                  <li key={idx} className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                                    <CircleDot className="w-1.5 h-1.5 fill-gray-400" />
-                                    {supply}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                                  {/* Tip Card Header */}
+                                  <div className="p-5 border-b border-gray-200 dark:border-gray-700">
+                                    <div className="flex items-start justify-between mb-3">
+                                      <div className="w-10 h-10 rounded-lg bg-white dark:bg-gray-900 flex items-center justify-center text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
+                                        {getIconComponent(tip.icon)}
+                                      </div>
+                                      <div className="flex gap-1.5">
+                                        <button
+                                          onClick={() => toggleFavorite(tip.id)}
+                                          className={`p-1.5 rounded-lg transition-all ${
+                                            favorites.includes(tip.id)
+                                              ? 'bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400'
+                                              : 'text-gray-400 hover:bg-white dark:hover:bg-gray-900 hover:text-gray-600 dark:hover:text-gray-300'
+                                          }`}
+                                        >
+                                          <Heart className={`w-4 h-4 ${favorites.includes(tip.id) ? 'fill-current' : ''}`} />
+                                        </button>
+                                        <button
+                                          onClick={() => toggleCompleted(tip.id)}
+                                          className={`p-1.5 rounded-lg transition-all ${
+                                            completedTips.includes(tip.id)
+                                              ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400'
+                                              : 'text-gray-400 hover:bg-white dark:hover:bg-gray-900 hover:text-gray-600 dark:hover:text-gray-300'
+                                          }`}
+                                        >
+                                          <Check className="w-4 h-4" />
+                                        </button>
+                                      </div>
+                                    </div>
 
-                            {/* Pro Tip */}
-                            <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 p-4 rounded-xl border border-amber-200 dark:border-amber-900">
-                              <div className="flex gap-3">
-                                <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                                <div>
-                                  <h5 className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-1">Pro Tip</h5>
-                                  <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">{tip.proTip}</p>
+                                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3 leading-tight">
+                                      {tip.title}
+                                    </h3>
+
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium border ${getTypeColor(tip.type)}`}>
+                                        {tip.type === 'quick' ? 'Quick' : 'Deep Clean'}
+                                      </span>
+                                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium border ${getDifficultyColor(tip.difficulty)}`}>
+                                        {tip.difficulty.charAt(0).toUpperCase() + tip.difficulty.slice(1)}
+                                      </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                                      <div className="flex items-center gap-1">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        <span>{tip.time}m</span>
+                                      </div>
+                                      <div className="flex items-center gap-1">
+                                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                        <span>{tip.rating}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Expandable Tip Details */}
+                                  <div className="p-5">
+                                    <button
+                                      onClick={() => setExpandedTip(expandedTip === tip.id ? null : tip.id)}
+                                      className="w-full flex items-center justify-between text-sm font-medium text-gray-900 dark:text-white hover:text-pink-600 dark:hover:text-pink-400 transition-colors mb-3"
+                                    >
+                                      <span>View Details</span>
+                                      {expandedTip === tip.id ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                                    </button>
+
+                                    <AnimatePresence>
+                                      {expandedTip === tip.id && (
+                                        <motion.div
+                                          initial={{ opacity: 0, height: 0 }}
+                                          animate={{ opacity: 1, height: 'auto' }}
+                                          exit={{ opacity: 0, height: 0 }}
+                                          className="space-y-4"
+                                        >
+                                          {/* Steps */}
+                                          <div>
+                                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                                              <BookOpen className="w-4 h-4" />
+                                              Steps
+                                            </h4>
+                                            <ol className="space-y-2">
+                                              {tip.steps.map((step, idx) => (
+                                                <li key={idx} className="flex gap-2 text-xs text-gray-700 dark:text-gray-300">
+                                                  <span className="flex-shrink-0 w-5 h-5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-xs font-semibold">
+                                                    {idx + 1}
+                                                  </span>
+                                                  <span className="flex-1 leading-relaxed">{step}</span>
+                                                </li>
+                                              ))}
+                                            </ol>
+                                          </div>
+
+                                          {/* Supplies */}
+                                          <div>
+                                            <div className="flex items-center justify-between mb-2">
+                                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                                <ShoppingCart className="w-4 h-4" />
+                                                Supplies
+                                              </h4>
+                                              <button
+                                                onClick={() => addToShoppingList(tip.supplies)}
+                                                className="text-xs px-2 py-0.5 bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-400 rounded-md hover:bg-pink-100 dark:hover:bg-pink-900 transition-colors font-medium"
+                                              >
+                                                Add All
+                                              </button>
+                                            </div>
+                                            <ul className="space-y-1">
+                                              {tip.supplies.map((supply, idx) => (
+                                                <li key={idx} className="text-xs text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                                                  <CircleDot className="w-1.5 h-1.5 fill-gray-400" />
+                                                  {supply}
+                                                </li>
+                                              ))}
+                                            </ul>
+                                          </div>
+
+                                          {/* Pro Tip */}
+                                          <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 p-3 rounded-lg border border-amber-200 dark:border-amber-900">
+                                            <div className="flex gap-2">
+                                              <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                                              <div>
+                                                <h5 className="text-xs font-semibold text-amber-900 dark:text-amber-200 mb-1">Pro Tip</h5>
+                                                <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">{tip.proTip}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          {/* Share */}
+                                          <button
+                                            onClick={() => shareTip(tip)}
+                                            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-xs font-medium border border-gray-200 dark:border-gray-700"
+                                          >
+                                            <Share2 className="w-3.5 h-3.5" />
+                                            Share
+                                          </button>
+                                        </motion.div>
+                                      )}
+                                    </AnimatePresence>
+                                  </div>
                                 </div>
-                              </div>
+                              ))}
                             </div>
-
-                            {/* Frequency */}
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                              <Calendar className="w-4 h-4" />
-                              <span>Recommended: <strong className="text-gray-900 dark:text-white capitalize">{tip.frequency}</strong></span>
-                            </div>
-
-                            {/* Share */}
-                            <button
-                              onClick={() => shareTip(tip)}
-                              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
-                            >
-                              <Share2 className="w-4 h-4" />
-                              Share
-                            </button>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
 
-            {filteredTips.length === 0 && (
-              <div className="text-center py-16">
-                <AlertCircle className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No tips found</h3>
-                <p className="text-gray-600 dark:text-gray-400">Try adjusting your filters or search query</p>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Seasonal Section */}
-        {activeSection === 'seasonal' && (
-          <div className="grid gap-8 md:grid-cols-2">
-            {Object.entries(seasonalChecklists).map(([season, data]) => (
-              <motion.div
-                key={season}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl">{data.icon}</span>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{data.title}</h3>
-                </div>
-                <ul className="space-y-3 mb-6">
-                  {data.tasks.map((task, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-                      <Check className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm leading-relaxed">{task}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors font-medium">
-                  <Download className="w-4 h-4" />
-                  Download Checklist
-                </button>
-              </motion.div>
-            ))}
+                  {/* CTA Banner between sections */}
+                  {index === 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-12 text-center"
+                    >
+                      <Shield className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold text-white mb-3">
+                        Service You Can Trust
+                      </h3>
+                      <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                        Professional cleaning expertise at your fingertips. Every tip backed by years of industry experience.
+                      </p>
+                    </motion.div>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </div>
         )}
 
