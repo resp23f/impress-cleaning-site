@@ -36,7 +36,7 @@ export default function Footer() {
               />
             </Link>
             <p className="font-playfair italic text-sm text-slate-600 text-center md:text-left">
-              Impress Every Time.{'\u00AE'}
+              <p>Impress Every Time.<sup>TM</sup></p>
             </p>
           </div>
 
