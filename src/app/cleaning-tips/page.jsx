@@ -2435,11 +2435,11 @@ export default function CleaningTipsPage() {
     <div className={`min-h-screen ${darkMode ? 'dark bg-gray-950' : 'bg-white'} transition-colors duration-200`}>
       {/* Hero Section */}
       <div className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-950 dark:via-gray-950 dark:to-blue-950/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1C294E]/5 via-white to-[#079447]/5 dark:from-gray-950 dark:via-gray-950 dark:to-[#1C294E]/10"></div>
 
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100/20 dark:bg-blue-900/5 rounded-full blur-3xl"></div>
-          <div className="absolute top-60 -left-40 w-80 h-80 bg-purple-100/20 dark:bg-purple-900/5 rounded-full blur-3xl"></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#1C294E]/10 dark:bg-[#1C294E]/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-60 -left-40 w-80 h-80 bg-[#079447]/10 dark:bg-[#079447]/5 rounded-full blur-3xl"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -2459,11 +2459,11 @@ export default function CleaningTipsPage() {
             {completedTips.length > 0 && (
               <div className="flex items-center gap-6 text-sm">
                 <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-[#079447] rounded-full"></div>
                   <span>{completedTips.length} tasks completed</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-[#1C294E] rounded-full"></div>
                   <span>{favorites.length} saved</span>
                 </div>
               </div>
@@ -2487,8 +2487,8 @@ export default function CleaningTipsPage() {
                   onClick={() => setActiveSection(section.id)}
                   className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
                     activeSection === section.id
-                      ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900'
+                      ? 'bg-[#1C294E] text-white dark:bg-[#1C294E] dark:text-white'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
                   <section.icon className="w-4 h-4" />
@@ -2504,7 +2504,7 @@ export default function CleaningTipsPage() {
                   className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors"
                 >
                   <ShoppingCart className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-pink-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#079447] text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {shoppingList.length}
                   </span>
                 </button>
@@ -2529,42 +2529,42 @@ export default function CleaningTipsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-pink-600 to-pink-700 dark:from-pink-700 dark:to-pink-800 rounded-2xl p-8 md:p-10 text-white shadow-xl"
+              className="bg-[#1C294E] dark:bg-[#1C294E] rounded-2xl p-8 md:p-10 text-white shadow-xl"
             >
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0">
-                  <Shield className="w-8 h-8 text-white" />
+                <div className="w-14 h-14 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center flex-shrink-0">
+                  <Shield className="w-8 h-8 text-[#079447]" />
                 </div>
                 <div className="flex-1">
                   <h2 className="text-3xl font-bold mb-3">
                     Impress Cleaning Services: Professional-Grade Cleaning Expertise
                   </h2>
-                  <p className="text-pink-100 text-lg leading-relaxed mb-6">
+                  <p className="text-white/90 text-lg leading-relaxed mb-6">
                     Our professional cleaning experts have refined these techniques over years of experience. Whether you choose to tackle these tasks yourself or let us handle them for you, understanding the scope of proper home cleaning is essential.
                   </p>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
                       <p className="text-white/95">Start with decluttering—clear surfaces clean faster and more thoroughly</p>
                     </div>
                     <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
                       <p className="text-white/95">Work from ceiling to floor to avoid re-cleaning already cleaned areas</p>
                     </div>
                     <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
                       <p className="text-white/95">Disinfect high-touch surfaces daily to maintain a healthy environment</p>
                     </div>
                     <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
                       <p className="text-white/95">Match your cleaning products to your surfaces for optimal results</p>
                     </div>
                     <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
                       <p className="text-white/95">Consistency beats intensity—regular maintenance prevents deep-seated problems</p>
                     </div>
                     <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
                       <p className="text-white/95">Professional standards require attention to details most overlook</p>
                     </div>
                   </div>
@@ -2580,10 +2580,10 @@ export default function CleaningTipsPage() {
                 transition={{ delay: 0.1 }}
                 className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
               >
-                <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center mb-5">
-                  <Award className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <div className="w-12 h-12 rounded-xl bg-[#079447]/10 dark:bg-[#079447]/20 flex items-center justify-center mb-5">
+                  <Award className="w-6 h-6 text-[#079447] dark:text-[#079447]" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-xl font-bold text-[#1C294E] dark:text-white mb-4">
                   Why Professional Cleaning Expertise Matters
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
@@ -2600,10 +2600,10 @@ export default function CleaningTipsPage() {
                 transition={{ delay: 0.2 }}
                 className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
               >
-                <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center mb-5">
-                  <Shield className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <div className="w-12 h-12 rounded-xl bg-[#1C294E]/10 dark:bg-[#1C294E]/20 flex items-center justify-center mb-5">
+                  <Shield className="w-6 h-6 text-[#1C294E] dark:text-[#1C294E]" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-xl font-bold text-[#1C294E] dark:text-white mb-4">
                   The Impress Approach to Home Cleaning
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
@@ -2620,10 +2620,10 @@ export default function CleaningTipsPage() {
                 transition={{ delay: 0.3 }}
                 className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
               >
-                <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center mb-5">
-                  <Sparkles className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <div className="w-12 h-12 rounded-xl bg-[#079447]/10 dark:bg-[#079447]/20 flex items-center justify-center mb-5">
+                  <Sparkles className="w-6 h-6 text-[#079447] dark:text-[#079447]" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-xl font-bold text-[#1C294E] dark:text-white mb-4">
                   Essential Principles for a Truly Clean Home
                 </h3>
                 <div className="space-y-4">
@@ -2648,31 +2648,31 @@ export default function CleaningTipsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-950 rounded-2xl p-8 text-center border border-gray-700"
+              className="bg-[#1C294E] dark:bg-[#1C294E] rounded-2xl p-8 text-center border border-[#1C294E]"
             >
-              <Clock className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+              <Clock className="w-12 h-12 text-[#079447] mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-white mb-3">
                 The Reality of Comprehensive Home Cleaning
               </h3>
-              <p className="text-gray-300 text-lg max-w-3xl mx-auto mb-6">
-                A complete whole-home deep clean following professional standards requires <span className="text-pink-400 font-bold">12-18 hours of focused work</span> for an average-sized home. Most homeowners underestimate this by 60-70%. The checklists below show exactly why professional cleaning services save you time, energy, and ensure superior results.
+              <p className="text-white/90 text-lg max-w-3xl mx-auto mb-6">
+                A complete whole-home deep clean following professional standards requires <span className="text-[#079447] font-bold">12-18 hours of focused work</span> for an average-sized home. Most homeowners underestimate this by 60-70%. The checklists below show exactly why professional cleaning services save you time, energy, and ensure superior results.
               </p>
               <div className="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                  <div className="text-3xl font-bold text-pink-400 mb-1">2.5-3.5h</div>
-                  <div className="text-sm text-gray-300">Kitchen Deep Clean</div>
+                  <div className="text-3xl font-bold text-[#079447] mb-1">2.5-3.5h</div>
+                  <div className="text-sm text-white/80">Kitchen Deep Clean</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                  <div className="text-3xl font-bold text-pink-400 mb-1">1.5-2h</div>
-                  <div className="text-sm text-gray-300">Per Bathroom</div>
+                  <div className="text-3xl font-bold text-[#079447] mb-1">1.5-2h</div>
+                  <div className="text-sm text-white/80">Per Bathroom</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                  <div className="text-3xl font-bold text-pink-400 mb-1">1.5-2h</div>
-                  <div className="text-sm text-gray-300">Per Bedroom</div>
+                  <div className="text-3xl font-bold text-[#079447] mb-1">1.5-2h</div>
+                  <div className="text-sm text-white/80">Per Bedroom</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                  <div className="text-3xl font-bold text-pink-400 mb-1">2-2.5h</div>
-                  <div className="text-sm text-gray-300">Living Areas</div>
+                  <div className="text-3xl font-bold text-[#079447] mb-1">2-2.5h</div>
+                  <div className="text-sm text-white/80">Living Areas</div>
                 </div>
               </div>
             </motion.div>
@@ -2697,11 +2697,11 @@ export default function CleaningTipsPage() {
                       className="w-full p-8 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                     >
                       <div className="flex items-start gap-4 text-left flex-1">
-                        <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center flex-shrink-0">
-                          <SectionIcon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                        <div className="w-12 h-12 rounded-xl bg-[#079447]/10 dark:bg-[#079447]/20 flex items-center justify-center flex-shrink-0">
+                          <SectionIcon className="w-6 h-6 text-[#079447] dark:text-[#079447]" />
                         </div>
                         <div className="flex-1">
-                          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400 mb-2">
+                          <h2 className="text-2xl font-bold text-[#1C294E] dark:text-white mb-2">
                             {section.title}
                           </h2>
                           <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-3">
@@ -2709,17 +2709,17 @@ export default function CleaningTipsPage() {
                           </p>
                           {section.timeEstimate && (
                             <div className="flex flex-wrap gap-3 mb-4">
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-400 rounded-lg text-sm font-medium">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#079447]/10 dark:bg-[#079447]/20 text-[#079447] dark:text-[#079447] rounded-lg text-sm font-medium">
                                 <Clock className="w-4 h-4" />
                                 {section.timeEstimate}
                               </span>
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 rounded-lg text-sm font-medium border border-amber-200 dark:border-amber-800">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#1C294E]/10 dark:bg-[#1C294E]/20 text-[#1C294E] dark:text-gray-300 rounded-lg text-sm font-medium border border-[#1C294E]/20 dark:border-[#1C294E]/30">
                                 <BarChart3 className="w-4 h-4" />
                                 {section.complexity}
                               </span>
                             </div>
                           )}
-                          <div className="flex items-center gap-2 text-pink-600 dark:text-pink-400 font-medium">
+                          <div className="flex items-center gap-2 text-[#079447] dark:text-[#079447] font-medium">
                             <span>{isExpanded ? 'Hide Details' : 'View Detailed Checklist'}</span>
                             {isExpanded ? (
                               <ChevronDown className="w-5 h-5" />
@@ -2743,7 +2743,7 @@ export default function CleaningTipsPage() {
                           <div className="p-8 space-y-8">
                             {/* Intro Text */}
                             {section.intro && (
-                              <div className="bg-pink-50 dark:bg-pink-950/30 border border-pink-200 dark:border-pink-800 rounded-xl p-6">
+                              <div className="bg-[#079447]/5 dark:bg-[#079447]/10 border border-[#079447]/20 dark:border-[#079447]/30 rounded-xl p-6">
                                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
                                   {section.intro}
                                 </p>
@@ -2753,8 +2753,8 @@ export default function CleaningTipsPage() {
                             {/* Subsections with Detailed Checklists */}
                             {section.subsections && section.subsections.length > 0 && (
                               <div className="space-y-6">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                  <CheckCircle className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                                <h3 className="text-xl font-bold text-[#1C294E] dark:text-white flex items-center gap-2">
+                                  <CheckCircle className="w-6 h-6 text-[#079447] dark:text-[#079447]" />
                                   Detailed Cleaning Checklist
                                 </h3>
                                 {section.subsections.map((subsection, subIdx) => (
@@ -2773,7 +2773,7 @@ export default function CleaningTipsPage() {
                                     <ul className="space-y-2.5">
                                       {subsection.tasks.map((task, taskIdx) => (
                                         <li key={taskIdx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-                                          <div className="w-5 h-5 rounded border-2 border-pink-600 dark:border-pink-400 flex-shrink-0 mt-0.5"></div>
+                                          <div className="w-5 h-5 rounded border-2 border-[#079447] dark:border-[#079447] flex-shrink-0 mt-0.5"></div>
                                           <span className="leading-relaxed">{task}</span>
                                         </li>
                                       ))}
@@ -2785,15 +2785,15 @@ export default function CleaningTipsPage() {
 
                             {/* Supplies Needed */}
                             {section.supplies && section.supplies.length > 0 && (
-                              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-                                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                  <ShoppingCart className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                              <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+                                <h4 className="text-lg font-bold text-[#1C294E] dark:text-white mb-4 flex items-center gap-2">
+                                  <ShoppingCart className="w-5 h-5 text-[#079447] dark:text-[#079447]" />
                                   Supplies & Equipment Needed
                                 </h4>
                                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                                   {section.supplies.map((supply, supIdx) => (
                                     <div key={supIdx} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                      <CircleDot className="w-3 h-3 text-blue-600 dark:text-blue-400 fill-current" />
+                                      <CircleDot className="w-3 h-3 text-[#079447] dark:text-[#079447] fill-current" />
                                       {supply}
                                     </div>
                                   ))}
@@ -2803,15 +2803,15 @@ export default function CleaningTipsPage() {
 
                             {/* Pro Tips */}
                             {section.proTips && section.proTips.length > 0 && (
-                              <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
-                                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                  <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                              <div className="bg-[#079447]/5 dark:bg-[#079447]/10 border border-[#079447]/20 dark:border-[#079447]/30 rounded-xl p-6">
+                                <h4 className="text-lg font-bold text-[#1C294E] dark:text-white mb-4 flex items-center gap-2">
+                                  <Sparkles className="w-5 h-5 text-[#079447] dark:text-[#079447]" />
                                   Professional Tips from Impress Cleaning
                                 </h4>
                                 <ul className="space-y-3">
                                   {section.proTips.map((tip, tipIdx) => (
                                     <li key={tipIdx} className="flex items-start gap-3 text-gray-800 dark:text-gray-200">
-                                      <Star className="w-4 h-4 text-amber-600 dark:text-amber-400 fill-current flex-shrink-0 mt-0.5" />
+                                      <Star className="w-4 h-4 text-[#079447] dark:text-[#079447] fill-current flex-shrink-0 mt-0.5" />
                                       <span className="leading-relaxed">{tip}</span>
                                     </li>
                                   ))}
@@ -2821,15 +2821,15 @@ export default function CleaningTipsPage() {
 
                             {/* Common Mistakes */}
                             {section.commonMistakes && section.commonMistakes.length > 0 && (
-                              <div className="bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 rounded-xl p-6">
-                                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                  <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                              <div className="bg-[#1C294E]/5 dark:bg-[#1C294E]/10 border border-[#1C294E]/20 dark:border-[#1C294E]/30 rounded-xl p-6">
+                                <h4 className="text-lg font-bold text-[#1C294E] dark:text-white mb-4 flex items-center gap-2">
+                                  <AlertCircle className="w-5 h-5 text-[#1C294E] dark:text-gray-400" />
                                   Common Mistakes to Avoid
                                 </h4>
                                 <ul className="space-y-3">
                                   {section.commonMistakes.map((mistake, mIdx) => (
                                     <li key={mIdx} className="flex items-start gap-3 text-gray-800 dark:text-gray-200">
-                                      <X className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                                      <X className="w-4 h-4 text-[#1C294E] dark:text-gray-400 flex-shrink-0 mt-0.5" />
                                       <span className="leading-relaxed">{mistake}</span>
                                     </li>
                                   ))}
@@ -3005,9 +3005,9 @@ export default function CleaningTipsPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-gradient-to-r from-pink-600 to-pink-700 dark:from-pink-700 dark:to-pink-800 rounded-2xl p-10 text-center"
+                      className="bg-[#1C294E] dark:bg-[#1C294E] rounded-2xl p-10 text-center"
                     >
-                      <Shield className="w-12 h-12 text-white mx-auto mb-4" />
+                      <Shield className="w-12 h-12 text-[#079447] mx-auto mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-3">
                         This Much Detail? We've Got You Covered
                       </h3>
@@ -3024,16 +3024,16 @@ export default function CleaningTipsPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 rounded-2xl p-10 text-center border border-gray-700"
+                      className="bg-[#1C294E] dark:bg-[#1C294E] rounded-2xl p-10 text-center"
                     >
-                      <Clock className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+                      <Clock className="w-12 h-12 text-[#079447] mx-auto mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-3">
                         Skip the Checklist, Schedule the Service
                       </h3>
-                      <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-4">
-                        By now you've seen how much work goes into professional-grade cleaning. The average homeowner spends <span className="text-pink-400 font-bold">8-10 hours per week</span> on cleaning tasks—time you'll never get back.
+                      <p className="text-white/90 text-lg max-w-2xl mx-auto mb-4">
+                        By now you've seen how much work goes into professional-grade cleaning. The average homeowner spends <span className="text-[#079447] font-bold">8-10 hours per week</span> on cleaning tasks—time you'll never get back.
                       </p>
-                      <p className="text-gray-400 text-base max-w-xl mx-auto">
+                      <p className="text-white/80 text-base max-w-xl mx-auto">
                         Impress Cleaning delivers comprehensive, detail-oriented service that frees your schedule for what actually matters. Professional equipment, expert techniques, and guaranteed results.
                       </p>
                     </motion.div>
@@ -3043,27 +3043,27 @@ export default function CleaningTipsPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-700 dark:to-teal-800 rounded-2xl p-10 text-center"
+                      className="bg-[#079447] dark:bg-[#079447] rounded-2xl p-10 text-center"
                     >
                       <Award className="w-12 h-12 text-white mx-auto mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-3">
                         Professional Standards, Guaranteed Results
                       </h3>
-                      <p className="text-white/90 text-lg max-w-2xl mx-auto mb-5">
+                      <p className="text-white/95 text-lg max-w-2xl mx-auto mb-5">
                         These checklists represent real professional standards—not theoretical ideals. At Impress Cleaning, we don't cut corners or skip steps. Every surface, every detail, every time.
                       </p>
                       <div className="flex flex-wrap justify-center gap-6 max-w-3xl mx-auto">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-white mb-1">100%</div>
-                          <div className="text-sm text-white/80">Satisfaction Guaranteed</div>
+                          <div className="text-sm text-white/90">Satisfaction Guaranteed</div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-white mb-1">Licensed</div>
-                          <div className="text-sm text-white/80">Fully Insured</div>
+                          <div className="text-sm text-white/90">Fully Insured</div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-white mb-1">Expert</div>
-                          <div className="text-sm text-white/80">Trained Professionals</div>
+                          <div className="text-sm text-white/90">Trained Professionals</div>
                         </div>
                       </div>
                     </motion.div>
@@ -3073,9 +3073,9 @@ export default function CleaningTipsPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-700 dark:from-purple-700 dark:to-indigo-800 rounded-2xl p-10 text-center"
+                      className="bg-[#1C294E] dark:bg-[#1C294E] rounded-2xl p-10 text-center"
                     >
-                      <Sparkles className="w-12 h-12 text-white mx-auto mb-4" />
+                      <Sparkles className="w-12 h-12 text-[#079447] mx-auto mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-3">
                         Love a Clean Home, Hate the Work? We Understand
                       </h3>
@@ -3092,19 +3092,19 @@ export default function CleaningTipsPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-950 rounded-2xl p-10 text-center border-2 border-pink-500"
+                      className="bg-[#1C294E] dark:bg-[#1C294E] rounded-2xl p-10 text-center border-2 border-[#079447]"
                     >
-                      <TrendingUp className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+                      <TrendingUp className="w-12 h-12 text-[#079447] mx-auto mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-3">
                         Transform Your Home Without Lifting a Finger
                       </h3>
-                      <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-5">
-                        You've explored <span className="text-pink-400 font-bold">15+ comprehensive cleaning guides</span> covering every room and situation. That's thousands of individual tasks, dozens of hours, and extensive expertise required.
+                      <p className="text-white/90 text-lg max-w-2xl mx-auto mb-5">
+                        You've explored <span className="text-[#079447] font-bold">15+ comprehensive cleaning guides</span> covering every room and situation. That's thousands of individual tasks, dozens of hours, and extensive expertise required.
                       </p>
-                      <p className="text-gray-400 text-base max-w-xl mx-auto mb-6">
+                      <p className="text-white/80 text-base max-w-xl mx-auto mb-6">
                         Or... you could simply call Impress Cleaning Services. We know these checklists by heart because we live them every day. Let us handle the complexity while you enjoy the results.
                       </p>
-                      <div className="inline-flex items-center gap-2 px-6 py-3 bg-pink-600 hover:bg-pink-700 text-white rounded-xl font-semibold transition-colors">
+                      <div className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#079447]/90 text-white rounded-xl font-semibold transition-colors cursor-pointer">
                         <Shield className="w-5 h-5" />
                         Experience the Impress Difference
                       </div>
