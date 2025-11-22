@@ -929,79 +929,1268 @@ const cleaningTipsData = [
   }
 ];
 
-// Room sections configuration
+// Room sections configuration - Expanded to 15+ categories
 const roomSections = [
   {
     id: 'general',
-    title: 'General Household Cleaning',
-    description: 'Essential cleaning tips and techniques for maintaining a clean, healthy home. Learn the basics of effective cleaning routines and best practices.',
+    title: 'All Rooms - Universal Cleaning Principles',
+    description: 'Master the foundational techniques that professional cleaners use in every space. These universal principles ensure consistent results across your entire home.',
     icon: Home,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '30-45 minutes per room',
+    complexity: 'Easy to Medium',
+    intro: 'Every room in your home requires attention to detail and systematic approach. Professional cleaners follow a ceiling-to-floor methodology that prevents re-cleaning and ensures nothing is missed.',
+    subsections: [
+      {
+        title: 'Decluttering & Preparation',
+        time: '10-15 minutes',
+        tasks: [
+          'Clear all surfaces and remove items that don\'t belong',
+          'Sort items: keep, donate, discard',
+          'Place items to be relocated in a basket',
+          'Remove trash and recycling',
+          'Clear floor of obstacles and items',
+          'Open windows for ventilation',
+          'Gather all cleaning supplies before starting'
+        ]
+      },
+      {
+        title: 'Ceiling to Floor Cleaning',
+        time: '15-20 minutes',
+        tasks: [
+          'Dust ceiling corners and light fixtures',
+          'Wipe ceiling fan blades (if applicable)',
+          'Clean air vents and returns',
+          'Dust crown molding and upper shelves',
+          'Wipe down walls and light switches',
+          'Clean windows and window sills',
+          'Dust or wipe all furniture surfaces',
+          'Clean baseboards and door frames',
+          'Vacuum or sweep floors last'
+        ]
+      },
+      {
+        title: 'High-Touch Surface Disinfection',
+        time: '5-10 minutes',
+        tasks: [
+          'Door handles and knobs',
+          'Light switches and outlet covers',
+          'Remote controls',
+          'Phone chargers and cables',
+          'Drawer and cabinet pulls',
+          'Thermostats and control panels'
+        ]
+      }
+    ],
+    supplies: ['All-purpose cleaner', 'Disinfectant spray', 'Microfiber cloths', 'Duster with extension pole', 'Vacuum with attachments', 'Trash bags', 'Basket for misplaced items'],
+    frequency: {
+      daily: ['Declutter surfaces', 'Quick spot clean'],
+      weekly: ['Full cleaning routine', 'Disinfect high-touch surfaces'],
+      monthly: ['Deep clean baseboards', 'Wash walls if needed']
+    }
   },
   {
     id: 'kitchen',
-    title: 'Kitchen Cleaning',
-    description: 'Keep your kitchen sparkling clean and sanitary. From appliances to countertops, discover professional techniques for a pristine cooking space.',
+    title: 'Kitchen & Dining Areas',
+    description: 'The kitchen is the heart of your home and requires the most intensive cleaning routine. Professional standards demand sanitization, degreasing, and organization.',
     icon: ChefHat,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '2.5-3.5 hours for deep clean',
+    complexity: 'Medium to Hard',
+    intro: 'A professional kitchen clean involves far more than wiping counters. Food preparation areas require sanitization protocols, appliances need deep cleaning inside and out, and grease removal demands specialized techniques.',
+    subsections: [
+      {
+        title: 'Countertops & Prep Areas',
+        time: '20-30 minutes',
+        tasks: [
+          'Clear all items from countertops',
+          'Wipe small appliances before moving',
+          'Clean backsplash tiles and grout',
+          'Sanitize cutting board storage',
+          'Clean and organize knife block or magnetic strip',
+          'Wipe down and sanitize all counter surfaces',
+          'Clean under small appliances and canisters',
+          'Organize and return only essential items'
+        ]
+      },
+      {
+        title: 'Appliances & Equipment',
+        time: '60-90 minutes',
+        tasks: [
+          'Deep clean refrigerator interior and exterior',
+          'Remove and clean refrigerator shelves and drawers',
+          'Clean refrigerator coils (every 6 months)',
+          'Deep clean oven interior, racks, and door',
+          'Clean stovetop, burners, and drip pans',
+          'Degrease range hood and filters',
+          'Clean microwave inside and out',
+          'Wipe down dishwasher exterior and clean filter',
+          'Run dishwasher cleaning cycle',
+          'Clean small appliances (toaster, coffee maker, etc.)',
+          'Wipe down all appliance control panels'
+        ]
+      },
+      {
+        title: 'Cabinets & Storage',
+        time: '30-45 minutes',
+        tasks: [
+          'Wipe cabinet fronts and handles',
+          'Degrease areas around stove',
+          'Clean cabinet interiors (quarterly)',
+          'Organize pantry and check expiration dates',
+          'Wipe down shelf liners',
+          'Clean drawer interiors',
+          'Organize utensil drawers'
+        ]
+      },
+      {
+        title: 'Sink & Disposal Area',
+        time: '15-20 minutes',
+        tasks: [
+          'Scrub sink basin with appropriate cleaner',
+          'Clean and polish faucet and fixtures',
+          'Clean drain and disposal',
+          'Sanitize sink area including backsplash',
+          'Clean under-sink cabinet',
+          'Replace sponges and cleaning cloths',
+          'Clean soap dispenser'
+        ]
+      },
+      {
+        title: 'Floors & Final Touches',
+        time: '25-35 minutes',
+        tasks: [
+          'Sweep entire floor including under appliances',
+          'Vacuum floor if applicable',
+          'Mop with appropriate floor cleaner',
+          'Clean baseboards and toe kicks',
+          'Wipe down trash can interior and exterior',
+          'Replace trash bag',
+          'Final walkthrough and touch-ups'
+        ]
+      }
+    ],
+    supplies: ['Degreaser', 'All-purpose cleaner', 'Disinfectant', 'Baking soda', 'White vinegar', 'Stainless steel cleaner', 'Oven cleaner', 'Microfiber cloths (multiple)', 'Scrub brushes', 'Sponges', 'Floor mop', 'Vacuum', 'Rubber gloves'],
+    proTips: [
+      'Always clean top to bottom to avoid re-cleaning surfaces',
+      'Use separate cloths for food prep areas vs. floors/trash',
+      'Degrease before sanitizing for best results',
+      'Clean your refrigerator before grocery shopping',
+      'Never mix cleaning chemicals - dangerous fumes can result'
+    ],
+    commonMistakes: [
+      'Using the same sponge for dishes and counters (cross-contamination)',
+      'Forgetting to clean under and behind appliances',
+      'Not cleaning refrigerator coils (reduces efficiency)',
+      'Using too much cleaning product (causes residue)',
+      'Cleaning windows on sunny days (causes streaking)'
+    ]
   },
   {
     id: 'bathroom',
-    title: 'Bathroom Cleaning',
-    description: 'Achieve a spa-like bathroom with our deep cleaning guides. Tackle mold, mildew, and hard water stains with confidence.',
+    title: 'Bathrooms & Powder Rooms',
+    description: 'Bathrooms demand rigorous sanitization protocols. Mold, mildew, soap scum, and hard water deposits require specialized cleaning techniques and consistent maintenance.',
     icon: Bath,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '1.5-2 hours per bathroom',
+    complexity: 'Medium to Hard',
+    intro: 'Professional bathroom cleaning isn\'t just about appearance—it\'s about hygiene. Moisture-prone areas breed bacteria and mold, requiring proper ventilation, targeted disinfection, and preventive maintenance.',
+    subsections: [
+      {
+        title: 'Toilet Area Deep Clean',
+        time: '20-25 minutes',
+        tasks: [
+          'Apply toilet bowl cleaner and let sit',
+          'Clean exterior of toilet tank',
+          'Wipe down tank lid and flush handle',
+          'Clean toilet seat top and bottom',
+          'Scrub toilet bowl and under rim thoroughly',
+          'Clean base of toilet and floor around it',
+          'Disinfect toilet paper holder',
+          'Clean nearby walls and baseboards'
+        ]
+      },
+      {
+        title: 'Shower & Tub Cleaning',
+        time: '35-45 minutes',
+        tasks: [
+          'Remove all bottles and products',
+          'Pre-treat mold and mildew spots',
+          'Apply tile and grout cleaner',
+          'Scrub shower walls from top to bottom',
+          'Clean grout lines with brush',
+          'Scrub tub basin thoroughly',
+          'Clean shower door or curtain',
+          'Descale showerhead',
+          'Clean tub spout and fixtures',
+          'Rinse everything thoroughly',
+          'Squeegee or dry surfaces',
+          'Clean and organize products before returning'
+        ]
+      },
+      {
+        title: 'Vanity & Sink Area',
+        time: '20-25 minutes',
+        tasks: [
+          'Clear all items from countertop',
+          'Wipe and organize cosmetics and toiletries',
+          'Clean mirrors and remove spots',
+          'Scrub sink basin and faucet',
+          'Clean drain and overflow',
+          'Wipe countertop and backsplash',
+          'Clean cabinet fronts and handles',
+          'Organize drawers and cabinets',
+          'Clean under-sink area',
+          'Sanitize toothbrush holder and soap dispenser'
+        ]
+      },
+      {
+        title: 'Ventilation & Air Quality',
+        time: '15-20 minutes',
+        tasks: [
+          'Clean exhaust fan cover and blades',
+          'Vacuum air vents',
+          'Wipe down light fixtures',
+          'Clean window and sill (if applicable)',
+          'Check and clean air fresheners',
+          'Ensure proper ventilation during cleaning'
+        ]
+      },
+      {
+        title: 'Floors & Final Sanitization',
+        time: '15-20 minutes',
+        tasks: [
+          'Sweep or vacuum floor completely',
+          'Clean baseboards and corners',
+          'Mop floor with disinfectant',
+          'Pay extra attention to areas around toilet',
+          'Clean trash can inside and out',
+          'Replace trash bag and liners',
+          'Final disinfection of high-touch surfaces'
+        ]
+      }
+    ],
+    supplies: ['Toilet bowl cleaner', 'Bathroom disinfectant', 'Tile and grout cleaner', 'Mold and mildew remover', 'Glass cleaner', 'Descaling solution', 'Scrub brushes (multiple sizes)', 'Toilet brush', 'Microfiber cloths', 'Rubber gloves', 'Squeegee', 'Old toothbrush for detail work', 'Floor mop'],
+    proTips: [
+      'Run shower on hot for 5 minutes before cleaning to loosen grime',
+      'Use exhaust fan for 30 minutes after every shower to prevent mold',
+      'Keep a squeegee in shower for daily maintenance',
+      'Tackle hard water stains with vinegar, not abrasives',
+      'Replace shower curtain liners every 3-6 months'
+    ],
+    commonMistakes: [
+      'Mixing bleach with other cleaners (creates toxic gas)',
+      'Not ventilating while using strong cleaners',
+      'Forgetting to clean behind the toilet',
+      'Using abrasive cleaners on delicate surfaces',
+      'Not letting disinfectants sit long enough to work (read labels!)'
+    ]
   },
   {
     id: 'bedroom',
-    title: 'Bedroom Cleaning',
-    description: 'Create a peaceful, allergen-free sleeping environment. Learn how to clean mattresses, organize closets, and maintain fresh bedrooms.',
+    title: 'Bedrooms & Closets',
+    description: 'Bedrooms are your personal sanctuary and sleep environment. Proper cleaning reduces allergens, promotes better sleep, and maintains a peaceful atmosphere.',
     icon: Bed,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '1.5-2 hours per bedroom',
+    complexity: 'Medium',
+    intro: 'We spend a third of our lives in our bedrooms, yet they\'re often neglected in cleaning routines. Professional bedroom maintenance addresses dust, allergens, organization, and creating a restful environment conducive to quality sleep.',
+    subsections: [
+      {
+        title: 'Bedding & Mattress Care',
+        time: '30-40 minutes',
+        tasks: [
+          'Strip all bedding including mattress protector',
+          'Wash sheets, pillowcases, and duvet covers',
+          'Vacuum mattress top and sides thoroughly',
+          'Spot treat any mattress stains',
+          'Deodorize mattress with baking soda (let sit 1 hour)',
+          'Vacuum mattress again to remove baking soda',
+          'Flip or rotate mattress (quarterly)',
+          'Vacuum box spring and bed frame',
+          'Make bed with fresh, clean linens',
+          'Fluff and arrange pillows'
+        ]
+      },
+      {
+        title: 'Closet Organization & Cleaning',
+        time: '45-60 minutes',
+        tasks: [
+          'Remove everything from closet',
+          'Vacuum or sweep closet floor',
+          'Wipe down shelves and hanging rods',
+          'Clean closet doors and tracks',
+          'Sort clothing: keep, donate, repair, discard',
+          'Organize by category and season',
+          'Use uniform hangers for cohesive look',
+          'Fold items neatly or use organizers',
+          'Store off-season items properly',
+          'Add sachets or cedar for freshness',
+          'Return only current season items',
+          'Clean shoes before storing'
+        ]
+      },
+      {
+        title: 'Furniture & Surfaces',
+        time: '20-30 minutes',
+        tasks: [
+          'Declutter nightstands and dressers',
+          'Dust all furniture surfaces',
+          'Clean drawer interiors (quarterly)',
+          'Polish wood furniture if needed',
+          'Organize dresser drawers',
+          'Clean mirrors and picture frames',
+          'Wipe down headboard and bed frame',
+          'Clean lamp shades and bases',
+          'Organize charging stations and cables'
+        ]
+      },
+      {
+        title: 'Ceiling, Walls & Air Quality',
+        time: '15-20 minutes',
+        tasks: [
+          'Dust ceiling corners and light fixtures',
+          'Clean ceiling fan blades (if applicable)',
+          'Wipe down walls and remove marks',
+          'Clean air vents and returns',
+          'Dust window treatments or wash curtains',
+          'Clean windows and window sills',
+          'Wipe down baseboards and crown molding'
+        ]
+      },
+      {
+        title: 'Floors & Final Organization',
+        time: '20-25 minutes',
+        tasks: [
+          'Clear floor completely',
+          'Vacuum or sweep thoroughly under bed',
+          'Clean baseboards and corners',
+          'Vacuum or mop floors',
+          'Clean inside and under furniture',
+          'Organize items before returning to room',
+          'Ensure clear pathways',
+          'Final declutter and arrangement'
+        ]
+      }
+    ],
+    supplies: ['Vacuum with attachments', 'Baking soda', 'All-purpose cleaner', 'Wood polish', 'Microfiber cloths', 'Duster', 'Enzyme cleaner for stains', 'Storage bins and organizers', 'Matching hangers', 'Drawer dividers'],
+    proTips: [
+      'Wash bedding weekly in hot water to kill dust mites',
+      'Use mattress and pillow protectors to extend their life',
+      'Keep bedroom clutter-free for better sleep quality',
+      'Maintain cooler temperatures (60-67°F) for optimal sleep',
+      'Use the "one year rule" for closet purging'
+    ],
+    commonMistakes: [
+      'Not washing pillows and comforters regularly',
+      'Forgetting to vacuum under the bed',
+      'Overcrowding closets (prevents air circulation)',
+      'Using bedroom as storage for non-bedroom items',
+      'Not rotating or flipping mattress regularly'
+    ]
   },
   {
     id: 'living',
-    title: 'Living Room Cleaning',
-    description: 'Keep your living spaces welcoming and pristine. Expert tips for upholstery, carpets, and entertainment areas.',
+    title: 'Living Areas & Entertainment Spaces',
+    description: 'Living rooms are high-traffic areas where families gather, entertain guests, and relax. These spaces require frequent maintenance and careful attention to upholstery, electronics, and surfaces.',
     icon: Sofa,
     color: 'text-pink-600',
-    tips: []
-  },
-  {
-    id: 'laundry',
-    title: 'Laundry Room Cleaning',
-    description: 'Maintain your laundry appliances and master stain removal. Keep your laundry room efficient and fresh-smelling.',
-    icon: WashingMachine,
-    color: 'text-pink-600',
-    tips: []
+    timeEstimate: '2-2.5 hours for complete cleaning',
+    complexity: 'Medium',
+    intro: 'Living areas see the most daily use and traffic, accumulating dust, pet hair, spills, and wear. Professional cleaning maintains both appearance and longevity of furniture, electronics, and flooring while creating a welcoming atmosphere.',
+    subsections: [
+      {
+        title: 'Upholstery & Soft Furnishings',
+        time: '35-45 minutes',
+        tasks: [
+          'Remove cushions and vacuum underneath',
+          'Vacuum all upholstery surfaces thoroughly',
+          'Check furniture tags for cleaning codes',
+          'Spot clean stains appropriately',
+          'Steam clean or shampoo if needed (quarterly)',
+          'Fluff and rotate cushions',
+          'Vacuum or wash throw pillows and blankets',
+          'Clean under furniture if possible'
+        ]
+      },
+      {
+        title: 'Electronics & Entertainment',
+        time: '20-25 minutes',
+        tasks: [
+          'Unplug electronics before cleaning',
+          'Dust TV screen with microfiber cloth',
+          'Clean TV stand and entertainment center',
+          'Organize and dust cables and cords',
+          'Clean gaming consoles and controllers',
+          'Disinfect remote controls',
+          'Dust speakers and sound equipment',
+          'Clean cable boxes and streaming devices',
+          'Wipe down media storage (DVD cases, etc.)'
+        ]
+      },
+      {
+        title: 'Carpets, Rugs & Hard Floors',
+        time: '30-40 minutes',
+        tasks: [
+          'Move lightweight furniture if possible',
+          'Vacuum thoroughly in multiple directions',
+          'Spot treat carpet stains',
+          'Deep clean carpets (seasonally)',
+          'Vacuum area rugs and underneath',
+          'Shake out or beat small rugs outside',
+          'Sweep or vacuum hard floors',
+          'Mop hard floors with appropriate cleaner',
+          'Clean floor transitions and edges'
+        ]
+      },
+      {
+        title: 'Decorative Items & Shelving',
+        time: '25-30 minutes',
+        tasks: [
+          'Dust all decorative items individually',
+          'Clean picture frames and artwork',
+          'Wipe down bookshelves shelf by shelf',
+          'Dust books from spine to edge',
+          'Organize and declutter display items',
+          'Clean vases, candles, and décor',
+          'Wipe down plant leaves (if applicable)',
+          'Rotate seasonal decorations'
+        ]
+      },
+      {
+        title: 'Windows, Walls & Finishing',
+        time: '25-30 minutes',
+        tasks: [
+          'Dust ceiling fans and light fixtures',
+          'Clean windows inside (outside seasonally)',
+          'Wipe window sills and frames',
+          'Vacuum or dust window treatments',
+          'Wipe walls and remove scuff marks',
+          'Clean baseboards and trim',
+          'Dust air vents and returns',
+          'Final vacuum of entire room'
+        ]
+      }
+    ],
+    supplies: ['Vacuum with attachments', 'Upholstery cleaner', 'Carpet spot remover', 'Microfiber cloths', 'Duster', 'All-purpose cleaner', 'Glass cleaner', 'Wood polish', 'Electronics cleaning wipes', 'Compressed air'],
+    proTips: [
+      'Vacuum high-traffic areas twice weekly',
+      'Rotate furniture periodically to even wear',
+      'Use arm covers and throws to protect upholstery',
+      'Keep humidity levels balanced to prevent electronics issues',
+      'Professional carpet cleaning every 12-18 months recommended'
+    ],
+    commonMistakes: [
+      'Spraying cleaner directly on electronics (always spray on cloth)',
+      'Not checking upholstery codes before cleaning',
+      'Forgetting to clean under couch cushions',
+      'Over-wetting carpets when cleaning',
+      'Neglecting ceiling fans (major dust source)'
+    ]
   },
   {
     id: 'office',
-    title: 'Home Office Cleaning',
-    description: 'Create a productive, organized workspace. Learn to clean electronics, manage cables, and maintain a clutter-free desk.',
+    title: 'Home Office & Study Areas',
+    description: 'A clean, organized workspace boosts productivity, reduces stress, and maintains professional standards. Electronics, paperwork, and ergonomics all require attention.',
     icon: Briefcase,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '1.5-2 hours for complete organization and cleaning',
+    complexity: 'Medium',
+    intro: 'With remote work increasingly common, home office cleanliness directly impacts productivity and professional presentation. Beyond surface cleaning, proper organization, cable management, and equipment maintenance are essential.',
+    subsections: [
+      {
+        title: 'Desk Surface & Organization',
+        time: '25-30 minutes',
+        tasks: [
+          'Clear entire desk surface',
+          'Sort papers: file, action, shred, recycle',
+          'Wipe down desk surface thoroughly',
+          'Clean and organize desk drawers',
+          'Use drawer dividers for small items',
+          'Organize pens, supplies in containers',
+          'Return only essential daily items to desk',
+          'Implement inbox/outbox system',
+          'Organize charging stations'
+        ]
+      },
+      {
+        title: 'Computer & Electronics',
+        time: '20-25 minutes',
+        tasks: [
+          'Shut down and unplug computer equipment',
+          'Dust monitor with microfiber cloth',
+          'Clean keyboard with compressed air and alcohol wipes',
+          'Sanitize mouse and mouse pad',
+          'Wipe down computer tower or laptop exterior',
+          'Clean printer inside and out',
+          'Organize and label cables',
+          'Clean phone and charging dock',
+          'Disinfect headphones and accessories'
+        ]
+      },
+      {
+        title: 'Filing & Paper Management',
+        time: '35-45 minutes',
+        tasks: [
+          'Sort through all papers and files',
+          'Shred outdated sensitive documents',
+          'Create or refine filing system',
+          'Use labeled folders and categories',
+          'File current year documents accessibly',
+          'Archive older files properly',
+          'Scan important documents for digital backup',
+          'Organize office supplies',
+          'Recycle unnecessary paper'
+        ]
+      },
+      {
+        title: 'Seating & Ergonomics',
+        time: '15-20 minutes',
+        tasks: [
+          'Vacuum office chair thoroughly',
+          'Spot clean chair upholstery',
+          'Wipe down armrests and base',
+          'Clean and lubricate chair wheels',
+          'Tighten any loose screws',
+          'Adjust chair for proper ergonomics',
+          'Clean desk lamp and adjust lighting',
+          'Ensure proper monitor height'
+        ]
+      },
+      {
+        title: 'Room Cleaning & Air Quality',
+        time: '20-25 minutes',
+        tasks: [
+          'Dust bookshelves and organize books',
+          'Clean windows and window sills',
+          'Vacuum or dust blinds/curtains',
+          'Dust ceiling fan and light fixtures',
+          'Wipe walls and baseboards',
+          'Vacuum floor under desk and chair',
+          'Mop or clean floor',
+          'Empty trash and shredder bins',
+          'Add plants for air quality (optional)'
+        ]
+      }
+    ],
+    supplies: ['All-purpose cleaner', 'Disinfectant wipes', 'Compressed air', 'Microfiber cloths', 'Vacuum', 'Paper shredder', 'Filing supplies', 'Cable organizers', 'Drawer dividers', 'Label maker'],
+    proTips: [
+      'Clean keyboard weekly - it harbors more bacteria than toilet seats',
+      'Use the "touch it once" rule for papers to prevent piles',
+      'Keep only current project materials on desk',
+      'Digital filing reduces paper clutter significantly',
+      'Take 5 minutes at end of each day to reset workspace'
+    ],
+    commonMistakes: [
+      'Eating at desk regularly (attracts pests, damages equipment)',
+      'Not backing up important files before cleaning',
+      'Keeping too many "just in case" papers',
+      'Forgetting to clean under keyboard keys',
+      'Poor cable management (dust magnet and safety hazard)'
+    ]
+  },
+  {
+    id: 'laundry',
+    title: 'Laundry & Utility Rooms',
+    description: 'Laundry rooms require maintenance of appliances, organization of supplies, and prevention of mold and mildew in this moisture-heavy environment.',
+    icon: WashingMachine,
+    color: 'text-pink-600',
+    timeEstimate: '1-1.5 hours for complete cleaning and organization',
+    complexity: 'Medium',
+    intro: 'An often-overlooked space, the laundry room\'s efficiency directly affects your entire cleaning routine. Proper appliance maintenance prevents costly repairs, while organization streamlines your workflow.',
+    subsections: [
+      {
+        title: 'Washing Machine Maintenance',
+        time: '25-30 minutes',
+        tasks: [
+          'Run empty hot cycle with vinegar',
+          'Clean detergent and fabric softener dispensers',
+          'Scrub door seal and remove debris',
+          'Wipe down exterior and control panel',
+          'Check and clean drain filter',
+          'Leave door open after use to prevent mildew',
+          'Wipe down top and sides',
+          'Check hoses for leaks or damage'
+        ]
+      },
+      {
+        title: 'Dryer Care & Fire Prevention',
+        time: '20-25 minutes',
+        tasks: [
+          'Clean lint trap thoroughly',
+          'Vacuum lint trap cavity',
+          'Disconnect and clean dryer vent hose',
+          'Clean exterior vent opening',
+          'Wipe down dryer drum interior',
+          'Clean door and seal',
+          'Wipe exterior and control panel',
+          'Vacuum underneath and behind dryer',
+          'Check vent for proper airflow'
+        ]
+      },
+      {
+        title: 'Storage & Organization',
+        time: '25-35 minutes',
+        tasks: [
+          'Remove all items from shelves',
+          'Wipe down all shelving',
+          'Check expiration dates on products',
+          'Organize by category (detergents, stain removers, etc.)',
+          'Use clear bins for small items',
+          'Label containers and baskets',
+          'Create sorting system for laundry (colors, whites, delicates)',
+          'Install hooks for hanging items',
+          'Organize cleaning supplies',
+          'Keep frequently used items accessible'
+        ]
+      },
+      {
+        title: 'Room Cleaning & Surfaces',
+        time: '15-20 minutes',
+        tasks: [
+          'Wipe down countertops or folding surfaces',
+          'Clean sink (if applicable)',
+          'Wipe down cabinets and doors',
+          'Clean light fixtures',
+          'Wipe walls and check for moisture damage',
+          'Clean baseboards',
+          'Sweep and mop floor',
+          'Check for mold or mildew, treat if found',
+          'Empty trash and lint receptacles'
+        ]
+      }
+    ],
+    supplies: ['White vinegar', 'Baking soda', 'All-purpose cleaner', 'Dryer vent brush kit', 'Vacuum', 'Microfiber cloths', 'Old toothbrush', 'Storage bins', 'Labels', 'Mop'],
+    proTips: [
+      'Clean washer monthly to prevent mildew odors',
+      'Clean dryer vent quarterly - it\'s a fire hazard',
+      'Use less detergent than you think - more isn\'t better',
+      'Always leave washer door open between loads',
+      'Keep baking soda and vinegar on hand for natural cleaning'
+    ],
+    commonMistakes: [
+      'Never cleaning washing machine (causes odors and buildup)',
+      'Ignoring dryer vent cleaning (major fire risk)',
+      'Overloading washer and dryer (reduces effectiveness)',
+      'Using too much detergent (causes residue)',
+      'Not checking pockets before washing (damages machines)'
+    ]
+  },
+  {
+    id: 'entryway',
+    title: 'Entryways & Mudrooms',
+    description: 'Your home\'s first impression and a barrier against outdoor dirt. Entryways require strategic organization and frequent maintenance to prevent dirt from spreading throughout your home.',
+    icon: Home,
+    color: 'text-pink-600',
+    timeEstimate: '45-60 minutes',
+    complexity: 'Easy to Medium',
+    intro: 'Entryways are your home\'s first line of defense against outdoor dirt, mud, and debris. A well-organized, clean entryway prevents dirt from being tracked throughout your home and creates an inviting first impression.',
+    subsections: [
+      {
+        title: 'Shoe & Coat Organization',
+        time: '20-25 minutes',
+        tasks: [
+          'Remove all shoes and assess condition',
+          'Clean or discard worn-out shoes',
+          'Organize by frequency of use and season',
+          'Use shoe rack or cubby system',
+          'Clean inside of shoe storage',
+          'Hang or organize coats and jackets',
+          'Remove off-season items to storage',
+          'Clean coat hooks and hangers',
+          'Organize accessories (hats, scarves, gloves)'
+        ]
+      },
+      {
+        title: 'Surface Cleaning',
+        time: '15-20 minutes',
+        tasks: [
+          'Declutter entry table or bench',
+          'Wipe down all surfaces',
+          'Clean mirrors and picture frames',
+          'Organize key holder and mail station',
+          'Wipe down door interior and exterior',
+          'Clean door hardware and handle',
+          'Wipe light switches and fixtures',
+          'Clean baseboards and trim'
+        ]
+      },
+      {
+        title: 'Floor & Mat Maintenance',
+        time: '15-20 minutes',
+        tasks: [
+          'Shake out or vacuum entry mats (both sides)',
+          'Wash mats if machine-washable',
+          'Sweep or vacuum floor thoroughly',
+          'Mop with appropriate cleaner',
+          'Clean corners and edges',
+          'Wipe down floor trim',
+          'Replace or clean outdoor mat'
+        ]
+      }
+    ],
+    supplies: ['All-purpose cleaner', 'Glass cleaner', 'Vacuum', 'Mop', 'Microfiber cloths', 'Shoe cleaning supplies', 'Storage organizers'],
+    proTips: [
+      'Place both indoor and outdoor mats to trap maximum dirt',
+      'Implement "shoes off" policy to reduce indoor cleaning',
+      'Clean this area twice weekly during wet/muddy seasons',
+      'Keep a basket for items that need to go elsewhere in house'
+    ]
   },
   {
     id: 'spring',
-    title: 'Spring Cleaning Guide',
-    description: 'Complete spring cleaning checklist and deep cleaning strategies. Refresh your entire home for the new season.',
+    title: 'Seasonal Deep Cleaning',
+    description: 'Comprehensive deep cleaning protocols for spring, fall, and seasonal transitions. Address areas typically overlooked in regular cleaning routines.',
     icon: Sparkles,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '12-18 hours total (spread over several days)',
+    complexity: 'Hard',
+    intro: 'Seasonal deep cleaning tackles the areas we don\'t clean regularly. This intensive process refreshes your entire home, addresses neglected areas, and prepares your space for seasonal changes. Professional cleaners allocate full days for comprehensive deep cleaning.',
+    subsections: [
+      {
+        title: 'Windows & Treatments (All Rooms)',
+        time: '3-4 hours',
+        tasks: [
+          'Wash all windows inside and outside',
+          'Clean window frames, sills, and tracks',
+          'Remove and wash screens',
+          'Vacuum or wash all curtains and drapes',
+          'Dust or clean all blinds',
+          'Clean window hardware'
+        ]
+      },
+      {
+        title: 'Walls, Ceilings & Fixtures',
+        time: '2-3 hours',
+        tasks: [
+          'Dust all ceiling corners',
+          'Clean all light fixtures and bulbs',
+          'Wash ceiling fans thoroughly',
+          'Wipe down all walls and remove marks',
+          'Clean baseboards in every room',
+          'Dust crown molding and trim',
+          'Clean air vents and returns',
+          'Replace HVAC filters'
+        ]
+      },
+      {
+        title: 'Deep Carpet & Upholstery Cleaning',
+        time: '3-4 hours',
+        tasks: [
+          'Vacuum all upholstery thoroughly',
+          'Steam clean all sofas and chairs',
+          'Move furniture and clean underneath',
+          'Vacuum carpets in multiple directions',
+          'Pre-treat stains',
+          'Deep clean all carpets with machine',
+          'Clean or replace area rugs',
+          'Allow proper drying time'
+        ]
+      },
+      {
+        title: 'Kitchen Deep Dive',
+        time: '2-3 hours',
+        tasks: [
+          'Empty and clean all cabinets',
+          'Organize and purge pantry',
+          'Deep clean all appliances inside and out',
+          'Clean refrigerator coils',
+          'Degrease range hood and filters',
+          'Clean oven thoroughly',
+          'Wipe down all cabinet interiors',
+          'Organize under sink',
+          'Deep clean floors including under appliances'
+        ]
+      }
+    ],
+    supplies: ['Carpet cleaner machine', 'Steam cleaner', 'Extension poles and ladders', 'Comprehensive cleaning supply kit', 'Storage and organization supplies', 'Heavy-duty gloves and protective gear'],
+    proTips: [
+      'Schedule seasonal cleaning over multiple days, not all at once',
+      'Work room by room to avoid feeling overwhelmed',
+      'Consider hiring professionals for carpets and windows',
+      'Use this opportunity to declutter and donate',
+      'Take before and after photos for motivation'
+    ]
   },
   {
     id: 'move',
     title: 'Move-In/Move-Out Cleaning',
-    description: 'Comprehensive cleaning guide for moving. Ensure your old home sparkles and your new home is pristine.',
+    description: 'Comprehensive cleaning protocols for moving situations. Ensure properties are spotless for new occupants or to secure deposit returns.',
     icon: TrendingUp,
     color: 'text-pink-600',
-    tips: []
+    timeEstimate: '8-12 hours for average home',
+    complexity: 'Hard',
+    intro: 'Move-in/move-out cleaning is the most thorough cleaning service. Empty homes reveal every mark, scuff, and stain. Professional standards require cleaning areas rarely addressed in occupied homes, ensuring the property is pristine for the next occupants.',
+    subsections: [
+      {
+        title: 'Kitchen (Empty)',
+        time: '2-3 hours',
+        tasks: [
+          'Clean inside all cabinets and drawers',
+          'Wipe cabinet exteriors, tops, and baseboards',
+          'Clean all appliances inside and out',
+          'Clean refrigerator including coils',
+          'Deep clean oven, stovetop, and hood',
+          'Scrub backsplash and walls',
+          'Clean countertops thoroughly',
+          'Wash windows and sills',
+          'Clean light fixtures',
+          'Sweep and mop floors',
+          'Clean baseboards and trim'
+        ]
+      },
+      {
+        title: 'Bathrooms (All)',
+        time: '1.5-2 hours per bathroom',
+        tasks: [
+          'Scrub and sanitize toilet completely',
+          'Deep clean shower/tub, grout, and tiles',
+          'Descale fixtures',
+          'Clean mirrors and medicine cabinet',
+          'Scrub sink and vanity',
+          'Clean inside cabinets and drawers',
+          'Wipe cabinet exteriors',
+          'Clean light fixtures',
+          'Wash walls and baseboards',
+          'Sweep and mop floor',
+          'Clean exhaust fan'
+        ]
+      },
+      {
+        title: 'All Bedrooms & Living Areas',
+        time: '1 hour per room',
+        tasks: [
+          'Dust ceiling fans and light fixtures',
+          'Wipe down walls and remove marks',
+          'Clean windows, sills, and tracks',
+          'Wipe baseboards and trim',
+          'Clean inside closets',
+          'Vacuum or mop floors',
+          'Clean doors and hardware',
+          'Wipe switches and outlets'
+        ]
+      },
+      {
+        title: 'Final Touches',
+        time: '1-2 hours',
+        tasks: [
+          'Vacuum/mop all floors again',
+          'Wipe down all door frames',
+          'Clean entry areas',
+          'Final bathroom checks',
+          'Check all surfaces for spots',
+          'Remove all trash',
+          'Final walkthrough with checklist'
+        ]
+      }
+    ],
+    supplies: ['Complete professional cleaning kit', 'Heavy-duty cleaners', 'Scrubbers and brushes', 'Vacuum and mop', 'Ladder', 'Trash bags', 'Protective equipment'],
+    proTips: [
+      'Take photos before and after for landlord documentation',
+      'Work room by room, completely finishing each before moving on',
+      'Start with kitchen and bathrooms (most time-intensive)',
+      'Save floors for last to avoid re-cleaning',
+      'Consider hiring professionals to ensure deposit return'
+    ]
+  },
+  {
+    id: 'preevent',
+    title: 'Pre-Event Preparation Cleaning',
+    description: 'Prepare your home for guests and special occasions with targeted cleaning that ensures every visible area is spotless.',
+    icon: Star,
+    color: 'text-pink-600',
+    timeEstimate: '3-5 hours depending on home size',
+    complexity: 'Medium',
+    intro: 'Hosting guests requires cleaning with fresh eyes. Focus on guest-visible areas, high-touch surfaces, and creating an inviting atmosphere. Professional pre-event cleaning ensures your home makes the best impression.',
+    subsections: [
+      {
+        title: 'Guest Bathroom Priority',
+        time: '45-60 minutes',
+        tasks: [
+          'Deep clean and sanitize thoroughly',
+          'Stock fresh towels and toiletries',
+          'Clean mirrors until spotless',
+          'Ensure toilet is pristine',
+          'Fresh flowers or air freshener',
+          'Empty trash completely',
+          'Refill soap and paper products'
+        ]
+      },
+      {
+        title: 'Living & Entertainment Areas',
+        time: '60-90 minutes',
+        tasks: [
+          'Declutter all surfaces completely',
+          'Dust everything thoroughly',
+          'Vacuum carpets and furniture',
+          'Clean coffee table and surfaces',
+          'Fluff pillows and arrange seating',
+          'Clean windows and mirrors',
+          'Fresh flowers or decorative touches'
+        ]
+      },
+      {
+        title: 'Kitchen & Dining',
+        time: '60-75 minutes',
+        tasks: [
+          'Clear and clean countertops',
+          'Clean sink until it shines',
+          'Wipe down all visible appliances',
+          'Clean table and chairs',
+          'Sweep and mop floors',
+          'Empty trash and recycling',
+          'Stock hand towels'
+        ]
+      },
+      {
+        title: 'Entryway First Impressions',
+        time: '20-30 minutes',
+        tasks: [
+          'Organize coat closet',
+          'Clean entry floors',
+          'Declutter surfaces',
+          'Clean mirrors',
+          'Add welcoming touches',
+          'Ensure good lighting'
+        ]
+      }
+    ],
+    proTips: [
+      'Clean from guest perspective - what will they see?',
+      'Focus on bathrooms, kitchen, and living areas',
+      'Add fresh flowers and pleasant scents',
+      'Declutter first, then deep clean',
+      'Do final walkthrough as if you\'re a guest arriving'
+    ]
+  },
+  {
+    id: 'postrenovation',
+    title: 'Post-Renovation Cleanup',
+    description: 'Specialized cleaning for post-construction and renovation situations. Remove dust, debris, and residue that standard cleaning cannot address.',
+    icon: AlertCircle,
+    color: 'text-pink-600',
+    timeEstimate: '10-20 hours depending on renovation scope',
+    complexity: 'Very Hard',
+    intro: 'Post-renovation cleaning is the most challenging cleaning scenario. Construction dust penetrates everywhere, requiring multiple cleaning passes and specialized techniques. Professional post-renovation cleaning often requires industrial equipment and specific safety protocols.',
+    subsections: [
+      {
+        title: 'Initial Debris Removal',
+        time: '2-3 hours',
+        tasks: [
+          'Remove all large debris and materials',
+          'Sweep entire area thoroughly',
+          'Vacuum with HEPA filter',
+          'Dispose of construction trash properly',
+          'Check for and remove stickers and labels',
+          'Remove protective coverings carefully'
+        ]
+      },
+      {
+        title: 'Dust Removal (Multiple Passes)',
+        time: '4-6 hours',
+        tasks: [
+          'Dust ceilings and walls top to bottom',
+          'Wipe down all surfaces multiple times',
+          'Clean inside all cabinets and drawers',
+          'Vacuum and wipe air vents',
+          'Clean window sills and tracks',
+          'Wipe baseboards and trim',
+          'Change HVAC filters immediately',
+          'Run air purifiers if available'
+        ]
+      },
+      {
+        title: 'Detail Cleaning',
+        time: '3-5 hours',
+        tasks: [
+          'Clean all windows inside and out',
+          'Remove paint splatters and residue',
+          'Clean light fixtures and fans',
+          'Wipe down all switches and outlets',
+          'Clean inside and outside of new appliances',
+          'Remove stickers and protective film',
+          'Polish fixtures and hardware',
+          'Clean grout and tile thoroughly'
+        ]
+      },
+      {
+        title: 'Floor Restoration',
+        time: '2-4 hours',
+        tasks: [
+          'Vacuum all floors multiple times',
+          'Sweep thoroughly',
+          'Mop hard floors several times',
+          'Clean grout lines',
+          'Polish or seal floors if needed',
+          'Clean baseboards again after floors',
+          'Professional carpet cleaning if applicable'
+        ]
+      }
+    ],
+    supplies: ['HEPA vacuum', 'Multiple microfiber cloths', 'Heavy-duty cleaners', 'Scrapers for residue', 'Protective equipment', 'Trash bags', 'Air purifier (recommended)'],
+    proTips: [
+      'Expect to clean everything at least twice',
+      'Change vacuum bags/filters frequently',
+      'Wear protective mask - construction dust is harmful',
+      'Work top to bottom, finish with floors',
+      'Consider hiring professional post-construction cleaners'
+    ],
+    commonMistakes: [
+      'Not wearing protective equipment (serious health risk)',
+      'Cleaning floors first (dust settles on them)',
+      'Using regular vacuum instead of HEPA filter',
+      'Expecting one cleaning pass to be sufficient',
+      'Not changing HVAC filters after construction'
+    ]
+  },
+  {
+    id: 'green',
+    title: 'Green & Eco-Friendly Cleaning Methods',
+    description: 'Environmentally responsible cleaning using natural products, sustainable practices, and non-toxic methods that are safe for families, pets, and the planet.',
+    icon: Leaf,
+    color: 'text-pink-600',
+    timeEstimate: 'Same as standard methods',
+    complexity: 'Easy to Medium',
+    intro: 'Green cleaning doesn\'t mean compromising on cleanliness. Professional eco-friendly cleaning uses powerful natural ingredients like vinegar, baking soda, and essential oils to achieve spotless results without harsh chemicals or environmental impact.',
+    subsections: [
+      {
+        title: 'Natural Cleaning Essentials',
+        time: '10 minutes (preparation)',
+        tasks: [
+          'Stock white vinegar (all-purpose cleaning)',
+          'Keep baking soda on hand (abrasive and deodorizer)',
+          'Use castile soap (versatile cleaner)',
+          'Essential oils for scent and antimicrobial properties',
+          'Lemon for natural bleaching',
+          'Hydrogen peroxide for disinfection',
+          'Reusable microfiber cloths instead of paper towels',
+          'Make DIY cleaning solutions in reusable bottles'
+        ]
+      },
+      {
+        title: 'Room-by-Room Green Solutions',
+        time: 'Varies by room',
+        tasks: [
+          'Kitchen: Vinegar for grease, baking soda for scrubbing',
+          'Bathroom: Vinegar and baking soda for toilets and tubs',
+          'Glass: Vinegar and water solution',
+          'Floors: Castile soap or vinegar diluted in water',
+          'Air freshening: Essential oil diffusers, not aerosols',
+          'Disinfecting: Hydrogen peroxide or vinegar',
+          'Laundry: Eco-friendly detergents, vinegar as softener'
+        ]
+      },
+      {
+        title: 'Sustainable Practices',
+        time: 'Ongoing habit changes',
+        tasks: [
+          'Use microfiber cloths instead of paper products',
+          'Choose concentrated cleaners to reduce packaging',
+          'Refill cleaning bottles instead of replacing',
+          'Use cold water when possible to save energy',
+          'Air dry instead of using dryer when feasible',
+          'Choose products with minimal packaging',
+          'Support eco-certified cleaning brands',
+          'Compost organic waste',
+          'Recycle cleaning product containers'
+        ]
+      }
+    ],
+    supplies: ['White vinegar', 'Baking soda', 'Castile soap', 'Essential oils', 'Hydrogen peroxide', 'Lemons', 'Microfiber cloths', 'Reusable spray bottles', 'Eco-friendly sponges'],
+    proTips: [
+      'Vinegar cleans almost everything but avoid on natural stone',
+      'Baking soda paste tackles tough stains naturally',
+      'Essential oils add fragrance and antimicrobial benefits',
+      'Microfiber cloths clean effectively with just water',
+      'Open windows for natural air freshening'
+    ],
+    commonMistakes: [
+      'Mixing vinegar and hydrogen peroxide (creates acid)',
+      'Using vinegar on marble or granite (etches surface)',
+      'Expecting instant results (natural cleaners may need more time)',
+      'Not researching DIY recipe safety before mixing',
+      'Assuming "natural" always means "safe" (some natural substances are toxic)'
+    ]
+  },
+  {
+    id: 'allergy',
+    title: 'Allergy-Friendly Cleaning Protocols',
+    description: 'Specialized cleaning techniques to reduce allergens, dust mites, pet dander, and indoor pollutants for healthier indoor air quality.',
+    icon: Wind,
+    color: 'text-pink-600',
+    timeEstimate: '2x standard cleaning time initially',
+    complexity: 'Medium to Hard',
+    intro: 'For allergy sufferers, cleaning isn\'t just about appearance—it\'s about health. Professional allergy-friendly cleaning focuses on removing triggers, using HEPA filtration, and implementing preventive measures that standard cleaning overlooks.',
+    subsections: [
+      {
+        title: 'HEPA Filtration & Air Quality',
+        time: '30-45 minutes',
+        tasks: [
+          'Use only HEPA-filter vacuums',
+          'Change HVAC filters monthly (MERV 11-13 rated)',
+          'Run air purifiers with HEPA filters',
+          'Vacuum slowly and methodically for best dust capture',
+          'Vacuum carpets twice in different directions',
+          'Clean or replace vacuum filters regularly',
+          'Ensure proper ventilation while cleaning'
+        ]
+      },
+      {
+        title: 'Dust Mite Prevention',
+        time: '45-60 minutes',
+        tasks: [
+          'Use allergen-proof mattress and pillow covers',
+          'Wash bedding weekly in hot water (130°F+)',
+          'Vacuum mattresses and upholstery thoroughly',
+          'Remove or wash stuffed animals regularly',
+          'Reduce bedroom humidity below 50%',
+          'Minimize fabric items in bedroom',
+          'Freeze items that can\'t be washed to kill mites'
+        ]
+      },
+      {
+        title: 'Pet Dander Management',
+        time: '60-90 minutes',
+        tasks: [
+          'Vacuum all surfaces including walls (dander clings)',
+          'Wash pet bedding weekly in hot water',
+          'Groom pets outdoors regularly',
+          'Use damp cloths to wipe surfaces (traps dander)',
+          'Install HEPA air filters',
+          'Keep pets out of bedrooms',
+          'Vacuum furniture and drapes frequently',
+          'Mop hard floors to capture settled dander'
+        ]
+      },
+      {
+        title: 'Chemical Sensitivity Considerations',
+        time: 'Ongoing practice',
+        tasks: [
+          'Use fragrance-free cleaning products',
+          'Choose hypoallergenic cleaners',
+          'Avoid aerosol sprays',
+          'Ensure proper ventilation',
+          'Wear mask while cleaning if sensitive',
+          'Allow cleaned areas to air out before use',
+          'Read all product ingredients carefully'
+        ]
+      }
+    ],
+    supplies: ['HEPA vacuum', 'Allergen-proof bedding covers', 'Hypoallergenic cleaners', 'Air purifier with HEPA filter', 'High-quality HVAC filters', 'Microfiber cloths (trap vs. spread allergens)', 'Dehumidifier', 'Fragrance-free products'],
+    proTips: [
+      'Cleaning frequency is crucial - twice weekly minimum for high-allergen homes',
+      'Damp cleaning methods prevent dust from becoming airborne',
+      'Decluttering reduces surfaces where allergens collect',
+      'Hard flooring is better than carpet for allergy sufferers',
+      'Clean from top to bottom so settling dust is captured'
+    ],
+    commonMistakes: [
+      'Using regular vacuum (redistributes allergens into air)',
+      'Not washing bedding frequently or hot enough',
+      'Cleaning with harsh chemicals (triggers respiratory issues)',
+      'Forgetting walls, curtains, and vertical surfaces (dander clings)',
+      'Not addressing humidity (dust mites thrive in moisture)'
+    ]
+  },
+  {
+    id: 'pets',
+    title: 'Pet Owner\'s Cleaning Guide',
+    description: 'Comprehensive cleaning strategies for homes with pets. Address hair, odors, stains, and hygiene challenges while maintaining a fresh, welcoming environment.',
+    icon: PawPrint,
+    color: 'text-pink-600',
+    timeEstimate: '2-3 hours additional cleaning per week',
+    complexity: 'Medium to Hard',
+    intro: 'Pets bring joy but also significant cleaning challenges. Professional pet-friendly cleaning requires specialized products, techniques for hair removal, odor elimination, and stain treatment while keeping your furry family members safe.',
+    subsections: [
+      {
+        title: 'Pet Hair Removal Strategies',
+        time: '45-60 minutes',
+        tasks: [
+          'Vacuum all floors daily with pet-specific vacuum',
+          'Use rubber gloves or squeegee on upholstery',
+          'Lint roller for quick touch-ups',
+          'Vacuum furniture and pet beds thoroughly',
+          'Use dryer sheets to loosen hair from fabrics',
+          'Damp mop hard floors to capture remaining hair',
+          'Clean vacuum frequently (hair clogs quickly)',
+          'Brush pets outdoors regularly to reduce shedding'
+        ]
+      },
+      {
+        title: 'Odor Control & Elimination',
+        time: '30-45 minutes',
+        tasks: [
+          'Use enzyme cleaners on accidents (breaks down odor)',
+          'Wash pet bedding weekly',
+          'Sprinkle baking soda on carpets before vacuuming',
+          'Clean litter boxes daily (cats)',
+          'Air out home regularly',
+          'Use activated charcoal for odor absorption',
+          'Wash hard floors with pet-safe enzymatic cleaner',
+          'Clean air vents and replace filters frequently',
+          'Avoid masking odors with fragrance - eliminate source'
+        ]
+      },
+      {
+        title: 'Stain & Accident Treatment',
+        time: '15-30 minutes per incident',
+        tasks: [
+          'Blot (never rub) fresh accidents immediately',
+          'Use enzyme cleaner specifically for pet stains',
+          'Let enzyme cleaner sit 10-15 minutes',
+          'Blot with clean cloth, repeat if needed',
+          'Rinse area with water',
+          'Dry thoroughly to prevent mold',
+          'Use blacklight to find old stains',
+          'Consider professional carpet cleaning quarterly',
+          'Test cleaners on inconspicuous areas first'
+        ]
+      },
+      {
+        title: 'Pet-Safe Cleaning Practices',
+        time: 'Ongoing awareness',
+        tasks: [
+          'Use only pet-safe cleaning products',
+          'Avoid products with ammonia (smells like urine to pets)',
+          'Keep pets away from freshly cleaned areas until dry',
+          'Never mix cleaning chemicals',
+          'Store cleaning products securely',
+          'Rinse surfaces that pets lick (bowls, floors)',
+          'Avoid essential oils toxic to pets (tea tree, etc.)',
+          'Ventilate well when cleaning'
+        ]
+      },
+      {
+        title: 'Preventive Measures',
+        time: 'Setup and maintenance',
+        tasks: [
+          'Place washable rugs in high-traffic areas',
+          'Use furniture covers on couches and chairs',
+          'Designate pet-free zones (bedrooms)',
+          'Groom pets regularly to reduce shedding',
+          'Trim pet nails to prevent scratches',
+          'Use litter mats to catch scattered litter',
+          'Keep pet cleaning supplies readily accessible',
+          'Train pets for outdoor bathroom use if possible'
+        ]
+      }
+    ],
+    supplies: ['Pet-specific vacuum (strong suction, no-tangle brushes)', 'Enzyme cleaner', 'Rubber gloves for hair removal', 'Lint rollers', 'Baking soda', 'Pet-safe cleaners', 'Blacklight for stain detection', 'Washable furniture covers', 'Air purifier'],
+    proTips: [
+      'Enzyme cleaners are essential - regular cleaners don\'t break down pet proteins',
+      'Rubber gloves are more effective than lint rollers on furniture',
+      'Clean accidents immediately - set stains are nearly impossible to remove',
+      'Vacuum at least 3x per week with pets (daily for heavy shedders)',
+      'Professional deep cleaning every 3-6 months is worth the investment'
+    ],
+    commonMistakes: [
+      'Using steam cleaners on pet stains (heat sets the stain permanently)',
+      'Using ammonia-based cleaners (smells like urine, attracts pets)',
+      'Not using enough enzyme cleaner or not letting it sit long enough',
+      'Rubbing stains instead of blotting (spreads and sets stain)',
+      'Using toxic essential oils around pets',
+      'Not addressing underlying cause of accidents (medical or behavioral)'
+    ]
   }
 ];
 
@@ -1336,6 +2525,158 @@ export default function CleaningTipsPage() {
         {/* Tips Section */}
         {activeSection === 'tips' && (
           <div className="space-y-8">
+            {/* Impress Cleaning Featured Box */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-pink-600 to-pink-700 dark:from-pink-700 dark:to-pink-800 rounded-2xl p-8 md:p-10 text-white shadow-xl"
+            >
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0">
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-3xl font-bold mb-3">
+                    Impress Cleaning Services: Professional-Grade Cleaning Expertise
+                  </h2>
+                  <p className="text-pink-100 text-lg leading-relaxed mb-6">
+                    Our professional cleaning experts have refined these techniques over years of experience. Whether you choose to tackle these tasks yourself or let us handle them for you, understanding the scope of proper home cleaning is essential.
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <p className="text-white/95">Start with decluttering—clear surfaces clean faster and more thoroughly</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <p className="text-white/95">Work from ceiling to floor to avoid re-cleaning already cleaned areas</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <p className="text-white/95">Disinfect high-touch surfaces daily to maintain a healthy environment</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <p className="text-white/95">Match your cleaning products to your surfaces for optimal results</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <p className="text-white/95">Consistency beats intensity—regular maintenance prevents deep-seated problems</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                      <p className="text-white/95">Professional standards require attention to details most overlook</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Introductory Content Sections */}
+            <div className="grid md:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
+              >
+                <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center mb-5">
+                  <Award className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                  Why Professional Cleaning Expertise Matters
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  Professional cleaning goes far beyond surface-level tidying. Our experts understand that proper cleaning requires knowledge of surface materials, chemical compatibility, proper technique sequences, and time management that most homeowners simply don't have the experience to implement effectively.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  The difference between amateur and professional cleaning isn't just thoroughness—it's understanding which products work on which surfaces, how long disinfectants need to sit to be effective, and the correct order of operations that prevents re-contamination. These checklists reveal the true scope of comprehensive home cleaning.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
+              >
+                <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center mb-5">
+                  <Shield className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                  The Impress Approach to Home Cleaning
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  At Impress Cleaning Services, we follow a systematic methodology developed over thousands of cleaning sessions. We work from the ceiling down, ensuring dust and debris fall onto uncleaned surfaces rather than settled onto already-clean areas. We use color-coded microfiber systems to prevent cross-contamination between bathrooms and kitchens.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Our professionals know that a proper whole-home deep clean takes 12-18 hours for an average home—far more than most people realize. When you see the comprehensive checklists below, you'll understand why professional cleaning services aren't a luxury, but a practical solution for maintaining truly clean, healthy homes.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8"
+              >
+                <div className="w-12 h-12 rounded-xl bg-pink-50 dark:bg-pink-950 flex items-center justify-center mb-5">
+                  <Sparkles className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                  Essential Principles for a Truly Clean Home
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Consistency Over Intensity</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">Regular professional maintenance prevents the deep-seated grime that requires aggressive chemicals and techniques.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Proper Product Selection</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">Using the wrong cleaner can permanently damage surfaces. Professionals know which products work safely on granite versus quartz, wood versus laminate.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Time Investment</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">Quality cleaning cannot be rushed. Disinfectants need contact time, degreasers need to penetrate, and proper technique takes time to execute correctly.</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Total Time Reality Check */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-950 rounded-2xl p-8 text-center border border-gray-700"
+            >
+              <Clock className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-3">
+                The Reality of Comprehensive Home Cleaning
+              </h3>
+              <p className="text-gray-300 text-lg max-w-3xl mx-auto mb-6">
+                A complete whole-home deep clean following professional standards requires <span className="text-pink-400 font-bold">12-18 hours of focused work</span> for an average-sized home. Most homeowners underestimate this by 60-70%. The checklists below show exactly why professional cleaning services save you time, energy, and ensure superior results.
+              </p>
+              <div className="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="text-3xl font-bold text-pink-400 mb-1">2.5-3.5h</div>
+                  <div className="text-sm text-gray-300">Kitchen Deep Clean</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="text-3xl font-bold text-pink-400 mb-1">1.5-2h</div>
+                  <div className="text-sm text-gray-300">Per Bathroom</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="text-3xl font-bold text-pink-400 mb-1">1.5-2h</div>
+                  <div className="text-sm text-gray-300">Per Bedroom</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="text-3xl font-bold text-pink-400 mb-1">2-2.5h</div>
+                  <div className="text-sm text-gray-300">Living Areas</div>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Room Sections */}
             {roomSections.map((section, index) => {
               const roomTips = tipsByRoom[section.id] || [];
@@ -1363,11 +2704,23 @@ export default function CleaningTipsPage() {
                           <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400 mb-2">
                             {section.title}
                           </h2>
-                          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                          <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-3">
                             {section.description}
                           </p>
-                          <div className="mt-4 flex items-center gap-2 text-pink-600 dark:text-pink-400 font-medium">
-                            <span>{isExpanded ? 'Hide Details' : 'Learn More'}</span>
+                          {section.timeEstimate && (
+                            <div className="flex flex-wrap gap-3 mb-4">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-400 rounded-lg text-sm font-medium">
+                                <Clock className="w-4 h-4" />
+                                {section.timeEstimate}
+                              </span>
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 rounded-lg text-sm font-medium border border-amber-200 dark:border-amber-800">
+                                <BarChart3 className="w-4 h-4" />
+                                {section.complexity}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex items-center gap-2 text-pink-600 dark:text-pink-400 font-medium">
+                            <span>{isExpanded ? 'Hide Details' : 'View Detailed Checklist'}</span>
                             {isExpanded ? (
                               <ChevronDown className="w-5 h-5" />
                             ) : (
@@ -1380,15 +2733,115 @@ export default function CleaningTipsPage() {
 
                     {/* Expanded Content */}
                     <AnimatePresence>
-                      {isExpanded && roomTips.length > 0 && (
+                      {isExpanded && (
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           className="border-t border-gray-200 dark:border-gray-800"
                         >
-                          <div className="p-8">
-                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                          <div className="p-8 space-y-8">
+                            {/* Intro Text */}
+                            {section.intro && (
+                              <div className="bg-pink-50 dark:bg-pink-950/30 border border-pink-200 dark:border-pink-800 rounded-xl p-6">
+                                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                                  {section.intro}
+                                </p>
+                              </div>
+                            )}
+
+                            {/* Subsections with Detailed Checklists */}
+                            {section.subsections && section.subsections.length > 0 && (
+                              <div className="space-y-6">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                  <CheckCircle className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                                  Detailed Cleaning Checklist
+                                </h3>
+                                {section.subsections.map((subsection, subIdx) => (
+                                  <div key={subIdx} className="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                                    <div className="flex items-start justify-between mb-4">
+                                      <h4 className="text-lg font-bold text-gray-900 dark:text-white">
+                                        {subsection.title}
+                                      </h4>
+                                      {subsection.time && (
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg text-sm border border-gray-300 dark:border-gray-600">
+                                          <Clock className="w-4 h-4" />
+                                          {subsection.time}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <ul className="space-y-2.5">
+                                      {subsection.tasks.map((task, taskIdx) => (
+                                        <li key={taskIdx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                                          <div className="w-5 h-5 rounded border-2 border-pink-600 dark:border-pink-400 flex-shrink-0 mt-0.5"></div>
+                                          <span className="leading-relaxed">{task}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Supplies Needed */}
+                            {section.supplies && section.supplies.length > 0 && (
+                              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+                                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                  <ShoppingCart className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                  Supplies & Equipment Needed
+                                </h4>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                  {section.supplies.map((supply, supIdx) => (
+                                    <div key={supIdx} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                      <CircleDot className="w-3 h-3 text-blue-600 dark:text-blue-400 fill-current" />
+                                      {supply}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Pro Tips */}
+                            {section.proTips && section.proTips.length > 0 && (
+                              <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
+                                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                  <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                                  Professional Tips from Impress Cleaning
+                                </h4>
+                                <ul className="space-y-3">
+                                  {section.proTips.map((tip, tipIdx) => (
+                                    <li key={tipIdx} className="flex items-start gap-3 text-gray-800 dark:text-gray-200">
+                                      <Star className="w-4 h-4 text-amber-600 dark:text-amber-400 fill-current flex-shrink-0 mt-0.5" />
+                                      <span className="leading-relaxed">{tip}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Common Mistakes */}
+                            {section.commonMistakes && section.commonMistakes.length > 0 && (
+                              <div className="bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 rounded-xl p-6">
+                                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                  <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                                  Common Mistakes to Avoid
+                                </h4>
+                                <ul className="space-y-3">
+                                  {section.commonMistakes.map((mistake, mIdx) => (
+                                    <li key={mIdx} className="flex items-start gap-3 text-gray-800 dark:text-gray-200">
+                                      <X className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                                      <span className="leading-relaxed">{mistake}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Legacy Tip Cards (if they exist) */}
+                            {roomTips.length > 0 && (
+                              <div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Quick Reference Tips</h3>
+                                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                               {roomTips.map((tip) => (
                                 <div
                                   key={tip.id}
@@ -1539,26 +2992,122 @@ export default function CleaningTipsPage() {
                                 </div>
                               ))}
                             </div>
+                              </div>
+                            )}
                           </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </motion.div>
 
-                  {/* CTA Banner between sections */}
+                  {/* Strategic CTA Banners between sections */}
                   {index === 2 && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-12 text-center"
+                      className="bg-gradient-to-r from-pink-600 to-pink-700 dark:from-pink-700 dark:to-pink-800 rounded-2xl p-10 text-center"
                     >
-                      <Shield className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+                      <Shield className="w-12 h-12 text-white mx-auto mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-3">
-                        Service You Can Trust
+                        This Much Detail? We've Got You Covered
                       </h3>
-                      <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-                        Professional cleaning expertise at your fingertips. Every tip backed by years of industry experience.
+                      <p className="text-white/90 text-lg max-w-2xl mx-auto mb-5">
+                        Feeling overwhelmed by these comprehensive checklists? That's exactly why Impress Cleaning Services exists. Our trained professionals handle every detail so you don't have to.
                       </p>
+                      <p className="text-white/80 text-base max-w-xl mx-auto">
+                        We follow these exact protocols—and more—in every service we provide. Why spend your weekend cleaning when our experts can deliver superior results in a fraction of the time?
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {index === 5 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 rounded-2xl p-10 text-center border border-gray-700"
+                    >
+                      <Clock className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold text-white mb-3">
+                        Skip the Checklist, Schedule the Service
+                      </h3>
+                      <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-4">
+                        By now you've seen how much work goes into professional-grade cleaning. The average homeowner spends <span className="text-pink-400 font-bold">8-10 hours per week</span> on cleaning tasks—time you'll never get back.
+                      </p>
+                      <p className="text-gray-400 text-base max-w-xl mx-auto">
+                        Impress Cleaning delivers comprehensive, detail-oriented service that frees your schedule for what actually matters. Professional equipment, expert techniques, and guaranteed results.
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {index === 8 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-700 dark:to-teal-800 rounded-2xl p-10 text-center"
+                    >
+                      <Award className="w-12 h-12 text-white mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold text-white mb-3">
+                        Professional Standards, Guaranteed Results
+                      </h3>
+                      <p className="text-white/90 text-lg max-w-2xl mx-auto mb-5">
+                        These checklists represent real professional standards—not theoretical ideals. At Impress Cleaning, we don't cut corners or skip steps. Every surface, every detail, every time.
+                      </p>
+                      <div className="flex flex-wrap justify-center gap-6 max-w-3xl mx-auto">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-white mb-1">100%</div>
+                          <div className="text-sm text-white/80">Satisfaction Guaranteed</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-white mb-1">Licensed</div>
+                          <div className="text-sm text-white/80">Fully Insured</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-white mb-1">Expert</div>
+                          <div className="text-sm text-white/80">Trained Professionals</div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {index === 11 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gradient-to-r from-purple-600 to-indigo-700 dark:from-purple-700 dark:to-indigo-800 rounded-2xl p-10 text-center"
+                    >
+                      <Sparkles className="w-12 h-12 text-white mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold text-white mb-3">
+                        Love a Clean Home, Hate the Work? We Understand
+                      </h3>
+                      <p className="text-white/90 text-lg max-w-2xl mx-auto mb-5">
+                        Everyone deserves a spotlessly clean home—without sacrificing their entire weekend. You've seen the scope of professional cleaning. Now imagine having it done for you, consistently and expertly.
+                      </p>
+                      <p className="text-white/80 text-base max-w-xl mx-auto">
+                        One service with Impress Cleaning and you'll wonder why you waited so long. Reclaim your weekends. Enjoy a professionally cleaned home. Live better.
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {index === 14 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-950 rounded-2xl p-10 text-center border-2 border-pink-500"
+                    >
+                      <TrendingUp className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold text-white mb-3">
+                        Transform Your Home Without Lifting a Finger
+                      </h3>
+                      <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-5">
+                        You've explored <span className="text-pink-400 font-bold">15+ comprehensive cleaning guides</span> covering every room and situation. That's thousands of individual tasks, dozens of hours, and extensive expertise required.
+                      </p>
+                      <p className="text-gray-400 text-base max-w-xl mx-auto mb-6">
+                        Or... you could simply call Impress Cleaning Services. We know these checklists by heart because we live them every day. Let us handle the complexity while you enjoy the results.
+                      </p>
+                      <div className="inline-flex items-center gap-2 px-6 py-3 bg-pink-600 hover:bg-pink-700 text-white rounded-xl font-semibold transition-colors">
+                        <Shield className="w-5 h-5" />
+                        Experience the Impress Difference
+                      </div>
                     </motion.div>
                   )}
                 </React.Fragment>
