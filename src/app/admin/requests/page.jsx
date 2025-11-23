@@ -132,11 +132,24 @@ export default function ServiceRequestsPage() {
 
       if (updateError) throw updateError
 
-      // TODO: Send confirmation email to customer
-      // await fetch('/api/send-email/appointment-confirmed', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ appointmentId: appointment[0].id })
-      // })
+      // Send confirmation email to customer
+      try {
+        await fetch('/api/email/appointment-confirmed', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: selectedRequest.profiles.email,
+            name: selectedRequest.profiles.full_name || selectedRequest.profiles.email.split('@')[0],
+            serviceType: selectedRequest.service_type,
+            date: appointmentData.scheduledDate,
+            time: appointmentData.scheduledTimeStart,
+            address: `${selectedRequest.service_addresses.address}, ${selectedRequest.service_addresses.city}, ${selectedRequest.service_addresses.state}`
+          })
+        })
+      } catch (emailError) {
+        console.error('Error sending confirmation email:', emailError)
+        // Don't fail the approval if email fails
+      }
 
       toast.success('Service request approved and appointment created!')
       setShowModal(false)

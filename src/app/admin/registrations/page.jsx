@@ -68,6 +68,10 @@ export default function PendingRegistrationsPage() {
     setProcessing(true)
 
     try {
+      // Find the registration to get email and name
+      const registration = registrations.find(r => r.id === regId)
+      if (!registration) throw new Error('Registration not found')
+
       const { error } = await supabase
         .from('profiles')
         .update({ account_status: 'active' })
@@ -75,11 +79,20 @@ export default function PendingRegistrationsPage() {
 
       if (error) throw error
 
-      // TODO: Send approval email via API route
-      // await fetch('/api/send-email/account-approved', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ userId: regId })
-      // })
+      // Send approval email
+      try {
+        await fetch('/api/email/account-approved', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: registration.email,
+            name: registration.full_name || registration.email.split('@')[0]
+          })
+        })
+      } catch (emailError) {
+        console.error('Error sending approval email:', emailError)
+        // Don't fail the approval if email fails
+      }
 
       toast.success('Account approved! Customer has been notified.')
       setShowModal(false)

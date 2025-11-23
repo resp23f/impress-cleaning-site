@@ -245,6 +245,30 @@ export default function RequestServicePage() {
 
       if (error) throw error
 
+      // Send confirmation email
+      try {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('id', user.id)
+          .single()
+
+        if (profile) {
+          await fetch('/api/email/service-request-received', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: profile.email,
+              name: profile.full_name || profile.email.split('@')[0],
+              serviceType: formData.serviceType
+            })
+          })
+        }
+      } catch (emailError) {
+        console.error('Error sending request confirmation email:', emailError)
+        // Don't fail the request if email fails
+      }
+
       // Navigate to success page
       setStep(6)
     } catch (error) {
