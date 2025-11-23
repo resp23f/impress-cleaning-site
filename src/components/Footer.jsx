@@ -35,10 +35,10 @@ export default function Footer() {
                 className="w-auto h-20 md:h-24"
               />
             </Link>
-            <p className="font-playfair italic text-sm text-slate-600 text-center md:text-left">
-              <p>Impress Every Time.<sup>TM</sup></p>
-            </p>
-          </div>
+<p className="font-playfair italic text-sm text-slate-600 text-center md:text-left">
+  Your slogan here<sup>TM</sup>
+</p>   
+       </div>
 
           {/* Services Column */}
           <div className="text-center md:text-left">
