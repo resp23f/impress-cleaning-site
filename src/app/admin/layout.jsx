@@ -1,7 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import Toast from '@/components/ui/Toast'
 
 export default async function AdminLayout({ children }) {
