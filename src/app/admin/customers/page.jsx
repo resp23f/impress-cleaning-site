@@ -190,7 +190,7 @@ export default function CustomersPage() {
                 placeholder="Search by name, email, or phone..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                icon={Search}
+                icon={<Search className="w-5 h-5" />}
               />
             </div>
 
