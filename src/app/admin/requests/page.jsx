@@ -96,10 +96,8 @@ export default function ServiceRequestsPage() {
 
           *,
 
-          profiles(full_name, email, phone),
-
-          service_addresses(*)
-
+profiles!customer_id(full_name, email, phone),
+service_addresses!address_id(*)
         `)
 
         .eq('status', 'pending')

@@ -4,9 +4,9 @@ import { Analytics } from '@vercel/analytics/react';
 
 import { Manrope, Onest } from "next/font/google";
 
- 
 
- 
+
+
 
 const manrope = Manrope({
 
@@ -20,7 +20,7 @@ const manrope = Manrope({
 
 });
 
- 
+
 
 const onest = Onest({
 
@@ -34,7 +34,7 @@ const onest = Onest({
 
 });
 
- 
+
 
 // ✅ SEPARATE viewport export
 
@@ -50,7 +50,7 @@ export const viewport = {
 
 };
 
- 
+
 
 // ✅ metadata WITHOUT viewport and themeColor
 
@@ -90,7 +90,7 @@ export const metadata = {
 
 };
 
- 
+
 
 export default function RootLayout({ children }) {
 

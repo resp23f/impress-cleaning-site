@@ -1,7 +1,8 @@
 'use client'
 
  
-
+import Script from 'next/script'
+import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 import { useState, useEffect, useCallback } from 'react'
 
 import { useRouter } from 'next/navigation'
@@ -57,8 +58,24 @@ export default function ProfileSetupPage() {
     communicationPreference: 'both',
 
   })
-
- 
+const [addressData, setAddressData] = useState({
+  street_address: '',
+  unit: '',
+  city: '',
+  state: '',
+  zip_code: '',
+  place_id: '',
+})
+ const handleAddressSelect = (data) => {
+  setAddressData({
+    ...addressData,
+    street_address: data.street_address,
+    city: data.city,
+    state: data.state,
+    zip_code: data.zip_code,
+    place_id: data.place_id,
+  })
+}
 
   const supabase = createClient()
 
@@ -312,12 +329,8 @@ export default function ProfileSetupPage() {
 
  
 
-      if (addressError) throw addressError
-
- 
 
       toast.success('Profile setup complete!')
-
       router.push('/auth/pending-approval')
 
     } catch (error) {
@@ -353,6 +366,11 @@ export default function ProfileSetupPage() {
  
 
   return (
+     <>
+    <Script
+      src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+      strategy="beforeInteractive"
+    />
 
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
 
@@ -458,108 +476,42 @@ export default function ProfileSetupPage() {
 
                 <div>
 
-                  <Input
-
-                    id="address-autocomplete"
-
-                    label="Street Address"
-
-                    placeholder="Start typing your address..."
-
-                    value={formData.streetAddress}
-
-                    onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
-
-                    required
-
-                    icon={<MapPin className="w-5 h-5" />}
-
-                  />
-
-                  {!isLoaded && (
-
-                    <p className="text-xs text-gray-500 mt-1">Loading address autocomplete...</p>
-
-                  )}
-
-                </div>
-
+<AddressAutocomplete 
+  onSelect={handleAddressSelect}
+  defaultValue={formData.streetAddress}
+/>
+                </div>  
  
 
-                <Input
-
-                  label="Unit/Apt (optional)"
-
-                  placeholder="Apt 4B"
-
-                  value={formData.unit}
-
-                  onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-
-                />
-
+<Input
+        label="Apt/Unit (Optional)"
+        placeholder="Apt 123"
+        value={addressData.unit}
+        onChange={(e) => setAddressData({ ...addressData, unit: e.target.value })}
+      />
  
 
-                <div className="grid grid-cols-2 gap-4">
-
-                  <Input
-
-                    label="City"
-
-                    placeholder="Austin"
-
-                    value={formData.city}
-
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-
-                    required
-
-                  />
-
+{/* City, State, Zip auto-filled */}
+      <div className="grid grid-cols-3 gap-4">
+        <Input
+          label="City"
+          value={addressData.city}
+          readOnly
+        />
+        <Input
+          label="State"
+          value={addressData.state}
+          readOnly
+        />
+        <Input
+          label="Zip"
+          value={addressData.zip_code}
+          readOnly
+        />
  
-
-                  <Input
-
-                    label="State"
-
-                    placeholder="TX"
-
-                    value={formData.state}
-
-                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-
-                    required
-
-                    maxLength={2}
-
-                  />
-
-                </div>
-
- 
-
-                <Input
-
-                  label="ZIP Code"
-
-                  placeholder="78701"
-
-                  value={formData.zipCode}
-
-                  onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-
-                  required
-
-                  maxLength={5}
-
-                />
-
-              </div>
-
-            </div>
-
- 
-
+  </div>
+    </div>
+  </div>
             {/* Communication Preferences */}
 
             <div>
@@ -691,11 +643,11 @@ export default function ProfileSetupPage() {
           </form>
 
         </Card>
-
       </div>
-
     </div>
-
+  </>
   )
+  }
+    
 
-}
+

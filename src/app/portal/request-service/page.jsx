@@ -1,6 +1,7 @@
 'use client'
 
- 
+import Script from 'next/script'
+import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 
 import { useState, useEffect } from 'react'
 
@@ -204,7 +205,28 @@ export default function RequestServicePage() {
 
   })
 
- 
+ const [addressData, setAddressData] = useState({
+  street_address: '',
+  unit: '',
+  city: '',
+  state: '',
+  zip_code: '',
+  place_id: '',
+})
+
+const handleAddressSelect = (data) => {
+  setFormData({
+    ...formData,
+    newAddress: {
+      streetAddress: data.street_address,
+      unit: data.unit || '',
+      city: data.city,
+      state: data.state,
+      zipCode: data.zip_code,
+      placeId: data.place_id,
+    }
+  })
+}
 
   const supabase = createClient()
 
@@ -648,8 +670,12 @@ export default function RequestServicePage() {
 
  
 
-  return (
-
+return (
+  <>
+    <Script
+      src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+      strategy="beforeInteractive"
+    />
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
 
       {/* Header */}
@@ -982,115 +1008,44 @@ export default function RequestServicePage() {
 
                 <div className="space-y-4 mt-4 p-4 bg-gray-50 rounded-lg">
 
-                  <Input
-
-                    id="new-address-autocomplete"
-
-                    label="Street Address"
-
-                    placeholder="Start typing your address..."
-
-                    value={formData.newAddress.streetAddress}
-
-                    onChange={(e) => setFormData({
-
-                      ...formData,
-
-                      newAddress: { ...formData.newAddress, streetAddress: e.target.value }
-
-                    })}
-
-                  />
-
+{/* Replace the street address input section with: */}
+      <AddressAutocomplete 
+        onSelect={handleAddressSelect}
+        defaultValue={addressData.street_address}
+      />
  
 
-                  <Input
-
-                    label="Unit/Apt (optional)"
-
-                    placeholder="Apt 4B"
-
-                    value={formData.newAddress.unit}
-
-                    onChange={(e) => setFormData({
-
-                      ...formData,
-
-                      newAddress: { ...formData.newAddress, unit: e.target.value }
-
-                    })}
-
-                  />
-
+<Input
+        label="Apt/Unit (Optional)"
+        placeholder="Apt 123"
+        value={addressData.unit}
+        onChange={(e) => setAddressData({ ...addressData, unit: e.target.value })}
+      />
  
 
-                  <div className="grid grid-cols-2 gap-4">
 
-                    <Input
+{/* City, State, Zip auto-filled */}
+      <div className="grid grid-cols-3 gap-4">
+        <Input
+          label="City"
+          value={addressData.city}
+          readOnly
+        />
+        <Input
+          label="State"
+          value={addressData.state}
+          readOnly
+        />
+        <Input
+          label="Zip"
+          value={addressData.zip_code}
+          readOnly
+        />
 
-                      label="City"
-
-                      value={formData.newAddress.city}
-
-                      onChange={(e) => setFormData({
-
-                        ...formData,
-
-                        newAddress: { ...formData.newAddress, city: e.target.value }
-
-                      })}
-
-                    />
-
- 
-
-                    <Input
-
-                      label="State"
-
-                      value={formData.newAddress.state}
-
-                      onChange={(e) => setFormData({
-
-                        ...formData,
-
-                        newAddress: { ...formData.newAddress, state: e.target.value }
-
-                      })}
-
-                      maxLength={2}
-
-                    />
-
-                  </div>
-
- 
-
-                  <Input
-
-                    label="ZIP Code"
-
-                    value={formData.newAddress.zipCode}
-
-                    onChange={(e) => setFormData({
-
-                      ...formData,
-
-                      newAddress: { ...formData.newAddress, zipCode: e.target.value }
-
-                    })}
-
-                    maxLength={5}
-
-                  />
-
+                     </div>
+  </div>
+                )}  
                 </div>
-
-              )}
-
-            </div>
-
- 
 
             <div className="flex gap-3 mt-6">
 
@@ -1320,16 +1275,11 @@ export default function RequestServicePage() {
 
               </Button>
 
+            </div>              
             </div>
-
-          </div>
-
-        )}
-
+            )}  
       </Card>
-
     </div>
-
+  </>
   )
-
 }

@@ -1,6 +1,7 @@
 'use client'
 
  
+import { useRecaptcha } from '@/hooks/useRecaptcha'
 
 import { useState } from 'react'
 
@@ -41,6 +42,8 @@ export default function SignUpPage() {
   })
 
   const [passwordStrength, setPasswordStrength] = useState(0)
+  const { executeRecaptcha } = useRecaptcha()
+
 
  
 
@@ -80,69 +83,64 @@ export default function SignUpPage() {
 
  
 
-  const handleEmailSignUp = async (e) => {
+const handleEmailSignUp = async (e) => {
+  e.preventDefault()
+  setLoading(true)
 
-    e.preventDefault()
-
-    setLoading(true)
-
- 
-
-    try {
-
-      if (formData.password.length < 8) {
-
-        toast.error('Password must be at least 8 characters')
-
-        setLoading(false)
-
-        return
-
-      }
-
- 
-
-      const { data, error } = await supabase.auth.signUp({
-
-        email: formData.email,
-
-        password: formData.password,
-
-        options: {
-
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-
-        },
-
-      })
-
- 
-
-      if (error) throw error
-
- 
-
-      if (data.user) {
-
-        router.push('/auth/verify-email?email=' + encodeURIComponent(formData.email))
-
-      }
-
-    } catch (error) {
-
-      console.error('Error signing up:', error)
-
-      toast.error(error.message || 'Failed to sign up')
-
-    } finally {
-
+  try {
+    if (formData.password.length < 8) {
+      toast.error('Password must be at least 8 characters')
       setLoading(false)
-
+      return
     }
 
-  }
+    // Execute reCAPTCHA
+    const token = await executeRecaptcha('signup')
+    
+    // Verify reCAPTCHA
+    const verifyResponse = await fetch('/api/verify-recaptcha', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, action: 'signup' }),
+    })
 
- 
+    const verifyData = await verifyResponse.json()
+    
+    if (!verifyData.success) {
+      throw new Error('Security verification failed. Please try again.')
+    }
+
+    // Continue with signup
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+
+    if (error) throw error
+
+if (data.user) {
+      // Send admin notification email
+      fetch('/api/email/admin-new-registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: formData.email.split('@')[0],
+          customerEmail: formData.email,
+          customerId: data.user.id,
+        }),
+      }).catch(err => console.error('Email notification failed:', err))
+      
+      router.push('/auth/verify-email?email=' + encodeURIComponent(formData.email))
+    }  } catch (error) {
+    console.error('Error signing up:', error)
+    toast.error(error.message || 'Failed to sign up')
+  } finally {
+    setLoading(false)
+  }
+} 
 
   const handleGoogleSignIn = async () => {
 
