@@ -1,7 +1,5 @@
 // src/app/layout.js
 import "./globals.css";
-import ConditionalLayout from "@/components/ConditionalLayout";
-import PageTransition from '@/components/PageTransition'
 import { Analytics } from '@vercel/analytics/react';
 import { Manrope, Onest } from "next/font/google";
 
@@ -52,13 +50,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${manrope.variable} ${onest.variable}`}>
       <body className="font-sans antialiased bg-background text-slate-900">
-        <ConditionalLayout>
-          <PageTransition>
-            <main className="min-h-screen flex-col">
-              {children}
-            </main>
-          </PageTransition>
-        </ConditionalLayout>
+        {children}
+        <Analytics />
       </body>
     </html>
   );
