@@ -269,7 +269,7 @@ export default function CustomersPage() {
                           <div className="flex items-start gap-2 text-sm text-gray-600 md:col-span-2">
                             <MapPin className="w-4 h-4 mt-0.5" />
                             <span>
-                              {customer.service_addresses[0].address}, {customer.service_addresses[0].city}
+                              {customer.service_addresses[0].street_address}, {customer.service_addresses[0].city}
                             </span>
                           </div>
                         )}
@@ -366,11 +366,11 @@ export default function CustomersPage() {
                   {selectedCustomer.service_addresses.map((addr, idx) => (
                     <div key={idx} className="p-4 bg-gray-50 rounded-lg">
                       <p className="text-sm font-medium text-[#1C294E]">
-                        {addr.address_name || `Address ${idx + 1}`}
+                        Address {idx + 1}{addr.is_primary && ' (Primary)'}
                       </p>
                       <p className="text-sm text-gray-600">
-                        {addr.address}
-                        {addr.address_line2 && `, ${addr.address_line2}`}
+                        {addr.street_address}
+                        {addr.unit && `, ${addr.unit}`}
                       </p>
                       <p className="text-sm text-gray-600">
                         {addr.city}, {addr.state} {addr.zip_code}
