@@ -1,10 +1,6 @@
 // src/app/layout.js
 import "./globals.css";
-import { headers } from 'next/headers';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ContactButton from "@/components/ContactButton";
-import TawkToChat from "@/components/TawkToChat";
+import ConditionalLayout from "@/components/ConditionalLayout";
 import PageTransition from '@/components/PageTransition'
 import { Analytics } from '@vercel/analytics/react';
 import { Manrope, Onest } from "next/font/google";
@@ -52,27 +48,17 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({ children }) {
-  const headersList = await headers();
-  const pathname = headersList.get('x-pathname') || '';
-
-  // Don't show public site header/footer on portal, admin, or auth pages
-  const isPortalRoute = pathname.startsWith('/portal') ||
-                        pathname.startsWith('/admin') ||
-                        pathname.startsWith('/auth');
-
+export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${manrope.variable} ${onest.variable}`}>
       <body className="font-sans antialiased bg-background text-slate-900">
-        {!isPortalRoute && <Header />}
-        <PageTransition>
-        <main className="min-h-screen flex-col">
-          {children}
-        </main>
-        {!isPortalRoute && <Footer />}
-        </PageTransition>
-        {!isPortalRoute && <ContactButton />}
-        {!isPortalRoute && <TawkToChat />}
+        <ConditionalLayout>
+          <PageTransition>
+            <main className="min-h-screen flex-col">
+              {children}
+            </main>
+          </PageTransition>
+        </ConditionalLayout>
       </body>
     </html>
   );

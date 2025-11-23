@@ -6,9 +6,6 @@ export async function updateSession(request) {
     request,
   })
 
-  // Set pathname header for layout to read
-  supabaseResponse.headers.set('x-pathname', request.nextUrl.pathname)
-
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -24,7 +21,6 @@ export async function updateSession(request) {
           supabaseResponse = NextResponse.next({
             request,
           })
-          supabaseResponse.headers.set('x-pathname', request.nextUrl.pathname)
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
