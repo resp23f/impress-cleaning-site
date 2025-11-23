@@ -143,7 +143,7 @@ export default function ServiceRequestsPage() {
             serviceType: selectedRequest.service_type,
             date: appointmentData.scheduledDate,
             time: appointmentData.scheduledTimeStart,
-            address: `${selectedRequest.service_addresses.address}, ${selectedRequest.service_addresses.city}, ${selectedRequest.service_addresses.state}`
+            address: `${selectedRequest.service_addresses.street_address}, ${selectedRequest.service_addresses.city}, ${selectedRequest.service_addresses.state}`
           })
         })
       } catch (emailError) {
