@@ -1,5 +1,6 @@
 // src/app/layout.js
 import "./globals.css";
+import { headers } from 'next/headers';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactButton from "@/components/ContactButton";
@@ -51,19 +52,27 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '';
+
+  // Don't show public site header/footer on portal, admin, or auth pages
+  const isPortalRoute = pathname.startsWith('/portal') ||
+                        pathname.startsWith('/admin') ||
+                        pathname.startsWith('/auth');
+
   return (
     <html lang="en" className={`${manrope.variable} ${onest.variable}`}>
       <body className="font-sans antialiased bg-background text-slate-900">
-        <Header />
+        {!isPortalRoute && <Header />}
         <PageTransition>
         <main className="min-h-screen flex-col">
           {children}
         </main>
-        <Footer />
+        {!isPortalRoute && <Footer />}
         </PageTransition>
-        <ContactButton />
-        <TawkToChat />
+        {!isPortalRoute && <ContactButton />}
+        {!isPortalRoute && <TawkToChat />}
       </body>
     </html>
   );
