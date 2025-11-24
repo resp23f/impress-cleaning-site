@@ -512,7 +512,7 @@ export default async function DashboardPage() {
 
         </Link>
 
-        <Link href="/portal/history">
+        <Link href="/portal/service-history">
 
           <Button variant="secondary" fullWidth size="lg">
 
@@ -666,7 +666,7 @@ export default async function DashboardPage() {
 
             <Link
 
-              href="/portal/history"
+              href="/portal/service-history"
 
               className="text-sm text-[#079447] font-medium hover:underline"
 
