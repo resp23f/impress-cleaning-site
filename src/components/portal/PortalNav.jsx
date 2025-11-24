@@ -40,7 +40,7 @@ const navItems = [
 
   { icon: Calendar, label: 'Appointments', href: '/portal/appointments' },
 
-  { icon: History, label: 'Service History', href: '/portal/history' },
+  { icon: History, label: 'Service History', href: '/portal/service-history' },
 
   { icon: Receipt, label: 'Invoices', href: '/portal/invoices' },
 
