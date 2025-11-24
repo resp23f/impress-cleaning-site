@@ -48,6 +48,16 @@ export default async function AdminDashboard() {
 
     .eq('role', 'customer')
 
+
+  // Get all pending profiles (any role) for pending actions widget
+  const { count: pendingProfiles } = await supabase
+
+    .from('profiles')
+
+    .select('*', { count: 'exact', head: true })
+
+    .eq('account_status', 'pending')
+
  
 
   // Get pending service requests count
@@ -374,7 +384,7 @@ export default async function AdminDashboard() {
 
               <p className="text-3xl font-bold text-[#1C294E]">
 
-                {(pendingRegistrations || 0) + (pendingRequests || 0)}
+                {(pendingProfiles || 0) + (pendingRequests || 0)}
 
               </p>
 
