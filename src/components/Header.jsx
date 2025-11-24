@@ -40,11 +40,18 @@ function SiteHeader() {
   }, []);
   return (
     <>
-{/* ========== TOP BAR (Gift Certificates | Careers | Aplicar) - DESKTOP ONLY ========== */}
+{/* ========== TOP BAR (Customer Portal | Careers | Aplicar) - DESKTOP ONLY ========== */}
 <div className="hidden md:block bg-background border-b border-gray-100">
   <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] text-gray-600 font-bold">
+    <Link href="/auth/login" className="hover:text-green transition-colors flex items-center gap-1.5">
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+      Customer Portal
+    </Link>
+    <span className="text-gray-300 font-bold">•</span>
     <Link href="/aplicar" className="hover:text-green transition-colors">
-    Aplicar
+      Aplicar
     </Link>
     <span className="text-gray-300 font-bold">•</span>
     <Link href="/apply" className="hover:text-green transition-colors">
@@ -52,7 +59,6 @@ function SiteHeader() {
     </Link>
   </div>
 </div>
-
 
       {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
 <header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
