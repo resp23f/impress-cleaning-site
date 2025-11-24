@@ -47,7 +47,7 @@ function LoginPageContent() {
       if (data.user) {
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
-          .select('account_status, role')
+          .select('account_status, role, full_name, phone')
           .eq('id', data.user.id)
           .single()
 
@@ -58,6 +58,12 @@ function LoginPageContent() {
             router.push('/auth/profile-setup')
             return
           }
+        }
+
+        // Incomplete profile — send them back to setup
+        if (!profile?.full_name || !profile?.phone) {
+          router.push('/auth/profile-setup')
+          return
         }
 
         if (profile?.account_status === 'pending') {
