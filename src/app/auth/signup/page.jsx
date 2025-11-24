@@ -115,33 +115,23 @@ const handleEmailSignUp = async (e) => {
       email: formData.email,
       password: formData.password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+emailRedirectTo: `${window.location.origin}/auth/callback?next=/auth/profile-setup`,
       },
     })
 
     if (error) throw error
 
-if (data.user) {
-      // Send admin notification email
-      fetch('/api/email/admin-new-registration', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerName: formData.email.split('@')[0],
-          customerEmail: formData.email,
-          customerId: data.user.id,
-        }),
-      }).catch(err => console.error('Email notification failed:', err))
-      
-      router.push('/auth/verify-email?email=' + encodeURIComponent(formData.email))
-    }  } catch (error) {
+    // No admin email here - it will be sent after profile setup
+    console.log('Signup successful, redirecting to verify email...', data)
+    router.push('/auth/verify-email?email=' + encodeURIComponent(formData.email))
+    
+  } catch (error) {
     console.error('Error signing up:', error)
     toast.error(error.message || 'Failed to sign up')
   } finally {
     setLoading(false)
   }
-} 
-
+}
   const handleGoogleSignIn = async () => {
 
     setLoading(true)

@@ -8,7 +8,7 @@ export async function POST(request) {
     const { email, name, invoiceNumber, amount, dueDate, checkoutUrl } = await request.json()
 
     const { data, error } = await resend.emails.send({
-      from: 'Impress Cleaning Services <noreply@impressyoucleaning.com>',
+      from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
       to: email,
       subject: `Invoice ${invoiceNumber} - Payment Required`,
       html: `
