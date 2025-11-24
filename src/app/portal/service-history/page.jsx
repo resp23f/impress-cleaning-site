@@ -53,11 +53,28 @@ export default function ServiceHistoryPage() {
           return
         }
 
-        const { data, error } = await supabase
+        // Base history query (customer-scoped)
+        const { data: history, error } = await supabase
           .from('service_history')
-          .select(`
-            *,
-            appointments:appointment_id (
+          .select('*')
+          .eq('customer_id', user.id)
+          .order('completed_date', { ascending: false })
+
+        if (error) throw error
+        if (!history || history.length === 0) {
+          setServices([])
+          return
+        }
+
+        const appointmentIds = history.map((h) => h.appointment_id).filter(Boolean)
+        const appointmentsMap = {}
+        const invoicesMap = {}
+
+        if (appointmentIds.length > 0) {
+          const { data: appointments, error: apptError } = await supabase
+            .from('appointments')
+            .select(`
+              id,
               service_type,
               scheduled_date,
               team_members,
@@ -69,20 +86,32 @@ export default function ServiceHistoryPage() {
                 state,
                 zip_code
               )
-            ),
-            invoices:appointment_id (
-              id,
-              invoice_number,
-              amount,
-              status
-            )
-          `)
-          .eq('customer_id', user.id)
-          .order('completed_date', { ascending: false })
+            `)
+            .in('id', appointmentIds)
 
-        if (error) throw error
+          if (apptError) throw apptError
+          appointments?.forEach((apt) => {
+            appointmentsMap[apt.id] = apt
+          })
 
-        setServices(data || [])
+          const { data: invoices, error: invoiceError } = await supabase
+            .from('invoices')
+            .select('id, appointment_id, invoice_number, amount, status')
+            .in('appointment_id', appointmentIds)
+
+          if (invoiceError) throw invoiceError
+          invoices?.forEach((inv) => {
+            invoicesMap[inv.appointment_id] = inv
+          })
+        }
+
+        const merged = history.map((h) => ({
+          ...h,
+          appointment: h.appointment_id ? appointmentsMap[h.appointment_id] : null,
+          invoice: h.appointment_id ? invoicesMap[h.appointment_id] : null,
+        }))
+
+        setServices(merged)
       } catch (err) {
         console.error('Error loading history', err)
         toast.error('Could not load service history')
@@ -188,14 +217,14 @@ export default function ServiceHistoryPage() {
                 </Badge>
               </div>
 
-              {svc.appointments?.service_addresses && (
+              {svc.appointment?.service_addresses && (
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Calendar className="w-4 h-4 text-gray-400" />
                   <span>
-                    {svc.appointments.service_addresses.street_address}
-                    {svc.appointments.service_addresses.unit && `, ${svc.appointments.service_addresses.unit}`},{' '}
-                    {svc.appointments.service_addresses.city}, {svc.appointments.service_addresses.state}{' '}
-                    {svc.appointments.service_addresses.zip_code}
+                    {svc.appointment.service_addresses.street_address}
+                    {svc.appointment.service_addresses.unit && `, ${svc.appointment.service_addresses.unit}`},{' '}
+                    {svc.appointment.service_addresses.city}, {svc.appointment.service_addresses.state}{' '}
+                    {svc.appointment.service_addresses.zip_code}
                   </span>
                 </div>
               )}
@@ -227,16 +256,16 @@ export default function ServiceHistoryPage() {
               )}
 
               <div className="flex flex-wrap gap-3 items-center">
-                {svc.invoices && (
-                  <Link href={`/portal/invoices?focus=${svc.invoices.id}`}>
+                {svc.invoice && (
+                  <Link href={`/portal/invoices?focus=${svc.invoice.id}`}>
                     <Button variant="outline" size="sm">
                       <Receipt className="w-4 h-4" />
                       View invoice
                     </Button>
                   </Link>
                 )}
-                {svc.invoices?.id && (
-                  <Link href={`/portal/invoices/${svc.invoices.id}/pay`}>
+                {svc.invoice?.id && (
+                  <Link href={`/portal/invoices/${svc.invoice.id}/pay`}>
                     <Button variant="secondary" size="sm">
                       <FileDown className="w-4 h-4" />
                       Download receipt
