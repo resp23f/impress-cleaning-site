@@ -1,5 +1,5 @@
 'use client'
-
+import { Suspense } from 'react'
 import { useState, useEffect } from 'react' // FIX: Was 'use' in Claude Code version
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, CheckCircle, AlertCircle } from 'lucide-react'
@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import toast from 'react-hot-toast'
 
-export default function VerifyEmailPage() {
+function VerifyEmailPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
@@ -167,5 +167,12 @@ export default function VerifyEmailPage() {
         </p>
       </Card>
     </div>
+  )
+}
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyEmailPageContent />
+    </Suspense>
   )
 }
