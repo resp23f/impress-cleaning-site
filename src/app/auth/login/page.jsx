@@ -1,5 +1,5 @@
 'use client'
-
+import { Suspense } from 'react'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -11,7 +11,7 @@ import PasswordInput from '@/components/ui/PasswordInput'
 import Card from '@/components/ui/Card'
 import toast from 'react-hot-toast'
 
-export default function LoginPage() {
+function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/portal/dashboard'
@@ -45,8 +45,6 @@ export default function LoginPage() {
       }
 
       if (data.user) {
-        // Check if user profile is approved
-        // NOTE: Change 'profiles' to 'customers' if that's your table name
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('account_status, role')
@@ -55,7 +53,6 @@ export default function LoginPage() {
 
         if (profileError) {
           console.error('Profile fetch error:', profileError)
-          // If profile doesn't exist, might be incomplete setup
           if (profileError.code === 'PGRST116') {
             toast.error('Profile not found. Please complete your signup.')
             router.push('/auth/profile-setup')
@@ -75,7 +72,6 @@ export default function LoginPage() {
           return
         }
 
-        // Success - redirect based on role
         if (profile?.role === 'admin') {
           router.push('/admin/dashboard')
         } else {
@@ -111,7 +107,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <div className="w-16 h-16 bg-[#079447] rounded-full flex items-center justify-center">
@@ -126,7 +121,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Social Sign-In */}
         <div className="space-y-3 mb-6">
           <Button
             variant="secondary"
@@ -140,7 +134,6 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        {/* Divider */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -150,7 +143,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Email Login Form */}
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <Input
             type="email"
@@ -190,7 +182,6 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Don&apos;t have an account?{' '}
           <Link href="/auth/signup" className="text-[#079447] font-medium hover:underline">
@@ -199,5 +190,13 @@ export default function LoginPage() {
         </div>
       </Card>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <LoginPageContent />
+    </Suspense>
   )
 }
