@@ -8,7 +8,7 @@ export async function POST(request) {
     const { customerName, customerEmail, customerId } = await request.json()
 
     const { data, error } = await resend.emails.send({
-      from: 'Impress Cleaning Services <noreply@impressyoucleaning.com>',
+      from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
       to: 'admin@impressyoucleaning.com',
       subject: '🎉 New Customer Registration',
       html: `
