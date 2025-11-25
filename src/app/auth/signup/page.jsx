@@ -115,7 +115,7 @@ const handleEmailSignUp = async (e) => {
       email: formData.email,
       password: formData.password,
       options: {
-emailRedirectTo: `${window.location.origin}/auth/callback?next=/auth/profile-setup`,
+emailRedirectTo: `${window.location.origin}/auth/callback?next=/auth/login`,
       },
     })
 
@@ -144,7 +144,7 @@ emailRedirectTo: `${window.location.origin}/auth/callback?next=/auth/profile-set
 
         options: {
 
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/auth/callback?next=/portal/dashboard`,
 
         },
 

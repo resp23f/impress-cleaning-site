@@ -13,12 +13,12 @@ export default async function PortalLayout({ children }) {
   // Get user profile
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, account_status, role')
+    .select('full_name, phone, role')
     .eq('id', user.id)
     .single()
-  // Check if account is approved
-  if (profile?.account_status !== 'active') {
-    redirect('/auth/pending-approval')
+  // Require completed profile
+  if (!profile?.full_name || !profile?.phone) {
+    redirect('/auth/profile-setup')
   }
   // Redirect admins to admin panel
   if (profile?.role === 'admin') {

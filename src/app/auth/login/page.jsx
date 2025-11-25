@@ -47,7 +47,7 @@ function LoginPageContent() {
       if (data.user) {
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
-          .select('account_status, role, full_name, phone')
+          .select('role, full_name, phone')
           .eq('id', data.user.id)
           .single()
 
@@ -63,18 +63,6 @@ function LoginPageContent() {
         // Incomplete profile — send them back to setup
         if (!profile?.full_name || !profile?.phone) {
           router.push('/auth/profile-setup')
-          return
-        }
-
-        if (profile?.account_status === 'pending') {
-          toast.error('Your account is pending approval. You\'ll receive an email once approved.')
-          await supabase.auth.signOut()
-          return
-        }
-
-        if (profile?.account_status === 'suspended') {
-          toast.error('Your account has been suspended. Please contact support.')
-          await supabase.auth.signOut()
           return
         }
 
@@ -99,7 +87,7 @@ function LoginPageContent() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/auth/callback?next=/portal/dashboard`,
         },
       })
       if (error) throw error

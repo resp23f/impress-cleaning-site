@@ -135,7 +135,7 @@ const [addressData, setAddressData] = useState({
           full_name: formData.fullName,
           phone: formData.phone,
           communication_preference: formData.communicationPreference,
-          account_status: 'pending', // Set to pending for admin approval
+          account_status: 'active',
         })
         .eq('id', user.id)
       if (profileError) throw profileError
@@ -165,7 +165,7 @@ const { error: addressError } = await supabase
         }),
       }).catch(err => console.error('Admin notification failed:', err))
       toast.success('Profile setup complete!')
-      router.push('/auth/pending-approval')
+      router.push('/portal/dashboard')
     } catch (error) {
       console.error('Error setting up profile:', error)
       toast.error(error.message || 'Failed to setup profile')
