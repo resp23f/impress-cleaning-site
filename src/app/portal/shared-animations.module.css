@@ -1,5 +1,4 @@
 /* Shared Portal Animations & Styles */
-
 /* Keyframe Animations */
 @keyframes fadeInUp {
   from {
@@ -11,7 +10,6 @@
     transform: translateY(0);
   }
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -20,7 +18,6 @@
     opacity: 1;
   }
 }
-
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;
@@ -29,7 +26,6 @@
     background-position: 1000px 0;
   }
 }
-
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -40,116 +36,93 @@
     transform: translateX(0);
   }
 }
-
 /* Animation Classes */
 .animateFadeInUp {
   animation: fadeInUp 0.6s ease-out forwards;
 }
-
 .animateFadeIn {
   animation: fadeIn 0.4s ease-out forwards;
 }
-
 .animateSlideInRight {
   animation: slideInRight 0.5s ease-out forwards;
 }
-
 /* Stagger Delays for Sequential Animations */
 .stagger1 {
   animation-delay: 0.1s;
   opacity: 0;
 }
-
 .stagger2 {
   animation-delay: 0.2s;
   opacity: 0;
 }
-
 .stagger3 {
   animation-delay: 0.3s;
   opacity: 0;
 }
-
 .stagger4 {
   animation-delay: 0.4s;
   opacity: 0;
 }
-
 .stagger5 {
   animation-delay: 0.5s;
   opacity: 0;
 }
-
 .stagger6 {
   animation-delay: 0.6s;
   opacity: 0;
 }
-
 /* Card Hover Effects */
 .cardHover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .cardHover:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
-
 .cardInteractive {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
-
 .cardInteractive:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   border-color: #079447;
 }
-
 .cardInteractive:active {
   transform: translateY(0);
 }
-
 /* Premium Card Backgrounds */
 .heroCard {
   background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
   border: 1px solid #e5e7eb;
 }
-
 .balanceCardPositive {
   background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
   border: 1px solid #a7f3d0;
 }
-
 .balanceCardDue {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   border: 1px solid #fcd34d;
 }
-
 .successCard {
   background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
   border: 1px solid #86efac;
 }
-
 .warningCard {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   border: 1px solid #fcd34d;
 }
-
 .infoCard {
   background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
   border: 1px solid #93c5fd;
 }
-
 /* Smooth Transitions */
 .smoothTransition {
   transition: all 0.3s ease;
 }
-
 .smoothTransitionFast {
   transition: all 0.15s ease;
 }
-
 /* Loading States */
 .skeleton {
   background: linear-gradient(
@@ -162,41 +135,33 @@
   animation: shimmer 2s infinite;
   border-radius: 0.375rem;
 }
-
 .skeletonText {
   height: 1rem;
   margin-bottom: 0.5rem;
 }
-
 .skeletonTitle {
   height: 1.5rem;
   width: 60%;
   margin-bottom: 1rem;
 }
-
 .skeletonCard {
   height: 8rem;
 }
-
 /* Button Hover Effects */
 .buttonHover {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .buttonHover:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
-
 .buttonHover:active {
   transform: translateY(0);
 }
-
 /* Badge Animations */
 .badgePulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
-
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -205,26 +170,21 @@
     opacity: 0.8;
   }
 }
-
 /* List Item Animations */
 .listItemHover {
   transition: all 0.2s ease;
 }
-
 .listItemHover:hover {
   background-color: #f9fafb;
   transform: translateX(4px);
 }
-
 /* Modal/Overlay Animations */
 .fadeInOverlay {
   animation: fadeIn 0.2s ease-out;
 }
-
 .scaleIn {
   animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -235,68 +195,50 @@
     transform: scale(1);
   }
 }
-
 /* Status Indicators */
 .statusPending {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   color: #92400e;
   border: 1px solid #fcd34d;
 }
-
 .statusConfirmed {
   background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
   color: #1e40af;
   border: 1px solid #93c5fd;
 }
-
 .statusCompleted {
   background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
   color: #166534;
   border: 1px solid #86efac;
 }
-
 .statusCancelled {
   background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
   color: #991b1b;
   border: 1px solid #fca5a5;
 }
-
 /* Empty State Styling */
 .emptyState {
   padding: 3rem 1rem;
   text-align: center;
   color: #6b7280;
 }
-
 .emptyStateIcon {
   width: 4rem;
   height: 4rem;
   margin: 0 auto 1rem;
   color: #d1d5db;
 }
-
 /* Table Row Hover */
 .tableRowHover {
   transition: background-color 0.15s ease;
 }
-
 .tableRowHover:hover {
   background-color: #f9fafb;
 }
-
 /* Focus States */
 .focusRing:focus {
   outline: 2px solid #079447;
   outline-offset: 2px;
 }
-
-/* Responsive Utilities */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+/* Responsive Utilities - Reduced Motion Support */
+/* Note: Add prefers-reduced-motion handling in global CSS if needed */
