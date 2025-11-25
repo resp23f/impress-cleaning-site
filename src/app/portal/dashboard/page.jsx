@@ -16,7 +16,7 @@ import {
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
-import styles from './dashboard-animations.module.css'
+import styles from '../shared-animations.module.css'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
