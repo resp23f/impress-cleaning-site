@@ -16,6 +16,7 @@ import {
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
+import styles from './dashboard-animations.module.css'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -113,524 +114,409 @@ export default async function DashboardPage() {
   }
 
   return (
-    <>
-      <style jsx global>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Welcome Header - Animated */}
+      <div className={`mb-8 ${styles.animateFadeIn}`}>
+        <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
+          Hi {firstName} 👋
+        </h1>
+        <p className="text-gray-600">Welcome to your customer portal</p>
+      </div>
 
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            background-position: -1000px 0;
-          }
-          100% {
-            background-position: 1000px 0;
-          }
-        }
-
-        .animate-fade-in-up {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .animate-fade-in {
-          animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        .stagger-1 {
-          animation-delay: 0.1s;
-          opacity: 0;
-        }
-
-        .stagger-2 {
-          animation-delay: 0.2s;
-          opacity: 0;
-        }
-
-        .stagger-3 {
-          animation-delay: 0.3s;
-          opacity: 0;
-        }
-
-        .stagger-4 {
-          animation-delay: 0.4s;
-          opacity: 0;
-        }
-
-        .card-hover {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-hover:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-
-        .card-interactive {
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-          cursor: pointer;
-        }
-
-        .card-interactive:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-          border-color: #079447;
-        }
-
-        .card-interactive:active {
-          transform: translateY(0);
-        }
-
-        .hero-card {
-          background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-          border: 1px solid #e5e7eb;
-        }
-
-        .balance-card-positive {
-          background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-          border: 1px solid #a7f3d0;
-        }
-
-        .balance-card-due {
-          background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-          border: 1px solid #fcd34d;
-        }
-
-        .smooth-transition {
-          transition: all 0.3s ease;
-        }
-
-        .skeleton {
-          background: linear-gradient(
-            90deg,
-            #f0f0f0 25%,
-            #e0e0e0 50%,
-            #f0f0f0 75%
-          );
-          background-size: 1000px 100%;
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
-
-      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Welcome Header - Animated */}
-        <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
-            Hi {firstName} 👋
-          </h1>
-          <p className="text-gray-600">Welcome to your customer portal</p>
-        </div>
-
-        {/* Hero Section - Next Appointment & Balance */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Next Appointment Card */}
-          <div className="lg:col-span-2 animate-fade-in-up stagger-1">
-            <Card className="hero-card card-hover" padding="lg">
-              {nextAppointment ? (
-                <>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold text-[#1C294E]">Next Appointment</h2>
-                    <Badge variant={getStatusBadge(nextAppointment.status)}>
-                      {nextAppointment.status}
-                    </Badge>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Calendar className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-lg font-semibold text-[#1C294E]">
-                          {format(new Date(nextAppointment.scheduled_date), 'EEEE, MMMM d')}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {formatServiceType(nextAppointment.service_type)}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <Clock className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      <p className="text-gray-700">
-                        {nextAppointment.scheduled_time_start} - {nextAppointment.scheduled_time_end}
+      {/* Hero Section - Next Appointment & Balance */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Next Appointment Card */}
+        <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger1}`}>
+          <Card className={`${styles.heroCard} ${styles.cardHover}`} padding="lg">
+            {nextAppointment ? (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-[#1C294E]">Next Appointment</h2>
+                  <Badge variant={getStatusBadge(nextAppointment.status)}>
+                    {nextAppointment.status}
+                  </Badge>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Calendar className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-lg font-semibold text-[#1C294E]">
+                        {format(new Date(nextAppointment.scheduled_date), 'EEEE, MMMM d')}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {formatServiceType(nextAppointment.service_type)}
                       </p>
                     </div>
-
-                    {nextAppointment.team_members && nextAppointment.team_members.length > 0 && (
-                      <div className="flex items-center gap-3">
-                        <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                        <p className="text-gray-700">
-                          Team: {nextAppointment.team_members.join(', ')}
-                        </p>
-                      </div>
-                    )}
-
-                    {primaryAddress && (
-                      <div className="flex items-start gap-3">
-                        <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                        <p className="text-gray-700">
-                          {primaryAddress.street_address}
-                          {primaryAddress.unit && `, ${primaryAddress.unit}`}
-                          <br />
-                          {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-                        </p>
-                      </div>
-                    )}
                   </div>
 
-                  <div className="flex gap-3 mt-6">
-                    <Link href={`/portal/appointments/${nextAppointment.id}`}>
-                      <Button variant="primary" className="smooth-transition">View Details</Button>
-                    </Link>
-                    <Link href={`/portal/appointments/${nextAppointment.id}/reschedule`}>
-                      <Button variant="secondary" className="smooth-transition">Reschedule</Button>
-                    </Link>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                    <Calendar className="w-8 h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-[#1C294E] mb-2">
-                    No Upcoming Appointments
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Ready to schedule your next cleaning?
-                  </p>
-                  <Link href="/portal/request-service">
-                    <Button variant="primary" className="smooth-transition">
-                      <Plus className="w-5 h-5" />
-                      Request Service
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </Card>
-          </div>
-
-          {/* Balance Card */}
-          <div className="animate-fade-in-up stagger-2">
-            <Card 
-              className={`card-hover ${balance > 0 ? 'balance-card-due' : 'balance-card-positive'}`}
-              padding="lg"
-            >
-              <h2 className="text-lg font-semibold text-[#1C294E] mb-4">Balance</h2>
-              {balance > 0 ? (
-                <>
-                  <div className="mb-6">
-                    <p className="text-4xl font-bold text-[#1C294E] mb-1">
-                      ${balance.toFixed(2)}
+                  <div className="flex items-center gap-3">
+                    <Clock className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <p className="text-gray-700">
+                      {nextAppointment.scheduled_time_start} - {nextAppointment.scheduled_time_end}
                     </p>
-                    <p className="text-sm text-gray-600">Outstanding balance</p>
                   </div>
-                  <Link href="/portal/invoices">
-                    <Button variant="primary" fullWidth className="smooth-transition">
-                      <CreditCard className="w-5 h-5" />
-                      Pay Now
-                    </Button>
+
+                  {nextAppointment.team_members && nextAppointment.team_members.length > 0 && (
+                    <div className="flex items-center gap-3">
+                      <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <p className="text-gray-700">
+                        Team: {nextAppointment.team_members.join(', ')}
+                      </p>
+                    </div>
+                  )}
+
+                  {primaryAddress && (
+                    <div className="flex items-start gap-3">
+                      <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                      <p className="text-gray-700">
+                        {primaryAddress.street_address}
+                        {primaryAddress.unit && `, ${primaryAddress.unit}`}
+                        <br />
+                        {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <Link href={`/portal/appointments/${nextAppointment.id}`}>
+                    <Button variant="primary" className={styles.smoothTransition}>View Details</Button>
                   </Link>
-                </>
-              ) : (
-                <div className="text-center py-4">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-3" />
-                  <p className="text-2xl font-bold text-[#1C294E] mb-1">
-                    $0.00
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    All caught up! 🎉
-                  </p>
+                  <Link href={`/portal/appointments/${nextAppointment.id}/reschedule`}>
+                    <Button variant="secondary" className={styles.smoothTransition}>Reschedule</Button>
+                  </Link>
                 </div>
-              )}
-            </Card>
-          </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                  <Calendar className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-[#1C294E] mb-2">
+                  No Upcoming Appointments
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Ready to schedule your next cleaning?
+                </p>
+                <Link href="/portal/request-service">
+                  <Button variant="primary" className={styles.smoothTransition}>
+                    <Plus className="w-5 h-5" />
+                    Request Service
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </Card>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animate-fade-in-up stagger-3">
-          <Link href="/portal/request-service" className="block">
-            <Button variant="secondary" fullWidth size="lg" className="smooth-transition h-full">
-              <Calendar className="w-5 h-5" />
-              Request Service
-            </Button>
-          </Link>
-          <Link href="/portal/invoices" className="block">
-            <Button variant="secondary" fullWidth size="lg" className="smooth-transition h-full">
-              <CreditCard className="w-5 h-5" />
-              Pay Invoice
-            </Button>
-          </Link>
-          <Link href="/portal/service-history" className="block">
-            <Button variant="secondary" fullWidth size="lg" className="smooth-transition h-full">
-              <FileText className="w-5 h-5" />
-              View History
-            </Button>
-          </Link>
+        {/* Balance Card */}
+        <div className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
+          <Card 
+            className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive}`}
+            padding="lg"
+          >
+            <h2 className="text-lg font-semibold text-[#1C294E] mb-4">Balance</h2>
+            {balance > 0 ? (
+              <>
+                <div className="mb-6">
+                  <p className="text-4xl font-bold text-[#1C294E] mb-1">
+                    ${balance.toFixed(2)}
+                  </p>
+                  <p className="text-sm text-gray-600">Outstanding balance</p>
+                </div>
+                <Link href="/portal/invoices">
+                  <Button variant="primary" fullWidth className={styles.smoothTransition}>
+                    <CreditCard className="w-5 h-5" />
+                    Pay Now
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <div className="text-center py-4">
+                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-3" />
+                <p className="text-2xl font-bold text-[#1C294E] mb-1">
+                  $0.00
+                </p>
+                <p className="text-sm text-gray-600">
+                  All caught up! 🎉
+                </p>
+              </div>
+            )}
+          </Card>
         </div>
+      </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Upcoming Appointments */}
-          <div className="animate-fade-in-up stagger-4">
-            <Card className="card-hover">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Upcoming Appointments</h2>
-                <Link
-                  href="/portal/appointments"
-                  className="text-sm text-[#079447] font-medium hover:underline smooth-transition"
-                >
-                  View All
-                </Link>
-              </div>
-              
-              {upcomingAppointments && upcomingAppointments.length > 0 ? (
-                <div className="space-y-3">
-                  {upcomingAppointments.map((apt) => (
-                    <div
-                      key={apt.id}
-                      className="p-4 border border-gray-200 rounded-lg card-interactive"
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-[#1C294E]">
-                            {format(new Date(apt.scheduled_date), 'MMM d')} • {apt.scheduled_time_start}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {formatServiceType(apt.service_type)}
-                          </p>
-                        </div>
-                        <Badge variant={getStatusBadge(apt.status)} size="sm">
-                          {apt.status}
-                        </Badge>
-                      </div>
-                      
-                      {apt.team_members && apt.team_members.length > 0 && (
-                        <p className="text-sm text-gray-600 mb-3">
-                          Team: {apt.team_members.join(', ')}
-                        </p>
-                      )}
-                      
-                      <div className="flex gap-2">
-                        <Link href={`/portal/appointments/${apt.id}`}>
-                          <Button variant="text" size="sm" className="smooth-transition">
-                            View
-                          </Button>
-                        </Link>
-                        <Link href={`/portal/appointments/${apt.id}/reschedule`}>
-                          <Button variant="text" size="sm" className="smooth-transition">
-                            Reschedule
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                    <Calendar className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm">No upcoming appointments</p>
-                </div>
-              )}
-            </Card>
-          </div>
+      {/* Quick Actions */}
+      <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 ${styles.animateFadeInUp} ${styles.stagger3}`}>
+        <Link href="/portal/request-service" className="block">
+          <Button variant="secondary" fullWidth size="lg" className={`${styles.smoothTransition} h-full`}>
+            <Calendar className="w-5 h-5" />
+            Request Service
+          </Button>
+        </Link>
+        <Link href="/portal/invoices" className="block">
+          <Button variant="secondary" fullWidth size="lg" className={`${styles.smoothTransition} h-full`}>
+            <CreditCard className="w-5 h-5" />
+            Pay Invoice
+          </Button>
+        </Link>
+        <Link href="/portal/service-history" className="block">
+          <Button variant="secondary" fullWidth size="lg" className={`${styles.smoothTransition} h-full`}>
+            <FileText className="w-5 h-5" />
+            View History
+          </Button>
+        </Link>
+      </div>
 
-          {/* Recent Services */}
-          <div className="animate-fade-in-up stagger-4">
-            <Card className="card-hover">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Recent Services</h2>
-                <Link
-                  href="/portal/service-history"
-                  className="text-sm text-[#079447] font-medium hover:underline smooth-transition"
-                >
-                  View Full History
-                </Link>
-              </div>
-              
-              {recentServices && recentServices.length > 0 ? (
-                <div className="space-y-3">
-                  {recentServices.map((service) => (
-                    <div
-                      key={service.id}
-                      className="p-4 border border-gray-200 rounded-lg smooth-transition hover:border-gray-300"
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-[#1C294E]">
-                            {format(new Date(service.completed_date), 'MMM d')} • {formatServiceType(service.service_type)}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Completed by {service.team_members?.join(', ') || 'Team'}
-                          </p>
-                        </div>
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      </div>
-                      
-                      {service.customer_rating && (
-                        <div className="flex items-center gap-1 mt-2">
-                          {[...Array(service.customer_rating)].map((_, i) => (
-                            <span key={i} className="text-yellow-400 text-lg">★</span>
-                          ))}
-                          {[...Array(5 - service.customer_rating)].map((_, i) => (
-                            <span key={i} className="text-gray-300 text-lg">★</span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                    <FileText className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm">No service history yet</p>
-                </div>
-              )}
-            </Card>
-          </div>
-
-          {/* Invoices & Payments */}
-          <div className="animate-fade-in-up stagger-4">
-            <Card className="card-hover">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Invoices & Payments</h2>
-                <Link
-                  href="/portal/invoices"
-                  className="text-sm text-[#079447] font-medium hover:underline smooth-transition"
-                >
-                  View All Invoices
-                </Link>
-              </div>
-              
-              {invoices && invoices.length > 0 ? (
-                <div className="space-y-3">
-                  {invoices.map((invoice) => (
-                    <div
-                      key={invoice.id}
-                      className="p-4 border border-gray-200 rounded-lg card-interactive"
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-[#1C294E]">
-                            Invoice {invoice.invoice_number}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
-                          </p>
-                        </div>
-                        <Badge variant={getInvoiceStatusBadge(invoice.status)} size="sm">
-                          {invoice.status}
-                        </Badge>
-                      </div>
-                      
-                      <div className="flex gap-2 mt-3">
-                        {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
-                          <Link href={`/portal/invoices/${invoice.id}/pay`}>
-                            <Button variant="primary" size="sm" className="smooth-transition">
-                              Pay Now
-                            </Button>
-                          </Link>
-                        )}
-                        <Link href={`/portal/invoices/${invoice.id}`}>
-                          <Button variant="text" size="sm" className="smooth-transition">
-                            View
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                    <FileText className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm">No invoices yet</p>
-                </div>
-              )}
-            </Card>
-          </div>
-
-          {/* Service Address & Recurring Services */}
-          <div className="space-y-6 animate-fade-in-up stagger-4">
-            {/* Recurring Services */}
-            {recurringServices && recurringServices.length > 0 && (
-              <Card className="card-hover">
-                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Recurring Services</h2>
-                {recurringServices.map((service) => (
-                  <div key={service.id} className="p-4 bg-gradient-to-br from-[#079447]/5 to-[#079447]/10 rounded-lg border border-[#079447]/20">
-                    <div className="flex items-start gap-3 mb-3">
-                      <Repeat className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Upcoming Appointments */}
+        <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
+          <Card className={styles.cardHover}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-[#1C294E]">Upcoming Appointments</h2>
+              <Link
+                href="/portal/appointments"
+                className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
+              >
+                View All
+              </Link>
+            </div>
+            
+            {upcomingAppointments && upcomingAppointments.length > 0 ? (
+              <div className="space-y-3">
+                {upcomingAppointments.map((apt) => (
+                  <div
+                    key={apt.id}
+                    className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="font-semibold text-[#1C294E]">
-                          {service.recurring_frequency} {formatServiceType(service.service_type)}
+                          {format(new Date(apt.scheduled_date), 'MMM d')} • {apt.scheduled_time_start}
                         </p>
                         <p className="text-sm text-gray-600">
-                          Every {service.recurring_frequency} at {service.scheduled_time_start}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Next: {format(new Date(service.scheduled_date), 'MMM d, yyyy')}
+                          {formatServiceType(apt.service_type)}
                         </p>
                       </div>
+                      <Badge variant={getStatusBadge(apt.status)} size="sm">
+                        {apt.status}
+                      </Badge>
                     </div>
+                    
+                    {apt.team_members && apt.team_members.length > 0 && (
+                      <p className="text-sm text-gray-600 mb-3">
+                        Team: {apt.team_members.join(', ')}
+                      </p>
+                    )}
+                    
                     <div className="flex gap-2">
-                      <Link href={`/portal/appointments/${service.id}`}>
-                        <Button variant="text" size="sm" className="smooth-transition">
-                          Manage
+                      <Link href={`/portal/appointments/${apt.id}`}>
+                        <Button variant="text" size="sm" className={styles.smoothTransition}>
+                          View
                         </Button>
                       </Link>
-                      <Button variant="text" size="sm" className="smooth-transition">
-                        Pause
-                      </Button>
+                      <Link href={`/portal/appointments/${apt.id}/reschedule`}>
+                        <Button variant="text" size="sm" className={styles.smoothTransition}>
+                          Reschedule
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 ))}
-              </Card>
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+                  <Calendar className="w-6 h-6 text-gray-400" />
+                </div>
+                <p className="text-sm">No upcoming appointments</p>
+              </div>
             )}
+          </Card>
+        </div>
 
-            {/* Service Address */}
-            {primaryAddress && (
-              <Card className="card-hover">
-                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
-                <div className="flex items-start gap-3 mb-4">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-[#1C294E] font-medium">
-                      {primaryAddress.street_address}
-                      {primaryAddress.unit && `, ${primaryAddress.unit}`}
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                      {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-                    </p>
+        {/* Recent Services */}
+        <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
+          <Card className={styles.cardHover}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-[#1C294E]">Recent Services</h2>
+              <Link
+                href="/portal/service-history"
+                className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
+              >
+                View Full History
+              </Link>
+            </div>
+            
+            {recentServices && recentServices.length > 0 ? (
+              <div className="space-y-3">
+                {recentServices.map((service) => (
+                  <div
+                    key={service.id}
+                    className={`p-4 border border-gray-200 rounded-lg ${styles.smoothTransition} hover:border-gray-300`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <p className="font-semibold text-[#1C294E]">
+                          {format(new Date(service.completed_date), 'MMM d')} • {formatServiceType(service.service_type)}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Completed by {service.team_members?.join(', ') || 'Team'}
+                        </p>
+                      </div>
+                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                    </div>
+                    
+                    {service.customer_rating && (
+                      <div className="flex items-center gap-1 mt-2">
+                        {[...Array(service.customer_rating)].map((_, i) => (
+                          <span key={i} className="text-yellow-400 text-lg">★</span>
+                        ))}
+                        {[...Array(5 - service.customer_rating)].map((_, i) => (
+                          <span key={i} className="text-gray-300 text-lg">★</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+                  <FileText className="w-6 h-6 text-gray-400" />
+                </div>
+                <p className="text-sm">No service history yet</p>
+              </div>
+            )}
+          </Card>
+        </div>
+
+        {/* Invoices & Payments */}
+        <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
+          <Card className={styles.cardHover}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-[#1C294E]">Invoices & Payments</h2>
+              <Link
+                href="/portal/invoices"
+                className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
+              >
+                View All Invoices
+              </Link>
+            </div>
+            
+            {invoices && invoices.length > 0 ? (
+              <div className="space-y-3">
+                {invoices.map((invoice) => (
+                  <div
+                    key={invoice.id}
+                    className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <p className="font-semibold text-[#1C294E]">
+                          Invoice {invoice.invoice_number}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
+                        </p>
+                      </div>
+                      <Badge variant={getInvoiceStatusBadge(invoice.status)} size="sm">
+                        {invoice.status}
+                      </Badge>
+                    </div>
+                    
+                    <div className="flex gap-2 mt-3">
+                      {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+                        <Link href={`/portal/invoices/${invoice.id}/pay`}>
+                          <Button variant="primary" size="sm" className={styles.smoothTransition}>
+                            Pay Now
+                          </Button>
+                        </Link>
+                      )}
+                      <Link href={`/portal/invoices/${invoice.id}`}>
+                        <Button variant="text" size="sm" className={styles.smoothTransition}>
+                          View
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+                  <FileText className="w-6 h-6 text-gray-400" />
+                </div>
+                <p className="text-sm">No invoices yet</p>
+              </div>
+            )}
+          </Card>
+        </div>
+
+        {/* Service Address & Recurring Services */}
+        <div className={`space-y-6 ${styles.animateFadeInUp} ${styles.stagger4}`}>
+          {/* Recurring Services */}
+          {recurringServices && recurringServices.length > 0 && (
+            <Card className={styles.cardHover}>
+              <h2 className="text-xl font-bold text-[#1C294E] mb-4">Recurring Services</h2>
+              {recurringServices.map((service) => (
+                <div key={service.id} className="p-4 bg-gradient-to-br from-[#079447]/5 to-[#079447]/10 rounded-lg border border-[#079447]/20">
+                  <div className="flex items-start gap-3 mb-3">
+                    <Repeat className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-[#1C294E]">
+                        {service.recurring_frequency} {formatServiceType(service.service_type)}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Every {service.recurring_frequency} at {service.scheduled_time_start}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Next: {format(new Date(service.scheduled_date), 'MMM d, yyyy')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Link href={`/portal/appointments/${service.id}`}>
+                      <Button variant="text" size="sm" className={styles.smoothTransition}>
+                        Manage
+                      </Button>
+                    </Link>
+                    <Button variant="text" size="sm" className={styles.smoothTransition}>
+                      Pause
+                    </Button>
                   </div>
                 </div>
-                <Link href="/portal/settings#addresses">
-                  <Button variant="text" size="sm" className="smooth-transition">
-                    Edit Address
-                  </Button>
-                </Link>
-              </Card>
-            )}
-          </div>
+              ))}
+            </Card>
+          )}
+
+          {/* Service Address */}
+          {primaryAddress && (
+            <Card className={styles.cardHover}>
+              <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
+              <div className="flex items-start gap-3 mb-4">
+                <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-[#1C294E] font-medium">
+                    {primaryAddress.street_address}
+                    {primaryAddress.unit && `, ${primaryAddress.unit}`}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+                  </p>
+                </div>
+              </div>
+              <Link href="/portal/settings#addresses">
+                <Button variant="text" size="sm" className={styles.smoothTransition}>
+                  Edit Address
+                </Button>
+              </Link>
+            </Card>
+          )}
         </div>
       </div>
-    </>
+    </div>
   )
 }
