@@ -211,8 +211,8 @@ export default async function DashboardPage() {
         </div>
 
         {/* Balance Card */}
-        <div className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
-          <Card 
+<div className={`${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
+            <Card 
             className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive}`}
             padding="lg"
           >
@@ -456,8 +456,8 @@ export default async function DashboardPage() {
         </div>
 
         {/* Service Address & Recurring Services */}
-        <div className={`space-y-6 ${styles.animateFadeInUp} ${styles.stagger4}`}>
-          {/* Recurring Services */}
+<div className={`space-y-6 ${styles.animateFadeInUp} ${styles.stagger4} ${styles.fillHeight}`}>
+            {/* Recurring Services */}
           {recurringServices && recurringServices.length > 0 && (
             <Card className={styles.cardHover}>
               <h2 className="text-xl font-bold text-[#1C294E] mb-4">Recurring Services</h2>
