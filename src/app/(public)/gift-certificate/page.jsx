@@ -2,7 +2,6 @@
 import StaggerItem from '@/components/StaggerItem';
 import Link from 'next/link';
 import { useState } from 'react';
-
 export default function GiftCertificatePage() {
   const [selectedAmount, setSelectedAmount] = useState('150');
   const [customAmount, setCustomAmount] = useState('');
@@ -13,11 +12,9 @@ export default function GiftCertificatePage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
-
   const handleCheckout = async () => {
     setIsProcessing(true);
     setError('');
-
     try {
       const response = await fetch('/api/create-gift-checkout', {
         method: 'POST',
@@ -33,32 +30,25 @@ export default function GiftCertificatePage() {
           message: personalMessage,
         }),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create checkout');
       }
-
       // Redirect to Stripe checkout
       window.location.href = data.checkoutUrl;
-
     } catch (err) {
       console.error('Checkout error:', err);
       setError(err.message || 'Something went wrong. Please try again.');
       setIsProcessing(false);
     }
   };
-
   const presetAmounts = [
     { value: '100', label: '$100', description: 'A thoughtful start' },
     { value: '150', label: '$150', description: 'Perfect for any occasion' },
     { value: '250', label: '$250', description: 'Make a real impact' },
     { value: '500', label: '$500', description: 'The ultimate time gift' },
   ];
-
   const finalAmount = customAmount || selectedAmount;
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Hero Section */}
@@ -66,7 +56,6 @@ export default function GiftCertificatePage() {
         <section className="relative pt-32 pb-16 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-green-50 via-transparent to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-50 via-transparent to-transparent" />
-
           <div className="relative max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-6 py-2 bg-green-50 border border-green-100 rounded-full mb-6">
               <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,21 +63,18 @@ export default function GiftCertificatePage() {
               </svg>
               <span className="text-green-700 text-sm font-semibold uppercase tracking-wide">The Perfect Gift</span>
             </div>
-
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6 leading-tight">
               Give the Gift of
               <span className="block mt-2 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                 More Time Together
               </span>
             </h1>
-
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Help someone you care about reclaim their weekends and spend more time on what matters most.
             </p>
           </div>
         </section>
       </StaggerItem>
-
       {/* Main Content - Two Column Layout */}
       <section className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
@@ -102,7 +88,6 @@ export default function GiftCertificatePage() {
                     <h2 className="text-3xl font-display font-bold mb-2">Create Your Gift Certificate</h2>
                     <p className="text-green-50">Thoughtful, practical, and always appreciated</p>
                   </div>
-
                   {/* Form Content */}
                   <div className="p-8 space-y-8">
                     {/* Amount Selection */}
@@ -134,7 +119,6 @@ export default function GiftCertificatePage() {
                           </button>
                         ))}
                       </div>
-
                       <div className="relative">
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Or enter custom amount</label>
                         <div className="relative">
@@ -154,11 +138,9 @@ export default function GiftCertificatePage() {
                         <p className="mt-2 text-sm text-gray-500">Minimum $75</p>
                       </div>
                     </div>
-
                     {/* Recipient Information */}
                     <div className="space-y-4 pt-6 border-t border-gray-200">
                       <h3 className="text-lg font-bold text-gray-900">Recipient Details</h3>
-
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Recipient Name *</label>
                         <input
@@ -170,7 +152,6 @@ export default function GiftCertificatePage() {
                           required
                         />
                       </div>
-
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Recipient Email *</label>
                         <input
@@ -183,11 +164,9 @@ export default function GiftCertificatePage() {
                         />
                       </div>
                     </div>
-
                     {/* Sender Information */}
                     <div className="space-y-4 pt-6 border-t border-gray-200">
                       <h3 className="text-lg font-bold text-gray-900">Your Information</h3>
-
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Your Name *</label>
                         <input
@@ -200,7 +179,6 @@ export default function GiftCertificatePage() {
                         />
                       </div>
                     </div>
-
                     {/* Personal Message */}
                     <div className="pt-6 border-t border-gray-200">
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Personal Message (Optional)</label>
@@ -217,7 +195,6 @@ export default function GiftCertificatePage() {
                 </div>
               </StaggerItem>
             </div>
-
             {/* Right Column - Summary & Checkout */}
             <div className="lg:col-span-2">
               <div className="sticky top-24">
@@ -227,13 +204,11 @@ export default function GiftCertificatePage() {
                     <div className="bg-gray-900 px-6 py-5 text-white">
                       <h3 className="text-xl font-bold">Order Summary</h3>
                     </div>
-
                     <div className="p-6 space-y-4">
                       <div className="flex justify-between items-center py-3 border-b border-gray-200">
                         <span className="text-gray-600">Gift Amount</span>
                         <span className="text-2xl font-bold text-gray-900">${finalAmount || '0'}</span>
                       </div>
-
                       {recipientName && (
                         <div className="pt-4 space-y-2">
                           <div className="flex items-start gap-3">
@@ -247,7 +222,6 @@ export default function GiftCertificatePage() {
                           </div>
                         </div>
                       )}
-
                       {senderName && (
                         <div className="flex items-start gap-3">
                           <svg className="w-5 h-5 text-gray-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,7 +233,6 @@ export default function GiftCertificatePage() {
                           </div>
                         </div>
                       )}
-
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Your Email *</label>
                         <input
@@ -272,7 +245,6 @@ export default function GiftCertificatePage() {
                         />
                         <p className="mt-1 text-xs text-gray-500">For your purchase receipt</p>
                       </div>
-
                       {/* Checkout Button */}
                       <button
                         onClick={handleCheckout}
@@ -298,17 +270,14 @@ export default function GiftCertificatePage() {
                           )}
                         </span>
                       </button>
-
                       {error && (
                         <p className="text-sm text-red-600 mt-2 text-center">{error}</p>
                       )}
-
                       <p className="text-xs text-center text-gray-500 mt-4">
                         Secure payment processing • Certificate delivered via email
                       </p>
                     </div>
                   </div>
-
                   {/* Benefits */}
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                     <h4 className="font-bold text-gray-900 mb-4">What's Included</h4>
@@ -335,7 +304,6 @@ export default function GiftCertificatePage() {
           </div>
         </div>
       </section>
-
       {/* Why This Makes a Great Gift */}
       <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
@@ -349,7 +317,6 @@ export default function GiftCertificatePage() {
               </p>
             </div>
           </StaggerItem>
-
           <div className="grid md:grid-cols-3 gap-8">
             <StaggerItem delay={100}>
               <div className="text-center group">
@@ -364,7 +331,6 @@ export default function GiftCertificatePage() {
                 </p>
               </div>
             </StaggerItem>
-
             <StaggerItem delay={200}>
               <div className="text-center group">
                 <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -378,7 +344,6 @@ export default function GiftCertificatePage() {
                 </p>
               </div>
             </StaggerItem>
-
             <StaggerItem delay={300}>
               <div className="text-center group">
                 <div className="w-20 h-20 mx-auto bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -395,7 +360,6 @@ export default function GiftCertificatePage() {
           </div>
         </div>
       </section>
-
       {/* FAQ Section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
@@ -406,7 +370,6 @@ export default function GiftCertificatePage() {
               </h2>
             </div>
           </StaggerItem>
-
           <div className="space-y-4">
             {[
               {
@@ -440,7 +403,6 @@ export default function GiftCertificatePage() {
           </div>
         </div>
       </section>
-
       {/* Contact CTA */}
       <StaggerItem>
         <section className="py-16 px-4 bg-gradient-to-r from-green-600 to-emerald-600">

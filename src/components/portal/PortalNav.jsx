@@ -14,7 +14,6 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
-
 const navItems = [
   { icon: Home, label: 'Dashboard', href: '/portal/dashboard' },
   { icon: Calendar, label: 'Appointments', href: '/portal/appointments' },
@@ -22,18 +21,15 @@ const navItems = [
   { icon: Receipt, label: 'Invoices', href: '/portal/invoices' },
   { icon: Settings, label: 'Settings', href: '/portal/settings' },
 ]
-
 export default function PortalNav({ userName }) {
   const pathname = usePathname()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const supabase = createClient()
-
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/auth/login')
   }
-
   return (
     <>
       {/* Desktop Sidebar */}
@@ -47,7 +43,6 @@ export default function PortalNav({ userName }) {
               className="h-12 w-auto"
             />
           </div>
-
           {/* User Info */}
           {userName && (
             <div className="px-6 mb-6">
@@ -55,7 +50,6 @@ export default function PortalNav({ userName }) {
               <p className="text-lg font-semibold text-[#1C294E]">{userName}</p>
             </div>
           )}
-
           {/* Navigation */}
           <nav className="flex-1 px-3 space-y-1">
             {navItems.map((item) => {
@@ -79,7 +73,6 @@ export default function PortalNav({ userName }) {
               )
             })}
           </nav>
-
           {/* Logout */}
           <div className="p-3 border-t border-gray-200">
             <button
@@ -92,7 +85,6 @@ export default function PortalNav({ userName }) {
           </div>
         </div>
       </aside>
-
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
         <div className="flex items-center">
@@ -113,7 +105,6 @@ export default function PortalNav({ userName }) {
           )}
         </button>
       </div>
-
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setMobileMenuOpen(false)}>
@@ -129,7 +120,6 @@ export default function PortalNav({ userName }) {
                   <p className="text-lg font-semibold text-[#1C294E]">{userName}</p>
                 </div>
               )}
-
               {/* Navigation */}
               <nav className="flex-1 px-3 space-y-1">
                 {navItems.map((item) => {
@@ -154,7 +144,6 @@ export default function PortalNav({ userName }) {
                   )
                 })}
               </nav>
-
               {/* Logout */}
               <div className="px-3 pt-3 border-t border-gray-200">
                 <button
@@ -169,7 +158,6 @@ export default function PortalNav({ userName }) {
           </div>
         </div>
       )}
-
       {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200">
         <nav className="flex justify-around">

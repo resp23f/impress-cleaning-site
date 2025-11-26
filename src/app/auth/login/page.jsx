@@ -10,30 +10,24 @@ import Input from '@/components/ui/Input'
 import PasswordInput from '@/components/ui/PasswordInput'
 import Card from '@/components/ui/Card'
 import toast from 'react-hot-toast'
-
 function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/portal/dashboard'
-
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
-
   const supabase = createClient()
-
   const handleEmailLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       })
-
       if (error) {
         // Handle email not verified
         if (error.message.includes('Email not confirmed')) {
@@ -43,14 +37,12 @@ function LoginPageContent() {
         }
         throw error
       }
-
       if (data.user) {
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('role, full_name, phone')
           .eq('id', data.user.id)
           .single()
-
         if (profileError) {
           console.error('Profile fetch error:', profileError)
           if (profileError.code === 'PGRST116') {
@@ -59,13 +51,11 @@ function LoginPageContent() {
             return
           }
         }
-
         // Incomplete profile — send them back to setup
         if (!profile?.full_name || !profile?.phone) {
           router.push('/auth/profile-setup')
           return
         }
-
         if (profile?.role === 'admin') {
           router.push('/admin/dashboard')
         } else {
@@ -80,7 +70,6 @@ function LoginPageContent() {
       setLoading(false)
     }
   }
-
   const handleGoogleSignIn = async () => {
     setLoading(true)
     try {
@@ -97,7 +86,6 @@ function LoginPageContent() {
       setLoading(false)
     }
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
@@ -114,7 +102,6 @@ function LoginPageContent() {
             Sign in to access your customer portal
           </p>
         </div>
-
         <div className="space-y-3 mb-6">
           <Button
             variant="secondary"
@@ -127,7 +114,6 @@ function LoginPageContent() {
             Continue with Google
           </Button>
         </div>
-
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -136,7 +122,6 @@ function LoginPageContent() {
             <span className="px-4 bg-white text-gray-500">or</span>
           </div>
         </div>
-
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <Input
             type="email"
@@ -147,7 +132,6 @@ function LoginPageContent() {
             required
             icon={<Mail className="w-5 h-5" />}
           />
-
           <PasswordInput
             label="Password"
             placeholder="Enter your password"
@@ -155,7 +139,6 @@ function LoginPageContent() {
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
           />
-
           <div className="text-right">
             <Link
               href="/auth/forgot-password"
@@ -164,7 +147,6 @@ function LoginPageContent() {
               Forgot password?
             </Link>
           </div>
-
           <Button
             type="submit"
             variant="primary"
@@ -175,7 +157,6 @@ function LoginPageContent() {
             Log In
           </Button>
         </form>
-
         <div className="mt-6 text-center text-sm text-gray-600">
           Don&apos;t have an account?{' '}
           <Link href="/auth/signup" className="text-[#079447] font-medium hover:underline">
@@ -186,7 +167,6 @@ function LoginPageContent() {
     </div>
   )
 }
-
 export default function LoginPage() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>

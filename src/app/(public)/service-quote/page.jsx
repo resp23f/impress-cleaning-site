@@ -1,11 +1,8 @@
 'use client';
-
 import { useState } from 'react';
 import { useForm } from '@formspree/react';
-
 export default function ServiceQuotePage() {
   const [state, handleSubmit] = useForm("https://formspree.io/f/xblzwdek");
-  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,14 +12,12 @@ export default function ServiceQuotePage() {
     frequency: 'one-time',
     message: ''
   });
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
   if (state.succeeded) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -40,7 +35,6 @@ export default function ServiceQuotePage() {
                 Our team will review your information and contact you within 24 hours or less with a custom quote.
               </p>
                   <a
-              
                 href="/"
                 className="inline-block text-blue-600 hover:underline"
               >
@@ -52,30 +46,24 @@ export default function ServiceQuotePage() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-background">
-
       <section className="bg-[#1C294E]/80 text-white py-15">
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Request a Free Quote</h1>
           <p className="font-manrope text-xl">Fill out the form below and we will get back to you within 24 hours or less with a cleaning quote</p>
         </div>
       </section>
-
       <section className="py-25">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-            
             {state.errors && state.errors.length > 0 && (
               <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
                 <p className="font-semibold">Oops! Something went wrong.</p>
                 <p>Please try again or call us directly at (512) 555-0123</p>
               </div>
             )}
-
             <form onSubmit={handleSubmit} className="space-y-6">
-              
               <div>
                 <label className="block font-display text-gray-700 font-semibold mb-2">
                   Service Type <span className="text-red-600">*</span>
@@ -91,7 +79,6 @@ export default function ServiceQuotePage() {
                   <option value="commercial">Commercial Cleaning</option>
                 </select>
               </div>
-
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
@@ -107,7 +94,6 @@ export default function ServiceQuotePage() {
                     placeholder="John Doe"
                   />
                 </div>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Email <span className="text-red-600">*</span>
@@ -123,7 +109,6 @@ export default function ServiceQuotePage() {
                   />
                 </div>
               </div>
-
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
@@ -139,7 +124,6 @@ export default function ServiceQuotePage() {
                     placeholder="(512) 555-0123"
                   />
                 </div>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Cleaning Frequency <span className="text-red-600">*</span>
@@ -162,7 +146,6 @@ export default function ServiceQuotePage() {
                   </select>
                 </div>
               </div>
-
               <div>
                 <label className="block font-display text-gray-700 font-semibold mb-2">
                   Service Address <span className="text-red-600">*</span>
@@ -177,7 +160,6 @@ export default function ServiceQuotePage() {
                   placeholder="123 Main St, Georgetown, TX 78626"
                 />
               </div>
-
               {formData.serviceType === 'commercial' && (
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
@@ -195,7 +177,6 @@ export default function ServiceQuotePage() {
                   />
                 </div>
               )}
-
               <div>
                 <label className="block font-display text-gray-700 font-semibold mb-2">
                   Additional Details or Special Requests
@@ -209,7 +190,6 @@ export default function ServiceQuotePage() {
                   placeholder="Tell us about any specific cleaning needs, areas of focus, pets, etc."
                 />
               </div>
-
               <button
                 type="submit"
                 disabled={state.submitting}
@@ -217,13 +197,11 @@ export default function ServiceQuotePage() {
               >
                 {state.submitting ? 'Submitting...' : 'Request Free Quote'}
               </button>
-
               <p className="text-sm font-manrope text-gray-600 text-center">
                 We respect your privacy. Your information will never be shared. No Spam. Ever.
               </p>
             </form>
           </div>
-
           <div className="mt-20 grid md:grid-cols-3 gap-6 text-center">
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="text-3xl mb-2">⚡</div>

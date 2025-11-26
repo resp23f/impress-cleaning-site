@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import {
   Building2,
@@ -18,12 +17,10 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
-
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [activeTab, setActiveTab] = useState('business')
-
   // Business Info
   const [businessInfo, setBusinessInfo] = useState({
     name: 'Impress Cleaning Services',
@@ -32,7 +29,6 @@ export default function SettingsPage() {
     address: '123 Main St, Fort Worth, TX 76104',
     website: 'https://impresscleaning.com',
   })
-
   // Service Pricing
   const [pricing, setPricing] = useState({
     standard: '150',
@@ -41,7 +37,6 @@ export default function SettingsPage() {
     post_construction: '450',
     office: '200',
   })
-
   // Business Hours
   const [businessHours, setBusinessHours] = useState({
     monday: { open: '08:00', close: '18:00', closed: false },
@@ -52,7 +47,6 @@ export default function SettingsPage() {
     saturday: { open: '09:00', close: '15:00', closed: false },
     sunday: { open: '09:00', close: '15:00', closed: true },
   })
-
   // Notification Settings
   const [notifications, setNotifications] = useState({
     newRegistration: true,
@@ -61,13 +55,10 @@ export default function SettingsPage() {
     appointmentCancelled: true,
     invoiceOverdue: true,
   })
-
   const supabase = createClient()
-
   useEffect(() => {
     loadSettings()
   }, [])
-
   const loadSettings = async () => {
     setLoading(true)
     try {
@@ -79,7 +70,6 @@ export default function SettingsPage() {
       setLoading(false)
     }
   }
-
   const handleSaveBusinessInfo = async () => {
     setSaving(true)
     try {
@@ -93,7 +83,6 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
-
   const handleSavePricing = async () => {
     setSaving(true)
     try {
@@ -106,7 +95,6 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
-
   const handleSaveHours = async () => {
     setSaving(true)
     try {
@@ -119,7 +107,6 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
-
   const handleSaveNotifications = async () => {
     setSaving(true)
     try {
@@ -132,14 +119,12 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
-
   const tabs = [
     { id: 'business', label: 'Business Info', icon: Building2 },
     { id: 'pricing', label: 'Pricing', icon: DollarSign },
     { id: 'hours', label: 'Business Hours', icon: Clock },
     { id: 'notifications', label: 'Notifications', icon: Bell },
   ]
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -148,11 +133,9 @@ export default function SettingsPage() {
       </div>
     )
   }
-
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={0} requestsCount={0} />
-
       <div className="lg:pl-64">
         <main className="py-8 px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -164,7 +147,6 @@ export default function SettingsPage() {
               Manage your business settings and preferences
             </p>
           </div>
-
           {/* Tabs */}
           <div className="mb-8 border-b border-gray-200">
             <div className="flex gap-6 overflow-x-auto">
@@ -187,7 +169,6 @@ export default function SettingsPage() {
               })}
             </div>
           </div>
-
           {/* Business Info Tab */}
           {activeTab === 'business' && (
             <Card>
@@ -204,14 +185,12 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
-
               <div className="space-y-4">
                 <Input
                   label="Business Name"
                   value={businessInfo.name}
                   onChange={(e) => setBusinessInfo({ ...businessInfo, name: e.target.value })}
                 />
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
                     type="email"
@@ -219,7 +198,6 @@ export default function SettingsPage() {
                     value={businessInfo.email}
                     onChange={(e) => setBusinessInfo({ ...businessInfo, email: e.target.value })}
                   />
-
                   <Input
                     type="tel"
                     label="Phone Number"
@@ -227,19 +205,16 @@ export default function SettingsPage() {
                     onChange={(e) => setBusinessInfo({ ...businessInfo, phone: e.target.value })}
                   />
                 </div>
-
                 <Input
                   label="Business Address"
                   value={businessInfo.address}
                   onChange={(e) => setBusinessInfo({ ...businessInfo, address: e.target.value })}
                 />
-
                 <Input
                   label="Website"
                   value={businessInfo.website}
                   onChange={(e) => setBusinessInfo({ ...businessInfo, website: e.target.value })}
                 />
-
                 <div className="pt-4">
                   <Button
                     variant="primary"
@@ -253,7 +228,6 @@ export default function SettingsPage() {
               </div>
             </Card>
           )}
-
           {/* Pricing Tab */}
           {activeTab === 'pricing' && (
             <Card>
@@ -270,7 +244,6 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
-
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
@@ -280,7 +253,6 @@ export default function SettingsPage() {
                     onChange={(e) => setPricing({ ...pricing, standard: e.target.value })}
                     placeholder="150"
                   />
-
                   <Input
                     type="number"
                     label="Deep Cleaning"
@@ -288,7 +260,6 @@ export default function SettingsPage() {
                     onChange={(e) => setPricing({ ...pricing, deep: e.target.value })}
                     placeholder="250"
                   />
-
                   <Input
                     type="number"
                     label="Move In/Out Cleaning"
@@ -296,7 +267,6 @@ export default function SettingsPage() {
                     onChange={(e) => setPricing({ ...pricing, move_in_out: e.target.value })}
                     placeholder="350"
                   />
-
                   <Input
                     type="number"
                     label="Post-Construction Cleaning"
@@ -304,7 +274,6 @@ export default function SettingsPage() {
                     onChange={(e) => setPricing({ ...pricing, post_construction: e.target.value })}
                     placeholder="450"
                   />
-
                   <Input
                     type="number"
                     label="Office Cleaning"
@@ -313,13 +282,11 @@ export default function SettingsPage() {
                     placeholder="200"
                   />
                 </div>
-
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-sm text-blue-800">
                     <strong>Note:</strong> These are starting prices. You can adjust pricing per customer when creating invoices.
                   </p>
                 </div>
-
                 <div className="pt-4">
                   <Button
                     variant="primary"
@@ -333,7 +300,6 @@ export default function SettingsPage() {
               </div>
             </Card>
           )}
-
           {/* Business Hours Tab */}
           {activeTab === 'hours' && (
             <Card>
@@ -350,7 +316,6 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
-
               <div className="space-y-4">
                 {Object.entries(businessHours).map(([day, hours]) => (
                   <div key={day} className="flex flex-col md:flex-row md:items-center gap-4 pb-4 border-b border-gray-200 last:border-0">
@@ -359,7 +324,6 @@ export default function SettingsPage() {
                         {day}
                       </label>
                     </div>
-
                     <div className="flex items-center gap-4 flex-1">
                       <label className="flex items-center gap-2">
                         <input
@@ -373,7 +337,6 @@ export default function SettingsPage() {
                         />
                         <span className="text-sm text-gray-600">Closed</span>
                       </label>
-
                       {!hours.closed && (
                         <div className="flex items-center gap-2 flex-1">
                           <input
@@ -400,7 +363,6 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 ))}
-
                 <div className="pt-4">
                   <Button
                     variant="primary"
@@ -414,7 +376,6 @@ export default function SettingsPage() {
               </div>
             </Card>
           )}
-
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
             <Card>
@@ -431,7 +392,6 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
-
               <div className="space-y-4">
                 {[
                   { key: 'newRegistration', label: 'New Customer Registration', description: 'Get notified when a new customer signs up' },
@@ -460,7 +420,6 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 ))}
-
                 <div className="pt-4">
                   <Button
                     variant="primary"

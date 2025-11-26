@@ -9,7 +9,6 @@ export default function FAQPage() {
     if (window.Tawk_API && window.Tawk_API.hideWidget) {
       window.Tawk_API.hideWidget();
     }
-    
     return () => {
       // Show it again when leaving the page
       if (window.Tawk_API && window.Tawk_API.showWidget) {
@@ -17,7 +16,6 @@ export default function FAQPage() {
       }
     };
   }, []);
-
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -28,7 +26,6 @@ export default function FAQPage() {
             <div className="absolute top-20 right-20 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
             <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
           </div>
-          
           <div className="relative max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
               Frequently Asked
@@ -36,18 +33,15 @@ export default function FAQPage() {
                 Questions
               </span>
             </h1>
-            
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
               Everything you need to know about our cleaning services, answered clearly and simply.
             </p>
           </div>
         </section>
       </StaggerItem>
-
       {/* FAQ Sections */}
       <section className="py-24 px-4 bg-background">
         <div className="max-w-4xl mx-auto space-y-12">
-          
           {/* General Questions */}
           <StaggerItem delay={100}>
             <FAQSection 
@@ -56,7 +50,6 @@ export default function FAQPage() {
               questions={generalQuestions}
             />
           </StaggerItem>
-
           {/* Service Questions */}
           <StaggerItem delay={200}>
             <FAQSection 
@@ -65,7 +58,6 @@ export default function FAQPage() {
               questions={serviceQuestions}
             />
           </StaggerItem>
-
           {/* Billing & Payments */}
           <StaggerItem delay={300}>
             <FAQSection 
@@ -74,7 +66,6 @@ export default function FAQPage() {
               questions={billingQuestions}
             />
           </StaggerItem>
-
           {/* Other Common Questions */}
           <StaggerItem delay={400}>
             <FAQSection 
@@ -83,15 +74,12 @@ export default function FAQPage() {
               questions={otherQuestions}
             />
           </StaggerItem>
-
         </div>
       </section>
-
       {/* Still Have Questions CTA */}
       <StaggerItem>
         <section className="relative py-20 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-[var(--softgreen)]" />
-          
           <div className="relative max-w-3xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 font-display">
               Still Have Questions?
@@ -99,7 +87,6 @@ export default function FAQPage() {
             <p className="text-xl text-gray-700 mb-8 leading-relaxed">
               We're here to help! Reach out and we'll get back to you as soon as possible.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="tel:+15122775364" 
@@ -120,11 +107,9 @@ export default function FAQPage() {
     </main>
   );
 }
-
 // FAQ Section Component
 function FAQSection({ title, icon, questions }) {
   const [openSection, setOpenSection] = useState(true);
-
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
       {/* Section Header */}
@@ -147,7 +132,6 @@ function FAQSection({ title, icon, questions }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </motion.svg>
       </button>
-
       {/* Questions List */}
       <AnimatePresence initial={false}>
         {openSection && (
@@ -168,11 +152,9 @@ function FAQSection({ title, icon, questions }) {
     </div>
   );
 }
-
 // Individual FAQ Item Component
 function FAQItem({ question, answer }) {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="px-8 py-6 hover:bg-gray-50 transition-colors duration-200">
       <button
@@ -193,7 +175,6 @@ function FAQItem({ question, answer }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </motion.svg>
       </button>
-
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
@@ -212,7 +193,6 @@ function FAQItem({ question, answer }) {
     </div>
   );
 }
-
 // FAQ Data
 const generalQuestions = [
   {
@@ -236,7 +216,6 @@ const generalQuestions = [
     a: "Life happens—we get it! Just give us a call or send us a message as soon as you can, and we'll work with you to find a new time that fits your schedule."
   }
 ];
-
 const serviceQuestions = [
   {
     q: "What's included in a standard cleaning?",
@@ -279,7 +258,6 @@ const serviceQuestions = [
     a: "Your satisfaction is our priority! If something isn't right, just let us know within 24 hours and we'll come back to make it right. We stand behind our work 100%."
   }
 ];
-
 const billingQuestions = [
   {
     q: "How much does cleaning cost?",
@@ -306,7 +284,6 @@ const billingQuestions = [
     a: "No long-term contracts required! While we love our recurring clients, we work on a service-by-service basis. You're free to adjust or pause your service whenever you need to."
   }
 ];
-
 const otherQuestions = [
   {
     q: "What if something gets damaged during cleaning?",

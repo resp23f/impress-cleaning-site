@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -20,7 +19,6 @@ import Input from '@/components/ui/Input'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
-
 const serviceTypeLabel = (type) => {
   const labels = {
     standard: 'Standard Cleaning',
@@ -31,7 +29,6 @@ const serviceTypeLabel = (type) => {
   }
   return labels[type] || type
 }
-
 export default function ServiceHistoryPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -42,7 +39,6 @@ export default function ServiceHistoryPage() {
     endDate: '',
     serviceType: 'all',
   })
-
   useEffect(() => {
     const load = async () => {
       setLoading(true)
@@ -52,24 +48,20 @@ export default function ServiceHistoryPage() {
           router.push('/auth/login')
           return
         }
-
         // Base history query (customer-scoped)
         const { data: history, error } = await supabase
           .from('service_history')
           .select('*')
           .eq('customer_id', user.id)
           .order('completed_date', { ascending: false })
-
         if (error) throw error
         if (!history || history.length === 0) {
           setServices([])
           return
         }
-
         const appointmentIds = history.map((h) => h.appointment_id).filter(Boolean)
         const appointmentsMap = {}
         const invoicesMap = {}
-
         if (appointmentIds.length > 0) {
           const { data: appointments, error: apptError } = await supabase
             .from('appointments')
@@ -88,29 +80,24 @@ export default function ServiceHistoryPage() {
               )
             `)
             .in('id', appointmentIds)
-
           if (apptError) throw apptError
           appointments?.forEach((apt) => {
             appointmentsMap[apt.id] = apt
           })
-
           const { data: invoices, error: invoiceError } = await supabase
             .from('invoices')
             .select('id, appointment_id, invoice_number, amount, status')
             .in('appointment_id', appointmentIds)
-
           if (invoiceError) throw invoiceError
           invoices?.forEach((inv) => {
             invoicesMap[inv.appointment_id] = inv
           })
         }
-
         const merged = history.map((h) => ({
           ...h,
           appointment: h.appointment_id ? appointmentsMap[h.appointment_id] : null,
           invoice: h.appointment_id ? invoicesMap[h.appointment_id] : null,
         }))
-
         setServices(merged)
       } catch (err) {
         console.error('Error loading history', err)
@@ -119,10 +106,8 @@ export default function ServiceHistoryPage() {
         setLoading(false)
       }
     }
-
     load()
   }, [router, supabase])
-
   const filtered = services.filter((svc) => {
     const date = svc.completed_date ? parseISO(svc.completed_date) : null
     if (filters.startDate && date && isBefore(date, parseISO(filters.startDate))) {
@@ -136,7 +121,6 @@ export default function ServiceHistoryPage() {
     }
     return true
   })
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -144,7 +128,6 @@ export default function ServiceHistoryPage() {
       </div>
     )
   }
-
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
       <div className="flex items-center justify-between gap-3">
@@ -157,7 +140,6 @@ export default function ServiceHistoryPage() {
           Auto-synced after each completed visit
         </div>
       </div>
-
       <Card padding="lg" className="space-y-4">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-500" />
@@ -193,7 +175,6 @@ export default function ServiceHistoryPage() {
           </div>
         </div>
       </Card>
-
       {filtered.length === 0 ? (
         <Card className="text-center py-8 text-gray-600">
           No services match these filters yet.
@@ -216,7 +197,6 @@ export default function ServiceHistoryPage() {
                   Completed
                 </Badge>
               </div>
-
               {svc.appointment?.service_addresses && (
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Calendar className="w-4 h-4 text-gray-400" />
@@ -228,11 +208,9 @@ export default function ServiceHistoryPage() {
                   </span>
                 </div>
               )}
-
               {svc.team_members && svc.team_members.length > 0 && (
                 <p className="text-sm text-gray-700">Cleaner(s): {svc.team_members.join(', ')}</p>
               )}
-
               {svc.photos && svc.photos.length > 0 && (
                 <div>
                   <div className="flex items-center gap-2 text-sm font-medium text-[#1C294E] mb-2">
@@ -254,7 +232,6 @@ export default function ServiceHistoryPage() {
                   </div>
                 </div>
               )}
-
               <div className="flex flex-wrap gap-3 items-center">
                 {svc.invoice && (
                   <Link href={`/portal/invoices?focus=${svc.invoice.id}`}>

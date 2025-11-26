@@ -1,14 +1,11 @@
 'use client';
-
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { CheckCircle, Mail, Home, Clock, MapPin, FileText, Gift } from 'lucide-react';
-
 function ConfirmationContent() {
   const searchParams = useSearchParams();
   const dataParam = searchParams.get('data');
-  
   let bookingData = {};
   if (dataParam) {
     try {
@@ -17,14 +14,11 @@ function ConfirmationContent() {
       console.error('Error parsing booking data:', e);
     }
   }
-
   const getEstimatedPrice = () => {
     const { serviceType, serviceLevel } = bookingData;
-
     if (serviceType === 'commercial') {
       return 'Starting at $300';
     }
-
     if (serviceType === 'residential') {
       if (serviceLevel === 'basic') {
         return 'Starting at $150';
@@ -34,10 +28,8 @@ function ConfirmationContent() {
         return 'Starting at $400';
       }
     }
-
     return 'Price will be confirmed by email';
   };
-
   const formatServiceLevel = (level) => {
     const levels = {
       'basic': 'Basic Clean',
@@ -46,7 +38,6 @@ function ConfirmationContent() {
     };
     return levels[level] || level;
   };
-
   const formatTime = (time) => {
     const times = {
       'morning': 'Morning (8am - 12pm)',
@@ -55,7 +46,6 @@ function ConfirmationContent() {
     };
     return times[time] || time;
   };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <section className="bg-gradient-to-r from-[#079447] to-[#08A855] text-white py-16 md:py-20">
@@ -71,11 +61,8 @@ function ConfirmationContent() {
           </p>
         </div>
       </section>
-    
-
       <section className="py-8 md:py-12 pb-16">
         <div className="container mx-auto px-4 max-w-4xl space-y-6 md:space-y-8">
-          
           <div className="bg-gradient-to-br from-[#079447] to-[#08A855] text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
             <h2 className="text-xl md:text-2xl font-display font-bold mb-3">Estimated Price Range</h2>
             <div className="text-4xl md:text-5xl font-bold mb-3">{getEstimatedPrice()}</div>
@@ -86,7 +73,6 @@ function ConfirmationContent() {
               }
             </p>
           </div>
-
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
             <h2 className="text-2xl md:text-3xl font-display font-bold text-navy mb-6">
               What Happens Next
@@ -127,7 +113,6 @@ function ConfirmationContent() {
               </div>
             </div>
           </div>
-
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
             <h2 className="text-2xl md:text-3xl font-display font-bold text-navy mb-6">
               Your Booking Details
@@ -144,7 +129,6 @@ function ConfirmationContent() {
                   <p><span className="font-semibold">Phone:</span> {bookingData.phone}</p>
                 </div>
               </div>
-              
               <div className="space-y-3">
                 <h3 className="font-display font-semibold text-gray-900 text-lg flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-[#079447]" />
@@ -152,7 +136,6 @@ function ConfirmationContent() {
                 </h3>
                 <p className="text-gray-700 font-manrope ml-7 text-sm md:text-base">{bookingData.address}</p>
               </div>
-
               <div className="space-y-3">
                 <h3 className="font-display font-semibold text-gray-900 text-lg flex items-center gap-2">
                   <FileText className="w-5 h-5 text-[#079447]" />
@@ -164,7 +147,6 @@ function ConfirmationContent() {
                   <p><span className="font-semibold">Size:</span> {bookingData.spaceSize}</p>
                 </div>
               </div>
-
               <div className="space-y-3">
                 <h3 className="font-display font-semibold text-gray-900 text-lg flex items-center gap-2">
                   <Clock className="w-5 h-5 text-[#079447]" />
@@ -175,7 +157,6 @@ function ConfirmationContent() {
                   <p><span className="font-semibold">Time:</span> {formatTime(bookingData.preferredTime)}</p>
                 </div>
               </div>
-
               {bookingData.giftCertificate && (
                 <div className="md:col-span-2 space-y-3">
                   <h3 className="font-display font-semibold text-gray-900 text-lg flex items-center gap-2">
@@ -187,7 +168,6 @@ function ConfirmationContent() {
                   </p>
                 </div>
               )}
-
               {bookingData.specialRequests && (
                 <div className="md:col-span-2 space-y-3">
                   <h3 className="font-display font-semibold text-gray-900 text-lg">Special Requests</h3>
@@ -196,21 +176,18 @@ function ConfirmationContent() {
               )}
             </div>
           </div>
-
           <div className="bg-[#1C294E] text-white rounded-2xl shadow-lg p-6 md:p-8 text-center">
             <h2 className="text-xl md:text-2xl font-display font-bold mb-3">Questions About Your Booking?</h2>
             <p className="font-manrope mb-6 text-sm md:text-base opacity-90">
               Our team is here to help! Feel free to reach out anytime.
             </p>
 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-  
 <a href="mailto:contact@impressyoucleaning.com"
 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#08A855] rounded-lg font-manrope font-semibold transition-all hover:scale-105"
 > 
 <Mail className="w-5 h-5" /> 
 Email Us
 </a> 
-
 <Link
 href="/"
 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-navy hover:bg-gray-100 rounded-lg font-manrope font-semibold transition-all hover:scale-105"
@@ -221,12 +198,10 @@ Back to Home
 </div>
 </div>
  </div>
-              
  </section>
 </div>
 );
 }
-
 export default function ConfirmationPage() {
   return (
     <Suspense fallback={

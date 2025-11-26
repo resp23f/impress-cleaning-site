@@ -2,19 +2,15 @@
 import StaggerItem from '@/components/StaggerItem';
 import Link from 'next/link';
 import { useState } from 'react';
-
-
 export default function ImpressCleaningSite() {
       const [sent, setSent] = useState(false);
       const [sending, setSending] = useState(false);
       const FORM_ENDPOINT = "https://formspree.io/f/xblzwdek";
-    
       async function handleSubmit(e) {
         e.preventDefault();
         setSending(true);
         const form = e.currentTarget;
         const data = Object.fromEntries(new FormData(form));
-    
         if (!FORM_ENDPOINT) {
           const body = encodeURIComponent(
             Object.entries(data).map(([k, v]) => `${k}: ${v}`).join("\n")
@@ -26,7 +22,6 @@ export default function ImpressCleaningSite() {
           form.reset();
           return;
         }
-    
         try {
           const res = await fetch(FORM_ENDPOINT, {
             method: "POST",
@@ -61,23 +56,19 @@ export default function ImpressCleaningSite() {
             <div className="absolute top-20 right-20 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
             <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
           </div>
-          
           <div className="relative max-w-7xl mx-auto text-center">
             <div className="inline-block mb-6 px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
               <span className="text-blue-200 text-sm font-medium tracking-wide">RESIDENTIAL CLEANING SERVICES</span>
             </div>
-
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
               Your Home Deserves
               <span className="block mt-2 bg-gradient-to-r font-display from-blue-200 to-white bg-clip-text text-transparent">
                 The Impress Standard
               </span>
             </h1>
-            
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-10 leading-relaxed">
               Professional cleaning services for Austin, Cedar Park, Round Rock, Georgetown and nearby areas. We bring eco friendly solutions and meticulous attention to detail to every home we serve. Because maintaining a clean, healthy home isn't a luxury, it's a necessity that deserves professional care.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/service-quote"
@@ -96,7 +87,6 @@ export default function ImpressCleaningSite() {
           </div>
         </section>
       </StaggerItem>
-
 {/* Services Grid Section */}
 <section id="services" className="py-24 px-4 bg-background-50">
   <div className="max-w-7xl mx-auto">
@@ -110,14 +100,11 @@ export default function ImpressCleaningSite() {
         </p>
       </div>
     </StaggerItem>
-
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      
       {/* Weekly Service */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100 to-transparent rounded-bl-full opacity-50" />
-          
           <div className="relative">
             <div className="w-16 h-16 bg-gradient-to-br from-[#001F3F] to-[#003D7A] rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +120,6 @@ export default function ImpressCleaningSite() {
                 Perfect for busy families who want to maintain a consistently clean home without the daily hassle. Every week, we restore your space to pristine condition.
               </p>
             </div>
-            
             <ul className="space-y-3 mb-6">
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -157,24 +143,20 @@ export default function ImpressCleaningSite() {
           </div>
         </div>
       </StaggerItem>
-
       {/* Bi-Weekly Service */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-transparent rounded-bl-full opacity-50" />
-          
           <div className="relative">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-
             <h3 className="text-2xl font-bold text-gray-900 font-display mb-2"> Bi Weekly Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
               The sweet spot for homes that stay relatively tidy but need regular professional attention. Every two weeks keeps your space fresh and welcoming.
             </p>
-            
             <ul className="space-y-3 mb-6">
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -198,24 +180,20 @@ export default function ImpressCleaningSite() {
           </div>
         </div>
       </StaggerItem>
-
       {/* Monthly Service */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100 to-transparent rounded-bl-full opacity-50" />
-          
           <div className="relative">
             <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-800 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-
             <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Monthly Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
               Ideal for well maintained homes or those looking for periodic deep refreshes. We tackle the cleaning tasks that build up over time.
             </p>
-            
             <ul className="space-y-3 mb-6">
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -239,24 +217,20 @@ export default function ImpressCleaningSite() {
           </div>
         </div>
       </StaggerItem>
-
       {/* Move-Out Cleaning */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-100 to-transparent rounded-bl-full opacity-50" />
-          
           <div className="relative">
             <div className="w-16 h-16 bg-gradient-to-br from-orange-600 to-orange-800 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
             </div>
-
             <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Move Out Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
               Comprehensive cleaning for vacant properties. We ensure every corner is spotless, helping you leave a lasting impression or prepare your home for its next chapter.
             </p>
-            
             <ul className="space-y-3 mb-6">
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -280,24 +254,20 @@ export default function ImpressCleaningSite() {
           </div>
         </div>
       </StaggerItem>
-
       {/* Make-Ready Cleaning */}
       <StaggerItem>
         <div className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-100 to-transparent rounded-bl-full opacity-50" />
-          
           <div className="relative">
             <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-
             <h3 className="text-2xl font-bold text-gray-900 font-display mb-2">Make-Ready Cleaning</h3>
             <p className="text-gray-600 leading-relaxed mb-6">
               Perfect for homeowners preparing to sell, realtors staging properties, or families helping older relatives transition between homes. We transform homes between owners, ensuring they're move-in ready and impressive.
             </p>
-            
             <ul className="space-y-3 mb-6">
               <li className="flex items-start text-gray-700">
                 <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -321,24 +291,20 @@ export default function ImpressCleaningSite() {
           </div>
         </div>
       </StaggerItem>
-
       {/* Premium Add-On Services Card */}
       <StaggerItem>
         <div className="group relative bg-gradient-to-br from-[#001F3F] to-[#003D7A] rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-300/20 hover:-translate-y-2 opacity-90">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/10 to-transparent rounded-bl-full" />
-          
           <div className="relative">
             <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-white/20">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-
             <h3 className="text-2xl font-bold text-white font-display mb-2">Premium Add-On Services</h3>
             <p className="text-blue-100 leading-relaxed mb-6">
               Enhance your cleaning with specialized services. Each requires dedicated time, and equipment separately to ensure quality results.
             </p>
-            
             <ul className="space-y-3 mb-6">
               <li className="flex items-start text-blue-100">
                 <svg className="w-5 h-5 text-blue-300 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -359,7 +325,6 @@ export default function ImpressCleaningSite() {
                 <span>Patio & outdoor space cleaning</span>
               </li>
             </ul>
-            
             <div className="pt-4 border-t border-white/20">
               <p className="text-sm text-blue-200 font-medium">
                 These specialized services are quoted separately based on your specific needs
@@ -368,11 +333,9 @@ export default function ImpressCleaningSite() {
           </div>
         </div>
       </StaggerItem>
-
     </div>
   </div>
 </section>
-
       {/* Who We Serve Section */}
       <StaggerItem>
         <section className="py-20 px-4 bg-background-100">
@@ -385,7 +348,6 @@ export default function ImpressCleaningSite() {
                 Professional cleaning isn't a luxury—it's essential care for your home and family. We're trusted by those who understand the value of dependable service.
               </p>
             </div>
-
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* Busy Families */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
@@ -403,7 +365,6 @@ export default function ImpressCleaningSite() {
                   </div>
                 </div>
               </div>
-
               {/* Retired Homeowners */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start">
@@ -420,7 +381,6 @@ export default function ImpressCleaningSite() {
                   </div>
                 </div>
               </div>
-
               {/* Realtors */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start">
@@ -437,7 +397,6 @@ export default function ImpressCleaningSite() {
                   </div>
                 </div>
               </div>
-
               {/* Life Transitions */}
               <div className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start">
@@ -458,7 +417,6 @@ export default function ImpressCleaningSite() {
           </div>
         </section>
       </StaggerItem>
-
       {/* Process Section */}
       <StaggerItem>
         <section className="py-24 px-4 bg-[var(--background)]">
@@ -472,7 +430,6 @@ export default function ImpressCleaningSite() {
                   Getting professional cleaning services has never been easier. We've streamlined every step.
                 </p>
               </div>
-
               <div className="grid md:grid-cols-4 gap-8 md:gap-4">
                 {/* Step 1 */}
                 <div className="relative">
@@ -489,7 +446,6 @@ export default function ImpressCleaningSite() {
                     </p>
                   </div>
                 </div>
-
                 {/* Step 2 */}
                 <div className="relative">
                   <div className="flex flex-col items-center text-center">
@@ -505,7 +461,6 @@ export default function ImpressCleaningSite() {
                     </p>
                   </div>
                 </div>
-
                 {/* Step 3 */}
                 <div className="relative">
                   <div className="flex flex-col items-center text-center">
@@ -521,7 +476,6 @@ export default function ImpressCleaningSite() {
                     </p>
                   </div>
                 </div>
-
                 {/* Step 4 */}
                 <div className="relative">
                   <div className="flex flex-col items-center text-center">
@@ -541,7 +495,6 @@ export default function ImpressCleaningSite() {
           </div>
         </section>
       </StaggerItem>
-
       {/* Benefits Section */}
       <StaggerItem>
         <section className="py-24 px-4 bg-gradient-to-b from-gray-50 to-background">
@@ -552,11 +505,9 @@ export default function ImpressCleaningSite() {
                 <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 mb-6 leading-tight">
                   The Impress Difference
                 </h2>
-                
                 <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                   We're not just another cleaning service. We're your partner in maintaining a home that reflects your standards and values.
                 </p>
-
                 <div className="space-y-6">
                   <div className="flex items-start group">
                     <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -571,7 +522,6 @@ export default function ImpressCleaningSite() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start group">
                     <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -585,7 +535,6 @@ export default function ImpressCleaningSite() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start group">
                     <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -599,7 +548,6 @@ export default function ImpressCleaningSite() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start group">
                     <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -613,7 +561,6 @@ export default function ImpressCleaningSite() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start group">
                     <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -630,7 +577,6 @@ export default function ImpressCleaningSite() {
                   </div>
                 </div>
               </div>
-
               {/* Right Content - Image Placeholder */}
               <div className="relative">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
@@ -645,7 +591,6 @@ export default function ImpressCleaningSite() {
           </div>
         </section>
       </StaggerItem>
-
       {/* CTA Section */}
       <StaggerItem>
         <section className="relative py-24 px-4 overflow-hidden">
@@ -654,7 +599,6 @@ export default function ImpressCleaningSite() {
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--background)] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[var(--background)] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
           </div>
-          
           <div className="relative max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display leading-tight">
               Ready to Experience the Impress Difference?
@@ -662,9 +606,7 @@ export default function ImpressCleaningSite() {
             <p className="text-xl text-[#1C294E] mb-10 font-semibold font-manrope leading-relaxed">
               Join hundreds of families and homeowners who rely on us for essential home maintenance. Get your free quote today and ensure your home receives the professional care it deserves.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            
               <Link
                 href="/service-quote" 
                 className="group px-10 py-5 bg-[#FAFAF8] text-[#1C294E] rounded-lg font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
@@ -680,14 +622,12 @@ export default function ImpressCleaningSite() {
                 <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1"></span>
               </a>
             </div>
-
             <p className="mt-8 text-[#2C3A4B] font-manrope text-md">
               Professional service • Trusted locally • Dependable results
             </p>
           </div>
         </section>
       </StaggerItem>
-
     </main>
   );
 }

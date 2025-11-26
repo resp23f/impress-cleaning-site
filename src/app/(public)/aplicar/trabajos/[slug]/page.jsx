@@ -12,7 +12,6 @@ import {
   DollarSign,
   Calendar
 } from "lucide-react";
-
 // Job data - matching what you have in the main page
 const jobsData = {
   "tecnico-de-limpieza": {
@@ -43,49 +42,40 @@ const jobsData = {
     description: "Apoya las operaciones diarias, coordina horarios, y ayuda con la comunicación con clientes. Experiencia administrativa preferida."
   }
 };
-
 const FORM_ENDPOINT = "https://formspree.io/f/mrbyrngw"; // Your Formspree endpoint
-
 export default function JobApplicationPage() {
   const params = useParams();
   const router = useRouter();
   const jobSlug = params.slug;
   const job = jobsData[jobSlug];
-
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
-
   // If job doesn't exist, redirect to main careers page
   if (!job) {
     router.push('/aplicar');
     return null;
   }
-
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
     setSending(true);
-
     // Honeypot check
     const hp = e.currentTarget.elements.namedItem("empresa_oculta")?.value || "";
     if (hp) {
       setSending(false);
       return;
     }
-
     try {
       const formData = new FormData(e.currentTarget);
       formData.append("_subject", `Nueva solicitud - ${job.title} - Impress Cleaning`);
       formData.append("puesto_aplicado", job.title);
-
       const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
         body: formData,
         headers: { Accept: "application/json" },
       });
-
       if (res.ok) {
         setSent(true);
         // Scroll to top to show success message
@@ -99,7 +89,6 @@ export default function JobApplicationPage() {
       setSending(false);
     }
   }
-
   // Success state
   if (sent) {
     return (
@@ -142,7 +131,6 @@ export default function JobApplicationPage() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Header/Breadcrumb */}
@@ -158,15 +146,12 @@ export default function JobApplicationPage() {
           <h1 className="text-3xl sm:text-4xl font-bold">Aplicar para {job.title}</h1>
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
-          
           {/* Job Details Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-md p-6 sticky top-24">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Detalles del Puesto</h2>
-              
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
@@ -175,7 +160,6 @@ export default function JobApplicationPage() {
                     <p className="font-medium text-gray-900">{job.location}</p>
                   </div>
                 </div>
-
                 <div className="flex items-start gap-3">
                   <Briefcase className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
@@ -183,7 +167,6 @@ export default function JobApplicationPage() {
                     <p className="font-medium text-gray-900">{job.type}</p>
                   </div>
                 </div>
-
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
@@ -191,7 +174,6 @@ export default function JobApplicationPage() {
                     <p className="font-medium text-gray-900">{job.experience}</p>
                   </div>
                 </div>
-
                 <div className="flex items-start gap-3">
                   <DollarSign className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
@@ -199,7 +181,6 @@ export default function JobApplicationPage() {
                     <p className="font-medium text-gray-900">{job.salary}</p>
                   </div>
                 </div>
-
                 <div className="flex items-start gap-3">
                   <Calendar className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
@@ -208,14 +189,12 @@ export default function JobApplicationPage() {
                   </div>
                 </div>
               </div>
-
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <h3 className="font-semibold text-gray-900 mb-2">Descripción</h3>
                 <p className="text-gray-600 text-sm">{job.description}</p>
               </div>
             </div>
           </div>
-
           {/* Application Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-md">
@@ -225,11 +204,9 @@ export default function JobApplicationPage() {
                   Complete todos los campos requeridos. Te contactaremos en 1-2 días hábiles.
                 </p>
               </div>
-
               <form onSubmit={onSubmit} className="p-6 space-y-6" encType="multipart/form-data">
                 {/* Honeypot field */}
                 <input type="text" name="empresa_oculta" className="hidden" tabIndex={-1} autoComplete="off" />
-
                 {/* Personal Information */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Información Personal</h3>
@@ -305,11 +282,9 @@ export default function JobApplicationPage() {
                     </div>
                   </div>
                 </div>
-
                 {/* Availability */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Disponibilidad</h3>
-                  
                   <div>
                     <p className="text-sm font-medium text-gray-700 mb-2">Días Disponibles *</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -326,7 +301,6 @@ export default function JobApplicationPage() {
                       ))}
                     </div>
                   </div>
-
                   <div className="grid sm:grid-cols-2 gap-4 mt-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -360,7 +334,6 @@ export default function JobApplicationPage() {
                     </div>
                   </div>
                 </div>
-
                 {/* Requirements */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Requisitos</h3>
@@ -395,11 +368,9 @@ export default function JobApplicationPage() {
                     </div>
                   </div>
                 </div>
-
                 {/* Experience */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Experiencia</h3>
-                  
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Experiencia Relevante
@@ -411,7 +382,6 @@ export default function JobApplicationPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#079447] focus:border-transparent"
                     />
                   </div>
-
                   <div className="mt-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       ¿Por qué quieres trabajar con nosotros?
@@ -423,7 +393,6 @@ export default function JobApplicationPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#079447] focus:border-transparent"
                     />
                   </div>
-
                   <div className="mt-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Referencias (Opcional)
@@ -436,7 +405,6 @@ export default function JobApplicationPage() {
                     />
                   </div>
                 </div>
-
                 {/* File Upload */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -457,7 +425,6 @@ export default function JobApplicationPage() {
                   </label>
                   <p className="text-xs text-gray-500 mt-1">PDF o Word, máximo 10 MB</p>
                 </div>
-
                 {/* Consent */}
                 <div className="flex items-start gap-2">
                   <input 
@@ -472,14 +439,12 @@ export default function JobApplicationPage() {
                     sobre mi solicitud y autorizo la verificación de mis antecedentes laborales. *
                   </label>
                 </div>
-
                 {/* Error message */}
                 {error && (
                   <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-red-700">{error}</p>
                   </div>
                 )}
-
                 {/* Submit buttons */}
                 <div className="flex items-center gap-4 pt-4">
                   <button

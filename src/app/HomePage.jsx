@@ -3,14 +3,12 @@ import React, { useState } from "react";
 import { track } from '@vercel/analytics';
 import Link from 'next/link';
 import StaggerItem from '@/components/StaggerItem';
-
 const ShieldCheckIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
     <path d="M12 3l7 3v5.5c0 4.2-2.9 8-7 9-4.1-1-7-4.8-7-9V6l7-3z" stroke="currentColor" strokeWidth="1.5"/>
     <path d="M9.5 12.5l2 2 3.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
-
 const HomeIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
     <path d="M3 10.5l9-7 9 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -18,7 +16,6 @@ const HomeIcon = (props) => (
     <path d="M9 19v-5h6v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
   </svg>
 );
-
 const Chip = ({ icon, label, detail }) => (
   <div className="relative group">
     <span className="inline-flex items-center gap-1.5 rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 shadow-sm transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
@@ -32,18 +29,15 @@ const Chip = ({ icon, label, detail }) => (
     ) : null}
   </div>
 );
-
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const FORM_ENDPOINT = "https://formspree.io/f/xblzwdek";
-
   async function handleSubmit(e) {
     e.preventDefault();
     setSending(true);
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
-
     if (!FORM_ENDPOINT) {
       const body = encodeURIComponent(
         Object.entries(data).map(([k, v]) => `${k}: ${v}`).join("\n")
@@ -55,7 +49,6 @@ export default function ImpressCleaningSite() {
       form.reset();
       return;
     }
-
     try {
       const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
@@ -80,7 +73,6 @@ export default function ImpressCleaningSite() {
       setSending(false);
     }
   }
-
   return (
     <main id="top" className="min-h-screen bg-white">
       <Hero />
@@ -91,24 +83,20 @@ export default function ImpressCleaningSite() {
     </main>
   );
 }
-
 function Hero() {
   return (
     <StaggerItem>
       <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
         <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
-
           <img
             src="/hero-cleaners1.jpg"
             alt="Impress Cleaning pro team"
             className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
-              
           <div className="relative z-10">
 <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
   <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-32 pb-12 md:py-16">
-                
                 <div className="max-w-[650px]">
                   {/* Headline with better line breaks and spacing */}
                   <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight" 
@@ -122,7 +110,6 @@ function Hero() {
                       So You Can Focus On What Matters&nbsp;Most.
                     </span>
                   </h1>
-                  
                   {/* CTAs with better spacing and hierarchy */}
                   <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <a 
@@ -138,7 +125,6 @@ function Hero() {
                       </svg>
                       Call Now
                     </a>
-
                     <Link
                       href="/service-quote"
                       className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group"
@@ -160,7 +146,6 @@ function Hero() {
                     </Link>
                   </div>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -169,13 +154,10 @@ function Hero() {
     </StaggerItem>
   );
 }
-
-
 function WhyChoose() {
   const scrollRef = React.useRef(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
-
   const cards = [
     { 
       t: 'Reliable Results', 
@@ -211,48 +193,38 @@ function WhyChoose() {
       iconBg: 'bg-green-100'
     },
   ];
-
   const updateArrows = () => {
     const container = scrollRef.current;
     if (!container) return;
-    
     const { scrollLeft, scrollWidth, clientWidth } = container;
     setCanScrollLeft(scrollLeft > 10);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
   };
-
   React.useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
-    
     updateArrows();
     container.addEventListener('scroll', updateArrows);
     window.addEventListener('resize', updateArrows);
-    
     return () => {
       container.removeEventListener('scroll', updateArrows);
       window.removeEventListener('resize', updateArrows);
     };
   }, []);
-
   const scroll = (direction) => {
     const container = scrollRef.current;
     if (!container) return;
-    
     const cardWidth = container.querySelector('[data-card]')?.offsetWidth || 300;
     const scrollAmount = cardWidth + 24;
-    
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth'
     });
   };
-
   return (
     <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24 relative overflow-hidden">
       <div className="absolute top-20 left-10 w-72 h-72 bg-[#079447]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-      
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <StaggerItem>
           <div className="text-center mb-12">
@@ -267,7 +239,6 @@ function WhyChoose() {
             </p>
           </div>
         </StaggerItem>
-
         {/* Desktop: Scrollable with arrows */}
         <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
           {canScrollLeft && (
@@ -281,7 +252,6 @@ function WhyChoose() {
               </svg>
             </button>
           )}
-
           <div 
             ref={scrollRef}
             className="flex overflow-x-auto gap-8 snap-x snap-mandatory scrollbar-hide pb-4 pt-8" 
@@ -294,12 +264,10 @@ function WhyChoose() {
               >
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
-                  
                   <div className="relative h-full rounded-2xl bg-white border border-gray-200/50 group-hover:border-[#079447]/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] p-6 transition-all duration-500 group-hover:-translate-y-2">
                     <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
                     </div>
-                    
                     <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
                       {c.t}
                     </h3>
@@ -311,7 +279,6 @@ function WhyChoose() {
               </div>
             ))}
           </div>
-
           {canScrollRight && (
             <button
               onClick={() => scroll('right')}
@@ -324,7 +291,6 @@ function WhyChoose() {
             </button>
           )}
         </div>
-
         {/* Mobile: Horizontal scroll carousel */}
         <div className="md:hidden">
           <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4 px-4">
@@ -335,12 +301,10 @@ function WhyChoose() {
               >
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 rounded-2xl transition-opacity duration-300`} />
-                  
                   <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm p-6">
                     <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
                       <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
                     </div>
-                    
                     <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
                       {c.t}
                     </h3>
@@ -352,7 +316,6 @@ function WhyChoose() {
               </div>
             ))}
           </div>
-          
           <div className="flex justify-center gap-2 mt-4">
             {cards.map((_, index) => (
               <div 
@@ -366,7 +329,6 @@ function WhyChoose() {
     </section>
   );
 }
-
 function HowItWorks() {
   const steps = [
     {
@@ -406,12 +368,10 @@ function HowItWorks() {
       )
     },
   ];
-  
   return (
     <section className="bg-white py-16 md:py-24 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-      
       <div className="mx-auto max-w-5xl px-8 sm:px-10 md:px-12 lg:px-16 relative">
         <StaggerItem>
           <div className="text-center mb-16">
@@ -426,16 +386,13 @@ function HowItWorks() {
             </p>
           </div>
         </StaggerItem>
-
         {/* Vertical Timeline - Desktop & Mobile */}
         <div className="relative">
           {/* Timeline Line */}
           <div className="hidden md:block absolute left-[50%] top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#079447] via-[#079447] to-[#079447]/20" />
-          
           {steps.map((step, i) => (
             <StaggerItem key={step.title} delay={i * 100}>
               <div className={`relative flex items-center gap-8 mb-12 md:mb-16 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                
                 {/* Content Side */}
                 <div className={`flex-1 ${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
                   <div className="bg-white p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(7,148,71,0.15)] transition-all duration-300 hover:-translate-y-1">
@@ -452,24 +409,20 @@ function HowItWorks() {
                     </p>
                   </div>
                 </div>
-
                 {/* Timeline Circle */}
                 <div className="hidden md:flex absolute left-[50%] -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full items-center justify-center shadow-lg shadow-green-500/30 z-10 border-4 border-white">
                   <span className="text-2xl font-bold text-white">{i + 1}</span>
                 </div>
-
                 {/* Mobile Number Badge */}
                 <div className="md:hidden absolute -left-2 top-6 w-10 h-10 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center shadow-lg z-10">
                   <span className="text-lg font-bold text-white">{i + 1}</span>
                 </div>
-
                 {/* Spacer for Desktop */}
                 <div className="hidden md:block flex-1" />
               </div>
             </StaggerItem>
           ))}
         </div>
-
         <StaggerItem delay={500}>
           <div className="mt-12 text-center">
             <Link
@@ -487,27 +440,21 @@ function HowItWorks() {
     </section>  
   );
 }
-
-
 function WhyFamiliesChooseUs() {
   const scrollRef = React.useRef(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
-  
   React.useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
-    
     const handleScroll = () => {
       const scrollLeft = scrollContainer.scrollLeft;
       const cardWidth = 300 + 16;
       const currentIndex = Math.round(scrollLeft / cardWidth);
       setActiveIndex(currentIndex);
     };
-    
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
-
   const proofCards = [
     {
       title: 'Principles That Matter.',
@@ -526,7 +473,6 @@ function WhyFamiliesChooseUs() {
       description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.'
     }
   ];
-  
   return (
     <StaggerItem>
       <section className="bg-gray-50 py-12 md:py-16 mb-16 md:mb-24 md:overflow-hidden">
@@ -534,7 +480,6 @@ function WhyFamiliesChooseUs() {
           <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]">
             Why Texas Families Trust Impress
           </h3>
-
           <div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
             {proofCards.map((card, index) => (
               <div 
@@ -550,7 +495,6 @@ function WhyFamiliesChooseUs() {
               </div>
             ))}
           </div>
-
           <div className="flex justify-center gap-2 mt-6 md:hidden">
             {proofCards.map((_, index) => (
               <div 
@@ -564,7 +508,6 @@ function WhyFamiliesChooseUs() {
     </StaggerItem>
   );
 }
-
 function TestimonialsSection() {
   const testimonials = [
     {
@@ -580,19 +523,16 @@ function TestimonialsSection() {
       author: "Omally O, Verified Customer"
     }
   ];
-
 return (
     <StaggerItem>
       <section className="bg-white py-12 md:py-16 relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#079447]/5 rounded-full blur-3xl" />
-        
         <div className="container mx-auto mb-12 md:max-w-[1800px]">
           <h2 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]"> 
             What Our Clients Are Saying
           </h2>
         </div>
-        
         <div className="relative max-w-full mx-auto">
           <div className="overflow-hidden">
             <div className="flex animate-scroll -translate-x-[10%]">
@@ -614,8 +554,6 @@ return (
             </div>
           </div>
         </div>
-
-
         <style jsx>{`
           @keyframes scroll {
             0% {

@@ -1,14 +1,11 @@
 'use client';
-
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import StaggerItem from '@/components/StaggerItem';
-
 function SuccessContent() {
   const searchParams = useSearchParams();
   const [emailSent, setEmailSent] = useState(false);
-
   useEffect(() => {
     const sendGiftCertificate = async () => {
       try {
@@ -17,26 +14,21 @@ function SuccessContent() {
           setEmailSent(true);
           return;
         }
-
         const decodedData = JSON.parse(atob(decodeURIComponent(encodedData)));
-
         // Send the email
         await fetch('/api/send-gift-certificate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(decodedData),
         });
-
         setEmailSent(true);
       } catch (err) {
         console.error('Error sending gift certificate:', err);
         setEmailSent(true); // Still show success page
       }
     };
-
     sendGiftCertificate();
   }, [searchParams]);
-
   if (!emailSent) {
     return (
       <main className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4">
@@ -44,7 +36,6 @@ function SuccessContent() {
       </main>
     );
   }
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4">
       <StaggerItem>
@@ -54,15 +45,12 @@ function SuccessContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-
           <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
             Gift Certificate Sent! 🎉
           </h1>
-
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
             Your thoughtful gift has been delivered! The recipient will receive their digital certificate via email shortly.
           </p>
-
           <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">What Happens Next?</h2>
             <ul className="space-y-4 text-left">
@@ -95,7 +83,6 @@ function SuccessContent() {
               </li>
             </ul>
           </div>
-
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/gift-certificate"
@@ -115,7 +102,6 @@ function SuccessContent() {
     </main>
   );
 }
-
 export default function GiftCertificateSuccess() {
   return (
     <Suspense fallback={

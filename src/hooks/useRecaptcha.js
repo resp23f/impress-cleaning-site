@@ -1,17 +1,13 @@
 'use client'
-
 import { useEffect, useState } from 'react'
-
 export function useRecaptcha() {
   const [isLoaded, setIsLoaded] = useState(false)
-
   useEffect(() => {
     // Check if script is already loaded
     if (window.grecaptcha) {
       setIsLoaded(true)
       return
     }
-
     // Load reCAPTCHA script
     const script = document.createElement('script')
     script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
@@ -19,7 +15,6 @@ export function useRecaptcha() {
     script.defer = true
     script.onload = () => setIsLoaded(true)
     document.head.appendChild(script)
-
     return () => {
       // Cleanup if needed
       if (script.parentNode) {
@@ -27,12 +22,10 @@ export function useRecaptcha() {
       }
     }
   }, [])
-
   const executeRecaptcha = async (action) => {
     if (!isLoaded || !window.grecaptcha) {
       throw new Error('reCAPTCHA not loaded')
     }
-
     return new Promise((resolve, reject) => {
       window.grecaptcha.ready(async () => {
         try {
@@ -47,6 +40,5 @@ export function useRecaptcha() {
       })
     })
   }
-
   return { isLoaded, executeRecaptcha }
 }

@@ -1,11 +1,7 @@
 'use client'
-
 import { useState, useEffect } from 'react'
-
 import { useRouter } from 'next/navigation'
-
 import { format } from 'date-fns'
-
 import {
  UserCheck,
  X,
@@ -14,25 +10,15 @@ import {
  MapPin,
  CheckCircle,
  XCircle
-
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-
 import Card from '@/components/ui/Card'
-
 import Button from '@/components/ui/Button'
-
 import Badge from '@/components/ui/Badge'
-
 import Modal from '@/components/ui/Modal'
-
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
-
 import AdminNav from '@/components/admin/AdminNav'
-
 import toast from 'react-hot-toast'
-
-
 export default function PendingRegistrationsPage() {
  const router = useRouter()
  const [loading, setLoading] = useState(true)
@@ -44,18 +30,14 @@ export default function PendingRegistrationsPage() {
  useEffect(() => {
    loadRegistrations()
  }, [])
-
-
 const loadRegistrations = async () => {
   setLoading(true)
   try {
     const response = await fetch('/api/admin/get-registrations')
     const result = await response.json()
-
     if (!response.ok) {
       throw new Error(result.error || 'Failed to load registrations')
     }
-
     setRegistrations(result.data || [])
   } catch (error) {
     console.error('Error loading registrations:', error)
@@ -64,7 +46,6 @@ const loadRegistrations = async () => {
     setLoading(false)
   }
 }
-
 const handleViewDetails = (registration) => {
    setSelectedReg(registration)
    setShowModal(true)
@@ -77,13 +58,10 @@ const handleApprove = async (regId) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ customerId: regId })
     })
-
     const result = await response.json()
-
     if (!response.ok) {
       throw new Error(result.error || 'Failed to approve account')
     }
-
     toast.success('Account approved! Customer has been notified.')
     setShowModal(false)
     loadRegistrations()
@@ -96,7 +74,6 @@ const handleApprove = async (regId) => {
 }
 const handleDeny = async (regId) => {
   const reason = prompt('Reason for denial (optional):')
-  
   setProcessing(true)
   try {
     const response = await fetch('/api/admin/deny-registration', {
@@ -104,13 +81,10 @@ const handleDeny = async (regId) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ customerId: regId, reason })
     })
-
     const result = await response.json()
-
     if (!response.ok) {
       throw new Error(result.error || 'Failed to deny account')
     }
-
     toast.success('Account denied')
     setShowModal(false)
     loadRegistrations()
@@ -121,7 +95,6 @@ const handleDeny = async (regId) => {
     setProcessing(false)
   }
 }
-
 if (loading) {
    return (
      <div className="min-h-screen flex items-center justify-center">
@@ -363,5 +336,4 @@ if (loading) {
      </Modal>
    </div>
  )
-
 }

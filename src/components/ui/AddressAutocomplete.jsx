@@ -1,16 +1,12 @@
 'use client'
-
 import { useState, useRef, useEffect } from 'react'
 import { MapPin } from 'lucide-react'
-
 export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
   const [inputValue, setInputValue] = useState(defaultValue)
   const inputRef = useRef(null)
   const autocompleteRef = useRef(null)
-
   useEffect(() => {
     if (typeof window === 'undefined' || !window.google) return
-
     // Initialize Google Places Autocomplete
     autocompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
@@ -20,15 +16,12 @@ export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
         fields: ['address_components', 'formatted_address', 'place_id', 'geometry']
       }
     )
-
     // Listen for place selection
     autocompleteRef.current.addListener('place_changed', () => {
       const place = autocompleteRef.current.getPlace()
-
       if (!place.address_components) {
         return
       }
-
       // Parse address components
       const addressData = {
         street_address: '',
@@ -38,13 +31,10 @@ export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
         place_id: place.place_id,
         formatted_address: place.formatted_address,
       }
-
       let streetNumber = ''
       let route = ''
-
       place.address_components.forEach((component) => {
         const types = component.types
-
         if (types.includes('street_number')) {
           streetNumber = component.long_name
         }
@@ -61,14 +51,11 @@ export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
           addressData.zip_code = component.long_name
         }
       })
-
       addressData.street_address = `${streetNumber} ${route}`.trim()
-
       setInputValue(addressData.formatted_address)
       onSelect(addressData)
     })
   }, [onSelect])
-
   return (
     <div className="relative">
       <label className="block text-sm font-semibold text-gray-700 mb-2">

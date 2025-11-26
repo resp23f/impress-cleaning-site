@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Mail, ArrowLeft, AlertCircle } from 'lucide-react'
@@ -8,32 +7,25 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Card from '@/components/ui/Card'
 import toast from 'react-hot-toast'
-
 export default function ForgotPasswordPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
-
   const supabase = createClient()
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       toast.error('Please enter a valid email address')
       return
     }
-
     setLoading(true)
-
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
       })
-
       if (error) {
         // Handle specific error cases
         if (error.message.includes('rate limit')) {
@@ -42,7 +34,6 @@ export default function ForgotPasswordPage() {
           throw error
         }
       }
-
       setEmailSent(true)
       toast.success('Password reset link sent! Check your email.')
     } catch (error) {
@@ -53,7 +44,6 @@ export default function ForgotPasswordPage() {
       setLoading(false)
     }
   }
-
   if (emailSent) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4">
@@ -61,16 +51,13 @@ export default function ForgotPasswordPage() {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Mail className="w-8 h-8 text-green-600" />
           </div>
-
           <h1 className="text-2xl font-bold text-[#1C294E] mb-2">
             Check Your Email
           </h1>
-
           <p className="text-gray-600 mb-6">
             We sent a password reset link to{' '}
             <span className="font-semibold text-[#1C294E]">{email}</span>
           </p>
-
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-left">
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -87,7 +74,6 @@ export default function ForgotPasswordPage() {
               </div>
             </div>
           </div>
-
           <div className="space-y-3">
             <Button
               variant="outline"
@@ -96,7 +82,6 @@ export default function ForgotPasswordPage() {
             >
               Back to Login
             </Button>
-
             <button
               onClick={() => setEmailSent(false)}
               className="w-full text-sm text-gray-600 hover:text-[#1C294E] transition-colors"
@@ -108,7 +93,6 @@ export default function ForgotPasswordPage() {
       </div>
     )
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4">
       <Card className="max-w-md w-full">
@@ -119,15 +103,12 @@ export default function ForgotPasswordPage() {
           <ArrowLeft className="w-4 h-4" />
           Back
         </button>
-
         <h1 className="text-2xl font-bold text-[#1C294E] mb-2">
           Forgot Password?
         </h1>
-
         <p className="text-gray-600 mb-6">
           Enter your email and we'll send you a link to reset your password.
         </p>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
@@ -138,7 +119,6 @@ export default function ForgotPasswordPage() {
             required
             icon={<Mail className="w-5 h-5" />}
           />
-
           <Button
             type="submit"
             variant="primary"
@@ -148,7 +128,6 @@ export default function ForgotPasswordPage() {
           >
             Send Reset Link
           </Button>
-
           <p className="text-xs text-gray-500 text-center">
             Remember your password?{' '}
             <button

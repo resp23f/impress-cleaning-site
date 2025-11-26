@@ -2,7 +2,6 @@
 import StaggerItem from '@/components/StaggerItem';
 import Link from 'next/link';
 import { useState } from 'react';
-
 export default function CommercialPage() {
   return (
     <main className="min-h-screen bg-slate-50">
@@ -11,11 +10,9 @@ export default function CommercialPage() {
         <section className="relative pt-20 pb-32 px-4 overflow-hidden bg-slate-900">
           {/* Grid overlay for industrial feel */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
-          
           {/* Subtle accent shapes */}
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-green-500/10 to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full blur-3xl" />
-          
           <div className="relative max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
@@ -24,16 +21,13 @@ export default function CommercialPage() {
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   <span className="text-green-400 text-sm font-semibold tracking-wide uppercase">Commercial Services</span>
                 </div>
-
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-[1.1]">
                   Commercial Grade Cleaning
                   <span className="block text-green-400 mt-2">Built for Business</span>
                 </h1>
-                
                 <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-xl">
                   Industrial strength solutions for offices, warehouses, medical facilities, and retail spaces. Professional service that keeps your business running at peak performance.
                 </p>
-
                 <div className="grid grid-cols-2 gap-6 mb-10 max-w-lg">
                   <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-lg p-4">
                     <div className="text-3xl font-bold text-green-400 mb-1">15+</div>
@@ -44,7 +38,6 @@ export default function CommercialPage() {
                     <div className="text-sm text-slate-400">Flexible Scheduling</div>
                   </div>
                 </div>
-                
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     href="/service-quote"
@@ -66,7 +59,6 @@ export default function CommercialPage() {
                   </a>
                 </div>
               </div>
-
               {/* Right Content - Stats/Features */}
               <div className="hidden lg:block">
                 <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8">
@@ -97,7 +89,6 @@ export default function CommercialPage() {
           </div>
         </section>
       </StaggerItem>
-
       {/* Industries Section - Card Layout */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -114,7 +105,6 @@ export default function CommercialPage() {
               </p>
             </div>
           </StaggerItem>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Office Buildings */}
             <StaggerItem delay={100}>
@@ -134,7 +124,6 @@ export default function CommercialPage() {
                 </div>
               </div>
             </StaggerItem>
-
             {/* Medical Facilities */}
             <StaggerItem delay={150}>
               <div className="group bg-slate-50 hover:bg-white rounded-xl p-6 border-2 border-slate-200 hover:border-green-500 transition-all duration-300 hover:shadow-xl cursor-pointer">
@@ -153,7 +142,6 @@ export default function CommercialPage() {
                 </div>
               </div>
             </StaggerItem>
-
             {/* Retail Spaces */}
             <StaggerItem delay={200}>
               <div className="group bg-slate-50 hover:bg-white rounded-xl p-6 border-2 border-slate-200 hover:border-green-500 transition-all duration-300 hover:shadow-xl cursor-pointer">
@@ -172,7 +160,6 @@ export default function CommercialPage() {
                 </div>
               </div>
             </StaggerItem>
-
             {/* Warehouses */}
             <StaggerItem delay={250}>
               <div className="group bg-slate-50 hover:bg-white rounded-xl p-6 border-2 border-slate-200 hover:border-green-500 transition-all duration-300 hover:shadow-xl cursor-pointer">
@@ -191,7 +178,6 @@ export default function CommercialPage() {
                 </div>
               </div>
             </StaggerItem>
-
             {/* Gyms */}
             <StaggerItem delay={300}>
               <div className="group bg-slate-50 hover:bg-white rounded-xl p-6 border-2 border-slate-200 hover:border-green-500 transition-all duration-300 hover:shadow-xl cursor-pointer">
@@ -210,7 +196,6 @@ export default function CommercialPage() {
                 </div>
               </div>
             </StaggerItem>
-
             {/* Coworking Spaces */}
             <StaggerItem delay={350}>
               <div className="group bg-slate-50 hover:bg-white rounded-xl p-6 border-2 border-slate-200 hover:border-green-500 transition-all duration-300 hover:shadow-xl cursor-pointer">
@@ -232,7 +217,6 @@ export default function CommercialPage() {
           </div>
         </div>
       </section>
-
       {/* Service Plans - More Industrial/Corporate Design */}
       <section className="py-20 px-4 bg-slate-900">
         <div className="max-w-7xl mx-auto">
@@ -249,7 +233,6 @@ export default function CommercialPage() {
               </p>
             </div>
           </StaggerItem>
-
           <div className="grid md:grid-cols-3 gap-8">
             {/* Daily Service */}
             <StaggerItem delay={100}>
@@ -262,11 +245,9 @@ export default function CommercialPage() {
                     </svg>
                   </div>
                 </div>
-                
                 <p className="text-slate-300 mb-6">
                   Consistent nightly janitorial service for high-traffic facilities that need daily attention.
                 </p>
-
                 <ul className="space-y-3 mb-8">
                   {[
                     'Complete office cleaning',
@@ -283,20 +264,17 @@ export default function CommercialPage() {
                     </li>
                   ))}
                 </ul>
-
                 <div className="pt-6 border-t border-slate-700">
                   <span className="text-green-400 font-semibold text-sm">Best for: High-traffic offices</span>
                 </div>
               </div>
             </StaggerItem>
-
             {/* Weekly Service */}
             <StaggerItem delay={200}>
               <div className="bg-slate-800 border-2 border-green-500 rounded-xl p-8 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-300 relative">
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-green-500 text-white text-sm font-bold rounded-full">
                   Most Popular
                 </div>
-                
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-2xl font-bold text-white">Weekly Deep Clean</h3>
                   <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
@@ -305,11 +283,9 @@ export default function CommercialPage() {
                     </svg>
                   </div>
                 </div>
-                
                 <p className="text-slate-300 mb-6">
                   Thorough weekly cleaning that maintains professional standards without daily service costs.
                 </p>
-
                 <ul className="space-y-3 mb-8">
                   {[
                     'Comprehensive deep cleaning',
@@ -326,13 +302,11 @@ export default function CommercialPage() {
                     </li>
                   ))}
                 </ul>
-
                 <div className="pt-6 border-t border-slate-700">
                   <span className="text-green-400 font-semibold text-sm">Best for: Small-medium offices</span>
                 </div>
               </div>
             </StaggerItem>
-
             {/* Custom Plans */}
             <StaggerItem delay={300}>
               <div className="bg-slate-800 border-2 border-slate-700 rounded-xl p-8 hover:border-green-500 transition-all duration-300 hover:shadow-2xl hover:shadow-green-500/10">
@@ -344,11 +318,9 @@ export default function CommercialPage() {
                     </svg>
                   </div>
                 </div>
-                
                 <p className="text-slate-300 mb-6">
                   Flexible scheduling tailored to your specific business needs and operational hours.
                 </p>
-
                 <ul className="space-y-3 mb-8">
                   {[
                     'Bi-weekly or monthly options',
@@ -365,7 +337,6 @@ export default function CommercialPage() {
                     </li>
                   ))}
                 </ul>
-
                 <div className="pt-6 border-t border-slate-700">
                   <span className="text-green-400 font-semibold text-sm">Best for: Flexible needs</span>
                 </div>
@@ -374,7 +345,6 @@ export default function CommercialPage() {
           </div>
         </div>
       </section>
-
       {/* Why Choose Section - Stats Focused */}
       <StaggerItem>
         <section className="py-20 px-4 bg-white">
@@ -388,7 +358,6 @@ export default function CommercialPage() {
                 <p className="text-xl text-slate-600 mb-8">
                   Over 15 years serving Central Texas businesses with reliable, professional cleaning services.
                 </p>
-
                 <div className="grid grid-cols-2 gap-6 mb-8">
                   <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
                     <div className="text-4xl font-bold text-green-500 mb-2">100%</div>
@@ -407,7 +376,6 @@ export default function CommercialPage() {
                     <div className="text-slate-700 font-medium">Quality Guarantee</div>
                   </div>
                 </div>
-
                 <div className="space-y-4">
                   <div className="flex items-start">
                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
@@ -420,7 +388,6 @@ export default function CommercialPage() {
                       <p className="text-slate-600 text-sm">Professional tools and commercial cleaning products for superior results.</p>
                     </div>
                   </div>
-
                   <div className="flex items-start">
                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
                       <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -432,7 +399,6 @@ export default function CommercialPage() {
                       <p className="text-slate-600 text-sm">Single point of contact for all your cleaning needs and requests.</p>
                     </div>
                   </div>
-
                   <div className="flex items-start">
                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
                       <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -446,7 +412,6 @@ export default function CommercialPage() {
                   </div>
                 </div>
               </div>
-
               {/* Right - Image Placeholder */}
               <div className="bg-slate-100 rounded-2xl aspect-[4/3] flex items-center justify-center border-2 border-slate-200">
                 <div className="text-center p-8">
@@ -459,7 +424,6 @@ export default function CommercialPage() {
           </div>
         </section>
       </StaggerItem>
-
       {/* CTA Section */}
       <StaggerItem>
         <section className="py-24 px-4 bg-slate-900">
@@ -468,14 +432,12 @@ export default function CommercialPage() {
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               <span className="text-green-400 text-sm font-semibold tracking-wide uppercase">Get Started Today</span>
             </div>
-
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display">
               Ready to Upgrade Your Workspace?
             </h2>
             <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
               Get a free commercial cleaning quote tailored to your facility's specific needs. No obligation, just straightforward pricing.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/service-quote" 
@@ -496,7 +458,6 @@ export default function CommercialPage() {
                 Call Now
               </a>
             </div>
-
             <div className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
                 <div className="text-slate-500 text-sm mb-1">Reliable</div>

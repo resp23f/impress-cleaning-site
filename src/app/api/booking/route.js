@@ -1,24 +1,19 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
-
 const resend = new Resend(process.env.RESEND_API_KEY_STAGING);
-
 function createBookingConfirmationEmail(bookingData) {
   const { name, email, phone, address, serviceType, serviceLevel, preferredDate, preferredTime, specialRequests, estimatedPrice } = bookingData;
-
   // Format service level for display
   const serviceLevelMap = {
     'basic': 'Basic Clean',
     'deep': 'Deep Clean',
     'move': 'Move-In/Move-Out Clean'
   };
-
   const timeMap = {
     'morning': 'Morning (8am - 12pm)',
     'afternoon': 'Afternoon (12pm - 4pm)',
     'evening': 'Evening (4pm - 7pm)'
   };
-
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +28,6 @@ function createBookingConfirmationEmail(bookingData) {
       <td align="center">
         <!-- Main Container -->
         <table width="650" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); overflow: hidden;">
-
           <!-- Elegant Header -->
           <tr>
             <td style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 50%, #1a4d2e 100%); padding: 60px 40px; text-align: center;">
@@ -44,7 +38,6 @@ function createBookingConfirmationEmail(bookingData) {
               <p style="margin: 15px 0 0; color: #e8f5e9; font-size: 16px; font-weight: 300; letter-spacing: 0.5px;">We'll be in touch soon</p>
             </td>
           </tr>
-
           <!-- Main Content -->
           <tr>
             <td style="padding: 50px 50px 40px;">
@@ -54,11 +47,9 @@ function createBookingConfirmationEmail(bookingData) {
               <p style="margin: 0 0 40px; color: #4a5568; font-size: 16px; line-height: 1.8; font-weight: 300;">
                 Thank you for choosing Impress Cleaning Services. We have received your booking request and will review the details carefully.
               </p>
-
               <!-- Booking Details Box -->
               <div style="background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%); border: 1px solid #e8e8e8; border-radius: 2px; padding: 35px 40px; margin: 0 0 40px;">
                 <h3 style="margin: 0 0 25px; color: #1a4d2e; font-size: 22px; font-weight: 400; letter-spacing: 0.5px;">Your Booking Details</h3>
-                
                 <table width="100%" cellpadding="0" cellspacing="0" style="color: #4a5568; font-size: 15px; line-height: 2;">
                   <tr>
                     <td style="padding: 8px 0; font-weight: 600; color: #2d3748; width: 40%;">Service Type:</td>
@@ -89,7 +80,6 @@ function createBookingConfirmationEmail(bookingData) {
                   </tr>
                   ` : ''}
                 </table>
-
                 ${estimatedPrice ? `
                 <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #e0e0e0;">
                   <p style="margin: 0 0 8px; color: #718096; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Estimated Starting Price</p>
@@ -100,7 +90,6 @@ function createBookingConfirmationEmail(bookingData) {
               </div>
             </td>
           </tr>
-
           <!-- What Happens Next -->
           <tr>
             <td style="padding: 0 50px 50px;">
@@ -115,13 +104,11 @@ function createBookingConfirmationEmail(bookingData) {
                   <li>Any additional details or questions we may have</li>
                 </ul>
               </div>
-
               <p style="margin: 0 0 20px; color: #4a5568; font-size: 15px; line-height: 1.8; font-weight: 300; text-align: center;">
                 If you have any questions in the meantime, please don't hesitate to contact us.
               </p>
             </td>
           </tr>
-
           <!-- Contact Button -->
           <tr>
             <td style="padding: 0 50px 50px; text-align: center;">
@@ -131,7 +118,6 @@ function createBookingConfirmationEmail(bookingData) {
               </a>
             </td>
           </tr>
-
           <!-- Elegant Footer -->
           <tr>
             <td style="padding: 40px 50px; background-color: #1a1a1a; text-align: center;">
@@ -147,7 +133,6 @@ function createBookingConfirmationEmail(bookingData) {
               </p>
             </td>
           </tr>
-
         </table>
       </td>
     </tr>
@@ -156,24 +141,20 @@ function createBookingConfirmationEmail(bookingData) {
 </html>
   `;
 }
-
 export async function POST(request) {
   try {
     const bookingData = await request.json();
-
     // Format the service level for display
     const serviceLevelMap = {
       'basic': 'Basic Clean',
       'deep': 'Deep Clean',
       'move': 'Move-In/Move-Out Clean'
     };
-
     const timeMap = {
       'morning': 'Morning (8am - 12pm)',
       'afternoon': 'Afternoon (12pm - 4pm)',
       'evening': 'Evening (4pm - 7pm)'
     };
-
     // Calculate estimated price for email
     let estimatedPrice = 'TBD';
     if (bookingData.serviceType === 'commercial') {
@@ -187,7 +168,6 @@ export async function POST(request) {
         estimatedPrice = 'Starting at $400';
       }
     }
-
     // Send email notification TO YOU
     const { data: notificationData, error: notificationError } = await resend.emails.send({
       from: 'Bookings <bookings@impressyoucleaning.com>',
@@ -278,7 +258,6 @@ export async function POST(request) {
           <div class="header">
             <h1>🎉 New Booking Request</h1>
           </div>
-          
           <div class="content">
             <div class="estimate-box">
               <div style="font-size: 16px; color: #666;">Estimated Price Range</div>
@@ -287,7 +266,6 @@ export async function POST(request) {
                 ${bookingData.giftCertificate ? '⚠️ Customer has a gift certificate to apply' : 'Final pricing to be confirmed'}
               </div>
             </div>
-
             <div class="section">
               <div class="section-title">📋 Customer Information</div>
               <div class="info-row">
@@ -307,7 +285,6 @@ export async function POST(request) {
                 <span class="value">${bookingData.address}</span>
               </div>
             </div>
-
             <div class="section">
               <div class="section-title">🧹 Service Details</div>
               <div class="info-row">
@@ -323,7 +300,6 @@ export async function POST(request) {
                 <span class="value">${bookingData.spaceSize}</span>
               </div>
             </div>
-
             <div class="section">
               <div class="section-title">📅 Scheduling</div>
               <div class="info-row">
@@ -335,7 +311,6 @@ export async function POST(request) {
                 <span class="value">${timeMap[bookingData.preferredTime]}</span>
               </div>
             </div>
-
             ${bookingData.giftCertificate ? `
               <div class="section">
                 <div class="section-title">🎁 Gift Certificate</div>
@@ -346,7 +321,6 @@ export async function POST(request) {
                 <p style="color: #d97706; font-weight: bold;">⚠️ Remember to validate and apply this certificate to the final invoice!</p>
               </div>
             ` : ''}
-
             ${bookingData.specialRequests ? `
               <div class="section">
                 <div class="section-title">📝 Special Requests</div>
@@ -354,7 +328,6 @@ export async function POST(request) {
               </div>
             ` : ''}
           </div>
-
           <div class="footer">
             <p><strong>Action Required:</strong> Respond to customer within 24 hours with confirmed pricing and appointment details.</p>
             <p style="margin-top: 10px;">Reply to: ${bookingData.email} | Call: ${bookingData.phone}</p>
@@ -363,11 +336,9 @@ export async function POST(request) {
         </html>
       `,
     });
-
     if (notificationError) {
       console.error('Notification email error:', notificationError);
     }
-
     // Send confirmation email TO CUSTOMER
     const confirmationHtml = createBookingConfirmationEmail({
       name: bookingData.name,
@@ -381,18 +352,15 @@ export async function POST(request) {
       specialRequests: bookingData.specialRequests,
       estimatedPrice: estimatedPrice
     });
-
     const { data: confirmationData, error: confirmationError } = await resend.emails.send({
       from: 'Impress Cleaning Bookings <bookings@impressyoucleaning.com>',
       to: bookingData.email,
       subject: 'Your Booking Request Has Been Received',
       html: confirmationHtml,
     });
-
     if (confirmationError) {
       console.error('Confirmation email error:', confirmationError);
     }
-
     // Return success if at least one email sent
     if (notificationError && confirmationError) {
       return NextResponse.json(
@@ -400,12 +368,10 @@ export async function POST(request) {
         { status: 500 }
       );
     }
-
     return NextResponse.json(
       { success: true, messageId: notificationData?.id || confirmationData?.id },
       { status: 200 }
     );
-
   } catch (error) {
     console.error('Booking API error:', error);
     return NextResponse.json(

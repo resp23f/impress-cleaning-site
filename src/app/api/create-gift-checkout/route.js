@@ -1,13 +1,11 @@
 import Stripe from 'stripe';
 import crypto from 'crypto';
-
 // Generate a unique gift certificate code
 function generateGiftCode() {
   const timestamp = Date.now().toString(36).toUpperCase();
   const random = crypto.randomBytes(4).toString('hex').toUpperCase();
   return `GIFT-${timestamp}-${random}`;
 }
-
 export async function POST(request) {
   try {
     // Check if Stripe is configured
@@ -18,13 +16,10 @@ export async function POST(request) {
         { status: 500 }
       );
     }
-
     // Initialize Stripe
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
     const body = await request.json();
     const { recipientName, recipientEmail, senderName, buyerEmail, message, amount } = body;
-
     // Validate required fields
     if (!recipientName || !recipientEmail || !senderName || !buyerEmail || !amount) {
       return Response.json(
@@ -32,7 +27,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
     // Validate amount
     const amountInCents = Math.round(parseFloat(amount) * 100);
     if (isNaN(amountInCents) || amountInCents < 2500 || amountInCents > 50000) {
@@ -41,13 +35,10 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
     // Generate unique gift certificate code
     const giftCode = generateGiftCode();
-
     // Prepare the site URL
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
     // Store gift certificate data to pass through the checkout
     const giftData = {
       code: giftCode,
@@ -57,16 +48,13 @@ export async function POST(request) {
       message: message || '',
       amount
     };
-
     const encodedGiftData = Buffer.from(JSON.stringify(giftData)).toString('base64');
-
     console.log('Creating Stripe checkout session with:', {
       amount: amountInCents,
       recipientEmail,
       buyerEmail,
       hasSecretKey: !!process.env.STRIPE_SECRET_KEY,
     });
-
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -96,14 +84,11 @@ export async function POST(request) {
         amount: amount.toString(),
       },
     });
-
     console.log('Stripe checkout session created:', session.id);
-
     return Response.json({
       checkoutUrl: session.url,
       giftCode,
     });
-
   } catch (error) {
     console.error('Error creating checkout:', error);
     console.error('Error details:', {
@@ -112,7 +97,6 @@ export async function POST(request) {
       type: error.type,
       statusCode: error.statusCode,
     });
-
     return Response.json(
       {
         error: error.message || 'Failed to create checkout session',

@@ -152,7 +152,6 @@ const { error: addressError } = await supabase
     place_id: addressData.place_id || null,      // Changed from formData
     is_primary: true,
   })
-  
   if (addressError) throw addressError
       // Send admin notification email
       fetch('/api/email/admin-new-registration', {

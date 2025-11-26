@@ -3,12 +3,10 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
-
 // Custom animation component for this page
 function FadeInWhenVisible({ children, delay = 0 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
     <motion.div
       ref={ref}
@@ -20,7 +18,6 @@ function FadeInWhenVisible({ children, delay = 0 }) {
     </motion.div>
   );
 }
-
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background">
@@ -36,11 +33,9 @@ export default function AboutPage() {
                   15 Years of Creating
                   <span className="block text-[#001F3F] mt-2">Time for What Matters</span>
                 </h1>
-                
                 <p className="text-xl text-gray-600 mb-8 leading-relaxed font-manrope">
                   Since 2009, we've been more than just a cleaning service. We're time givers, stress relievers, and your neighbors who understand that a clean home means more moments with the people you love.
                 </p>
-
                 <div className="flex items-center gap-8">
                   <div>
                     <div className="text-3xl font-bold text-[#001F3F]">15+</div>
@@ -56,7 +51,6 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-
               <div className="relative">
                 {/* Decorative elements */}
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#079447]/20 rounded-full blur-2xl"></div>
@@ -66,7 +60,6 @@ export default function AboutPage() {
           </div>
         </section>
       </FadeInWhenVisible>
-
       {/* Our Story Section */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
@@ -80,7 +73,6 @@ export default function AboutPage() {
               </p>
             </div>
           </FadeInWhenVisible>
-
           <div className="grid md:grid-cols-2 gap-8">
             <FadeInWhenVisible delay={0.1}>
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
@@ -95,7 +87,6 @@ export default function AboutPage() {
                 </p>
               </div>
             </FadeInWhenVisible>
-
             <FadeInWhenVisible delay={0.2}>
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                 <div className="w-14 h-14 bg-[#001F3F]/10 rounded-xl flex items-center justify-center mb-6">
@@ -112,7 +103,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       {/* Values Section - Cards layout different from Residential */}
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
@@ -126,7 +116,6 @@ export default function AboutPage() {
               </p>
             </div>
           </FadeInWhenVisible>
-
           <div className="grid md:grid-cols-3 gap-6">
             <FadeInWhenVisible delay={0.1}>
               <div className="text-center group">
@@ -141,7 +130,6 @@ export default function AboutPage() {
                 </p>
               </div>
             </FadeInWhenVisible>
-
             <FadeInWhenVisible delay={0.2}>
               <div className="text-center group">
                 <div className="w-20 h-20 mx-auto bg-gradient-to-br from-[#001F3F] to-[#003D7A] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -155,7 +143,6 @@ export default function AboutPage() {
                 </p>
               </div>
             </FadeInWhenVisible>
-
             <FadeInWhenVisible delay={0.3}>
               <div className="text-center group">
                 <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -173,7 +160,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       {/* Team Section */}
       <section className="py-20 px-4 bg-[#F8FAF7]">
         <div className="max-w-6xl mx-auto">
@@ -187,7 +173,6 @@ export default function AboutPage() {
               </p>
             </div>
           </FadeInWhenVisible>
-
           <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100">
             <FadeInWhenVisible delay={0.1}>
               <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -224,8 +209,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-
       {/* CTA Section */}
       <FadeInWhenVisible>
         <section className="py-20 px-4 bg-gray-50">
@@ -236,7 +219,6 @@ export default function AboutPage() {
             <p className="text-xl text-gray-600 mb-10 leading-relaxed">
               Whether you need weekly support or occasional help, we're here to give you back your time. Let's talk about how we can help you focus on what matters most.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/service-quote" 

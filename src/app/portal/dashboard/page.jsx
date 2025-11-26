@@ -17,28 +17,22 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import styles from '../shared-animations.module.css'
-
 export default async function DashboardPage() {
   const supabase = await createClient()
-  
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
   if (!user) {
     redirect('/auth/login')
   }
-
   // Get user profile
   const { data: profile } = await supabase
     .from('profiles')
     .select('*, service_addresses(*)')
     .eq('id', user.id)
     .single()
-
   const primaryAddress = profile?.service_addresses?.find(addr => addr.is_primary) ||
     profile?.service_addresses?.[0]
-
   // Get upcoming appointments
   const { data: upcomingAppointments } = await supabase
     .from('appointments')
@@ -48,9 +42,7 @@ export default async function DashboardPage() {
     .order('scheduled_date', { ascending: true })
     .order('scheduled_time_start', { ascending: true })
     .limit(3)
-
   const nextAppointment = upcomingAppointments?.[0]
-
   // Get recent service history
   const { data: recentServices } = await supabase
     .from('service_history')
@@ -58,7 +50,6 @@ export default async function DashboardPage() {
     .eq('customer_id', user.id)
     .order('completed_date', { ascending: false })
     .limit(2)
-
   // Get invoices
   const { data: invoices } = await supabase
     .from('invoices')
@@ -66,11 +57,9 @@ export default async function DashboardPage() {
     .eq('customer_id', user.id)
     .order('created_at', { ascending: false })
     .limit(3)
-
   // Calculate balance
   const unpaidInvoices = invoices?.filter(inv => inv.status !== 'paid' && inv.status !== 'cancelled') || []
   const balance = unpaidInvoices.reduce((sum, inv) => sum + parseFloat(inv.amount), 0)
-
   // Get recurring services
   const { data: recurringServices } = await supabase
     .from('appointments')
@@ -79,9 +68,7 @@ export default async function DashboardPage() {
     .eq('is_recurring', true)
     .is('parent_recurring_id', null)
     .limit(1)
-
   const firstName = profile?.full_name?.split(' ')[0] || 'there'
-
   const formatServiceType = (type) => {
     const types = {
       standard: 'Standard Cleaning',
@@ -92,7 +79,6 @@ export default async function DashboardPage() {
     }
     return types[type] || type
   }
-
   const getStatusBadge = (status) => {
     const variants = {
       pending: 'warning',
@@ -102,7 +88,6 @@ export default async function DashboardPage() {
     }
     return variants[status] || 'default'
   }
-
   const getInvoiceStatusBadge = (status) => {
     const variants = {
       paid: 'success',
@@ -112,7 +97,6 @@ export default async function DashboardPage() {
     }
     return variants[status] || 'default'
   }
-
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Welcome Header - Animated */}
@@ -122,7 +106,6 @@ export default async function DashboardPage() {
         </h1>
         <p className="text-gray-600">Welcome to your customer portal</p>
       </div>
-
       {/* Hero Section - Next Appointment & Balance */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Next Appointment Card */}
@@ -136,7 +119,6 @@ export default async function DashboardPage() {
                     {nextAppointment.status}
                   </Badge>
                 </div>
-                
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
@@ -149,14 +131,12 @@ export default async function DashboardPage() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-center gap-3">
                     <Clock className="w-5 h-5 text-gray-400 flex-shrink-0" />
                     <p className="text-gray-700">
                       {nextAppointment.scheduled_time_start} - {nextAppointment.scheduled_time_end}
                     </p>
                   </div>
-
                   {nextAppointment.team_members && nextAppointment.team_members.length > 0 && (
                     <div className="flex items-center gap-3">
                       <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
@@ -165,7 +145,6 @@ export default async function DashboardPage() {
                       </p>
                     </div>
                   )}
-
                   {primaryAddress && (
                     <div className="flex items-start gap-3">
                       <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -178,7 +157,6 @@ export default async function DashboardPage() {
                     </div>
                   )}
                 </div>
-
                 <div className="flex gap-3 mt-6">
                   <Link href={`/portal/appointments/${nextAppointment.id}`}>
                     <Button variant="primary" className={styles.smoothTransition}>View Details</Button>
@@ -209,7 +187,6 @@ export default async function DashboardPage() {
             )}
           </Card>
         </div>
-
         {/* Balance Card */}
 <div className={`${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
             <Card 
@@ -246,7 +223,6 @@ export default async function DashboardPage() {
           </Card>
         </div>
       </div>
-
       {/* Quick Actions */}
       <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 ${styles.animateFadeInUp} ${styles.stagger3}`}>
         <Link href="/portal/request-service" className="block">
@@ -268,7 +244,6 @@ export default async function DashboardPage() {
           </Button>
         </Link>
       </div>
-
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Upcoming Appointments */}
@@ -283,7 +258,6 @@ export default async function DashboardPage() {
                 View All
               </Link>
             </div>
-            
             {upcomingAppointments && upcomingAppointments.length > 0 ? (
               <div className="space-y-3">
                 {upcomingAppointments.map((apt) => (
@@ -304,13 +278,11 @@ export default async function DashboardPage() {
                         {apt.status}
                       </Badge>
                     </div>
-                    
                     {apt.team_members && apt.team_members.length > 0 && (
                       <p className="text-sm text-gray-600 mb-3">
                         Team: {apt.team_members.join(', ')}
                       </p>
                     )}
-                    
                     <div className="flex gap-2">
                       <Link href={`/portal/appointments/${apt.id}`}>
                         <Button variant="text" size="sm" className={styles.smoothTransition}>
@@ -336,7 +308,6 @@ export default async function DashboardPage() {
             )}
           </Card>
         </div>
-
         {/* Recent Services */}
         <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
           <Card className={styles.cardHover}>
@@ -349,7 +320,6 @@ export default async function DashboardPage() {
                 View Full History
               </Link>
             </div>
-            
             {recentServices && recentServices.length > 0 ? (
               <div className="space-y-3">
                 {recentServices.map((service) => (
@@ -368,7 +338,6 @@ export default async function DashboardPage() {
                       </div>
                       <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                     </div>
-                    
                     {service.customer_rating && (
                       <div className="flex items-center gap-1 mt-2">
                         {[...Array(service.customer_rating)].map((_, i) => (
@@ -392,7 +361,6 @@ export default async function DashboardPage() {
             )}
           </Card>
         </div>
-
         {/* Invoices & Payments */}
         <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
           <Card className={styles.cardHover}>
@@ -405,7 +373,6 @@ export default async function DashboardPage() {
                 View All Invoices
               </Link>
             </div>
-            
             {invoices && invoices.length > 0 ? (
               <div className="space-y-3">
                 {invoices.map((invoice) => (
@@ -426,7 +393,6 @@ export default async function DashboardPage() {
                         {invoice.status}
                       </Badge>
                     </div>
-                    
                     <div className="flex gap-2 mt-3">
                       {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
                         <Link href={`/portal/invoices/${invoice.id}/pay`}>
@@ -454,7 +420,6 @@ export default async function DashboardPage() {
             )}
           </Card>
         </div>
-
         {/* Service Address & Recurring Services */}
 <div className={`space-y-6 ${styles.animateFadeInUp} ${styles.stagger4} ${styles.fillHeight}`}>
             {/* Recurring Services */}
@@ -491,7 +456,6 @@ export default async function DashboardPage() {
               ))}
             </Card>
           )}
-
           {/* Service Address */}
           {primaryAddress && (
             <Card className={styles.cardHover}>

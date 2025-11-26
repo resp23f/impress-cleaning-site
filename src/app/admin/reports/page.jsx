@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from 'date-fns'
 import {
@@ -17,7 +16,6 @@ import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
-
 export default function ReportsPage() {
   const [loading, setLoading] = useState(true)
   const [dateRange, setDateRange] = useState('30') // days
@@ -32,19 +30,15 @@ export default function ReportsPage() {
   const [serviceBreakdown, setServiceBreakdown] = useState([])
   const [revenueByMonth, setRevenueByMonth] = useState([])
   const [topCustomers, setTopCustomers] = useState([])
-
   const supabase = createClient()
-
   useEffect(() => {
     loadReports()
   }, [dateRange])
-
   const loadReports = async () => {
     setLoading(true)
     try {
       const startDate = subDays(new Date(), parseInt(dateRange))
       const startDateStr = format(startDate, 'yyyy-MM-dd')
-
       // Load all data in parallel
       const [
         invoicesRes,
@@ -70,17 +64,14 @@ export default function ReportsPage() {
           .select('*')
           .gte('created_at', startDateStr),
       ])
-
       const invoices = invoicesRes.data || []
       const appointments = appointmentsRes.data || []
       const customers = customersRes.data || []
       const serviceHistory = serviceHistoryRes.data || []
-
       // Calculate stats
       const paidInvoices = invoices.filter(i => i.status === 'paid')
       const totalRevenue = paidInvoices.reduce((sum, i) => sum + parseFloat(i.amount), 0)
       const pendingInvoices = invoices.filter(i => i.status === 'sent' || i.status === 'overdue').length
-
       setStats({
         revenue: totalRevenue,
         appointments: appointments.length,
@@ -89,7 +80,6 @@ export default function ReportsPage() {
         pendingInvoices,
         averageInvoice: paidInvoices.length > 0 ? totalRevenue / paidInvoices.length : 0,
       })
-
       // Service type breakdown
       const serviceTypes = {}
       appointments.forEach(apt => {
@@ -101,7 +91,6 @@ export default function ReportsPage() {
         percentage: (count / appointments.length * 100).toFixed(1)
       }))
       setServiceBreakdown(breakdown.sort((a, b) => b.count - a.count))
-
       // Revenue by month (last 6 months)
       const monthlyRevenue = {}
       paidInvoices.forEach(inv => {
@@ -113,41 +102,34 @@ export default function ReportsPage() {
         amount
       }))
       setRevenueByMonth(revenueData.slice(-6))
-
       // Top customers by revenue
       const customerRevenue = {}
       paidInvoices.forEach(inv => {
         const customerId = inv.customer_id
         customerRevenue[customerId] = (customerRevenue[customerId] || 0) + parseFloat(inv.amount)
       })
-
       // Get customer details
       const topCustomerIds = Object.entries(customerRevenue)
         .sort(([, a], [, b]) => b - a)
         .slice(0, 5)
         .map(([id]) => id)
-
       if (topCustomerIds.length > 0) {
         const { data: topCustomerData } = await supabase
           .from('profiles')
           .select('id, full_name, email')
           .in('id', topCustomerIds)
-
         const topCustomersWithRevenue = topCustomerData?.map(customer => ({
           ...customer,
           revenue: customerRevenue[customer.id]
         })).sort((a, b) => b.revenue - a.revenue) || []
-
         setTopCustomers(topCustomersWithRevenue)
       }
-
     } catch (error) {
       console.error('Error loading reports:', error)
     } finally {
       setLoading(false)
     }
   }
-
   const formatServiceType = (type) => {
     const types = {
       standard: 'Standard Cleaning',
@@ -158,7 +140,6 @@ export default function ReportsPage() {
     }
     return types[type] || type
   }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -167,11 +148,9 @@ export default function ReportsPage() {
       </div>
     )
   }
-
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={0} requestsCount={0} />
-
       <div className="lg:pl-64">
         <main className="py-8 px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -184,7 +163,6 @@ export default function ReportsPage() {
                 Business performance and insights
               </p>
             </div>
-
             {/* Date Range Filter */}
             <div>
               <select
@@ -200,7 +178,6 @@ export default function ReportsPage() {
               </select>
             </div>
           </div>
-
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <Card>
@@ -219,7 +196,6 @@ export default function ReportsPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -236,7 +212,6 @@ export default function ReportsPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -254,7 +229,6 @@ export default function ReportsPage() {
               </div>
             </Card>
           </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Service Type Breakdown */}
             <Card>
@@ -271,7 +245,6 @@ export default function ReportsPage() {
                   </p>
                 </div>
               </div>
-
               {serviceBreakdown.length > 0 ? (
                 <div className="space-y-4">
                   {serviceBreakdown.map((service, index) => (
@@ -301,7 +274,6 @@ export default function ReportsPage() {
                 </div>
               )}
             </Card>
-
             {/* Top Customers */}
             <Card>
               <div className="flex items-center gap-3 mb-6">
@@ -317,7 +289,6 @@ export default function ReportsPage() {
                   </p>
                 </div>
               </div>
-
               {topCustomers.length > 0 ? (
                 <div className="space-y-3">
                   {topCustomers.map((customer, index) => (
@@ -355,7 +326,6 @@ export default function ReportsPage() {
               )}
             </Card>
           </div>
-
           {/* Revenue Trend */}
           <Card>
             <div className="flex items-center gap-3 mb-6">
@@ -371,13 +341,11 @@ export default function ReportsPage() {
                 </p>
               </div>
             </div>
-
             {revenueByMonth.length > 0 ? (
               <div className="space-y-4">
                 {revenueByMonth.map((data) => {
                   const maxRevenue = Math.max(...revenueByMonth.map(d => d.amount))
                   const percentage = (data.amount / maxRevenue * 100).toFixed(1)
-                  
                   return (
                     <div key={data.month}>
                       <div className="flex justify-between items-center mb-2">
@@ -405,7 +373,6 @@ export default function ReportsPage() {
               </div>
             )}
           </Card>
-
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
             <Card className="text-center">
@@ -415,7 +382,6 @@ export default function ReportsPage() {
               </p>
               <p className="text-sm text-gray-600">Completed</p>
             </Card>
-
             <Card className="text-center">
               <FileText className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
               <p className="text-2xl font-bold text-[#1C294E]">
@@ -423,7 +389,6 @@ export default function ReportsPage() {
               </p>
               <p className="text-sm text-gray-600">Pending</p>
             </Card>
-
             <Card className="text-center">
               <DollarSign className="w-8 h-8 text-green-600 mx-auto mb-2" />
               <p className="text-2xl font-bold text-[#1C294E]">
@@ -431,7 +396,6 @@ export default function ReportsPage() {
               </p>
               <p className="text-sm text-gray-600">Avg Invoice</p>
             </Card>
-
             <Card className="text-center">
               <Calendar className="w-8 h-8 text-purple-600 mx-auto mb-2" />
               <p className="text-2xl font-bold text-[#1C294E]">

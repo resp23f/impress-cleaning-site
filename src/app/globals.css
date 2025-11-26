@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 :root {
   color-scheme: light;
   --background: #FAFAF8;
@@ -13,19 +12,15 @@
   --text-white: #FFFFFF;
   --border-gray: #E7EBF0;
   --green-hover: #08A855;
-  
   --softgreen: #7AC699;
 }
-
 /* Remove the duplicate dark mode section since you're not using dark mode */
 /* If you want to add dark mode later, update with actual dark colors */
-
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar,
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-  
   .scrollbar-hide,
   .scrollbar-none {
     -ms-overflow-style: none;
@@ -38,12 +33,9 @@
   overflow-y: hidden;
   pointer-events: auto;
 }
-
 .horizontal-scroll::-webkit-scrollbar {
   display: none;
 }
-
-
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);
@@ -58,71 +50,57 @@
     transform: translate(0px, 0px) scale(1);
   }
 }
-
 .animate-blob {
   animation: blob 7s infinite;
 }
-
 .animation-delay-2000 {
   animation-delay: 2s;
 }
-
 .animation-delay-4000 {
   animation-delay: 4s;
 }
-
 /* Apple-style smooth scroll animations */
 .animate-in {
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
-
 .ease-butter {
   transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
-
 html {
   background-color: var(--background);
   -webkit-text-size-adjust: 100%;
 }
-
 body {
   margin: 0;
   padding: 0;
   background-color: var(--background);
   color: var(--foreground);
 }
-
 html, body { 
   overflow-x: hidden; 
 }
-
 /* Tiny superscript for "LLC" */
 .align-super { 
   vertical-align: super; 
 }
-
 /* Tiny font utilities */
 .text-2xs { 
   font-size: 10px !important; 
   line-height: 1; 
 }
-
 .text-3xs { 
   font-size: 9px !important; 
   line-height: 1; 
 }
-
 .text-4xs { 
   font-size: 8px !important; 
   line-height: 1; 
 }
-
 /* Ensure footer visibility */
 footer, footer * { 
   opacity: 1 !important; 
 }
-
 /* Custom select styling */
 select.no-native {
   -webkit-appearance: none;
@@ -130,11 +108,9 @@ select.no-native {
   appearance: none;
   background-image: none !important;
 }
-
 select.no-native::-ms-expand { 
   display: none; 
 }
-
 /* Container utilities */
 .container {
   width: 100%;
@@ -144,7 +120,6 @@ select.no-native::-ms-expand {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-
 /* Mobile adjustments */
 @media (max-width: 768px) {
   body {
@@ -157,29 +132,24 @@ select.no-native::-ms-expand {
     padding-right: 3rem;
   }
 }
-
 .full-bleed {
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
 }
-
 /* Font family utilities */
 .font-display { 
   font-family: var(--font-heading), "Onest", ui-serif, system-ui, sans-serif; 
 }
-
 .font-sans,
 .font-manrope { 
   font-family: var(--font-sans), "Manrope", ui-sans-serif, system-ui, sans-serif; 
 }
-
 /* iOS safe area support for notch */
 @supports (padding: max(0px)) {
   header {
     padding-top: max(env(safe-area-inset-top), 0px);
   }
-  
   /* Make safe area white on mobile */
   @media (max-width: 768px) {
     body::before {
@@ -199,7 +169,6 @@ select.no-native::-ms-expand {
   pointer-events: auto;
   user-select: none;
 }
-
 .carousel-container {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -10,7 +9,6 @@ import {
   ChefHat, Droplets, Wind, Lamp, WashingMachine, Monitor, CircleDot,
   Award, ArrowRight, Shield, TrendingUp
 } from 'lucide-react';
-
 // Comprehensive Cleaning Tips Data
 const cleaningTipsData = [
   // KITCHEN TIPS
@@ -157,7 +155,6 @@ const cleaningTipsData = [
     proTip: 'Never put grease, bones, or fibrous vegetables down the disposal. Citrus keeps it fresh and clean!',
     relatedTips: ['k2', 'k4']
   },
-
   // BATHROOM TIPS
   {
     id: 'b1',
@@ -305,7 +302,6 @@ const cleaningTipsData = [
     proTip: 'Dry your sink and faucet after each use to prevent water spots and keep them shining longer.',
     relatedTips: ['b3', 'b4']
   },
-
   // BEDROOM TIPS
   {
     id: 'br1',
@@ -458,7 +454,6 @@ const cleaningTipsData = [
     proTip: 'Place items in clear, labeled bins for easy identification. Avoid storing items directly on floor - use bins!',
     relatedTips: ['br1', 'br2']
   },
-
   // LIVING ROOM TIPS
   {
     id: 'l1',
@@ -614,7 +609,6 @@ const cleaningTipsData = [
     proTip: 'For water rings on wood, rub gently with mayo or toothpaste, then buff clean. Prevention is key - use coasters!',
     relatedTips: ['l1', 'l4']
   },
-
   // LAUNDRY TIPS
   {
     id: 'la1',
@@ -769,7 +763,6 @@ const cleaningTipsData = [
     proTip: 'Too much detergent causes buildup and odors! Use vinegar in rinse - it\'s a natural fabric softener and deodorizer.',
     relatedTips: ['la1', 'la4']
   },
-
   // OFFICE/WORKSPACE TIPS
   {
     id: 'o1',
@@ -928,7 +921,6 @@ const cleaningTipsData = [
     relatedTips: ['o2', 'o4']
   }
 ];
-
 // Room sections configuration - Expanded to 15+ categories
 const roomSections = [
   {
@@ -2193,7 +2185,6 @@ const roomSections = [
     ]
   }
 ];
-
 // Seasonal Cleaning Checklists
 const seasonalChecklists = {
   spring: {
@@ -2215,7 +2206,6 @@ const seasonalChecklists = {
     ]
   }
 };
-
 // Product Recommendations
 const productRecommendations = [
   {
@@ -2273,7 +2263,6 @@ const productRecommendations = [
     budgetFriendly: false
   }
 ];
-
 // Icon mapping
 const iconComponents = {
   ChefHat,
@@ -2292,7 +2281,6 @@ const iconComponents = {
   Shirt,
   Briefcase
 };
-
 // Main Component
 export default function CleaningTipsPage() {
   // State Management
@@ -2305,37 +2293,30 @@ export default function CleaningTipsPage() {
   const [activeSection, setActiveSection] = useState('tips');
   const [shoppingList, setShoppingList] = useState([]);
   const [showShoppingList, setShowShoppingList] = useState(false);
-
   // Load from localStorage
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     const savedCompleted = JSON.parse(localStorage.getItem('completedTips') || '[]');
     const savedShoppingList = JSON.parse(localStorage.getItem('shoppingList') || '[]');
-
     setDarkMode(savedDarkMode);
     setFavorites(savedFavorites);
     setCompletedTips(savedCompleted);
     setShoppingList(savedShoppingList);
   }, []);
-
   // Save to localStorage
   useEffect(() => {
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
-
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
-
   useEffect(() => {
     localStorage.setItem('completedTips', JSON.stringify(completedTips));
   }, [completedTips]);
-
   useEffect(() => {
     localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
   }, [shoppingList]);
-
   // Organize tips by room
   const tipsByRoom = useMemo(() => {
     const organized = {
@@ -2346,40 +2327,33 @@ export default function CleaningTipsPage() {
       laundry: [],
       office: []
     };
-
     cleaningTipsData.forEach(tip => {
       if (organized[tip.room]) {
         organized[tip.room].push(tip);
       }
     });
-
     return organized;
   }, []);
-
   // Helper Functions
   const toggleFavorite = (tipId) => {
     setFavorites(prev =>
       prev.includes(tipId) ? prev.filter(id => id !== tipId) : [...prev, tipId]
     );
   };
-
   const toggleCompleted = (tipId) => {
     setCompletedTips(prev =>
       prev.includes(tipId) ? prev.filter(id => id !== tipId) : [...prev, tipId]
     );
   };
-
   const addToShoppingList = (supplies) => {
     setShoppingList(prev => {
       const newItems = supplies.filter(item => !prev.includes(item));
       return [...prev, ...newItems];
     });
   };
-
   const removeFromShoppingList = (item) => {
     setShoppingList(prev => prev.filter(i => i !== item));
   };
-
   const shareTip = (tip) => {
     if (navigator.share) {
       navigator.share({
@@ -2392,7 +2366,6 @@ export default function CleaningTipsPage() {
       alert('Tip copied to clipboard!');
     }
   };
-
   const getRoomIcon = (room) => {
     const icons = {
       kitchen: <ChefHat className="w-4 h-4" />,
@@ -2404,7 +2377,6 @@ export default function CleaningTipsPage() {
     };
     return icons[room] || <Home className="w-4 h-4" />;
   };
-
   const getDifficultyColor = (difficulty) => {
     const colors = {
       easy: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800',
@@ -2413,35 +2385,28 @@ export default function CleaningTipsPage() {
     };
     return colors[difficulty] || colors.easy;
   };
-
   const getTypeColor = (type) => {
     return type === 'quick'
       ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-400 dark:border-blue-800'
       : 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800';
   };
-
   const completionPercentage = (completedTips.length / cleaningTipsData.length) * 100;
-
   const getIconComponent = (iconName) => {
     const Icon = iconComponents[iconName] || CircleDot;
     return <Icon className="w-5 h-5" />;
   };
-
   const toggleSection = (sectionId) => {
     setExpandedSection(expandedSection === sectionId ? null : sectionId);
   };
-
   return (
     <div className={`min-h-screen ${darkMode ? 'dark bg-gray-950' : 'bg-white'} transition-colors duration-200`}>
       {/* Hero Section */}
       <div className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800">
         <div className="absolute inset-0 bg-gradient-to-br from-[#1C294E]/5 via-white to-[#079447]/5 dark:from-gray-950 dark:via-gray-950 dark:to-[#1C294E]/10"></div>
-
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#1C294E]/10 dark:bg-[#1C294E]/5 rounded-full blur-3xl"></div>
           <div className="absolute top-60 -left-40 w-80 h-80 bg-[#079447]/10 dark:bg-[#079447]/5 rounded-full blur-3xl"></div>
         </div>
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2455,7 +2420,6 @@ export default function CleaningTipsPage() {
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
               Expert-curated cleaning guides and maintenance schedules for every room in your home. Trusted by professionals, designed for results.
             </p>
-
             {completedTips.length > 0 && (
               <div className="flex items-center gap-6 text-sm">
                 <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
@@ -2471,7 +2435,6 @@ export default function CleaningTipsPage() {
           </motion.div>
         </div>
       </div>
-
       {/* Navigation */}
       <div className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2496,7 +2459,6 @@ export default function CleaningTipsPage() {
                 </button>
               ))}
             </nav>
-
             <div className="flex items-center gap-2">
               {shoppingList.length > 0 && (
                 <button
@@ -2519,7 +2481,6 @@ export default function CleaningTipsPage() {
           </div>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Tips Section */}
@@ -2571,7 +2532,6 @@ export default function CleaningTipsPage() {
                 </div>
               </div>
             </motion.div>
-
             {/* Introductory Content Sections */}
             <div className="grid md:grid-cols-3 gap-6">
               <motion.div
@@ -2593,7 +2553,6 @@ export default function CleaningTipsPage() {
                   The difference between amateur and professional cleaning isn't just thoroughness—it's understanding which products work on which surfaces, how long disinfectants need to sit to be effective, and the correct order of operations that prevents re-contamination. These checklists reveal the true scope of comprehensive home cleaning.
                 </p>
               </motion.div>
-
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -2613,7 +2572,6 @@ export default function CleaningTipsPage() {
                   Our professionals know that a proper whole-home deep clean takes 12-18 hours for an average home—far more than most people realize. When you see the comprehensive checklists below, you'll understand why professional cleaning services aren't a luxury, but a practical solution for maintaining truly clean, healthy homes.
                 </p>
               </motion.div>
-
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -2642,7 +2600,6 @@ export default function CleaningTipsPage() {
                 </div>
               </motion.div>
             </div>
-
             {/* Total Time Reality Check */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -2676,13 +2633,11 @@ export default function CleaningTipsPage() {
                 </div>
               </div>
             </motion.div>
-
             {/* Room Sections */}
             {roomSections.map((section, index) => {
               const roomTips = tipsByRoom[section.id] || [];
               const isExpanded = expandedSection === section.id;
               const SectionIcon = section.icon;
-
               return (
                 <React.Fragment key={section.id}>
                   <motion.div
@@ -2730,7 +2685,6 @@ export default function CleaningTipsPage() {
                         </div>
                       </div>
                     </button>
-
                     {/* Expanded Content */}
                     <AnimatePresence>
                       {isExpanded && (
@@ -2749,7 +2703,6 @@ export default function CleaningTipsPage() {
                                 </p>
                               </div>
                             )}
-
                             {/* Subsections with Detailed Checklists */}
                             {section.subsections && section.subsections.length > 0 && (
                               <div className="space-y-6">
@@ -2782,7 +2735,6 @@ export default function CleaningTipsPage() {
                                 ))}
                               </div>
                             )}
-
                             {/* Supplies Needed */}
                             {section.supplies && section.supplies.length > 0 && (
                               <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
@@ -2800,7 +2752,6 @@ export default function CleaningTipsPage() {
                                 </div>
                               </div>
                             )}
-
                             {/* Pro Tips */}
                             {section.proTips && section.proTips.length > 0 && (
                               <div className="bg-[#079447]/5 dark:bg-[#079447]/10 border border-[#079447]/20 dark:border-[#079447]/30 rounded-xl p-6">
@@ -2818,7 +2769,6 @@ export default function CleaningTipsPage() {
                                 </ul>
                               </div>
                             )}
-
                             {/* Common Mistakes */}
                             {section.commonMistakes && section.commonMistakes.length > 0 && (
                               <div className="bg-[#1C294E]/5 dark:bg-[#1C294E]/10 border border-[#1C294E]/20 dark:border-[#1C294E]/30 rounded-xl p-6">
@@ -2836,7 +2786,6 @@ export default function CleaningTipsPage() {
                                 </ul>
                               </div>
                             )}
-
                             {/* Legacy Tip Cards (if they exist) */}
                             {roomTips.length > 0 && (
                               <div>
@@ -2880,11 +2829,9 @@ export default function CleaningTipsPage() {
                                         </button>
                                       </div>
                                     </div>
-
                                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3 leading-tight">
                                       {tip.title}
                                     </h3>
-
                                     <div className="flex flex-wrap gap-2 mb-3">
                                       <span className={`px-2 py-0.5 rounded-md text-xs font-medium border ${getTypeColor(tip.type)}`}>
                                         {tip.type === 'quick' ? 'Quick' : 'Deep Clean'}
@@ -2893,7 +2840,6 @@ export default function CleaningTipsPage() {
                                         {tip.difficulty.charAt(0).toUpperCase() + tip.difficulty.slice(1)}
                                       </span>
                                     </div>
-
                                     <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
                                       <div className="flex items-center gap-1">
                                         <Clock className="w-3.5 h-3.5" />
@@ -2905,7 +2851,6 @@ export default function CleaningTipsPage() {
                                       </div>
                                     </div>
                                   </div>
-
                                   {/* Expandable Tip Details */}
                                   <div className="p-5">
                                     <button
@@ -2915,7 +2860,6 @@ export default function CleaningTipsPage() {
                                       <span>View Details</span>
                                       {expandedTip === tip.id ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                                     </button>
-
                                     <AnimatePresence>
                                       {expandedTip === tip.id && (
                                         <motion.div
@@ -2941,7 +2885,6 @@ export default function CleaningTipsPage() {
                                               ))}
                                             </ol>
                                           </div>
-
                                           {/* Supplies */}
                                           <div>
                                             <div className="flex items-center justify-between mb-2">
@@ -2965,7 +2908,6 @@ export default function CleaningTipsPage() {
                                               ))}
                                             </ul>
                                           </div>
-
                                           {/* Pro Tip */}
                                           <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 p-3 rounded-lg border border-amber-200 dark:border-amber-900">
                                             <div className="flex gap-2">
@@ -2976,7 +2918,6 @@ export default function CleaningTipsPage() {
                                               </div>
                                             </div>
                                           </div>
-
                                           {/* Share */}
                                           <button
                                             onClick={() => shareTip(tip)}
@@ -2999,7 +2940,6 @@ export default function CleaningTipsPage() {
                       )}
                     </AnimatePresence>
                   </motion.div>
-
                   {/* Strategic CTA Banners between sections */}
                   {index === 2 && (
                     <motion.div
@@ -3019,7 +2959,6 @@ export default function CleaningTipsPage() {
                       </p>
                     </motion.div>
                   )}
-
                   {index === 5 && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -3038,7 +2977,6 @@ export default function CleaningTipsPage() {
                       </p>
                     </motion.div>
                   )}
-
                   {index === 8 && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -3068,7 +3006,6 @@ export default function CleaningTipsPage() {
                       </div>
                     </motion.div>
                   )}
-
                   {index === 11 && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -3087,7 +3024,6 @@ export default function CleaningTipsPage() {
                       </p>
                     </motion.div>
                   )}
-
                   {index === 14 && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -3115,7 +3051,6 @@ export default function CleaningTipsPage() {
             })}
           </div>
         )}
-
         {/* Products Section */}
         {activeSection === 'products' && (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -3146,7 +3081,6 @@ export default function CleaningTipsPage() {
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{product.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">{product.bestFor}</p>
-
                 <div className="space-y-4">
                   <div>
                     <h4 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mb-2">Pros</h4>
@@ -3175,7 +3109,6 @@ export default function CleaningTipsPage() {
             ))}
           </div>
         )}
-
         {/* Schedule Section */}
         {activeSection === 'schedule' && (
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8">
@@ -3183,7 +3116,6 @@ export default function CleaningTipsPage() {
               <Calendar className="w-8 h-8" />
               Cleaning Schedule
             </h2>
-
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {['daily', 'weekly', 'monthly', 'quarterly'].map((freq) => {
                 const tasksForFrequency = cleaningTipsData.filter(tip => tip.frequency === freq);
@@ -3204,7 +3136,6 @@ export default function CleaningTipsPage() {
                 );
               })}
             </div>
-
             <button className="mt-10 w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-base font-semibold">
               <Printer className="w-5 h-5" />
               Print Schedule
@@ -3212,7 +3143,6 @@ export default function CleaningTipsPage() {
           </div>
         )}
       </div>
-
       {/* Shopping List Modal */}
       <AnimatePresence>
         {showShoppingList && shoppingList.length > 0 && (
@@ -3242,7 +3172,6 @@ export default function CleaningTipsPage() {
                   <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </button>
               </div>
-
               <ul className="space-y-2 mb-6">
                 {shoppingList.map((item, idx) => (
                   <li key={idx} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -3256,7 +3185,6 @@ export default function CleaningTipsPage() {
                   </li>
                 ))}
               </ul>
-
               <button
                 onClick={() => {
                   const text = shoppingList.join('\n');
@@ -3272,7 +3200,6 @@ export default function CleaningTipsPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
       {/* Footer */}
       <footer className="border-t border-gray-200 dark:border-gray-800 mt-20 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

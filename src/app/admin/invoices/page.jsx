@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import { format, parseISO } from 'date-fns'
 import {
@@ -22,7 +21,6 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
-
 export default function InvoicesPage() {
   const [loading, setLoading] = useState(true)
   const [invoices, setInvoices] = useState([])
@@ -31,11 +29,9 @@ export default function InvoicesPage() {
   const [showModal, setShowModal] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [processing, setProcessing] = useState(false)
-  
   // Filters
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
-
   // Create invoice form
   const [customers, setCustomers] = useState([])
   const [newInvoice, setNewInvoice] = useState({
@@ -45,18 +41,14 @@ export default function InvoicesPage() {
     notes: '',
     line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
   })
-
   const supabase = createClient()
-
   useEffect(() => {
     loadInvoices()
     loadCustomers()
   }, [])
-
   useEffect(() => {
     filterInvoices()
   }, [invoices, searchQuery, statusFilter])
-
   const loadInvoices = async () => {
     setLoading(true)
     try {
@@ -67,9 +59,7 @@ export default function InvoicesPage() {
           profiles!customer_id(full_name, email)
         `)
         .order('created_at', { ascending: false })
-
       if (error) throw error
-
       setInvoices(data || [])
     } catch (error) {
       console.error('Error loading invoices:', error)
@@ -78,7 +68,6 @@ export default function InvoicesPage() {
       setLoading(false)
     }
   }
-
   const loadCustomers = async () => {
     try {
       const { data, error } = await supabase
@@ -87,18 +76,14 @@ export default function InvoicesPage() {
         .eq('role', 'customer')
         .eq('account_status', 'active')
         .order('full_name', { ascending: true })
-
       if (error) throw error
-
       setCustomers(data || [])
     } catch (error) {
       console.error('Error loading customers:', error)
     }
   }
-
   const filterInvoices = () => {
     let filtered = [...invoices]
-
     // Search filter
     if (searchQuery) {
       filtered = filtered.filter(inv =>
@@ -107,15 +92,12 @@ export default function InvoicesPage() {
         inv.profiles?.email?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-
     // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(inv => inv.status === statusFilter)
     }
-
     setFilteredInvoices(filtered)
   }
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'paid':
@@ -132,33 +114,26 @@ export default function InvoicesPage() {
         return 'default'
     }
   }
-
   const handleViewInvoice = (invoice) => {
     setSelectedInvoice(invoice)
     setShowModal(true)
   }
-
   const handleUpdateStatus = async (status) => {
     if (!selectedInvoice) return
-
     setProcessing(true)
     try {
       const updates = {
         status,
         updated_at: new Date().toISOString(),
       }
-
       if (status === 'paid') {
         updates.paid_date = new Date().toISOString().split('T')[0]
       }
-
       const { error } = await supabase
         .from('invoices')
         .update(updates)
         .eq('id', selectedInvoice.id)
-
       if (error) throw error
-
       toast.success(`Invoice marked as ${status}!`)
       setShowModal(false)
       loadInvoices()
@@ -169,58 +144,46 @@ export default function InvoicesPage() {
       setProcessing(false)
     }
   }
-
   const handleLineItemChange = (index, field, value) => {
     const items = [...newInvoice.line_items]
     items[index][field] = value
-
     // Calculate amount for this line item
     if (field === 'quantity' || field === 'rate') {
       const qty = parseFloat(items[index].quantity) || 0
       const rate = parseFloat(items[index].rate) || 0
       items[index].amount = qty * rate
     }
-
     setNewInvoice({ ...newInvoice, line_items: items })
   }
-
   const addLineItem = () => {
     setNewInvoice({
       ...newInvoice,
       line_items: [...newInvoice.line_items, { description: '', quantity: 1, rate: '', amount: 0 }]
     })
   }
-
   const removeLineItem = (index) => {
     const items = newInvoice.line_items.filter((_, i) => i !== index)
     setNewInvoice({ ...newInvoice, line_items: items })
   }
-
   const calculateTotal = () => {
     return newInvoice.line_items.reduce((sum, item) => sum + (item.amount || 0), 0)
   }
-
   const handleCreateInvoice = async () => {
     if (!newInvoice.customer_id) {
       toast.error('Please select a customer')
       return
     }
-
     if (newInvoice.line_items.length === 0 || !newInvoice.line_items[0].description) {
       toast.error('Please add at least one line item')
       return
     }
-
     setProcessing(true)
     try {
       // Generate invoice number
       const { data: invoiceNumber, error: numberError } = await supabase
         .rpc('generate_invoice_number')
-
       if (numberError) throw numberError
-
       const total = calculateTotal()
-
       const { error } = await supabase
         .from('invoices')
         .insert({
@@ -232,9 +195,7 @@ export default function InvoicesPage() {
           line_items: newInvoice.line_items,
           status: 'draft',
         })
-
       if (error) throw error
-
       toast.success('Invoice created successfully!')
       setShowCreateModal(false)
       setNewInvoice({
@@ -252,7 +213,6 @@ export default function InvoicesPage() {
       setProcessing(false)
     }
   }
-
   // Calculate stats
   const stats = {
     total: invoices.length,
@@ -260,7 +220,6 @@ export default function InvoicesPage() {
     pending: invoices.filter(i => i.status === 'sent' || i.status === 'draft').length,
     revenue: invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + parseFloat(i.amount), 0),
   }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -269,11 +228,9 @@ export default function InvoicesPage() {
       </div>
     )
   }
-
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={0} requestsCount={0} />
-
       <div className="lg:pl-64">
         <main className="py-8 px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -294,7 +251,6 @@ export default function InvoicesPage() {
               Create Invoice
             </Button>
           </div>
-
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
@@ -308,7 +264,6 @@ export default function InvoicesPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -320,7 +275,6 @@ export default function InvoicesPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -332,7 +286,6 @@ export default function InvoicesPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -347,7 +300,6 @@ export default function InvoicesPage() {
               </div>
             </Card>
           </div>
-
           {/* Filters */}
           <Card className="mb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -357,7 +309,6 @@ export default function InvoicesPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 icon={<Search className="w-5 h-5" />}
               />
-
               <div>
                 <select
                   value={statusFilter}
@@ -374,7 +325,6 @@ export default function InvoicesPage() {
               </div>
             </div>
           </Card>
-
           {/* Invoices List */}
           {filteredInvoices.length > 0 ? (
             <div className="space-y-4">
@@ -400,7 +350,6 @@ export default function InvoicesPage() {
                           </p>
                         </div>
                       </div>
-
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
                         <div>
                           <p className="text-xs text-gray-500">Amount</p>
@@ -424,7 +373,6 @@ export default function InvoicesPage() {
                         )}
                       </div>
                     </div>
-
                     <div className="flex gap-2 lg:min-w-[200px]">
                       <Button
                         variant="primary"
@@ -465,7 +413,6 @@ export default function InvoicesPage() {
           )}
         </main>
       </div>
-
       {/* View Invoice Modal */}
       <Modal
         isOpen={showModal}
@@ -489,7 +436,6 @@ export default function InvoicesPage() {
                 {selectedInvoice.status}
               </Badge>
             </div>
-
             {/* Customer Info */}
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-2">Bill To:</h3>
@@ -500,7 +446,6 @@ export default function InvoicesPage() {
                 {selectedInvoice.profiles?.email}
               </p>
             </div>
-
             {/* Line Items */}
             {selectedInvoice.line_items && selectedInvoice.line_items.length > 0 && (
               <div>
@@ -537,7 +482,6 @@ export default function InvoicesPage() {
                 </div>
               </div>
             )}
-
             {/* Additional Info */}
             {selectedInvoice.due_date && (
               <div>
@@ -547,14 +491,12 @@ export default function InvoicesPage() {
                 </p>
               </div>
             )}
-
             {selectedInvoice.notes && (
               <div>
                 <h3 className="text-sm font-semibold text-gray-700">Notes:</h3>
                 <p className="text-sm text-gray-900">{selectedInvoice.notes}</p>
               </div>
             )}
-
             {/* Actions */}
             <div className="space-y-3 pt-4 border-t border-gray-200">
               {selectedInvoice.status === 'draft' && (
@@ -568,7 +510,6 @@ export default function InvoicesPage() {
                   Mark as Sent
                 </Button>
               )}
-
               {(selectedInvoice.status === 'sent' || selectedInvoice.status === 'overdue') && (
                 <Button
                   variant="success"
@@ -580,7 +521,6 @@ export default function InvoicesPage() {
                   Mark as Paid
                 </Button>
               )}
-
               {selectedInvoice.status !== 'cancelled' && selectedInvoice.status !== 'paid' && (
                 <Button
                   variant="danger"
@@ -596,7 +536,6 @@ export default function InvoicesPage() {
           </div>
         )}
       </Modal>
-
       {/* Create Invoice Modal */}
       <Modal
         isOpen={showCreateModal}
@@ -624,7 +563,6 @@ export default function InvoicesPage() {
               ))}
             </select>
           </div>
-
           {/* Line Items */}
           <div>
             <div className="flex justify-between items-center mb-3">
@@ -640,7 +578,6 @@ export default function InvoicesPage() {
                 Add Item
               </Button>
             </div>
-
             <div className="space-y-3">
               {newInvoice.line_items.map((item, index) => (
                 <div key={index} className="grid grid-cols-12 gap-3 items-end">
@@ -697,7 +634,6 @@ export default function InvoicesPage() {
                 </div>
               ))}
             </div>
-
             <div className="mt-4 pt-4 border-t border-gray-200">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-semibold text-gray-700">Total:</span>
@@ -707,7 +643,6 @@ export default function InvoicesPage() {
               </div>
             </div>
           </div>
-
           {/* Due Date */}
           <Input
             type="date"
@@ -716,7 +651,6 @@ export default function InvoicesPage() {
             onChange={(e) => setNewInvoice({ ...newInvoice, due_date: e.target.value })}
             min={new Date().toISOString().split('T')[0]}
           />
-
           {/* Notes */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -730,7 +664,6 @@ export default function InvoicesPage() {
               placeholder="Additional notes or payment instructions..."
             />
           </div>
-
           {/* Actions */}
           <div className="flex gap-3 pt-4 border-t border-gray-200">
             <Button

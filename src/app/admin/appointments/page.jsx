@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import { format, parseISO, startOfDay, endOfDay } from 'date-fns'
 import {
@@ -22,7 +21,6 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
-
 export default function AppointmentsPage() {
   const [loading, setLoading] = useState(true)
   const [appointments, setAppointments] = useState([])
@@ -30,22 +28,17 @@ export default function AppointmentsPage() {
   const [selectedAppointment, setSelectedAppointment] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [processing, setProcessing] = useState(false)
-  
   // Filters
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState('')
-
   const supabase = createClient()
-
   useEffect(() => {
     loadAppointments()
   }, [])
-
   useEffect(() => {
     filterAppointments()
   }, [appointments, searchQuery, statusFilter, dateFilter])
-
   const loadAppointments = async () => {
     setLoading(true)
     try {
@@ -58,9 +51,7 @@ export default function AppointmentsPage() {
         `)
         .order('scheduled_date', { ascending: true })
         .order('scheduled_time_start', { ascending: true })
-
       if (error) throw error
-
       setAppointments(data || [])
     } catch (error) {
       console.error('Error loading appointments:', error)
@@ -69,10 +60,8 @@ export default function AppointmentsPage() {
       setLoading(false)
     }
   }
-
   const filterAppointments = () => {
     let filtered = [...appointments]
-
     // Search filter
     if (searchQuery) {
       filtered = filtered.filter(apt =>
@@ -80,20 +69,16 @@ export default function AppointmentsPage() {
         apt.profiles?.email?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-
     // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(apt => apt.status === statusFilter)
     }
-
     // Date filter
     if (dateFilter) {
       filtered = filtered.filter(apt => apt.scheduled_date === dateFilter)
     }
-
     setFilteredAppointments(filtered)
   }
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'confirmed':
@@ -108,7 +93,6 @@ export default function AppointmentsPage() {
         return 'default'
     }
   }
-
   const formatServiceType = (type) => {
     const types = {
       standard: 'Standard Cleaning',
@@ -119,35 +103,28 @@ export default function AppointmentsPage() {
     }
     return types[type] || type
   }
-
   const handleViewDetails = (appointment) => {
     setSelectedAppointment(appointment)
     setShowModal(true)
   }
-
   const handleUpdateStatus = async (status) => {
     if (!selectedAppointment) return
-
     setProcessing(true)
     try {
       const updates = {
         status,
         updated_at: new Date().toISOString(),
       }
-
       if (status === 'completed') {
         updates.completed_at = new Date().toISOString()
       } else if (status === 'cancelled') {
         updates.cancelled_at = new Date().toISOString()
       }
-
       const { error } = await supabase
         .from('appointments')
         .update(updates)
         .eq('id', selectedAppointment.id)
-
       if (error) throw error
-
       toast.success(`Appointment ${status}!`)
       setShowModal(false)
       loadAppointments()
@@ -158,23 +135,18 @@ export default function AppointmentsPage() {
       setProcessing(false)
     }
   }
-
   const handleDelete = async () => {
     if (!selectedAppointment) return
-    
     if (!confirm('Are you sure you want to delete this appointment? This cannot be undone.')) {
       return
     }
-
     setProcessing(true)
     try {
       const { error } = await supabase
         .from('appointments')
         .delete()
         .eq('id', selectedAppointment.id)
-
       if (error) throw error
-
       toast.success('Appointment deleted')
       setShowModal(false)
       loadAppointments()
@@ -185,7 +157,6 @@ export default function AppointmentsPage() {
       setProcessing(false)
     }
   }
-
   // Calculate stats
   const stats = {
     total: appointments.length,
@@ -193,7 +164,6 @@ export default function AppointmentsPage() {
     pending: appointments.filter(a => a.status === 'pending').length,
     today: appointments.filter(a => a.scheduled_date === format(new Date(), 'yyyy-MM-dd')).length,
   }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -202,11 +172,9 @@ export default function AppointmentsPage() {
       </div>
     )
   }
-
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={0} requestsCount={0} />
-
       <div className="lg:pl-64">
         <main className="py-8 px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -218,7 +186,6 @@ export default function AppointmentsPage() {
               Manage all customer appointments
             </p>
           </div>
-
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
@@ -232,7 +199,6 @@ export default function AppointmentsPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -244,7 +210,6 @@ export default function AppointmentsPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -256,7 +221,6 @@ export default function AppointmentsPage() {
                 </div>
               </div>
             </Card>
-
             <Card>
               <div className="flex items-center justify-between">
                 <div>
@@ -269,7 +233,6 @@ export default function AppointmentsPage() {
               </div>
             </Card>
           </div>
-
           {/* Filters */}
           <Card className="mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -279,7 +242,6 @@ export default function AppointmentsPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 icon={<User className="w-5 h-5" />}
               />
-
               <div>
                 <select
                   value={statusFilter}
@@ -293,7 +255,6 @@ export default function AppointmentsPage() {
                   <option value="cancelled">Cancelled</option>
                 </select>
               </div>
-
               <Input
                 type="date"
                 placeholder="Filter by date"
@@ -303,7 +264,6 @@ export default function AppointmentsPage() {
               />
             </div>
           </Card>
-
           {/* Appointments List */}
           {filteredAppointments.length > 0 ? (
             <div className="space-y-4">
@@ -329,18 +289,15 @@ export default function AppointmentsPage() {
                           </p>
                         </div>
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <Calendar className="w-4 h-4" />
                           {format(parseISO(apt.scheduled_date), 'EEEE, MMMM d, yyyy')}
                         </div>
-
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <Clock className="w-4 h-4" />
                           {apt.scheduled_time_start} - {apt.scheduled_time_end}
                         </div>
-
                         {apt.service_addresses && (
                           <div className="flex items-start gap-2 text-sm text-gray-600 md:col-span-2">
                             <MapPin className="w-4 h-4 mt-0.5" />
@@ -352,7 +309,6 @@ export default function AppointmentsPage() {
                             </span>
                           </div>
                         )}
-
                         {apt.team_members && apt.team_members.length > 0 && (
                           <div className="flex items-center gap-2 text-sm text-gray-600 md:col-span-2">
                             <User className="w-4 h-4" />
@@ -361,7 +317,6 @@ export default function AppointmentsPage() {
                         )}
                       </div>
                     </div>
-
                     <div className="flex flex-col gap-2 lg:min-w-[200px]">
                       <Button
                         variant="primary"
@@ -393,7 +348,6 @@ export default function AppointmentsPage() {
           )}
         </main>
       </div>
-
       {/* Appointment Details Modal */}
       <Modal
         isOpen={showModal}
@@ -429,7 +383,6 @@ export default function AppointmentsPage() {
                 </div>
               </div>
             </div>
-
             {/* Appointment Details */}
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3">
@@ -489,7 +442,6 @@ export default function AppointmentsPage() {
                 )}
               </div>
             </div>
-
             {/* Actions */}
             <div className="space-y-3 pt-4 border-t border-gray-200">
               {selectedAppointment.status === 'pending' && (
@@ -503,7 +455,6 @@ export default function AppointmentsPage() {
                   Confirm Appointment
                 </Button>
               )}
-
               {(selectedAppointment.status === 'confirmed' || selectedAppointment.status === 'pending') && (
                 <Button
                   variant="primary"
@@ -515,7 +466,6 @@ export default function AppointmentsPage() {
                   Mark as Completed
                 </Button>
               )}
-
               {selectedAppointment.status !== 'cancelled' && (
                 <Button
                   variant="danger"
@@ -527,7 +477,6 @@ export default function AppointmentsPage() {
                   Cancel Appointment
                 </Button>
               )}
-
               <Button
                 variant="danger"
                 fullWidth

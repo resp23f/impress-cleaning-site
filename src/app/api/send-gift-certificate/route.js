@@ -1,10 +1,7 @@
 import { Resend } from 'resend';
-
 const resend = new Resend(process.env.RESEND_API_KEY_STAGING);
-
 function createGiftCertificateEmail(giftData) {
   const { code, recipientName, senderName, message, amount } = giftData;
-
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +16,6 @@ function createGiftCertificateEmail(giftData) {
       <td align="center">
         <!-- Main Container -->
         <table width="650" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); overflow: hidden;">
-
           <!-- Elegant Header -->
           <tr>
             <td style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 50%, #1a4d2e 100%); padding: 60px 40px; text-align: center; position: relative;">
@@ -30,7 +26,6 @@ function createGiftCertificateEmail(giftData) {
               <p style="margin: 15px 0 0; color: #e8f5e9; font-size: 16px; font-weight: 300; letter-spacing: 0.5px;">From ${senderName}</p>
             </td>
           </tr>
-
           <!-- Personal Message -->
           ${message ? `
           <tr>
@@ -40,7 +35,6 @@ function createGiftCertificateEmail(giftData) {
             </td>
           </tr>
           ` : ''}
-
           <!-- Main Content -->
           <tr>
             <td style="padding: 50px 50px 40px; text-align: center;">
@@ -50,13 +44,11 @@ function createGiftCertificateEmail(giftData) {
               <p style="margin: 0 0 40px; color: #4a5568; font-size: 16px; line-height: 1.8; font-weight: 300;">
               Someone special has chosen to gift you the luxury of a professionally cleaned home or business.
               </p>
-
               <!-- Premium Gift Amount -->
               <div style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 100%); border-radius: 4px; padding: 40px; margin: 0 0 40px; box-shadow: 0 4px 16px rgba(26, 77, 46, 0.2);">
                 <p style="margin: 0 0 12px; color: #d4af37; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Certificate Value</p>
                 <p style="margin: 0; color: #ffffff; font-size: 56px; font-weight: 300; letter-spacing: -1px;">$${amount}</p>
               </div>
-
               <!-- Elegant Code Display -->
               <div style="background-color: #fafafa; border: 1px solid #e0e0e0; border-radius: 2px; padding: 35px 30px; margin: 0 0 40px;">
                 <p style="margin: 0 0 18px; color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Your Certificate Code</p>
@@ -67,7 +59,6 @@ function createGiftCertificateEmail(giftData) {
               </div>
             </td>
           </tr>
-
           <!-- Redemption Instructions -->
           <tr>
             <td style="padding: 0 50px 50px;">
@@ -94,7 +85,6 @@ function createGiftCertificateEmail(giftData) {
               </div>
             </td>
           </tr>
-
           <!-- CTA Button -->
           <tr>
             <td style="padding: 0 50px 50px; text-align: center;">
@@ -104,7 +94,6 @@ function createGiftCertificateEmail(giftData) {
               </a>
             </td>
           </tr>
-
           <!-- Important Notice -->
           <tr>
             <td style="padding: 0 50px 50px;">
@@ -115,7 +104,6 @@ function createGiftCertificateEmail(giftData) {
               </div>
             </td>
           </tr>
-
           <!-- Elegant Footer -->
           <tr>
             <td style="padding: 40px 50px; background-color: #1a1a1a; text-align: center;">
@@ -131,7 +119,6 @@ function createGiftCertificateEmail(giftData) {
               </p>
             </td>
           </tr>
-
         </table>
       </td>
     </tr>
@@ -140,14 +127,11 @@ function createGiftCertificateEmail(giftData) {
 </html>
   `;
 }
-
 export async function POST(request) {
   try {
     const giftData = await request.json();
     const { code, recipientName, recipientEmail, senderName, amount } = giftData;
-
     console.log('Attempting to send gift certificate:', { code, recipientName, recipientEmail, senderName, amount });
-
     if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
       console.error('Missing required fields:', { code, recipientName, recipientEmail, senderName, amount });
       return Response.json(
@@ -155,7 +139,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
     if (!process.env.RESEND_API_KEY_STAGING) {
       console.error('RESEND_API_KEY_STAGING is not configured');
       return Response.json(
@@ -163,9 +146,7 @@ export async function POST(request) {
         { status: 500 }
       );
     }
-
     const emailHtml = createGiftCertificateEmail(giftData);
-
     console.log('Sending email to:', recipientEmail);
     const emailResponse = await resend.emails.send({
       from: 'Impress Cleaning Services Gift Certificate <gifts@impressyoucleaning.com>',
@@ -173,22 +154,17 @@ export async function POST(request) {
       subject: `Your $${amount} Gift Certificate from ${senderName}`,
       html: emailHtml,
     });
-
     console.log('Resend response:', emailResponse);
-
     if (!emailResponse.data) {
       console.error('No data in email response:', emailResponse);
       throw new Error('Failed to send email - no response data');
     }
-
     console.log('Gift certificate email sent successfully:', emailResponse.data.id);
-
     return Response.json({
       success: true,
       emailId: emailResponse.data.id,
       message: 'Gift certificate sent successfully',
     });
-
   } catch (error) {
     console.error('Error sending gift certificate email:', error);
     console.error('Error details:', {
@@ -196,11 +172,9 @@ export async function POST(request) {
       name: error.name,
       stack: error.stack
     });
-
     if (error.message?.includes('API')) {
       console.error('Resend API error detected');
     }
-
     return Response.json(
       {
         error: error.message || 'Failed to send gift certificate email',

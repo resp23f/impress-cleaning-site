@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { format, parseISO } from 'date-fns'
@@ -23,7 +22,6 @@ import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
-
 const statusBadges = {
   pending: 'warning',
   confirmed: 'info',
@@ -31,7 +29,6 @@ const statusBadges = {
   completed: 'success',
   cancelled: 'danger',
 }
-
 const statusLabels = {
   pending: 'Pending',
   confirmed: 'Confirmed',
@@ -39,7 +36,6 @@ const statusLabels = {
   completed: 'Completed',
   cancelled: 'Cancelled',
 }
-
 const serviceTypeLabel = (type) => {
   const labels = {
     standard: 'Standard Cleaning',
@@ -50,7 +46,6 @@ const serviceTypeLabel = (type) => {
   }
   return labels[type] || type
 }
-
 export default function AppointmentsPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -66,7 +61,6 @@ export default function AppointmentsPage() {
     timeEnd: '',
   })
   const [cancelReason, setCancelReason] = useState('')
-
   useEffect(() => {
     const load = async () => {
       setLoading(true)
@@ -77,7 +71,6 @@ export default function AppointmentsPage() {
           return
         }
         setUserId(user.id)
-
         const { data, error } = await supabase
           .from('appointments')
           .select(`
@@ -93,9 +86,7 @@ export default function AppointmentsPage() {
           .eq('customer_id', user.id)
           .order('scheduled_date', { ascending: true })
           .order('scheduled_time_start', { ascending: true })
-
         if (error) throw error
-
         setAppointments(data || [])
       } catch (err) {
         console.error('Error loading appointments', err)
@@ -104,17 +95,14 @@ export default function AppointmentsPage() {
         setLoading(false)
       }
     }
-
     load()
   }, [router, supabase])
-
   const upcoming = appointments.filter(
     (apt) => new Date(apt.scheduled_date) >= new Date() && apt.status !== 'cancelled'
   )
   const past = appointments.filter(
     (apt) => new Date(apt.scheduled_date) < new Date() || apt.status === 'cancelled'
   )
-
   const openReschedule = (apt) => {
     setSelectedAppointment(apt)
     setRescheduleData({
@@ -124,18 +112,15 @@ export default function AppointmentsPage() {
     })
     setModalMode('reschedule')
   }
-
   const openCancel = (apt) => {
     setSelectedAppointment(apt)
     setCancelReason('')
     setModalMode('cancel')
   }
-
   const closeModal = () => {
     setSelectedAppointment(null)
     setModalMode(null)
   }
-
   const handleReschedule = async () => {
     if (!selectedAppointment) return
     setProcessing(true)
@@ -150,9 +135,7 @@ export default function AppointmentsPage() {
         })
         .eq('id', selectedAppointment.id)
         .eq('customer_id', userId)
-
       if (error) throw error
-
       setAppointments((prev) =>
         prev.map((apt) =>
           apt.id === selectedAppointment.id
@@ -166,7 +149,6 @@ export default function AppointmentsPage() {
             : apt
         )
       )
-
       toast.success('Appointment rescheduled')
       closeModal()
     } catch (err) {
@@ -176,7 +158,6 @@ export default function AppointmentsPage() {
       setProcessing(false)
     }
   }
-
   const handleCancel = async () => {
     if (!selectedAppointment) return
     setProcessing(true)
@@ -190,9 +171,7 @@ export default function AppointmentsPage() {
         })
         .eq('id', selectedAppointment.id)
         .eq('customer_id', userId)
-
       if (error) throw error
-
       setAppointments((prev) =>
         prev.map((apt) =>
           apt.id === selectedAppointment.id
@@ -200,7 +179,6 @@ export default function AppointmentsPage() {
             : apt
         )
       )
-
       toast.success('Appointment cancelled')
       closeModal()
     } catch (err) {
@@ -210,7 +188,6 @@ export default function AppointmentsPage() {
       setProcessing(false)
     }
   }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -218,7 +195,6 @@ export default function AppointmentsPage() {
       </div>
     )
   }
-
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10">
       <div className="flex items-center justify-between gap-3">
@@ -230,7 +206,6 @@ export default function AppointmentsPage() {
           <Button variant="primary">Book another cleaning</Button>
         </Link>
       </div>
-
       <section>
         <div className="flex items-center gap-2 mb-4">
           <Calendar className="w-5 h-5 text-[#079447]" />
@@ -263,7 +238,6 @@ export default function AppointmentsPage() {
                     {statusLabels[apt.status] || apt.status}
                   </Badge>
                 </div>
-
                 <div className="space-y-2 text-sm text-gray-700">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-400" />
@@ -287,7 +261,6 @@ export default function AppointmentsPage() {
                     </div>
                   )}
                 </div>
-
                 <div className="flex flex-wrap gap-3">
                   <Button
                     variant="secondary"
@@ -318,7 +291,6 @@ export default function AppointmentsPage() {
           </div>
         )}
       </section>
-
       <section>
         <div className="flex items-center gap-2 mb-4">
           <Clock className="w-5 h-5 text-gray-500" />
@@ -354,7 +326,6 @@ export default function AppointmentsPage() {
           </div>
         )}
       </section>
-
       <Modal open={!!modalMode} onClose={closeModal} title={modalMode === 'reschedule' ? 'Reschedule appointment' : 'Cancel appointment'}>
         {modalMode === 'reschedule' ? (
           <div className="space-y-4">

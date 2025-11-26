@@ -1,5 +1,4 @@
 //Aplicar Home Page - src/app/aplicar/page.jsx//
-
 "use client";
 import Link from "next/link";
 import { 
@@ -15,9 +14,7 @@ import {
   ChevronRight,
   CheckCircle
 } from "lucide-react";
-
 import Header from '@/components/Header';
-
 const jobs = [
   { 
     id: 1, 
@@ -44,7 +41,6 @@ const jobs = [
     experience: "1+ año de experiencia"
   },
 ];
-
 const benefits = [
   {
     icon: <DollarSign className="w-6 h-6" />,
@@ -77,14 +73,12 @@ const benefits = [
     description: "Muchos de nuestros líderes empezaron en limpieza. Tu futuro puede crecer aquí."
   }
 ];
-
 const requirements = [
   "Transporte confiable para llegar al trabajo",
   "Capacidad de levantar hasta 25 libras",
   "Atención al detalle y actitud positiva",
   "Disponibilidad de Lunes a Viernes",
 ];
-
 export default function AplicarPage() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">  
@@ -95,8 +89,6 @@ export default function AplicarPage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }} />
         </div>
-        
-        
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="text-center">
@@ -118,7 +110,6 @@ export default function AplicarPage() {
           </div>
         </div>
       </section>
-
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -164,7 +155,6 @@ export default function AplicarPage() {
           </div>
         </div>
       </section>
-
       {/* BENEFITS SECTION */}
       <section id="why-join" className="py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -176,7 +166,6 @@ export default function AplicarPage() {
               Ofrecemos más que un trabajo - es una oportunidad de ser parte de algo especial
             </p>
           </div>
-          
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div key={index} className="group hover:shadow-lg transition-shadow rounded-xl p-6 bg-gray-50 hover:bg-white border border-gray-100">
@@ -198,7 +187,6 @@ export default function AplicarPage() {
           </div>
         </div>
       </section>
-
       {/* JOB OPENINGS SECTION */}
       <section id="open-positions" className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -210,7 +198,6 @@ export default function AplicarPage() {
               Encuentra tu lugar perfecto en nuestro equipo
             </p>
           </div>
-
           <div className="grid gap-6 max-w-4xl mx-auto">
             {jobs.map((job) => (
               <div key={job.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
@@ -249,7 +236,6 @@ export default function AplicarPage() {
           </div>
         </div>
       </section>
-
       {/* REQUIREMENTS SECTION */}
       <section className="py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -317,7 +303,6 @@ export default function AplicarPage() {
           </div>
         </div>
       </section>
-
       {/* CTA SECTION */}
       <section className="py-16 lg:py-20 bg-[#001F3F]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

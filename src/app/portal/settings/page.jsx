@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
@@ -25,11 +24,9 @@ import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
-
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
 )
-
 export default function SettingsPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -54,7 +51,6 @@ export default function SettingsPage() {
   const cardElementRef = useRef(null)
   const stripeCardRef = useRef(null)
   const [pref, setPref] = useState('both')
-
   useEffect(() => {
     const load = async () => {
       setLoading(true)
@@ -65,13 +61,11 @@ export default function SettingsPage() {
           return
         }
         setUser(user)
-
         const [{ data: profileData }, { data: addressData }, { data: paymentData }] = await Promise.all([
           supabase.from('profiles').select('*').eq('id', user.id).single(),
           supabase.from('service_addresses').select('*').eq('user_id', user.id).order('is_primary', { ascending: false }),
           supabase.from('payment_methods').select('*').eq('user_id', user.id).order('is_default', { ascending: false }),
         ])
-
         setProfile(profileData || null)
         setPref(profileData?.communication_preference || 'both')
         setAddresses(addressData || [])
@@ -83,10 +77,8 @@ export default function SettingsPage() {
         setLoading(false)
       }
     }
-
     load()
   }, [router, supabase])
-
   useEffect(() => {
     const mountCardElement = async () => {
       if (!cardElementRef.current || cardElementMounted) return
@@ -105,7 +97,6 @@ export default function SettingsPage() {
       }
     }
   }, [cardElementMounted])
-
   const handleProfileSave = async () => {
     if (!user || !profile) return
     setSavingProfile(true)
@@ -127,7 +118,6 @@ export default function SettingsPage() {
       setSavingProfile(false)
     }
   }
-
   const handleEmailUpdate = async () => {
     if (!user || !profile?.email) {
       toast.error('Email is required')
@@ -142,7 +132,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not update email')
     }
   }
-
   const handlePasswordChange = async () => {
     if (passwordData.password.length < 8) {
       toast.error('Password must be at least 8 characters')
@@ -162,7 +151,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not change password')
     }
   }
-
   const openAddressModal = (addr) => {
     setAddressForm(
       addr || {
@@ -176,7 +164,6 @@ export default function SettingsPage() {
     )
     setAddressModal({ open: true, editing: addr?.id || null })
   }
-
   const saveAddress = async () => {
     if (!user) return
     try {
@@ -193,7 +180,6 @@ export default function SettingsPage() {
           .insert({ ...addressForm, user_id: user.id })
         if (error) throw error
       }
-
       const { data: addressData } = await supabase
         .from('service_addresses')
         .select('*')
@@ -207,7 +193,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not save address')
     }
   }
-
   const deleteAddress = async (id) => {
     if (!user) return
     try {
@@ -224,7 +209,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not delete address')
     }
   }
-
   const setPrimaryAddress = async (id) => {
     if (!user) return
     try {
@@ -242,7 +226,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not set primary address')
     }
   }
-
   const handleAddCard = async () => {
     if (!stripeCardRef.current?.stripe || !stripeCardRef.current?.card) {
       toast.error('Payment form not ready')
@@ -253,13 +236,11 @@ export default function SettingsPage() {
       const createRes = await fetch('/api/stripe/create-setup-intent', { method: 'POST' })
       const { clientSecret, error: createError } = await createRes.json()
       if (createError || !clientSecret) throw new Error(createError || 'Unable to start card setup')
-
       const { stripe, card } = stripeCardRef.current
       const result = await stripe.confirmCardSetup(clientSecret, {
         payment_method: { card },
       })
       if (result.error) throw new Error(result.error.message)
-
       const pmId = result.setupIntent.payment_method
       const saveRes = await fetch('/api/stripe/save-payment-method', {
         method: 'POST',
@@ -268,7 +249,6 @@ export default function SettingsPage() {
       })
       const saveJson = await saveRes.json()
       if (saveJson.error) throw new Error(saveJson.error)
-
       const { data: paymentData } = await supabase
         .from('payment_methods')
         .select('*')
@@ -283,7 +263,6 @@ export default function SettingsPage() {
       setProcessingCard(false)
     }
   }
-
   const deletePaymentMethod = async (id) => {
     if (!user) return
     try {
@@ -300,7 +279,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not remove card')
     }
   }
-
   const makeDefaultCard = async (paymentMethodId) => {
     if (!user) return
     try {
@@ -321,7 +299,6 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not update default card')
     }
   }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -329,14 +306,12 @@ export default function SettingsPage() {
       </div>
     )
   }
-
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-[#1C294E]">Settings</h1>
         <p className="text-gray-600">Manage your profile, addresses, and payments</p>
       </div>
-
       {/* Profile */}
       <Card padding="lg" className="space-y-6">
         <div className="flex items-center gap-2">
@@ -385,7 +360,6 @@ export default function SettingsPage() {
           </Button>
         </div>
       </Card>
-
       {/* Addresses */}
       <Card padding="lg" className="space-y-4">
         <div className="flex items-center justify-between">
@@ -432,7 +406,6 @@ export default function SettingsPage() {
           ))}
         </div>
       </Card>
-
       {/* Password */}
       <Card padding="lg" className="space-y-4">
         <div className="flex items-center gap-2">
@@ -463,7 +436,6 @@ export default function SettingsPage() {
           Changing your password will sign you out of active sessions.
         </div>
       </Card>
-
       {/* Payment methods */}
       <Card padding="lg" className="space-y-5">
         <div className="flex items-center justify-between">
@@ -472,7 +444,6 @@ export default function SettingsPage() {
             <h2 className="text-xl font-semibold text-[#1C294E]">Payment methods</h2>
           </div>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 space-y-3">
             {payments.length === 0 && (
@@ -506,7 +477,6 @@ export default function SettingsPage() {
               </div>
             ))}
           </div>
-
           <div className="border border-gray-200 rounded-lg p-4 space-y-3">
             <p className="text-sm font-semibold text-[#1C294E] flex items-center gap-2">
               <Bell className="w-4 h-4 text-gray-500" />
@@ -523,7 +493,6 @@ export default function SettingsPage() {
           </div>
         </div>
       </Card>
-
       {/* Account deletion */}
       <Card padding="lg" className="space-y-3 border border-red-100">
         <div className="flex items-center gap-2 text-red-600">
@@ -537,7 +506,6 @@ export default function SettingsPage() {
           Request deletion
         </Button>
       </Card>
-
       <Modal
         open={addressModal.open}
         onClose={() => setAddressModal({ open: false, editing: null })}

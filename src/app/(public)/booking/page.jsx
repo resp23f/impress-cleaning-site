@@ -1,13 +1,10 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
 export default function BookingPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,19 +18,16 @@ export default function BookingPage() {
     giftCertificate: '',
     specialRequests: ''
   });
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-
     try {
       const response = await fetch('/api/booking', {
         method: 'POST',
@@ -42,11 +36,9 @@ export default function BookingPage() {
         },
         body: JSON.stringify(formData),
       });
-
       if (!response.ok) {
         throw new Error('Failed to submit booking');
       }
-
       // Redirect to confirmation page with booking data
       const bookingData = encodeURIComponent(JSON.stringify(formData));
       router.push(`/booking/confirmation?data=${bookingData}`);
@@ -55,7 +47,6 @@ export default function BookingPage() {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -69,27 +60,22 @@ export default function BookingPage() {
           </p>
         </div>
       </section>
-
       {/* Form Section */}
       <section className="py-12">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-            
             {error && (
               <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
                 <p className="font-semibold">Oops! Something went wrong.</p>
                 <p>{error}</p>
               </div>
             )}
-
             <form onSubmit={handleSubmit} className="space-y-6">
-              
               {/* Contact Information */}
               <div className="space-y-6">
                 <h2 className="text-2xl font-display font-bold text-navy border-b-2 border-green pb-2">
                   Contact Information
                 </h2>
-
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block font-display text-gray-700 font-semibold mb-2">
@@ -105,7 +91,6 @@ export default function BookingPage() {
                       placeholder="John Doe"
                     />
                   </div>
-
                   <div>
                     <label className="block font-display text-gray-700 font-semibold mb-2">
                       Email <span className="text-red-600">*</span>
@@ -121,7 +106,6 @@ export default function BookingPage() {
                     />
                   </div>
                 </div>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Phone Number <span className="text-red-600">*</span>
@@ -136,7 +120,6 @@ export default function BookingPage() {
                     placeholder="(512) 555-0123"
                   />
                 </div>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Service Address <span className="text-red-600">*</span>
@@ -152,13 +135,11 @@ export default function BookingPage() {
                   />
                 </div>
               </div>
-
               {/* Service Details */}
               <div className="space-y-6 pt-6">
                 <h2 className="text-2xl font-display font-bold text-navy border-b-2 border-green pb-2">
                   Service Details
                 </h2>
-
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block font-display text-gray-700 font-semibold mb-2">
@@ -175,7 +156,6 @@ export default function BookingPage() {
                       <option value="commercial">Commercial</option>
                     </select>
                   </div>
-
                   <div>
                     <label className="block font-display text-gray-700 font-semibold mb-2">
                       {formData.serviceType === 'residential' ? 'Home Size' : 'Square Footage'} <span className="text-red-600">*</span>
@@ -209,7 +189,6 @@ export default function BookingPage() {
                     )}
                   </div>
                 </div>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Service Level <span className="text-red-600">*</span>
@@ -226,7 +205,6 @@ export default function BookingPage() {
                     <option value="move">Move-In/Move-Out Clean</option>
                   </select>
                 </div>
-
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block font-display text-gray-700 font-semibold mb-2">
@@ -242,7 +220,6 @@ export default function BookingPage() {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green focus:border-transparent font-manrope"
                     />
                   </div>
-
                   <div>
                     <label className="block font-display text-gray-700 font-semibold mb-2">
                       Preferred Time <span className="text-red-600">*</span>
@@ -262,13 +239,11 @@ export default function BookingPage() {
                   </div>
                 </div>
               </div>
-
               {/* Optional Information */}
               <div className="space-y-6 pt-6">
                 <h2 className="text-2xl font-display font-bold text-navy border-b-2 border-green pb-2">
                   Optional Information
                 </h2>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Gift Certificate Code
@@ -285,7 +260,6 @@ export default function BookingPage() {
                     If you have a gift certificate, we'll apply it to your final invoice
                   </p>
                 </div>
-
                 <div>
                   <label className="block font-display text-gray-700 font-semibold mb-2">
                     Special Requests or Notes
@@ -300,7 +274,6 @@ export default function BookingPage() {
                   />
                 </div>
               </div>
-
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -308,14 +281,12 @@ export default function BookingPage() {
               >
                 {isSubmitting ? 'Submitting Your Booking...' : 'Submit Booking Request'}
               </button>
-
               <p className="text-sm font-manrope text-gray-600 text-center">
                 By submitting this form, you agree to receive appointment confirmations and service updates. 
                 We respect your privacy and will never share your information.
               </p>
             </form>
           </div>
-
           {/* Trust Indicators */}
           <div className="mt-12 grid md:grid-cols-3 gap-6 text-center">
             <div className="bg-white p-6 rounded-lg shadow">
