@@ -19,6 +19,17 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     const { requestId, appointmentData } = await request.json()
+    const timeBucketToRange = (bucket) => {
+      const startMap = {
+        morning: '09:00',
+        afternoon: '13:00',
+        evening: '16:00',
+      }
+      const start = startMap[bucket] || '09:00'
+      const startHour = parseInt(start.split(':')[0], 10)
+      const end = Number.isNaN(startHour) ? '11:00' : `${String(startHour + 2).padStart(2, '0')}:00`
+      return { start, end }
+    }
     // Update service request status
     const { error: updateError } = await supabaseAdmin
       .from('service_requests')
@@ -31,9 +42,16 @@ export async function POST(request) {
     if (updateError) throw updateError
     // Create appointment if data provided
     if (appointmentData) {
+      const timeRange = appointmentData.preferred_time ? timeBucketToRange(appointmentData.preferred_time) : null
+      const payload = {
+        ...appointmentData,
+        scheduled_time_start: appointmentData.scheduled_time_start || timeRange?.start,
+        scheduled_time_end: appointmentData.scheduled_time_end || timeRange?.end,
+      }
+      console.log('Admin approving service request, creating appointment with:', payload)
       const { error: appointmentError } = await supabaseAdmin
         .from('appointments')
-        .insert([appointmentData])
+        .insert([payload])
       if (appointmentError) throw appointmentError
     }
     // TODO: Send approval email to customer

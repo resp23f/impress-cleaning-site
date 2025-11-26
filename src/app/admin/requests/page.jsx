@@ -31,6 +31,17 @@ export default function ServiceRequestsPage() {
     scheduledTimeEnd: '',
     teamMembers: '',
   })
+  const timeBucketToRange = (bucket) => {
+    const startMap = {
+      morning: '09:00',
+      afternoon: '13:00',
+      evening: '16:00',
+    }
+    const start = startMap[bucket] || '09:00'
+    const startHour = parseInt(start.split(':')[0], 10)
+    const end = Number.isNaN(startHour) ? '11:00' : `${String(startHour + 2).padStart(2, '0')}:00`
+    return { start, end }
+  }
   const supabase = createClient()
   useEffect(() => {
     loadRequests()
@@ -59,12 +70,12 @@ service_addresses!address_id(*)
   const handleViewDetails = (request) => {
     setSelectedRequest(request)
     setShowModal(true)
+    const { start, end } = timeBucketToRange(request.preferred_time)
     // Pre-fill appointment data with request details
     setAppointmentData({
       scheduledDate: request.preferred_date || '',
-      scheduledTimeStart: request.preferred_time || '09:00',
-      scheduledTimeEnd: request.preferred_time ?
-        (parseInt(request.preferred_time.split(':')[0]) + 2) + ':00' : '11:00',
+      scheduledTimeStart: start,
+      scheduledTimeEnd: end,
       teamMembers: '',
     })
   }
@@ -86,23 +97,28 @@ service_addresses!address_id(*)
     }
     setProcessing(true)
     try {
+      const fallbackTimes = timeBucketToRange(selectedRequest?.preferred_time)
+      const scheduledTimeStart = appointmentData.scheduledTimeStart || fallbackTimes.start
+      const scheduledTimeEnd = appointmentData.scheduledTimeEnd || fallbackTimes.end
+      const payload = {
+        customer_id: selectedRequest.customer_id,
+        address_id: selectedRequest.address_id,
+        service_type: selectedRequest.service_type,
+        scheduled_date: appointmentData.scheduledDate,
+        scheduled_time_start: scheduledTimeStart,
+        scheduled_time_end: scheduledTimeEnd,
+        status: 'confirmed',
+        team_members: appointmentData.teamMembers ?
+          appointmentData.teamMembers.split(',').map(m => m.trim()).filter(Boolean) : [],
+        special_instructions: selectedRequest.special_requests,
+        is_recurring: selectedRequest.is_recurring,
+        recurring_frequency: selectedRequest.recurring_frequency,
+      }
+      console.log('Creating appointment with:', payload)
       // Create appointment
       const { data: appointment, error: appointmentError } = await supabase
         .from('appointments')
-        .insert({
-          customer_id: selectedRequest.customer_id,
-          address_id: selectedRequest.address_id,
-          service_type: selectedRequest.service_type,
-          scheduled_date: appointmentData.scheduledDate,
-          scheduled_time_start: appointmentData.scheduledTimeStart,
-          scheduled_time_end: appointmentData.scheduledTimeEnd,
-          status: 'confirmed',
-          team_members: appointmentData.teamMembers ?
-            appointmentData.teamMembers.split(',').map(m => m.trim()).filter(Boolean) : [],
-          special_instructions: selectedRequest.special_requests,
-          is_recurring: selectedRequest.is_recurring,
-          recurring_frequency: selectedRequest.recurring_frequency,
-        })
+        .insert(payload)
         .select()
       if (appointmentError) throw appointmentError
       // Update request status

@@ -8,6 +8,11 @@ src
 │   │   │   └── trabajos
 │   │   │       └── [slug]
 │   │   │           └── page.jsx
+│   │   ├── apply
+│   │   │   ├── jobs
+│   │   │   │   └── [slug]
+│   │   │   │       └── page.jsx
+│   │   │   └── page.jsx
 │   │   ├── booking
 │   │   │   ├── confirmation
 │   │   │   │   └── page.jsx
@@ -83,6 +88,9 @@ src
 │   │   │   └── route.js
 │   │   ├── create-gift-checkout
 │   │   │   └── route.js
+│   │   ├── customer-portal
+│   │   │   └── service-requests
+│   │   │       └── route.js
 │   │   ├── email
 │   │   │   ├── account-approved
 │   │   │   │   └── route.js
@@ -177,4 +185,4 @@ src
         ├── middleware.js
         └── server.js
 
-82 directories, 96 files
+87 directories, 99 files
