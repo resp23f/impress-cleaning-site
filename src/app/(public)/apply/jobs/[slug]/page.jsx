@@ -20,8 +20,6 @@ import {
   Sparkles,
   ArrowRight
 } from "lucide-react";
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 // Job data
 const jobsData = {

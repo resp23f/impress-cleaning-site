@@ -20,8 +20,6 @@ import {
   GraduationCap,
   ArrowRight
 } from "lucide-react";
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 // Job listings data
 const jobs = [
