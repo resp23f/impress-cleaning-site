@@ -182,9 +182,9 @@ priority
           <Link href="/faq" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
             FAQ
           </Link>
-          <a href="#apply" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
-            Careers
-          </a>
+          <Link href="/apply" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
+            Apply
+          </Link>
           <Link href="/aplicar" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
           Aplicar
         </Link>

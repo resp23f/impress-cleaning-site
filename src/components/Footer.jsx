@@ -31,7 +31,7 @@ export default function Footer() {
               />
             </Link>
 <p className="font-playfair italic text-sm text-slate-600 text-center md:text-left">
-  Your slogan here<sup>TM</sup>
+  Impress every time.<sup>TM</sup>
 </p>   
        </div>
           {/* Services Column */}
@@ -74,7 +74,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/careers" 
+                  href="/apply" 
                   className="hover:text-[#079447] transition-colors duration-200 block"
                 >
                   Apply
