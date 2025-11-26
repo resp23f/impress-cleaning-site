@@ -170,7 +170,6 @@ export default function ApplyPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
-      <Header />
       
       {/* ========== HERO SECTION ========== */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#001F3F] via-[#0B2859] to-[#001F3F] min-h-[85vh] flex items-center">
@@ -574,7 +573,6 @@ export default function ApplyPage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }

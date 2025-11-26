@@ -183,7 +183,6 @@ export default function JobApplicationPage() {
   if (sent) {
     return (
       <div className="min-h-screen bg-[#FAFAF8]">
-        <Header />
         <div className="py-20 lg:py-32">
           <div className="max-w-2xl mx-auto px-4">
             <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-12 text-center">
@@ -242,7 +241,6 @@ export default function JobApplicationPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
-      <Header />
       
       {/* Header banner */}
       <div className="bg-gradient-to-br from-[#001F3F] via-[#0B2859] to-[#001F3F] text-white py-12 lg:py-16">
@@ -697,7 +695,6 @@ export default function JobApplicationPage() {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }
