@@ -14,7 +14,7 @@ export default function InvoiceTemplate({ invoice, customer, lineItems }) {
         <div className="flex items-center justify-between px-8 py-6 border-b border-slate-200">
           <div>
             <img
-              src="/logo-impress.png"
+              src="/logo_impress.png"
               alt="Impress Cleaning Services"
               className="h-8 mb-2"
             />
