@@ -14,33 +14,16 @@ export async function POST(request) {
     console.log('Incoming service request body:', body)
     const {
       service_type,
-      serviceType,
       preferred_date,
-      preferredDate,
       preferred_time,
-      preferredTime,
       is_flexible,
-      isFlexible,
       address_id,
-      addressId,
       special_requests,
-      specialRequests,
       is_recurring,
-      isRecurring,
       recurring_frequency,
-      recurringFrequency,
     } = body || {}
-
-    const finalServiceType = service_type ?? serviceType
-    const finalPreferredDate = preferred_date ?? preferredDate
-    const finalPreferredTime = preferred_time ?? preferredTime
-    const finalAddressId = address_id ?? addressId
-    const finalIsFlexible = is_flexible ?? isFlexible
-    const finalSpecialRequests = special_requests ?? specialRequests
-    const finalIsRecurring = is_recurring ?? isRecurring
-    const finalRecurringFrequency = recurring_frequency ?? recurringFrequency
     // Basic validation
-    if (!finalServiceType || !finalPreferredDate || !finalPreferredTime || !finalAddressId) {
+    if (!service_type || !preferred_date || !preferred_time || !address_id) {
       return NextResponse.json(
         { error: 'service_type, preferred_date, preferred_time, and address_id are required' },
         { status: 422 }
@@ -50,14 +33,14 @@ export async function POST(request) {
       .from('service_requests')
       .insert({
         customer_id: user.id,
-        service_type: finalServiceType,
-        preferred_date: finalPreferredDate,
-        preferred_time: finalPreferredTime,
-        is_flexible: !!finalIsFlexible,
-        address_id: finalAddressId,
-        special_requests: finalSpecialRequests || null,
-        is_recurring: !!finalIsRecurring,
-        recurring_frequency: finalIsRecurring ? finalRecurringFrequency || null : null,
+        service_type,
+        preferred_date,
+        preferred_time,
+        is_flexible: !!is_flexible,
+        address_id,
+        special_requests: special_requests || null,
+        is_recurring: !!is_recurring,
+        recurring_frequency: is_recurring ? recurring_frequency || null : null,
         status: 'pending',
       })
       .select()
