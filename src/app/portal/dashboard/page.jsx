@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import {
   Calendar,
@@ -18,12 +17,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import styles from '../shared-animations.module.css'
-export default function DashboardPageWrapper() {
-  return <DashboardPage />
-}
-
-function DashboardPage() {
-  const router = useRouter()
+export default async function DashboardPage() {
   const supabase = await createClient()
   const {
     data: { user },
@@ -407,14 +401,11 @@ function DashboardPage() {
                           </Button>
                         </Link>
                       )}
-                      <Button
-                        variant="text"
-                        size="sm"
-                        className={styles.smoothTransition}
-                        onClick={() => router.push(`/portal/invoices/${invoice.id}`)}
-                      >
-                        View
-                      </Button>
+                      <Link href={`/portal/invoices/${invoice.id}`}>
+                        <Button variant="text" size="sm" className={styles.smoothTransition}>
+                          View
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 ))}
