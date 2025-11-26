@@ -209,12 +209,14 @@ const handleAddressSelect = (data) => {
         service_type: formData.serviceType,
         preferred_date: formData.preferredDate,
         preferred_time: formData.preferredTime,
+        address_id: formData.addressId,
         is_flexible: formData.isFlexible,
         address_id: formData.addressId,
         special_requests: formData.specialRequests,
         is_recurring: formData.isRecurring,
         recurring_frequency: formData.isRecurring ? formData.recurringFrequency : null,
       }
+      console.log('Submitting service request payload:', payload)
       const res = await fetch('/api/customer-portal/service-requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

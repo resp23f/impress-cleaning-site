@@ -11,6 +11,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     const body = await request.json()
+    console.log('Incoming service request body:', body)
     const {
       service_type,
       preferred_date,
