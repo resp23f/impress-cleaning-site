@@ -1,227 +1,314 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { format } from 'date-fns'
-import {
-  Receipt,
-  Download,
-  CreditCard,
-  Filter,
-  FileText,
-  AlertCircle,
-  CheckCircle
-} from 'lucide-react'
+'use client'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { FileText, DollarSign, AlertCircle, Calendar } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
-export default async function InvoicesPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) {
-    redirect('/auth/login')
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import InvoiceSidePanel from './InvoiceSidePanel'
+
+export default function InvoicesPage() {
+  const router = useRouter()
+  const supabase = createClient()
+  const [invoices, setInvoices] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState('all')
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState(null)
+  const [isPanelOpen, setIsPanelOpen] = useState(false)
+
+  useEffect(() => {
+    loadInvoices()
+  }, [])
+
+  const loadInvoices = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from('invoices')
+        .select('*')
+        .eq('customer_id', user.id)
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setInvoices(data || [])
+    } catch (error) {
+      console.error('Error loading invoices:', error)
+    } finally {
+      setLoading(false)
+    }
   }
-  // Get all invoices
-  const { data: invoices } = await supabase
-    .from('invoices')
-    .select('*')
-    .eq('customer_id', user.id)
-    .order('created_at', { ascending: false })
-  // Categorize invoices
-  const unpaidInvoices = invoices?.filter(inv =>
-    inv.status !== 'paid' && inv.status !== 'cancelled'
-  ) || []
-  const paidInvoices = invoices?.filter(inv => inv.status === 'paid') || []
-  const totalBalance = unpaidInvoices.reduce((sum, inv) => sum + parseFloat(inv.amount), 0)
+
+  const handleViewInvoice = (invoiceId) => {
+    setSelectedInvoiceId(invoiceId)
+    setIsPanelOpen(true)
+  }
+
+  const handleCloseSidePanel = () => {
+    setIsPanelOpen(false)
+    setTimeout(() => setSelectedInvoiceId(null), 300) // Wait for animation
+  }
+
+  const formatMoney = (amount) => {
+    return typeof amount === 'number'
+      ? `$${amount.toFixed(2)}`
+      : amount || '$0.00'
+  }
+
   const getStatusBadge = (status) => {
     const variants = {
       paid: 'success',
-      sent: 'info',
+      pending: 'warning',
       overdue: 'danger',
-      draft: 'default',
-      cancelled: 'default',
     }
-    return variants[status] || 'default'
+    return <Badge variant={variants[status] || 'info'}>{status}</Badge>
   }
-  const getStatusIcon = (status) => {
-    if (status === 'paid') return <CheckCircle className="w-5 h-5 text-green-500" />
-    if (status === 'overdue') return <AlertCircle className="w-5 h-5 text-red-500" />
-    return <Receipt className="w-5 h-5 text-gray-400" />
+
+  const filteredInvoices = invoices.filter((invoice) => {
+    if (filter === 'all') return true
+    if (filter === 'unpaid') return invoice.status !== 'paid'
+    return invoice.status === filter
+  })
+
+  const totalBalance = invoices
+    .filter((inv) => inv.status !== 'paid')
+    .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
+
+  const overdueAmount = invoices
+    .filter((inv) => inv.status === 'overdue')
+    .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
+
+  const paidThisMonth = invoices
+    .filter((inv) => {
+      const paidDate = new Date(inv.paid_at || inv.updated_at)
+      const now = new Date()
+      return (
+        inv.status === 'paid' &&
+        paidDate.getMonth() === now.getMonth() &&
+        paidDate.getFullYear() === now.getFullYear()
+      )
+    })
+    .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
   }
+
   return (
-    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
-          Invoices & Payments
-        </h1>
-        <p className="text-gray-600">
-          View and manage your invoices
-        </p>
-      </div>
-      {/* Balance Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card padding="lg">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Total Balance</p>
-            <Receipt className="w-5 h-5 text-gray-400" />
-          </div>
-          <p className={`text-3xl font-bold ${totalBalance > 0 ? 'text-red-600' : 'text-green-600'}`}>
-            ${totalBalance.toFixed(2)}
-          </p>
-          {totalBalance > 0 && (
-            <p className="text-sm text-gray-600 mt-1">
-              {unpaidInvoices.length} unpaid invoice{unpaidInvoices.length !== 1 ? 's' : ''}
-            </p>
-          )}
-        </Card>
-        <Card padding="lg">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Total Invoices</p>
-            <FileText className="w-5 h-5 text-gray-400" />
-          </div>
-          <p className="text-3xl font-bold text-[#1C294E]">
-            {invoices?.length || 0}
-          </p>
-        </Card>
-        <Card padding="lg">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Paid This Year</p>
-            <CheckCircle className="w-5 h-5 text-green-500" />
-          </div>
-          <p className="text-3xl font-bold text-[#1C294E]">
-            ${paidInvoices.reduce((sum, inv) => sum + parseFloat(inv.amount), 0).toFixed(2)}
-          </p>
-        </Card>
-      </div>
-      {/* Unpaid Invoices */}
-      {unpaidInvoices.length > 0 && (
+    <>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-[#1C294E] mb-4">
-            Unpaid Invoices
-          </h2>
-          <div className="space-y-4">
-            {unpaidInvoices.map((invoice) => (
-              <Card key={invoice.id} hover>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-start gap-4">
-                    {getStatusIcon(invoice.status)}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="font-semibold text-[#1C294E]">
-                          Invoice {invoice.invoice_number}
-                        </h3>
-                        <Badge variant={getStatusBadge(invoice.status)} size="sm">
-                          {invoice.status}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        Issued {format(new Date(invoice.created_at), 'MMMM d, yyyy')}
-                        {invoice.due_date && (
-                          <> • Due {format(new Date(invoice.due_date), 'MMM d, yyyy')}</>
-                        )}
-                      </p>
-                      <p className="text-2xl font-bold text-[#1C294E]">
-                        ${parseFloat(invoice.amount).toFixed(2)}
-                      </p>
-                      {invoice.notes && (
-                        <p className="text-sm text-gray-600 mt-2">
-                          {invoice.notes}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Link href={`/portal/invoices/${invoice.id}/pay`}>
-                      <Button variant="primary">
-                        <CreditCard className="w-4 h-4" />
-                        Pay Now
-                      </Button>
-                    </Link>
-                    <Link href={`/portal/invoices/${invoice.id}`}>
-                      <Button variant="secondary">
-                        View Details
-                      </Button>
-                    </Link>
-                    <Link href={`/api/invoices/${invoice.id}/pdf`} target="_blank">
-                      <Button variant="text">
-                        <Download className="w-4 h-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+          <h1 className="text-3xl font-bold text-[#1C294E] mb-2">Invoices</h1>
+          <p className="text-gray-600">View and pay your invoices</p>
         </div>
-      )}
-      {/* All Invoices */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-[#1C294E]">
-            {unpaidInvoices.length > 0 ? 'All Invoices' : 'Invoice History'}
-          </h2>
-          {/* Filter button placeholder */}
-        </div>
-        {invoices && invoices.length > 0 ? (
-          <div className="space-y-4">
-            {invoices.map((invoice) => (
-              <Card key={invoice.id} hover>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-start gap-4 flex-1">
-                    {getStatusIcon(invoice.status)}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="font-semibold text-[#1C294E]">
-                          Invoice {invoice.invoice_number}
-                        </h3>
-                        <Badge variant={getStatusBadge(invoice.status)} size="sm">
-                          {invoice.status}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        {format(new Date(invoice.created_at), 'MMMM d, yyyy')}
-                        {invoice.paid_date && invoice.status === 'paid' && (
-                          <> • Paid {format(new Date(invoice.paid_date), 'MMM d, yyyy')}</>
-                        )}
-                      </p>
-                      <p className="text-lg font-bold text-[#1C294E] mt-1">
-                        ${parseFloat(invoice.amount).toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Link href={`/portal/invoices/${invoice.id}`}>
-                      <Button variant="secondary" size="sm">
-                        View
-                      </Button>
-                    </Link>
-                    <Link href={`/api/invoices/${invoice.id}/pdf`} target="_blank">
-                      <Button variant="text" size="sm">
-                        <Download className="w-4 h-4" />
-                        PDF
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <Card>
-            <div className="text-center py-12">
-              <Receipt className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-[#1C294E] mb-2">
-                No invoices yet
-              </h3>
-              <p className="text-gray-600">
-                Your invoices will appear here after your first service
-              </p>
+
+        {/* Balance Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600">Total Balance</span>
+              <DollarSign className="w-5 h-5 text-gray-400" />
+            </div>
+            <div className="text-3xl font-bold text-[#1C294E]">
+              {formatMoney(totalBalance)}
             </div>
           </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600">Overdue</span>
+              <AlertCircle className="w-5 h-5 text-red-500" />
+            </div>
+            <div className="text-3xl font-bold text-red-600">
+              {formatMoney(overdueAmount)}
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600">Paid This Month</span>
+              <Calendar className="w-5 h-5 text-green-500" />
+            </div>
+            <div className="text-3xl font-bold text-green-600">
+              {formatMoney(paidThisMonth)}
+            </div>
+          </Card>
+        </div>
+
+        {/* Filters */}
+        <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
+          {['all', 'unpaid', 'paid', 'overdue'].map((filterOption) => (
+            <button
+              key={filterOption}
+              onClick={() => setFilter(filterOption)}
+              className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+                filter === filterOption
+                  ? 'bg-[#079447] text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {filterOption.charAt(0).toUpperCase() + filterOption.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* Unpaid Invoices Section */}
+        {filteredInvoices.filter((inv) => inv.status !== 'paid').length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-[#1C294E] mb-4">
+              Unpaid Invoices
+            </h2>
+            <div className="space-y-4">
+              {filteredInvoices
+                .filter((inv) => inv.status !== 'paid')
+                .map((invoice) => (
+                  <Card
+                    key={invoice.id}
+                    className="p-6 hover:shadow-lg transition-shadow"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 bg-red-50 rounded-lg">
+                          <FileText className="w-6 h-6 text-red-600" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-semibold text-gray-900">
+                              {invoice.invoice_number || `INV-${invoice.id}`}
+                            </h3>
+                            {getStatusBadge(invoice.status)}
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            Issued: {new Date(invoice.created_at).toLocaleDateString()}
+                          </p>
+                          {invoice.due_date && (
+                            <p className="text-sm text-gray-600">
+                              Due: {new Date(invoice.due_date).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-[#1C294E]">
+                            {formatMoney(invoice.total || invoice.amount)}
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleViewInvoice(invoice.id)}
+                            variant="secondary"
+                            size="sm"
+                          >
+                            View
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              router.push(`/portal/invoices/${invoice.id}/pay`)
+                            }
+                            variant="primary"
+                            size="sm"
+                          >
+                            Pay Now
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+            </div>
+          </div>
         )}
+
+        {/* All Invoices Section */}
+        <div>
+          <h2 className="text-xl font-semibold text-[#1C294E] mb-4">
+            {filter === 'all' ? 'All Invoices' : 'Invoice History'}
+          </h2>
+          {filteredInvoices.length === 0 ? (
+            <Card className="p-12 text-center">
+              <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                No invoices found
+              </h3>
+              <p className="text-gray-600">
+                {filter === 'all'
+                  ? "You don't have any invoices yet."
+                  : `No ${filter} invoices found.`}
+              </p>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {filteredInvoices.map((invoice) => (
+                <Card
+                  key={invoice.id}
+                  className="p-6 hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`p-3 rounded-lg ${
+                          invoice.status === 'paid'
+                            ? 'bg-green-50'
+                            : 'bg-yellow-50'
+                        }`}
+                      >
+                        <FileText
+                          className={`w-6 h-6 ${
+                            invoice.status === 'paid'
+                              ? 'text-green-600'
+                              : 'text-yellow-600'
+                          }`}
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-semibold text-gray-900">
+                            {invoice.invoice_number || `INV-${invoice.id}`}
+                          </h3>
+                          {getStatusBadge(invoice.status)}
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {new Date(invoice.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-2xl font-bold text-[#1C294E]">
+                        {formatMoney(invoice.total || invoice.amount)}
+                      </div>
+                      <Button
+                        onClick={() => handleViewInvoice(invoice.id)}
+                        variant="secondary"
+                        size="sm"
+                      >
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* Side Panel */}
+      <InvoiceSidePanel
+        invoiceId={selectedInvoiceId}
+        isOpen={isPanelOpen}
+        onClose={handleCloseSidePanel}
+      />
+    </>
   )
 }

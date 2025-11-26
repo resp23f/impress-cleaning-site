@@ -139,6 +139,8 @@ src
 │       │   └── page.jsx
 │       ├── invoices
 │       │   ├── [id]
+│       │   │   ├── InvoiceTemplate.jsx
+│       │   │   ├── page.jsx
 │       │   │   └── pay
 │       │   │       └── page.jsx
 │       │   └── page.jsx
@@ -185,4 +187,4 @@ src
         ├── middleware.js
         └── server.js
 
-87 directories, 99 files
+87 directories, 101 files

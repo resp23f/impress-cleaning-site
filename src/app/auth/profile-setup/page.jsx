@@ -181,10 +181,6 @@ const { error: addressError } = await supabase
   }
   return (
      <>
-    <Script
-      src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-      strategy="beforeInteractive"
-    />
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <Card>
