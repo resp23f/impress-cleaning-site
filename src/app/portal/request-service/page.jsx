@@ -408,9 +408,8 @@ export default function RequestServicePage() {
 
   return (
     <>
-      <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-        strategy="beforeInteractive"
+<Script
+  src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places`}        strategy="beforeInteractive"
       />
 
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
