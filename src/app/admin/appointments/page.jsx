@@ -42,16 +42,12 @@ export default function AppointmentsPage() {
   const loadAppointments = async () => {
     setLoading(true)
     try {
-      const { data, error } = await supabase
-        .from('appointments')
-        .select(`
-          *,
-          profiles!customer_id(full_name, email, phone),
-          service_addresses!address_id(street_address, unit, city, state, zip_code)
-        `)
-        .order('scheduled_date', { ascending: true })
-        .order('scheduled_time_start', { ascending: true })
-      if (error) throw error
+      const res = await fetch('/api/admin/get-all-appointments')
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to load appointments')
+      }
+      const { data } = await res.json()
       setAppointments(data || [])
     } catch (error) {
       console.error('Error loading appointments:', error)

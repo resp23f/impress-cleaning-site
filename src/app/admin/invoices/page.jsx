@@ -70,13 +70,12 @@ export default function InvoicesPage() {
   }
   const loadCustomers = async () => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, full_name, email')
-        .eq('role', 'customer')
-        .eq('account_status', 'active')
-        .order('full_name', { ascending: true })
-      if (error) throw error
+      const res = await fetch('/api/admin/get-all-customers')
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to load customers')
+      }
+      const { data } = await res.json()
       setCustomers(data || [])
     } catch (error) {
       console.error('Error loading customers:', error)
