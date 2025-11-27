@@ -89,6 +89,9 @@ src
 │   │   ├── create-gift-checkout
 │   │   │   └── route.js
 │   │   ├── customer-portal
+│   │   │   ├── invoice
+│   │   │   │   └── [id]
+│   │   │   │       └── route.js
 │   │   │   └── service-requests
 │   │   │       └── route.js
 │   │   ├── email
@@ -139,10 +142,9 @@ src
 │       │   └── page.jsx
 │       ├── invoices
 │       │   ├── [id]
-│       │   │   ├── InvoiceTemplate.jsx
-│       │   │   ├── page.jsx
 │       │   │   └── pay
 │       │   │       └── page.jsx
+│       │   ├── InvoiceSidePanel.jsx
 │       │   └── page.jsx
 │       ├── layout.jsx
 │       ├── request-service
@@ -181,10 +183,11 @@ src
 └── lib
     ├── middleware.js
     ├── rateLimit.js
+    ├── sanitize.js
     └── supabase
         ├── admin.js
         ├── client.js
         ├── middleware.js
         └── server.js
 
-87 directories, 101 files
+89 directories, 102 files

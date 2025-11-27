@@ -261,12 +261,14 @@ export default function DashboardPage() {
                   <p className="text-gray-600 mb-6">
                     Ready to schedule your next cleaning?
                   </p>
-                  <Link href="/portal/request-service">
-                    <Button variant="primary" className={styles.smoothTransition}>
-                      <Plus className="w-5 h-5" />
-                      Request Service
-                    </Button>
-                  </Link>
+                  <div className="flex justify-center">
+                    <Link href="/portal/request-service">
+                      <Button variant="primary" className={styles.smoothTransition}>
+                        <Plus className="w-5 h-5" />
+                        Request Service
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               )}
             </Card>
@@ -309,9 +311,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Priority Section - Invoices & Appointments */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Invoices & Payments - MOVED UP TO PRIORITY */}
+        {/* Priority Section - Invoices & Quick Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
+          {/* Invoices & Payments */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
             <Card className={styles.cardHover}>
               <div className="flex items-center justify-between mb-6">
@@ -346,7 +348,7 @@ export default function DashboardPage() {
                           </Badge>
                         )}
                       </div>
-                      <div className="flex gap-2 mt-3">
+                      <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
                         {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
                           <Link href={`/portal/invoices/${invoice.id}/pay`}>
                             <Button variant="primary" size="sm" className={styles.smoothTransition}>
@@ -355,7 +357,7 @@ export default function DashboardPage() {
                           </Link>
                         )}
                         <Button 
-                          variant="text" 
+                          variant="outline" 
                           size="sm" 
                           className={styles.smoothTransition}
                           onClick={() => handleViewInvoice(invoice.id)}
@@ -377,62 +379,40 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          {/* Upcoming Appointments - Clean List */}
+          {/* Quick Actions (replaces Upcoming Appointments list) */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
             <Card className={styles.cardHover}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Upcoming Appointments</h2>
-                <Link
-                  href="/portal/appointments"
-                  className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
-                >
-                  View All
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-[#1C294E]">Quick Actions</h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  Jump to the most common things you’ll need.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <Link href="/portal/request-service">
+                  <Button fullWidth variant="primary" className={styles.smoothTransition}>
+                    <Plus className="w-4 h-4" />
+                    Request Service
+                  </Button>
+                </Link>
+                <Link href="/portal/appointments">
+                  <Button fullWidth variant="secondary" className={styles.smoothTransition}>
+                    <Calendar className="w-4 h-4" />
+                    View Upcoming Appointments
+                  </Button>
+                </Link>
+                <Link href="/portal/invoices">
+                  <Button fullWidth variant="secondary" className={styles.smoothTransition}>
+                    <CreditCard className="w-4 h-4" />
+                    View All Invoices
+                  </Button>
+                </Link>
+                <Link href="/portal/settings">
+                  <Button fullWidth variant="text" className={styles.smoothTransition}>
+                    Manage Profile & Settings
+                  </Button>
                 </Link>
               </div>
-              {upcomingAppointments && upcomingAppointments.length > 0 ? (
-                <div className="space-y-3">
-                  {upcomingAppointments.slice(0, 4).map((apt) => (
-                    <div
-                      key={apt.id}
-                      className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-[#1C294E]">
-                            {format(new Date(apt.scheduled_date), 'MMM d')} • {apt.scheduled_time_start}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {formatServiceType(apt.service_type)}
-                          </p>
-                        </div>
-                        <Badge variant={getStatusBadge(apt.status)} size="sm">
-                          {apt.status}
-                        </Badge>
-                      </div>
-                      <div className="flex gap-2 mt-3">
-                        <Link href={`/portal/appointments/${apt.id}`}>
-                          <Button variant="text" size="sm" className={styles.smoothTransition}>
-                            View
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                    <Calendar className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm">No upcoming appointments</p>
-                  <Link href="/portal/request-service">
-                    <Button variant="primary" size="sm" className={`mt-4 ${styles.smoothTransition}`}>
-                      <Plus className="w-4 h-4" />
-                      Request Service
-                    </Button>
-                  </Link>
-                </div>
-              )}
             </Card>
           </div>
         </div>
