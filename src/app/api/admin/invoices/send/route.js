@@ -8,6 +8,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 export async function POST(request) {
   try {
     const { invoiceId } = await request.json()
+    console.log('📨 Send invoice request received for invoiceId:', invoiceId)
+
+    if (!invoiceId) {
+      return NextResponse.json(
+        { error: 'invoiceId is required' },
+        { status: 400 }
+      )
+    }
+
     const supabase = await createClient()
 
     // Get invoice details
@@ -21,11 +30,18 @@ export async function POST(request) {
       .single()
 
     if (invoiceError || !invoice) {
+      console.error('❌ Invoice lookup failed:', invoiceError)
       return NextResponse.json(
         { error: 'Invoice not found' },
         { status: 404 }
       )
     }
+
+    console.log('🧾 Invoice found for notification:', {
+      invoiceId: invoice.id,
+      customerId: invoice.customer_id,
+      customerEmail: invoice.profiles?.email,
+    })
 
     // Create line items for Stripe
     const lineItems = invoice.line_items?.map(item => ({
@@ -64,8 +80,13 @@ export async function POST(request) {
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/invoices?payment=cancelled`,
     })
 
+    console.log('💳 Stripe Checkout session created:', {
+      sessionId: session.id,
+      invoiceId: invoice.id,
+    })
+
     // Update invoice with Stripe session ID and mark as sent
-    await supabase
+    const { error: updateError } = await supabase
       .from('invoices')
       .update({
         stripe_payment_intent_id: session.id,
@@ -73,11 +94,19 @@ export async function POST(request) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', invoice.id)
-// ADD THIS LOG
-console.log('📧 About to create notification for customer:', invoice.customer_id)
+
+    if (updateError) {
+      console.error('❌ Failed to mark invoice as sent:', updateError)
+      return NextResponse.json(
+        { error: 'Failed to update invoice status' },
+        { status: 500 }
+      )
+    }
+
+    console.log('📧 About to create notification for customer:', invoice.customer_id)
 
     // CREATE CUSTOMER NOTIFICATION - ADD THIS PART!
-    await createCustomerNotification({
+    const notificationResult = await createCustomerNotification({
       userId: invoice.customer_id,
       type: 'invoice_sent',
       title: 'New Invoice Received',
@@ -86,7 +115,22 @@ console.log('📧 About to create notification for customer:', invoice.customer_
       referenceId: invoiceId,
       referenceType: 'invoice',
     })
-console.log('✅ Notification creation attempted')
+
+    if (!notificationResult?.success) {
+      console.error(
+        '❌ Customer notification creation failed:',
+        notificationResult?.error
+      )
+      return NextResponse.json(
+        {
+          error: 'Failed to create customer notification',
+          details: notificationResult?.error?.message,
+        },
+        { status: 500 }
+      )
+    }
+
+    console.log('✅ Notification created:', notificationResult?.data?.id)
 
     // Send email with payment link
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
@@ -106,6 +150,7 @@ console.log('✅ Notification creation attempted')
       success: true,
       checkoutUrl: session.url,
       sessionId: session.id,
+      notificationId: notificationResult?.data?.id,
     })
   } catch (error) {
     console.error('Error sending invoice:', error)
