@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
@@ -17,18 +18,32 @@ export async function POST(request) {
 
     const supabase = await createClient()
 
-    // Get invoice details
-const { data: invoice, error: invoiceError } = await supabase
-  .from('invoices')
-  .select(`
-    *,
-    profiles!invoices_customer_id_fkey(id, email, full_name)
-  `)
-  .eq('id', invoiceId)
-  .single()
+    // Get invoice details using admin client to bypass RLS
+    const { data: invoice, error: invoiceError } = await supabaseAdmin
+      .from('invoices')
+      .select('*')
+      .eq('id', invoiceId)
+      .single()
+
     if (invoiceError || !invoice) {
+      console.error('Invoice error:', invoiceError)
       return NextResponse.json(
         { error: 'Invoice not found' },
+        { status: 404 }
+      )
+    }
+
+    // Get customer profile separately
+    const { data: customer, error: customerError } = await supabaseAdmin
+      .from('profiles')
+      .select('id, email, full_name')
+      .eq('id', invoice.customer_id)
+      .single()
+
+    if (customerError || !customer) {
+      console.error('Customer error:', customerError)
+      return NextResponse.json(
+        { error: 'Customer not found' },
         { status: 404 }
       )
     }
@@ -59,7 +74,7 @@ const { data: invoice, error: invoiceError } = await supabase
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      customer_email: invoice.profiles.email,
+      customer_email: customer.email,
       client_reference_id: invoice.id,
       metadata: {
         invoice_id: invoice.id,
@@ -71,7 +86,7 @@ const { data: invoice, error: invoiceError } = await supabase
     })
 
     // Update invoice status to sent
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from('invoices')
       .update({
         stripe_payment_intent_id: session.id,
@@ -81,6 +96,7 @@ const { data: invoice, error: invoiceError } = await supabase
       .eq('id', invoice.id)
 
     if (updateError) {
+      console.error('Update error:', updateError)
       return NextResponse.json(
         { error: 'Failed to update invoice status' },
         { status: 500 }
@@ -92,8 +108,8 @@ const { data: invoice, error: invoiceError } = await supabase
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: invoice.profiles.email,
-        name: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
+        email: customer.email,
+        name: customer.full_name || customer.email.split('@')[0],
         invoiceNumber: invoice.invoice_number,
         amount: invoice.amount,
         dueDate: invoice.due_date,
