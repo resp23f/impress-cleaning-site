@@ -33,7 +33,6 @@ export default function InvoicesPage() {
         .from('invoices')
         .select('*')
         .eq('customer_id', user.id)
-.not('status', 'eq', 'draft') // Exclude draft invoices
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -66,18 +65,24 @@ export default function InvoicesPage() {
       paid: 'success',
       sent: 'info',
       overdue: 'danger',
+      cancelled: 'default',
     }
     return <Badge variant={variants[status] || 'info'}>{status}</Badge>
   }
 
-const filteredInvoices = invoices.filter((invoice) => {
-    if (filter === 'unpaid') return invoice.status !== 'paid' && invoice.status !== 'cancelled' && invoice.status !== 'draft'
+  const filteredInvoices = invoices.filter((invoice) => {
+    // Hide drafts from customers completely
+    if (invoice.status === 'draft') return false
+    
+    if (filter === 'unpaid') return invoice.status === 'sent' || invoice.status === 'pending'
+    if (filter === 'paid') return invoice.status === 'paid'
     if (filter === 'overdue') return invoice.status === 'overdue'
-    return true
+    if (filter === 'cancelled') return invoice.status === 'cancelled'
+    return false
   })
 
   const totalBalance = invoices
-    .filter((inv) => inv.status !== 'paid' && inv.status !== 'cancelled')
+    .filter((inv) => inv.status === 'sent' || inv.status === 'pending' || inv.status === 'overdue')
     .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
 
   const overdueAmount = invoices
@@ -148,7 +153,7 @@ const filteredInvoices = invoices.filter((invoice) => {
 
         {/* Filters */}
         <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
-          {['unpaid', 'paid', 'overdue'].map((filterOption) => (
+          {['unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
             <button
               key={filterOption}
               onClick={() => setFilter(filterOption)}
@@ -190,6 +195,8 @@ const filteredInvoices = invoices.filter((invoice) => {
                             ? 'bg-green-50'
                             : invoice.status === 'overdue'
                             ? 'bg-red-50'
+                            : invoice.status === 'cancelled'
+                            ? 'bg-gray-50'
                             : 'bg-yellow-50'
                         }`}
                       >
@@ -199,6 +206,8 @@ const filteredInvoices = invoices.filter((invoice) => {
                               ? 'text-green-600'
                               : invoice.status === 'overdue'
                               ? 'text-red-600'
+                              : invoice.status === 'cancelled'
+                              ? 'text-gray-600'
                               : 'text-yellow-600'
                           }`}
                         />
@@ -234,7 +243,7 @@ const filteredInvoices = invoices.filter((invoice) => {
                         >
                           View
                         </Button>
-                        {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+                        {(invoice.status === 'sent' || invoice.status === 'pending' || invoice.status === 'overdue') && (
                           <Button
                             onClick={() =>
                               router.push(`/portal/invoices/${invoice.id}/pay`)
