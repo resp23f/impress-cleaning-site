@@ -43,32 +43,32 @@ export default function CustomersPage() {
   useEffect(() => {
     filterCustomers()
   }, [customers, searchQuery, statusFilter])
-  const loadCustomers = async () => {
-    setLoading(true)
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(`
-          *,
-          service_addresses (*)
-        `)
-        .eq('role', 'customer')
-        .order('created_at', { ascending: false })
-      if (error) throw error
-      setCustomers(data || [])
-      // Calculate stats
-      const total = data?.length || 0
-      const active = data?.filter(c => c.account_status === 'active').length || 0
-      const pending = data?.filter(c => c.account_status === 'pending').length || 0
-      const suspended = data?.filter(c => c.account_status === 'suspended').length || 0
-      setStats({ total, active, pending, suspended })
-    } catch (error) {
-      console.error('Error loading customers:', error)
-      toast.error('Failed to load customers')
-    } finally {
-      setLoading(false)
-    }
+const loadCustomers = async () => {
+  setLoading(true)
+  try {
+    // Use the admin API route instead of direct query
+    const response = await fetch('/api/admin/get-all-customers')
+    if (!response.ok) throw new Error('Failed to load customers')
+    
+    const { data, error } = await response.json()
+    if (error) throw new Error(error)
+    
+    setCustomers(data || [])
+    
+    // Calculate stats
+    const total = data?.length || 0
+    const active = data?.filter(c => c.account_status === 'active').length || 0
+    const pending = data?.filter(c => c.account_status === 'pending').length || 0
+    const suspended = data?.filter(c => c.account_status === 'suspended').length || 0
+    
+    setStats({ total, active, pending, suspended })
+  } catch (error) {
+    console.error('Error loading customers:', error)
+    toast.error('Failed to load customers')
+  } finally {
+    setLoading(false)
   }
+}
   const filterCustomers = () => {
     let filtered = customers
     // Filter by status

@@ -101,8 +101,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
             <div className="sticky top-0 bg-gradient-to-r from-[#1C294E] to-[#2a3f5f] px-6 py-5 flex items-center justify-between z-10 shadow-md print:hidden">
               <div className="flex items-center gap-3">
                 <h2 className="text-xl font-bold text-white">Invoice</h2>
-                {invoice && getStatusBadge(invoice.status)}
-              </div>
+{invoice && invoice.status !== 'draft' && getStatusBadge(invoice.status)}              </div>
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
