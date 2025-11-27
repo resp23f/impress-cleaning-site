@@ -380,10 +380,6 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          {/* Notifications Card */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
-            <NotificationsCard />
-          </div>
         </div>
 
         {/* Secondary Section - Services & Info */}

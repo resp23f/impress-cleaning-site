@@ -163,7 +163,8 @@ src
 │   ├── PageTransition.jsx
 │   ├── portal
 │   │   ├── layout.jsx
-│   │   └── PortalNav.jsx
+│   │   ├── PortalNav.jsx
+│   │   └── SupportCard.jsx
 │   ├── StaggerItem.jsx
 │   ├── TawkToChat.jsx
 │   └── ui
@@ -190,4 +191,4 @@ src
         ├── middleware.js
         └── server.js
 
-89 directories, 102 files
+89 directories, 103 files
