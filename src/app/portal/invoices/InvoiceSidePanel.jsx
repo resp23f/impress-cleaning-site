@@ -82,6 +82,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
 
       {/* Side Panel */}
       <div
+        id="invoice-panel"
         className={`fixed top-0 right-0 h-full w-full sm:w-[700px] bg-gradient-to-br from-white to-gray-50 shadow-2xl z-50 transform transition-all duration-500 ease-out print:shadow-none print:transform-none print:w-full print:h-auto print:relative ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         } overflow-y-auto print:overflow-visible`}
@@ -291,7 +292,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
         )}
       </div>
 
-      {/* Print Styles */}
+{/* Print Styles */}
       <style jsx global>{`
         @media print {
           @page {
@@ -304,25 +305,31 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
             -webkit-print-color-adjust: exact;
           }
 
-          /* Hide everything except the panel */
-          body > *:not(.fixed) {
-            display: none !important;
+          /* Hide EVERYTHING first */
+          body * {
+            visibility: hidden;
           }
 
-          /* Make panel take full width and remove transforms */
-          .fixed.right-0 {
-            position: static !important;
-            transform: none !important;
-            width: 100% !important;
-            height: auto !important;
-            overflow: visible !important;
-            box-shadow: none !important;
+          /* Show only the invoice panel and its children */
+          #invoice-panel,
+          #invoice-panel * {
+            visibility: visible;
           }
 
-          /* Hide buttons and interactive elements */
+          /* Position the panel for print */
+          #invoice-panel {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+
+          /* Hide buttons and backdrop */
           button,
-          .print\\:hidden {
+          [class*="backdrop"],
+          [class*="z-40"] {
             display: none !important;
+            visibility: hidden !important;
           }
 
           /* Adjust font sizes for print */
@@ -332,21 +339,11 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
           }
 
           /* Ensure backgrounds print */
-          .bg-gradient-to-r,
-          .bg-gradient-to-br,
-          .bg-blue-50,
-          .bg-yellow-50,
-          .bg-gray-50 {
+          * {
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
           }
-
-          /* Page breaks */
-          .print\\:break-inside-avoid {
-            break-inside: avoid;
-          }
         }
-      `}</style>
-    </>
+      `}</style>    </>
   )
 }

@@ -16,10 +16,17 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Fetch invoice
+// Fetch invoice with customer profile
     const { data: invoiceRow, error: invoiceError } = await supabase
       .from('invoices')
-      .select('*')
+      .select(`
+        *,
+        profiles!customer_id (
+          full_name,
+          email,
+          phone
+        )
+      `)
       .eq('id', invoiceId)
       .eq('customer_id', user.id)
       .single()
@@ -28,38 +35,39 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
     }
 
-    // Fetch customer profile
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('full_name, email, phone, street_address, city, state, zip_code')
-      .eq('id', invoiceRow.customer_id)
-      .single()
+    // Fetch customer's primary service address
+    const { data: addressData } = await supabase
+      .from('service_addresses')
+      .select('street_address, unit, city, state, zip_code')
+      .eq('user_id', invoiceRow.customer_id)
+      .eq('is_primary', true)
+      .maybeSingle()
 
     // Format response
     const invoice = {
       id: invoiceRow.id,
       invoice_number: invoiceRow.invoice_number,
-      status: invoiceRow.status,
+      status: invoiceRow.status || 'draft',
       issue_date: invoiceRow.created_at?.slice(0, 10),
       due_date: invoiceRow.due_date,
       subtotal: invoiceRow.subtotal ?? invoiceRow.amount,
-      tax_rate: invoiceRow.tax_rate,
-      tax_amount: invoiceRow.tax_amount,
+      tax_rate: invoiceRow.tax_rate || 0,
+      tax_amount: invoiceRow.tax_amount || 0,
       total: invoiceRow.total ?? invoiceRow.amount,
       notes: invoiceRow.notes,
       service_summary: invoiceRow.service_summary,
     }
 
     const customer = {
-      name: profile?.full_name,
-      email: profile?.email,
-      phone: profile?.phone,
-      street: profile?.street_address,
-      city: profile?.city,
-      state: profile?.state,
-      zip: profile?.zip_code,
+      name: invoiceRow.profiles?.full_name || 'Customer',
+      email: invoiceRow.profiles?.email || '',
+      phone: invoiceRow.profiles?.phone || '',
+      street: addressData?.street_address || '',
+      unit: addressData?.unit || '',
+      city: addressData?.city || '',
+      state: addressData?.state || '',
+      zip: addressData?.zip_code || '',
     }
-
     const lineItems = (invoiceRow.line_items || []).map((item, idx) => ({
       id: item.id ?? idx,
       description: item.description,
