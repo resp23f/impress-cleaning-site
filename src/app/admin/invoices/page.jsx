@@ -137,6 +137,12 @@ const handleSendInvoice = async () => {
 
     const data = await response.json()
     console.log('Invoice sent successfully:', data)
+
+    if (!data.notificationId) {
+      console.warn('Invoice sent but no notification ID returned')
+    } else {
+      console.log('Customer notification created with ID:', data.notificationId)
+    }
     
     toast.success('Invoice sent successfully!')
     setShowModal(false)

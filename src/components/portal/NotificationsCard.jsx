@@ -27,11 +27,19 @@ export default function NotificationsCard() {
   const loadNotifications = async () => {
     try {
       const response = await fetch('/api/customer-portal/notifications')
-      const { data, unreadCount: count } = await response.json()
+      const body = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(body.error || 'Failed to load notifications')
+      }
+
+      const { data, unreadCount: count } = body
       setNotifications(data || [])
       setUnreadCount(count || 0)
     } catch (error) {
       console.error('Error loading notifications:', error)
+      setNotifications([])
+      setUnreadCount(0)
     } finally {
       setLoading(false)
     }
@@ -39,9 +47,15 @@ export default function NotificationsCard() {
 
   const handleMarkAsRead = async (notificationId) => {
     try {
-      await fetch(`/api/customer-portal/notifications/${notificationId}`, {
+      const response = await fetch(`/api/customer-portal/notifications/${notificationId}`, {
         method: 'PATCH',
       })
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}))
+        throw new Error(body.error || 'Failed to mark notification as read')
+      }
+
       // Update local state
       setNotifications(notifications.map(n => 
         n.id === notificationId ? { ...n, is_read: true } : n
@@ -54,9 +68,15 @@ export default function NotificationsCard() {
 
   const handleMarkAllAsRead = async () => {
     try {
-      await fetch('/api/customer-portal/notifications/mark-all-read', {
+      const response = await fetch('/api/customer-portal/notifications/mark-all-read', {
         method: 'POST',
       })
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}))
+        throw new Error(body.error || 'Failed to mark notifications as read')
+      }
+
       setNotifications(notifications.map(n => ({ ...n, is_read: true })))
       setUnreadCount(0)
     } catch (error) {
