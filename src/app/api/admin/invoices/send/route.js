@@ -73,6 +73,8 @@ export async function POST(request) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', invoice.id)
+// ADD THIS LOG
+console.log('📧 About to create notification for customer:', invoice.customer_id)
 
     // CREATE CUSTOMER NOTIFICATION - ADD THIS PART!
     await createCustomerNotification({
@@ -84,6 +86,7 @@ export async function POST(request) {
       referenceId: invoiceId,
       referenceType: 'invoice',
     })
+console.log('✅ Notification creation attempted')
 
     // Send email with payment link
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
