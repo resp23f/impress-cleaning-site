@@ -312,7 +312,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Priority Section - Invoices & Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-2">
           {/* Invoices & Payments */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
             <Card className={styles.cardHover}>
