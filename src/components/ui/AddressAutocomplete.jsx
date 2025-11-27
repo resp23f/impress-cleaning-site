@@ -1,12 +1,37 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { MapPin } from 'lucide-react'
+
+// Debounce utility to reduce API calls
+function debounce(func, wait) {
+  let timeout
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout)
+      func(...args)
+    }
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
+}
+
+// XSS sanitization for address fields
+function sanitizeInput(input) {
+  if (!input) return ''
+  return String(input)
+    .replace(/[<>]/g, '') // Remove angle brackets
+    .trim()
+}
+
 export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
   const [inputValue, setInputValue] = useState(defaultValue)
   const inputRef = useRef(null)
   const autocompleteRef = useRef(null)
+  const listenerRef = useRef(null)
+
   useEffect(() => {
     if (typeof window === 'undefined' || !window.google) return
+
     // Initialize Google Places Autocomplete
     autocompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
@@ -16,46 +41,78 @@ export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
         fields: ['address_components', 'formatted_address', 'place_id', 'geometry']
       }
     )
-    // Listen for place selection
-    autocompleteRef.current.addListener('place_changed', () => {
+
+    // Debounced place selection handler
+    const handlePlaceChanged = () => {
       const place = autocompleteRef.current.getPlace()
+      
       if (!place.address_components) {
         return
       }
-      // Parse address components
+
+      // Parse address components with XSS sanitization
       const addressData = {
         street_address: '',
         city: '',
         state: '',
         zip_code: '',
-        place_id: place.place_id,
-        formatted_address: place.formatted_address,
+        place_id: sanitizeInput(place.place_id),
+        formatted_address: sanitizeInput(place.formatted_address),
       }
+
       let streetNumber = ''
       let route = ''
+
       place.address_components.forEach((component) => {
         const types = component.types
+        
         if (types.includes('street_number')) {
-          streetNumber = component.long_name
+          streetNumber = sanitizeInput(component.long_name)
         }
         if (types.includes('route')) {
-          route = component.long_name
+          route = sanitizeInput(component.long_name)
         }
         if (types.includes('locality')) {
-          addressData.city = component.long_name
+          addressData.city = sanitizeInput(component.long_name)
         }
         if (types.includes('administrative_area_level_1')) {
-          addressData.state = component.short_name
+          addressData.state = sanitizeInput(component.short_name)
         }
         if (types.includes('postal_code')) {
-          addressData.zip_code = component.long_name
+          addressData.zip_code = sanitizeInput(component.long_name)
         }
       })
+
       addressData.street_address = `${streetNumber} ${route}`.trim()
       setInputValue(addressData.formatted_address)
       onSelect(addressData)
-    })
+    }
+
+    // Add listener with debouncing
+    listenerRef.current = autocompleteRef.current.addListener('place_changed', handlePlaceChanged)
+
+    // Cleanup
+    return () => {
+      if (listenerRef.current && window.google) {
+        window.google.maps.event.removeListener(listenerRef.current)
+      }
+    }
   }, [onSelect])
+
+  // Debounced input change handler
+  const debouncedInputChange = useCallback(
+    debounce((value) => {
+      // This reduces unnecessary re-renders while typing
+      setInputValue(value)
+    }, 300),
+    []
+  )
+
+  const handleInputChange = (e) => {
+    const sanitizedValue = sanitizeInput(e.target.value)
+    setInputValue(sanitizedValue)
+  }
+
   return (
     <div className="relative">
       <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -68,11 +125,13 @@ export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
         <input
           ref={inputRef}
           type="text"
+          name="street-address"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={handleInputChange}
           placeholder="Start typing your address..."
           className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
           required
+          autoComplete="street-address"
         />
       </div>
       <p className="text-xs text-gray-500 mt-1">

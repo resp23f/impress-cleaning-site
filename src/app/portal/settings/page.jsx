@@ -27,6 +27,8 @@ import toast from 'react-hot-toast'
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
 )
+import { sanitizeText, sanitizePhone, sanitizeEmail } from '@/lib/sanitize'
+
 export default function SettingsPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -97,27 +99,28 @@ export default function SettingsPage() {
       }
     }
   }, [cardElementMounted])
-  const handleProfileSave = async () => {
-    if (!user || !profile) return
-    setSavingProfile(true)
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          full_name: profile.full_name,
-          phone: profile.phone,
-          communication_preference: pref,
-        })
-        .eq('id', user.id)
-      if (error) throw error
-      toast.success('Profile updated')
-    } catch (err) {
-      console.error('Profile update error', err)
-      toast.error(err.message || 'Could not update profile')
-    } finally {
-      setSavingProfile(false)
-    }
+const handleProfileSave = async () => {
+  if (!user || !profile) return
+  setSavingProfile(true)
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        full_name: sanitizeText(profile.full_name),
+        phone: sanitizePhone(profile.phone),
+        communication_preference: pref,
+      })
+      .eq('id', user.id)
+    
+    if (error) throw error
+    toast.success('Profile updated')
+  } catch (err) {
+    console.error('Profile update error', err)
+    toast.error(err.message || 'Could not update profile')
+  } finally {
+    setSavingProfile(false)
   }
+}
   const handleEmailUpdate = async () => {
     if (!user || !profile?.email) {
       toast.error('Email is required')

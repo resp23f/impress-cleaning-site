@@ -21,6 +21,8 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
+import { sanitizeText } from '@/lib/sanitize'
+
 export default function InvoicesPage() {
   const [loading, setLoading] = useState(true)
   const [invoices, setInvoices] = useState([])
@@ -167,52 +169,54 @@ export default function InvoicesPage() {
   const calculateTotal = () => {
     return newInvoice.line_items.reduce((sum, item) => sum + (item.amount || 0), 0)
   }
-  const handleCreateInvoice = async () => {
-    if (!newInvoice.customer_id) {
-      toast.error('Please select a customer')
-      return
-    }
-    if (newInvoice.line_items.length === 0 || !newInvoice.line_items[0].description) {
-      toast.error('Please add at least one line item')
-      return
-    }
-    setProcessing(true)
-    try {
-      // Generate invoice number
-      const { data: invoiceNumber, error: numberError } = await supabase
-        .rpc('generate_invoice_number')
-      if (numberError) throw numberError
-      const total = calculateTotal()
-      const { error } = await supabase
-        .from('invoices')
-        .insert({
-          invoice_number: invoiceNumber,
-          customer_id: newInvoice.customer_id,
-          amount: total,
-          due_date: newInvoice.due_date || null,
-          notes: newInvoice.notes || null,
-          line_items: newInvoice.line_items,
-          status: 'draft',
-        })
-      if (error) throw error
-      toast.success('Invoice created successfully!')
-      setShowCreateModal(false)
-      setNewInvoice({
-        customer_id: '',
-        amount: '',
-        due_date: '',
-        notes: '',
-        line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
-      })
-      loadInvoices()
-    } catch (error) {
-      console.error('Error creating invoice:', error)
-      toast.error('Failed to create invoice')
-    } finally {
-      setProcessing(false)
-    }
+const handleCreateInvoice = async () => {
+  if (!newInvoice.customer_id) {
+    toast.error('Please select a customer')
+    return
   }
-  // Calculate stats
+  if (newInvoice.line_items.length === 0 || !newInvoice.line_items[0].description) {
+    toast.error('Please add at least one line item')
+    return
+  }
+  setProcessing(true)
+  try {
+    // Generate invoice number
+    const { data: invoiceNumber, error: numberError } = await supabase
+      .rpc('generate_invoice_number')
+    if (numberError) throw numberError
+    const total = calculateTotal()
+    const { error } = await supabase
+      .from('invoices')
+      .insert({
+        invoice_number: invoiceNumber,
+        customer_id: newInvoice.customer_id,
+        amount: total,
+        due_date: newInvoice.due_date || null,
+        notes: sanitizeText(newInvoice.notes) || null,
+        line_items: newInvoice.line_items.map(item => ({
+          ...item,
+          description: sanitizeText(item.description),
+        })),
+        status: 'draft',
+      })
+    if (error) throw error
+    toast.success('Invoice created successfully!')
+    setShowCreateModal(false)
+    setNewInvoice({
+      customer_id: '',
+      amount: '',
+      due_date: '',
+      notes: '',
+      line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
+    })
+    loadInvoices()
+  } catch (error) {
+    console.error('Error creating invoice:', error)
+    toast.error('Failed to create invoice')
+  } finally {
+    setProcessing(false)
+  }
+}  // Calculate stats
   const stats = {
     total: invoices.length,
     paid: invoices.filter(i => i.status === 'paid').length,

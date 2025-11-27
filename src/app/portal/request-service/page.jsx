@@ -28,6 +28,7 @@ import SelectableCard from '@/components/ui/SelectableCard'
 import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
+import { sanitizeText } from '@/lib/sanitize'
 
 const libraries = ['places']
 
@@ -283,41 +284,41 @@ export default function RequestServicePage() {
     try {
       let addressId = formData.addressId
 
-      // If using new address, create it first
-      if (formData.useNewAddress) {
-        const { data: newAddr, error: addrError } = await supabase
-          .from('service_addresses')
-          .insert({
-            user_id: user.id,
-            street_address: formData.newAddress.streetAddress,
-            unit: formData.newAddress.unit || null,
-            city: formData.newAddress.city,
-            state: formData.newAddress.state,
-            zip_code: formData.newAddress.zipCode,
-            place_id: formData.newAddress.placeId || null,
-            is_primary: addresses.length === 0,
-          })
-          .select()
-          .single()
+// If using new address, create it first
+if (formData.useNewAddress) {
+  const { data: newAddr, error: addrError } = await supabase
+    .from('service_addresses')
+    .insert({
+      user_id: user.id,
+      street_address: formData.newAddress.streetAddress,
+      unit: formData.newAddress.unit || null,
+      city: formData.newAddress.city,
+      state: formData.newAddress.state,
+      zip_code: formData.newAddress.zipCode,
+      place_id: formData.newAddress.placeId || null,
+      is_primary: addresses.length === 0,
+      // ❌ REMOVE special_requests from here!
+    })
+    .select()
+    .single()
 
-        if (addrError) {
-          console.error('Address creation error:', addrError)
-          throw new Error('Failed to save address')
-        }
-        addressId = newAddr.id
-      }
+  if (addrError) {
+    console.error('Address creation error:', addrError)
+    throw new Error('Failed to save address')
+  }
+  addressId = newAddr.id
+}
 
-      const payload = {
-        service_type: formData.serviceType,
-        preferred_date: formData.preferredDate,
-        preferred_time: formData.preferredTime,
-        is_flexible: formData.isFlexible,
-        address_id: addressId,
-        special_requests: formData.specialRequests,
-        is_recurring: formData.isRecurring,
-        recurring_frequency: formData.isRecurring ? formData.recurringFrequency : null,
-      }
-
+const payload = {
+  service_type: formData.serviceType,
+  preferred_date: formData.preferredDate,
+  preferred_time: formData.preferredTime,
+  is_flexible: formData.isFlexible,
+  address_id: addressId,
+  special_requests: sanitizeText(formData.specialRequests),  // ✅ ADD IT HERE!
+  is_recurring: formData.isRecurring,
+  recurring_frequency: formData.isRecurring ? formData.recurringFrequency : null,
+}
       console.log('SERVICE REQUEST PAYLOAD:', payload)
 
       const res = await fetch('/api/customer-portal/service-requests', {
