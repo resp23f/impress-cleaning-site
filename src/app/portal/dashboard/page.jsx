@@ -275,7 +275,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Balance Card */}
-          <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
+          <div className={`${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
             <Card 
               className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive}`}
               padding="lg"
