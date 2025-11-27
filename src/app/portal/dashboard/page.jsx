@@ -20,7 +20,6 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import InvoiceSidePanel from '../invoices/InvoiceSidePanel'
-import NotificationsCard from '@/components/portal/NotificationsCard'
 import SupportCard from '@/components/portal/SupportCard'
 import styles from '../shared-animations.module.css'
 
