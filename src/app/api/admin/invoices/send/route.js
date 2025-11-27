@@ -18,15 +18,14 @@ export async function POST(request) {
     const supabase = await createClient()
 
     // Get invoice details
-    const { data: invoice, error: invoiceError } = await supabase
-      .from('invoices')
-      .select(`
-        *,
-        profiles!customer_id(id, email, full_name)
-      `)
-      .eq('id', invoiceId)
-      .single()
-
+const { data: invoice, error: invoiceError } = await supabase
+  .from('invoices')
+  .select(`
+    *,
+    profiles!invoices_customer_id_fkey(id, email, full_name)
+  `)
+  .eq('id', invoiceId)
+  .single()
     if (invoiceError || !invoice) {
       return NextResponse.json(
         { error: 'Invoice not found' },
