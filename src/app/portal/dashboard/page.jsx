@@ -20,6 +20,8 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import InvoiceSidePanel from '../invoices/InvoiceSidePanel'
+import NotificationsCard from '@/components/portal/NotificationsCard'
+import SupportCard from '@/components/portal/SupportCard'
 import styles from '../shared-animations.module.css'
 
 export default function DashboardPage() {
@@ -191,7 +193,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Hero Section - Next Appointment & Balance */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Next Appointment Card OR Request Service CTA */}
           <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger1}`}>
             <Card className={`${styles.heroCard} ${styles.cardHover}`} padding="lg">
@@ -311,8 +313,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Priority Section - Invoices & Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-2">
+        {/* Priority Section - Invoices & Notifications */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Invoices & Payments */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
             <Card className={styles.cardHover}>
@@ -379,46 +381,14 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          {/* Quick Actions (replaces Upcoming Appointments list) */}
+          {/* Notifications Card */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
-            <Card className={styles.cardHover}>
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Quick Actions</h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  Jump to the most common things you’ll need.
-                </p>
-              </div>
-              <div className="space-y-3">
-                <Link href="/portal/request-service">
-                  <Button fullWidth variant="primary" className={styles.smoothTransition}>
-                    <Plus className="w-4 h-4" />
-                    Request Service
-                  </Button>
-                </Link>
-                <Link href="/portal/appointments">
-                  <Button fullWidth variant="secondary" className={styles.smoothTransition}>
-                    <Calendar className="w-4 h-4" />
-                    View Upcoming Appointments
-                  </Button>
-                </Link>
-                <Link href="/portal/invoices">
-                  <Button fullWidth variant="secondary" className={styles.smoothTransition}>
-                    <CreditCard className="w-4 h-4" />
-                    View All Invoices
-                  </Button>
-                </Link>
-                <Link href="/portal/settings">
-                  <Button fullWidth variant="text" className={styles.smoothTransition}>
-                    Manage Profile & Settings
-                  </Button>
-                </Link>
-              </div>
-            </Card>
+            <NotificationsCard />
           </div>
         </div>
 
         {/* Secondary Section - Services & Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Recent Services */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
             <Card className={styles.cardHover}>
@@ -534,6 +504,11 @@ export default function DashboardPage() {
               </Card>
             )}
           </div>
+        </div>
+
+        {/* Support Section - Full Width at Bottom */}
+        <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
+          <SupportCard />
         </div>
       </div>
 
