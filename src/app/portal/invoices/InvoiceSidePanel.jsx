@@ -58,17 +58,19 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
   const formatMoney = (value) =>
     typeof value === 'number' ? `$${value.toFixed(2)}` : value || '$0.00'
 
-  const getStatusBadge = (status) => {
-    const variants = {
-      paid: 'success',
-      sent: 'info',
-      pending: 'warning',
-      overdue: 'danger',
-      draft: 'default',
-    }
-    return <Badge variant={variants[status] || 'info'}>{status?.toUpperCase()}</Badge>
+const getStatusBadge = (status) => {
+  // Don't show status badge for 'sent' - that's internal admin status
+  if (status === 'sent' || status === 'pending') {
+    return null
   }
-
+  
+  const variants = {
+    paid: 'success',
+    overdue: 'danger',
+    cancelled: 'default',
+  }
+  return <Badge variant={variants[status] || 'info'}>{status}</Badge>
+}
   if (!isOpen) return null
 
   return (

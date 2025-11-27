@@ -136,16 +136,19 @@ export default function DashboardPage() {
     return types[type] || type
   }
 
-  const getStatusBadge = (status) => {
-    const variants = {
-      pending: 'warning',
-      confirmed: 'info',
-      completed: 'success',
-      cancelled: 'danger',
-    }
-    return variants[status] || 'default'
+const getStatusBadge = (status) => {
+  // Don't show status badge for 'sent' - that's internal admin status
+  if (status === 'sent' || status === 'pending') {
+    return null
   }
-
+  
+  const variants = {
+    paid: 'success',
+    overdue: 'danger',
+    cancelled: 'default',
+  }
+  return <Badge variant={variants[status] || 'info'}>{status}</Badge>
+}
   const getInvoiceStatusBadge = (status) => {
     const variants = {
       paid: 'success',
