@@ -60,16 +60,19 @@ export default function InvoicesPage() {
       : amount || '$0.00'
   }
 
-  const getStatusBadge = (status) => {
-    const variants = {
-      paid: 'success',
-      sent: 'info',
-      overdue: 'danger',
-      cancelled: 'default',
-    }
-    return <Badge variant={variants[status] || 'info'}>{status}</Badge>
+const getStatusBadge = (status) => {
+  // Don't show status badge for 'sent' - that's internal admin status
+  if (status === 'sent' || status === 'pending') {
+    return null
   }
-
+  
+  const variants = {
+    paid: 'success',
+    overdue: 'danger',
+    cancelled: 'default',
+  }
+  return <Badge variant={variants[status] || 'info'}>{status}</Badge>
+}
   const filteredInvoices = invoices.filter((invoice) => {
     // Hide drafts from customers completely
     if (invoice.status === 'draft') return false
