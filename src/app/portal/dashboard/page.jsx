@@ -12,7 +12,6 @@ import {
   FileText,
   Plus,
   CheckCircle,
-  Repeat
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Card from '@/components/ui/Card'
@@ -34,7 +33,6 @@ export default function DashboardPage() {
   const [upcomingAppointments, setUpcomingAppointments] = useState([])
   const [recentServices, setRecentServices] = useState([])
   const [invoices, setInvoices] = useState([])
-  const [recurringServices, setRecurringServices] = useState([])
   const [balance, setBalance] = useState(0)
   
   // Invoice side panel state
@@ -91,13 +89,13 @@ export default function DashboardPage() {
 
       setRecentServices(servicesData || [])
 
-      // Get invoices (limit to 5 most recent)
+      // Get invoices (limit to 2 most recent)
       const { data: invoicesData } = await supabase
         .from('invoices')
         .select('*')
         .eq('customer_id', authUser.id)
         .order('created_at', { ascending: false })
-        .limit(5)
+        .limit(2)
 
       setInvoices(invoicesData || [])
 
@@ -109,17 +107,6 @@ export default function DashboardPage() {
         sum + parseFloat(inv.amount), 0
       )
       setBalance(totalBalance)
-
-      // Get recurring services
-      const { data: recurringData } = await supabase
-        .from('appointments')
-        .select('*')
-        .eq('customer_id', authUser.id)
-        .eq('is_recurring', true)
-        .is('parent_recurring_id', null)
-        .limit(1)
-
-      setRecurringServices(recurringData || [])
 
     } catch (error) {
       console.error('Error loading dashboard:', error)
@@ -191,9 +178,9 @@ export default function DashboardPage() {
           <p className="text-gray-600">Welcome to your customer portal</p>
         </div>
 
-        {/* Hero Section - Next Appointment & Balance */}
+        {/* Row 1: Next Appointment & Balance */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Next Appointment Card OR Request Service CTA */}
+          {/* Next Appointment Card */}
           <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger1}`}>
             <Card className={`${styles.heroCard} ${styles.cardHover}`} padding="lg">
               {nextAppointment ? (
@@ -276,9 +263,9 @@ export default function DashboardPage() {
           </div>
 
           {/* Balance Card */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
+          <div className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
             <Card 
-              className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive}`}
+              className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive} h-full`}
               padding="lg"
             >
               <h2 className="text-lg font-semibold text-[#1C294E] mb-4">Balance</h2>
@@ -312,7 +299,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Priority Section - Invoices & Notifications */}
+        {/* Row 2: Invoices & Recent Services */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Invoices & Payments */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
@@ -342,7 +329,6 @@ export default function DashboardPage() {
                             {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
                           </p>
                         </div>
-                        {/* Hide draft badge from customers */}
                         {invoice.status !== 'draft' && (
                           <Badge variant={getInvoiceStatusBadge(invoice.status)} size="sm">
                             {invoice.status}
@@ -380,10 +366,6 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-        </div>
-
-        {/* Secondary Section - Services & Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Recent Services */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
             <Card className={styles.cardHover}>
@@ -437,45 +419,12 @@ export default function DashboardPage() {
               )}
             </Card>
           </div>
+        </div>
 
-          {/* Service Address & Recurring Services */}
-          <div className={`space-y-6 ${styles.animateFadeInUp} ${styles.stagger4}`}>
-            {/* Recurring Services */}
-            {recurringServices && recurringServices.length > 0 && (
-              <Card className={styles.cardHover}>
-                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Recurring Services</h2>
-                {recurringServices.map((service) => (
-                  <div key={service.id} className="p-4 bg-gradient-to-br from-[#079447]/5 to-[#079447]/10 rounded-lg border border-[#079447]/20">
-                    <div className="flex items-start gap-3 mb-3">
-                      <Repeat className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold text-[#1C294E]">
-                          {service.recurring_frequency} {formatServiceType(service.service_type)}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Every {service.recurring_frequency} at {service.scheduled_time_start}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Next: {format(new Date(service.scheduled_date), 'MMM d, yyyy')}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Link href={`/portal/appointments/${service.id}`}>
-                        <Button variant="text" size="sm" className={styles.smoothTransition}>
-                          Manage
-                        </Button>
-                      </Link>
-                      <Button variant="text" size="sm" className={styles.smoothTransition}>
-                        Pause
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </Card>
-            )}
-
-            {/* Service Address */}
+        {/* Row 3: Service Address & Support */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Service Address */}
+          <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
             {primaryAddress && (
               <Card className={styles.cardHover}>
                 <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
@@ -499,11 +448,11 @@ export default function DashboardPage() {
               </Card>
             )}
           </div>
-        </div>
 
-        {/* Support Section - Full Width at Bottom */}
-        <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-          <SupportCard />
+          {/* Support & Help */}
+          <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
+            <SupportCard />
+          </div>
         </div>
       </div>
 
