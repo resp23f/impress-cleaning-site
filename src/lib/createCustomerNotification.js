@@ -9,6 +9,9 @@ export async function createCustomerNotification({
   referenceId = null,
   referenceType = null,
 }) {
+  console.log('🔔 Creating notification for user:', userId)
+  console.log('📋 Notification data:', { type, title, message, link })
+  
   try {
     const { data, error } = await supabaseAdmin
       .from('customer_notifications')
@@ -25,11 +28,15 @@ export async function createCustomerNotification({
       .select()
       .single()
 
-    if (error) throw error
+    if (error) {
+      console.error('❌ Error creating notification:', error)
+      throw error
+    }
 
+    console.log('✅ Notification created successfully:', data)
     return { success: true, data }
   } catch (error) {
-    console.error('Error creating customer notification:', error)
+    console.error('❌ Failed to create customer notification:', error)
     return { success: false, error }
   }
 }
