@@ -421,41 +421,38 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Row 3: Service Address & Support */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Service Address */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-            {primaryAddress && (
-              <Card className={styles.cardHover}>
-                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
-                <div className="flex items-start gap-3 mb-4">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-[#1C294E] font-medium">
-                      {primaryAddress.street_address}
-                      {primaryAddress.unit && `, ${primaryAddress.unit}`}
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                      {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-                    </p>
-                  </div>
-                </div>
-                <Link href="/portal/settings#addresses">
-                  <Button variant="text" size="sm" className={styles.smoothTransition}>
-                    Edit Address
-                  </Button>
-                </Link>
-              </Card>
-            )}
-          </div>
-
-          {/* Support & Help */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-            <SupportCard />
-          </div>
+{/* Row 3: Service Address & Support */}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  {/* Service Address */}
+  <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
+    <Card className={styles.cardHover}>
+      <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
+      <div className="flex items-start gap-3 mb-4">
+        <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-[#1C294E] font-medium">
+            {primaryAddress.street_address}
+            {primaryAddress.unit && `, ${primaryAddress.unit}`}
+          </p>
+          <p className="text-gray-600 text-sm">
+            {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+          </p>
         </div>
       </div>
+      <Link href="/portal/settings#addresses">
+        <Button variant="text" size="sm" className={styles.smoothTransition}>
+          Edit Address
+        </Button>
+      </Link>
+    </Card>
+  </div>
 
+  {/* Support & Help */}
+  <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
+    <SupportCard />
+  </div>
+</div>
+      </div>
       {/* Invoice Side Panel */}
       <InvoiceSidePanel
         invoiceId={selectedInvoiceId}
