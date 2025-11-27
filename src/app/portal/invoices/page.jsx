@@ -33,7 +33,7 @@ export default function InvoicesPage() {
         .from('invoices')
         .select('*')
         .eq('customer_id', user.id)
-        .neq('status', 'draft') // Exclude draft invoices
+.not('status', 'eq', 'draft') // Exclude draft invoices
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -70,9 +70,8 @@ export default function InvoicesPage() {
     return <Badge variant={variants[status] || 'info'}>{status}</Badge>
   }
 
-  const filteredInvoices = invoices.filter((invoice) => {
-    if (filter === 'unpaid') return invoice.status !== 'paid' && invoice.status !== 'cancelled'
-    if (filter === 'paid') return invoice.status === 'paid'
+const filteredInvoices = invoices.filter((invoice) => {
+    if (filter === 'unpaid') return invoice.status !== 'paid' && invoice.status !== 'cancelled' && invoice.status !== 'draft'
     if (filter === 'overdue') return invoice.status === 'overdue'
     return true
   })
