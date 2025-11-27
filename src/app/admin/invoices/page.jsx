@@ -119,32 +119,35 @@ export default function InvoicesPage() {
     setSelectedInvoice(invoice)
     setShowModal(true)
   }
-  const handleUpdateStatus = async (status) => {
-    if (!selectedInvoice) return
-    setProcessing(true)
-    try {
-      const updates = {
-        status,
-        updated_at: new Date().toISOString(),
-      }
-      if (status === 'paid') {
-        updates.paid_date = new Date().toISOString().split('T')[0]
-      }
-      const { error } = await supabase
-        .from('invoices')
-        .update(updates)
-        .eq('id', selectedInvoice.id)
-      if (error) throw error
-      toast.success(`Invoice marked as ${status}!`)
-      setShowModal(false)
-      loadInvoices()
-    } catch (error) {
-      console.error('Error updating invoice:', error)
-      toast.error('Failed to update invoice')
-    } finally {
-      setProcessing(false)
+const handleSendInvoice = async () => {
+  if (!selectedInvoice) return
+  
+  setProcessing(true)
+  try {
+    const response = await fetch('/api/admin/invoices/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invoiceId: selectedInvoice.id })
+    })
+
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.error || 'Failed to send invoice')
     }
+
+    const data = await response.json()
+    console.log('Invoice sent successfully:', data)
+    
+    toast.success('Invoice sent successfully!')
+    setShowModal(false)
+    loadInvoices()
+  } catch (error) {
+    console.error('Error sending invoice:', error)
+    toast.error(error.message || 'Failed to send invoice')
+  } finally {
+    setProcessing(false)
   }
+}
   const handleLineItemChange = (index, field, value) => {
     const items = [...newInvoice.line_items]
     items[index][field] = value
@@ -506,7 +509,7 @@ const handleCreateInvoice = async () => {
                 <Button
                   variant="primary"
                   fullWidth
-                  onClick={() => handleUpdateStatus('sent')}
+                  onClick={handleSendInvoice}
                   loading={processing}
                 >
                   <Send className="w-5 h-5" />
