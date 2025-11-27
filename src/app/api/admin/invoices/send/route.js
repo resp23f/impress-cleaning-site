@@ -1,11 +1,15 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { createCustomerNotification } from '@/lib/createCustomerNotification'
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
 export async function POST(request) {
   try {
     const { invoiceId } = await request.json()
     const supabase = await createClient()
+
     // Get invoice details
     const { data: invoice, error: invoiceError } = await supabase
       .from('invoices')
@@ -15,12 +19,14 @@ export async function POST(request) {
       `)
       .eq('id', invoiceId)
       .single()
+
     if (invoiceError || !invoice) {
       return NextResponse.json(
         { error: 'Invoice not found' },
         { status: 404 }
       )
     }
+
     // Create line items for Stripe
     const lineItems = invoice.line_items?.map(item => ({
       price_data: {
@@ -28,7 +34,7 @@ export async function POST(request) {
         product_data: {
           name: item.description,
         },
-        unit_amount: Math.round(parseFloat(item.rate) * 100), // Convert to cents
+        unit_amount: Math.round(parseFloat(item.rate) * 100),
       },
       quantity: item.quantity,
     })) || [{
@@ -41,6 +47,7 @@ export async function POST(request) {
       },
       quantity: 1,
     }]
+
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -56,6 +63,7 @@ export async function POST(request) {
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/invoices?payment=success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/invoices?payment=cancelled`,
     })
+
     // Update invoice with Stripe session ID and mark as sent
     await supabase
       .from('invoices')
@@ -65,6 +73,18 @@ export async function POST(request) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', invoice.id)
+
+    // CREATE CUSTOMER NOTIFICATION - ADD THIS PART!
+    await createCustomerNotification({
+      userId: invoice.customer_id,
+      type: 'invoice_sent',
+      title: 'New Invoice Received',
+      message: `Invoice ${invoice.invoice_number} for $${parseFloat(invoice.amount).toFixed(2)} is ready for payment`,
+      link: `/portal/invoices/${invoiceId}`,
+      referenceId: invoiceId,
+      referenceType: 'invoice',
+    })
+
     // Send email with payment link
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
       method: 'POST',
@@ -78,6 +98,7 @@ export async function POST(request) {
         checkoutUrl: session.url,
       }),
     })
+
     return NextResponse.json({
       success: true,
       checkoutUrl: session.url,
