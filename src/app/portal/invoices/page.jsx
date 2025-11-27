@@ -14,7 +14,7 @@ export default function InvoicesPage() {
   const supabase = createClient()
   const [invoices, setInvoices] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState('all')
+  const [filter, setFilter] = useState('unpaid')
   const [selectedInvoiceId, setSelectedInvoiceId] = useState(null)
   const [isPanelOpen, setIsPanelOpen] = useState(false)
 
@@ -33,6 +33,7 @@ export default function InvoicesPage() {
         .from('invoices')
         .select('*')
         .eq('customer_id', user.id)
+        .neq('status', 'draft') // Exclude draft invoices
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -51,7 +52,7 @@ export default function InvoicesPage() {
 
   const handleCloseSidePanel = () => {
     setIsPanelOpen(false)
-    setTimeout(() => setSelectedInvoiceId(null), 300) // Wait for animation
+    setTimeout(() => setSelectedInvoiceId(null), 300)
   }
 
   const formatMoney = (amount) => {
@@ -63,20 +64,21 @@ export default function InvoicesPage() {
   const getStatusBadge = (status) => {
     const variants = {
       paid: 'success',
-      pending: 'warning',
+      sent: 'info',
       overdue: 'danger',
     }
     return <Badge variant={variants[status] || 'info'}>{status}</Badge>
   }
 
   const filteredInvoices = invoices.filter((invoice) => {
-    if (filter === 'all') return true
-    if (filter === 'unpaid') return invoice.status !== 'paid'
-    return invoice.status === filter
+    if (filter === 'unpaid') return invoice.status !== 'paid' && invoice.status !== 'cancelled'
+    if (filter === 'paid') return invoice.status === 'paid'
+    if (filter === 'overdue') return invoice.status === 'overdue'
+    return true
   })
 
   const totalBalance = invoices
-    .filter((inv) => inv.status !== 'paid')
+    .filter((inv) => inv.status !== 'paid' && inv.status !== 'cancelled')
     .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
 
   const overdueAmount = invoices
@@ -147,7 +149,7 @@ export default function InvoicesPage() {
 
         {/* Filters */}
         <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
-          {['all', 'unpaid', 'paid', 'overdue'].map((filterOption) => (
+          {['unpaid', 'paid', 'overdue'].map((filterOption) => (
             <button
               key={filterOption}
               onClick={() => setFilter(filterOption)}
@@ -162,79 +164,8 @@ export default function InvoicesPage() {
           ))}
         </div>
 
-        {/* Unpaid Invoices Section */}
-        {filteredInvoices.filter((inv) => inv.status !== 'paid').length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-[#1C294E] mb-4">
-              Unpaid Invoices
-            </h2>
-            <div className="space-y-4">
-              {filteredInvoices
-                .filter((inv) => inv.status !== 'paid')
-                .map((invoice) => (
-                  <Card
-                    key={invoice.id}
-                    className="p-6 hover:shadow-lg transition-shadow"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 bg-red-50 rounded-lg">
-                          <FileText className="w-6 h-6 text-red-600" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-gray-900">
-                              {invoice.invoice_number || `INV-${invoice.id}`}
-                            </h3>
-                            {getStatusBadge(invoice.status)}
-                          </div>
-                          <p className="text-sm text-gray-600">
-                            Issued: {new Date(invoice.created_at).toLocaleDateString()}
-                          </p>
-                          {invoice.due_date && (
-                            <p className="text-sm text-gray-600">
-                              Due: {new Date(invoice.due_date).toLocaleDateString()}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-[#1C294E]">
-                            {formatMoney(invoice.total || invoice.amount)}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={() => handleViewInvoice(invoice.id)}
-                            variant="secondary"
-                            size="sm"
-                          >
-                            View
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              router.push(`/portal/invoices/${invoice.id}/pay`)
-                            }
-                            variant="primary"
-                            size="sm"
-                          >
-                            Pay Now
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-            </div>
-          </div>
-        )}
-
-        {/* All Invoices Section */}
+        {/* Invoices List */}
         <div>
-          <h2 className="text-xl font-semibold text-[#1C294E] mb-4">
-            {filter === 'all' ? 'All Invoices' : 'Invoice History'}
-          </h2>
           {filteredInvoices.length === 0 ? (
             <Card className="p-12 text-center">
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -242,9 +173,7 @@ export default function InvoicesPage() {
                 No invoices found
               </h3>
               <p className="text-gray-600">
-                {filter === 'all'
-                  ? "You don't have any invoices yet."
-                  : `No ${filter} invoices found.`}
+                No {filter} invoices found.
               </p>
             </Card>
           ) : (
@@ -260,6 +189,8 @@ export default function InvoicesPage() {
                         className={`p-3 rounded-lg ${
                           invoice.status === 'paid'
                             ? 'bg-green-50'
+                            : invoice.status === 'overdue'
+                            ? 'bg-red-50'
                             : 'bg-yellow-50'
                         }`}
                       >
@@ -267,6 +198,8 @@ export default function InvoicesPage() {
                           className={`w-6 h-6 ${
                             invoice.status === 'paid'
                               ? 'text-green-600'
+                              : invoice.status === 'overdue'
+                              ? 'text-red-600'
                               : 'text-yellow-600'
                           }`}
                         />
@@ -279,21 +212,41 @@ export default function InvoicesPage() {
                           {getStatusBadge(invoice.status)}
                         </div>
                         <p className="text-sm text-gray-600">
-                          {new Date(invoice.created_at).toLocaleDateString()}
+                          Issued: {new Date(invoice.created_at).toLocaleDateString()}
                         </p>
+                        {invoice.due_date && (
+                          <p className="text-sm text-gray-600">
+                            Due: {new Date(invoice.due_date).toLocaleDateString()}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="text-2xl font-bold text-[#1C294E]">
-                        {formatMoney(invoice.total || invoice.amount)}
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-[#1C294E]">
+                          {formatMoney(invoice.total || invoice.amount)}
+                        </div>
                       </div>
-                      <Button
-                        onClick={() => handleViewInvoice(invoice.id)}
-                        variant="secondary"
-                        size="sm"
-                      >
-                        View Details
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => handleViewInvoice(invoice.id)}
+                          variant="secondary"
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                        {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+                          <Button
+                            onClick={() =>
+                              router.push(`/portal/invoices/${invoice.id}/pay`)
+                            }
+                            variant="primary"
+                            size="sm"
+                          >
+                            Pay Now
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </Card>
