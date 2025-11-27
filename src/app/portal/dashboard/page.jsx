@@ -275,7 +275,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Balance Card */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
+          <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger2} ${styles.fillHeight}`}>
             <Card 
               className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive}`}
               padding="lg"
@@ -418,7 +418,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Secondary Section - Services & Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           {/* Recent Services */}
           <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
             <Card className={styles.cardHover}>
