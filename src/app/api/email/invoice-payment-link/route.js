@@ -2,13 +2,13 @@ import { Resend } from 'resend'
 import { NextResponse } from 'next/server'
 const resend = new Resend(process.env.RESEND_API_KEY)
 export async function POST(request) {
-  try {
-    const { email, name, invoiceNumber, amount, dueDate, checkoutUrl } = await request.json()
-    const { data, error } = await resend.emails.send({
-      from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
-      to: email,
-      subject: `Invoice ${invoiceNumber} - Payment Required`,
-      html: `
+ try {
+  const { email, name, invoiceNumber, amount, dueDate, checkoutUrl } = await request.json()
+  const { data, error } = await resend.emails.send({
+   from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+   to: email,
+   subject: `Invoice ${invoiceNumber} - Payment Required`,
+   html: `
         <!DOCTYPE html>
         <html>
           <head>
@@ -72,14 +72,14 @@ export async function POST(request) {
           </body>
         </html>
       `,
-    })
-    if (error) {
-      console.error('Resend error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-    return NextResponse.json({ success: true, data })
-  } catch (error) {
-    console.error('Error sending invoice email:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  })
+  if (error) {
+   console.error('Resend error:', error)
+   return NextResponse.json({ error: error.message }, { status: 500 })
   }
+  return NextResponse.json({ success: true, data })
+ } catch (error) {
+  console.error('Error sending invoice email:', error)
+  return NextResponse.json({ error: error.message }, { status: 500 })
+ }
 }
