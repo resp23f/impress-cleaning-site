@@ -377,7 +377,7 @@ export default function AppointmentsPage() {
 
       // Notify admin by email
       try {
-        await fetch('/api/customer-portal/emails/notify-appointment-change', {
+        await fetch('/api/customer-portal/email/notify-appointment-change', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
