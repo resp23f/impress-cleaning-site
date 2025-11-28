@@ -88,25 +88,36 @@ export default function DashboardPage() {
    .limit(3)
    
    setRecentServices(servicesData || [])
+// Load ALL invoices for balance calculations
+const { data: allInvoices } = await supabase
+  .from('invoices')
+  .select('*')
+  .eq('customer_id', authUser.id)
+
+const unpaidInvoices = allInvoices?.filter(inv =>
+  inv.status === 'sent' ||
+  inv.status === 'pending' ||
+  inv.status === 'overdue'
+) || []
+
+const totalBalance = unpaidInvoices.reduce(
+  (sum, inv) => sum + parseFloat(inv.total ?? inv.amount ?? 0), 
+  0
+)
+
+setBalance(totalBalance)
    
-// Get all invoices for balance calculations
+// Load ONLY the 2 most recent invoices for the visual list
 const { data: invoicesData } = await supabase
   .from('invoices')
   .select('*')
   .eq('customer_id', authUser.id)
   .order('created_at', { ascending: false })
+  .limit(2)
+
+setInvoices(invoicesData || [])
    
-   setInvoices(invoicesData || [])
    
-   // Calculate balance
-   const unpaidInvoices = invoicesData?.filter(inv => 
-    inv.status !== 'paid' && inv.status !== 'cancelled'
-   ) || []
-   const totalBalance = unpaidInvoices.reduce((sum, inv) => 
-    sum + parseFloat(inv.total ?? inv.amount ?? 0),
-   0
-  )
-  setBalance(totalBalance)
   
  } catch (error) {
   console.error('Error loading dashboard:', error)
