@@ -8,6 +8,11 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import InvoiceSidePanel from './InvoiceSidePanel'
+function formatDateLocal(dateStr) {
+  if (!dateStr) return '—'
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return new Date(y, m - 1, d).toLocaleDateString()
+}
 
 export default function InvoicesPage() {
  const router = useRouter()
@@ -223,11 +228,11 @@ export default function InvoicesPage() {
     {getStatusBadge(invoice.status)}
     </div>
     <p className="text-sm text-gray-600">
-    Issued: {new Date(invoice.created_at).toLocaleDateString()}
+Issued: {formatDateLocal(invoice.created_at.slice(0, 10))}
     </p>
     {invoice.due_date && (
      <p className="text-sm text-gray-600">
-     Due: {new Date(invoice.due_date).toLocaleDateString()}
+Due: {formatDateLocal(invoice.due_date)}
      </p>
     )}
     </div>
