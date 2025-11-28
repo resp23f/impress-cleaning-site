@@ -9,24 +9,24 @@ import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
-  const [open, setOpen] = useState(false)
-
-  // Auto-close after 5 seconds when opened by click
-  useEffect(() => {
-    if (!open) return
-    const timer = setTimeout(() => setOpen(false), 5000)
-    return () => clearTimeout(timer)
-  }, [open])
-
-  return (
-    <div className="relative group inline-block">
-      <AlertCircle
-        className="w-5 h-5 text-red-500 cursor-pointer"
-        onClick={() => setOpen((prev) => !prev)}
-      />
-
-      <div
-        className={`
+ const [open, setOpen] = useState(false)
+ 
+ // Auto-close after 5 seconds when opened by click
+ useEffect(() => {
+  if (!open) return
+  const timer = setTimeout(() => setOpen(false), 5000)
+  return () => clearTimeout(timer)
+ }, [open])
+ 
+ return (
+  <div className="relative group inline-block">
+  <AlertCircle
+  className="w-5 h-5 text-red-500 cursor-pointer"
+  onClick={() => setOpen((prev) => !prev)}
+  />
+  
+  <div
+  className={`
           absolute left-1/2 -translate-x-1/2 -top-14 w-56 px-3 py-2 
           rounded bg-black text-white text-xs text-center z-50
           pointer-events-none
@@ -35,21 +35,21 @@ function CancellationTooltip() {
           ${open ? 'opacity-100 scale-100' : ''}
           group-hover:opacity-100 group-hover:scale-100
         `}
-      >
-        <p className="mb-1">
-          Please provide 48 hours’ notice to cancel or reschedule.
-        </p>
-        <p className="mb-1">
-          Cancellations within 48 hours may incur a $50 late-cancellation fee.
-        </p>
-        <p>
-          Cancellations within 24 hours or no access may be charged the full
-          service fee.
-        </p>
-      </div>
-    </div>
+   >
+   <p className="mb-1">
+   Please provide 48 hours’ notice to cancel or reschedule.
+   </p>
+   <p className="mb-1">
+   Cancellations within 48 hours may incur a $50 late-cancellation fee.
+   </p>
+   <p>
+   Cancellations within 24 hours or no access may be charged the full
+   service fee.
+   </p>
+   </div>
+   </div>
   )
-}
+ }
  
  function formatDateLocal(dateStr) {
   if (!dateStr) return '—'
@@ -271,7 +271,7 @@ function CancellationTooltip() {
       <CancellationTooltip />
      )}
      </div>
-  {invoice.status !== 'overdue' && getStatusBadge(invoice.status)}
+     {invoice.status !== 'overdue' && getStatusBadge(invoice.status)}
      </div>
      <p className="text-sm text-gray-600">
      Issued:{' '}
