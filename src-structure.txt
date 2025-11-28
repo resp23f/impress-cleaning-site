@@ -99,7 +99,9 @@ src
 │   │   │   │   └── route.js
 │   │   │   ├── admin-new-registration
 │   │   │   │   └── route.js
-│   │   │   └── invoice-payment-link
+│   │   │   ├── invoice-payment-link
+│   │   │   │   └── route.js
+│   │   │   └── notify-appointment-change
 │   │   │       └── route.js
 │   │   ├── send-gift-certificate
 │   │   │   └── route.js
@@ -191,4 +193,4 @@ src
         ├── middleware.js
         └── server.js
 
-89 directories, 103 files
+90 directories, 104 files
