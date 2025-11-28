@@ -36,13 +36,14 @@ export default function InvoicesPage() {
   const [statusFilter, setStatusFilter] = useState('all')
   // Create invoice form
   const [customers, setCustomers] = useState([])
-  const [newInvoice, setNewInvoice] = useState({
-    customer_id: '',
-    amount: '',
-    due_date: '',
-    notes: '',
-    line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
-  })
+const [newInvoice, setNewInvoice] = useState({
+  customer_id: '',
+  amount: '',
+  due_date: '',
+  notes: '',
+  tax_rate: '', // percent, e.g. 8.25
+  line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
+})
   const supabase = createClient()
   useEffect(() => {
     loadInvoices()
@@ -218,21 +219,28 @@ const handleCreateInvoice = async () => {
     const { data: invoiceNumber, error: numberError } = await supabase
       .rpc('generate_invoice_number')
     if (numberError) throw numberError
-    const total = calculateTotal()
-    const { error } = await supabase
-      .from('invoices')
-      .insert({
-        invoice_number: invoiceNumber,
-        customer_id: newInvoice.customer_id,
-        amount: total,
-        due_date: newInvoice.due_date || null,
-        notes: sanitizeText(newInvoice.notes) || null,
-        line_items: newInvoice.line_items.map(item => ({
-          ...item,
-          description: sanitizeText(item.description),
-        })),
-        status: 'draft',
-      })
+const subtotal = calculateTotal()
+const taxRate = parseFloat(newInvoice.tax_rate) || 0
+const taxAmount = subtotal * (taxRate / 100)
+const total = subtotal + taxAmount
+
+const { error } = await supabase
+  .from('invoices')
+  .insert({
+    invoice_number: invoiceNumber,
+    customer_id: newInvoice.customer_id,
+    amount: subtotal,              // base price (pre-tax)
+    tax_rate: taxRate,             // %
+    tax_amount: taxAmount,         // $
+    total,                         // subtotal + tax
+    due_date: newInvoice.due_date || null,
+    notes: sanitizeText(newInvoice.notes) || null,
+    line_items: newInvoice.line_items.map(item => ({
+      ...item,
+      description: sanitizeText(item.description),
+    })),
+    status: 'draft',
+  })
     if (error) throw error
     toast.success('Invoice created successfully!')
     setShowCreateModal(false)
@@ -680,6 +688,18 @@ const handleCreateInvoice = async () => {
               </div>
             </div>
           </div>
+          {/* Tax Rate */}
+<Input
+  type="number"
+  label="Tax Rate (%)"
+  value={newInvoice.tax_rate}
+  onChange={(e) =>
+    setNewInvoice({ ...newInvoice, tax_rate: e.target.value })
+  }
+  step="0.01"
+  min="0"
+/>
+
           {/* Due Date */}
           <Input
             type="date"

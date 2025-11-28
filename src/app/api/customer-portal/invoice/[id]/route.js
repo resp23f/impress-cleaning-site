@@ -44,19 +44,30 @@ export async function GET(request, { params }) {
       .maybeSingle()
 
     // Format response
-    const invoice = {
-      id: invoiceRow.id,
-      invoice_number: invoiceRow.invoice_number,
-      status: invoiceRow.status || 'draft',
-      issue_date: invoiceRow.created_at?.slice(0, 10),
-      due_date: invoiceRow.due_date,
-      subtotal: invoiceRow.subtotal ?? invoiceRow.amount,
-      tax_rate: invoiceRow.tax_rate || 0,
-      tax_amount: invoiceRow.tax_amount || 0,
-      total: invoiceRow.total ?? invoiceRow.amount,
-      notes: invoiceRow.notes,
-      service_summary: invoiceRow.service_summary,
-    }
+const invoice = {
+  id: invoiceRow.id,
+  invoice_number: invoiceRow.invoice_number,
+  status: invoiceRow.status || 'draft',
+
+  // Use created_at as issue date, normalized to YYYY-MM-DD
+  issue_date: invoiceRow.created_at
+    ? invoiceRow.created_at.slice(0, 10)
+    : null,
+
+  // Always pass due_date directly from DB, also normalized to YYYY-MM-DD
+  due_date: invoiceRow.due_date
+    ? invoiceRow.due_date.slice(0, 10)
+    : null,
+
+  // Money fields
+  subtotal: invoiceRow.subtotal ?? invoiceRow.amount,
+  tax_rate: invoiceRow.tax_rate || 0,
+  tax_amount: invoiceRow.tax_amount || 0,
+  total: invoiceRow.total ?? invoiceRow.amount,
+
+  notes: invoiceRow.notes,
+  service_summary: invoiceRow.service_summary,
+}
 
     const customer = {
       name: invoiceRow.profiles?.full_name || 'Customer',
