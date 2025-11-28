@@ -154,6 +154,31 @@ const handleSendInvoice = async () => {
     setProcessing(false)
   }
 }
+const handleUpdateStatus = async (newStatus) => {
+  if (!selectedInvoice) return
+  
+  setProcessing(true)
+  try {
+    const { error } = await supabase
+      .from('invoices')
+      .update({ 
+        status: newStatus,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', selectedInvoice.id)
+
+    if (error) throw error
+
+    toast.success(`Invoice ${newStatus === 'paid' ? 'marked as paid' : 'cancelled'} successfully!`)
+    setShowModal(false)
+    loadInvoices()
+  } catch (error) {
+    console.error('Error updating invoice:', error)
+    toast.error('Failed to update invoice status')
+  } finally {
+    setProcessing(false)
+  }
+}
   const handleLineItemChange = (index, field, value) => {
     const items = [...newInvoice.line_items]
     items[index][field] = value
