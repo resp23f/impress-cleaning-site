@@ -97,17 +97,6 @@ export default function InvoicesPage() {
  .filter((inv) => inv.status === 'overdue')
  .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
  
- const paidThisMonth = invoices
- .filter((inv) => {
-  const paidDate = new Date(inv.paid_at || inv.updated_at)
-  const now = new Date()
-  return (
-   inv.status === 'paid' &&
-   paidDate.getMonth() === now.getMonth() &&
-   paidDate.getFullYear() === now.getFullYear()
-  )
- })
- .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
  
  if (loading) {
   return (
@@ -127,7 +116,7 @@ export default function InvoicesPage() {
   </div>
   
   {/* Balance Summary */}
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
   <Card className="p-6">
   <div className="flex items-center justify-between mb-2">
   <span className="text-sm font-medium text-gray-600">Total Balance</span>
@@ -148,15 +137,6 @@ export default function InvoicesPage() {
   </div>
   </Card>
   
-  <Card className="p-6">
-  <div className="flex items-center justify-between mb-2">
-  <span className="text-sm font-medium text-gray-600">Paid This Month</span>
-  <Calendar className="w-5 h-5 text-green-500" />
-  </div>
-  <div className="text-3xl font-bold text-green-600">
-  {formatMoney(paidThisMonth)}
-  </div>
-  </Card>
   </div>
   
   {/* Filters */}
