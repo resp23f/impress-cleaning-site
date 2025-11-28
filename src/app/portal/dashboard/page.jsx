@@ -326,51 +326,57 @@ const getInvoiceStatusProps = (status) => {
                   View All
                 </Link>
               </div>
-              {invoices && invoices.length > 0 ? (
-                <div className="space-y-3">
-                  {invoices.map((invoice) => (
-                    <div
-                      key={invoice.id}
-                      className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-[#1C294E]">
-                            Invoice {invoice.invoice_number}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
-                          </p>
-                        </div>
-const statusProps = getInvoiceStatusProps(invoice.status)
+{invoices && invoices.length > 0 ? (
+  <div className="space-y-3">
+    {invoices
+      .filter((invoice) => invoice.status !== 'draft') // hide drafts on dashboard
+      .map((invoice) => {
+        const statusProps = getInvoiceStatusProps(invoice.status)
 
-{statusProps && (
-  <Badge variant={statusProps.variant} size="sm">
-    {statusProps.label}
-  </Badge>
-)}
-                      </div>
-                      <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
-                        {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
-                          <Link href={`/portal/invoices/${invoice.id}/pay`}>
-                            <Button variant="primary" size="sm" className={styles.smoothTransition}>
-                              Pay Now
-                            </Button>
-                          </Link>
-                        )}
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className={styles.smoothTransition}
-                          onClick={() => handleViewInvoice(invoice.id)}
-                        >
-                          View
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
+        return (
+          <div
+            key={invoice.id}
+            className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
+          >
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="font-semibold text-[#1C294E]">
+                  Invoice {invoice.invoice_number}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
+                </p>
+              </div>
+              {statusProps && (
+                <Badge variant={statusProps.variant} size="sm">
+                  {statusProps.label}
+                </Badge>
+              )}
+            </div>
+            <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
+              {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+                <Link href={`/portal/invoices/${invoice.id}/pay`}>
+                  <Button variant="primary" size="sm" className={styles.smoothTransition}>
+                    Pay Now
+                  </Button>
+                </Link>
+              )}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={styles.smoothTransition}
+                onClick={() => handleViewInvoice(invoice.id)}
+              >
+                View
+              </Button>
+            </div>
+          </div>
+        )
+      })}
+  </div>
+) : (
+  // your "No invoices yet" block stays the same
+
                 <div className="text-center py-12 text-gray-500">
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
                     <FileText className="w-6 h-6 text-gray-400" />
