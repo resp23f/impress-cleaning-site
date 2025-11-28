@@ -149,15 +149,25 @@ const getStatusBadge = (status) => {
   }
   return <Badge variant={variants[status] || 'info'}>{status}</Badge>
 }
-  const getInvoiceStatusBadge = (status) => {
-    const variants = {
-      paid: 'success',
-      sent: 'info',
-      overdue: 'danger',
-      draft: 'default',
-    }
-    return variants[status] || 'default'
+const getInvoiceStatusProps = (status) => {
+  if (!status || status === 'draft') return null
+
+  if (status === 'sent' || status === 'pending') {
+    return { label: 'Unpaid', variant: 'info' }
   }
+  if (status === 'paid') {
+    return { label: 'Paid', variant: 'success' }
+  }
+  if (status === 'overdue') {
+    return { label: 'Overdue', variant: 'danger' }
+  }
+  if (status === 'cancelled') {
+    return { label: 'Cancelled', variant: 'default' }
+  }
+
+  // fallback
+  return { label: status, variant: 'default' }
+}
 
   if (loading) {
     return (
@@ -332,11 +342,13 @@ const getStatusBadge = (status) => {
                             {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
                           </p>
                         </div>
-                        {invoice.status !== 'draft' && (
-                          <Badge variant={getInvoiceStatusBadge(invoice.status)} size="sm">
-                            {invoice.status}
-                          </Badge>
-                        )}
+const statusProps = getInvoiceStatusProps(invoice.status)
+
+{statusProps && (
+  <Badge variant={statusProps.variant} size="sm">
+    {statusProps.label}
+  </Badge>
+)}
                       </div>
                       <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
                         {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
