@@ -4,14 +4,14 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import {
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  CreditCard,
-  FileText,
-  Plus,
-  CheckCircle,
+ Calendar,
+ Clock,
+ MapPin,
+ Users,
+ CreditCard,
+ FileText,
+ Plus,
+ CheckCircle,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Card from '@/components/ui/Card'
@@ -23,465 +23,464 @@ import SupportCard from '@/components/portal/SupportCard'
 import styles from '../shared-animations.module.css'
 
 export default function DashboardPage() {
-  const router = useRouter()
-  const supabase = createClient()
+ const router = useRouter()
+ const supabase = createClient()
+ 
+ const [loading, setLoading] = useState(true)
+ const [user, setUser] = useState(null)
+ const [profile, setProfile] = useState(null)
+ const [primaryAddress, setPrimaryAddress] = useState(null)
+ const [upcomingAppointments, setUpcomingAppointments] = useState([])
+ const [recentServices, setRecentServices] = useState([])
+ const [invoices, setInvoices] = useState([])
+ const [balance, setBalance] = useState(0)
+ 
+ // Invoice side panel state
+ const [selectedInvoiceId, setSelectedInvoiceId] = useState(null)
+ const [isPanelOpen, setIsPanelOpen] = useState(false)
+ 
+ useEffect(() => {
+  loadDashboard()
+ }, [])
+ 
+ const loadDashboard = async () => {
+  try {
+   const { data: { user: authUser } } = await supabase.auth.getUser()
+   
+   if (!authUser) {
+    router.push('/auth/login')
+    return
+   }
+   
+   setUser(authUser)
+   
+   // Get user profile
+   const { data: profileData } = await supabase
+   .from('profiles')
+   .select('*, service_addresses(*)')
+   .eq('id', authUser.id)
+   .single()
+   
+   setProfile(profileData)
+   
+   const primary = profileData?.service_addresses?.find(addr => addr.is_primary) ||
+   profileData?.service_addresses?.[0]
+   setPrimaryAddress(primary)
+   
+   // Get upcoming appointments (limit to 5 for the list)
+   const { data: upcomingData } = await supabase
+   .from('appointments')
+   .select('*')
+   .eq('customer_id', authUser.id)
+   .gte('scheduled_date', new Date().toISOString().split('T')[0])
+   .order('scheduled_date', { ascending: true })
+   .order('scheduled_time_start', { ascending: true })
+   .limit(5)
+   
+   setUpcomingAppointments(upcomingData || [])
+   
+   // Get recent service history
+   const { data: servicesData } = await supabase
+   .from('service_history')
+   .select('*')
+   .eq('customer_id', authUser.id)
+   .order('completed_date', { ascending: false })
+   .limit(3)
+   
+   setRecentServices(servicesData || [])
+   
+// Get all invoices for balance calculations
+const { data: invoicesData } = await supabase
+  .from('invoices')
+  .select('*')
+  .eq('customer_id', authUser.id)
+  .order('created_at', { ascending: false })
+   
+   setInvoices(invoicesData || [])
+   
+   // Calculate balance
+   const unpaidInvoices = invoicesData?.filter(inv => 
+    inv.status !== 'paid' && inv.status !== 'cancelled'
+   ) || []
+   const totalBalance = unpaidInvoices.reduce((sum, inv) => 
+    sum + parseFloat(inv.total ?? inv.amount ?? 0),
+   0
+  )
+  setBalance(totalBalance)
   
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
-  const [profile, setProfile] = useState(null)
-  const [primaryAddress, setPrimaryAddress] = useState(null)
-  const [upcomingAppointments, setUpcomingAppointments] = useState([])
-  const [recentServices, setRecentServices] = useState([])
-  const [invoices, setInvoices] = useState([])
-  const [balance, setBalance] = useState(0)
-  
-  // Invoice side panel state
-  const [selectedInvoiceId, setSelectedInvoiceId] = useState(null)
-  const [isPanelOpen, setIsPanelOpen] = useState(false)
+ } catch (error) {
+  console.error('Error loading dashboard:', error)
+ } finally {
+  setLoading(false)
+ }
+}
 
-  useEffect(() => {
-    loadDashboard()
-  }, [])
+const handleViewInvoice = (invoiceId) => {
+ setSelectedInvoiceId(invoiceId)
+ setIsPanelOpen(true)
+}
 
-  const loadDashboard = async () => {
-    try {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      
-      if (!authUser) {
-        router.push('/auth/login')
-        return
-      }
-      
-      setUser(authUser)
+const handleCloseSidePanel = () => {
+ setIsPanelOpen(false)
+ setTimeout(() => setSelectedInvoiceId(null), 300)
+}
 
-      // Get user profile
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*, service_addresses(*)')
-        .eq('id', authUser.id)
-        .single()
-
-      setProfile(profileData)
-      
-      const primary = profileData?.service_addresses?.find(addr => addr.is_primary) ||
-        profileData?.service_addresses?.[0]
-      setPrimaryAddress(primary)
-
-      // Get upcoming appointments (limit to 5 for the list)
-      const { data: upcomingData } = await supabase
-        .from('appointments')
-        .select('*')
-        .eq('customer_id', authUser.id)
-        .gte('scheduled_date', new Date().toISOString().split('T')[0])
-        .order('scheduled_date', { ascending: true })
-        .order('scheduled_time_start', { ascending: true })
-        .limit(5)
-
-      setUpcomingAppointments(upcomingData || [])
-
-      // Get recent service history
-      const { data: servicesData } = await supabase
-        .from('service_history')
-        .select('*')
-        .eq('customer_id', authUser.id)
-        .order('completed_date', { ascending: false })
-        .limit(3)
-
-      setRecentServices(servicesData || [])
-
-      // Get invoices (limit to 2 most recent)
-      const { data: invoicesData } = await supabase
-        .from('invoices')
-        .select('*')
-        .eq('customer_id', authUser.id)
-        .order('created_at', { ascending: false })
-        .limit(2)
-
-      setInvoices(invoicesData || [])
-
-// Calculate balance
-const unpaidInvoices = invoicesData?.filter(inv => 
-  inv.status !== 'paid' && inv.status !== 'cancelled'
-) || []
-const totalBalance = unpaidInvoices.reduce((sum, inv) => 
-  sum + parseFloat(inv.total ?? inv.amount ?? 0),
-  0
-)
-setBalance(totalBalance)
-
-    } catch (error) {
-      console.error('Error loading dashboard:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleViewInvoice = (invoiceId) => {
-    setSelectedInvoiceId(invoiceId)
-    setIsPanelOpen(true)
-  }
-
-  const handleCloseSidePanel = () => {
-    setIsPanelOpen(false)
-    setTimeout(() => setSelectedInvoiceId(null), 300)
-  }
-
-  const formatServiceType = (type) => {
-    const types = {
-      standard: 'Standard Cleaning',
-      deep: 'Deep Cleaning',
-      move_in_out: 'Move In/Out Cleaning',
-      post_construction: 'Post-Construction Cleaning',
-      office: 'Office Cleaning',
-    }
-    return types[type] || type
-  }
+const formatServiceType = (type) => {
+ const types = {
+  standard: 'Standard Cleaning',
+  deep: 'Deep Cleaning',
+  move_in_out: 'Move In/Out Cleaning',
+  post_construction: 'Post-Construction Cleaning',
+  office: 'Office Cleaning',
+ }
+ return types[type] || type
+}
 
 const getStatusBadge = (status) => {
-  // Don't show status badge for 'sent' - that's internal admin status
-  if (status === 'sent' || status === 'pending') {
-    return null
-  }
-  
-  const variants = {
-    paid: 'success',
-    overdue: 'danger',
-    cancelled: 'default',
-  }
-  return <Badge variant={variants[status] || 'info'}>{status}</Badge>
+ // Don't show status badge for 'sent' - that's internal admin status
+ if (status === 'sent' || status === 'pending') {
+  return null
+ }
+ 
+ const variants = {
+  paid: 'success',
+  overdue: 'danger',
+  cancelled: 'default',
+ }
+ return <Badge variant={variants[status] || 'info'}>{status}</Badge>
 }
 const getInvoiceStatusProps = (status) => {
-  if (!status || status === 'draft') return null
-
-  if (status === 'sent' || status === 'pending') {
-    return { label: 'Unpaid', variant: 'info' }
-  }
-  if (status === 'paid') {
-    return { label: 'Paid', variant: 'success' }
-  }
-  if (status === 'overdue') {
-    return { label: 'Overdue', variant: 'danger' }
-  }
-  if (status === 'cancelled') {
-    return { label: 'Cancelled', variant: 'default' }
-  }
-
-  // fallback
-  return { label: status, variant: 'default' }
+ if (!status || status === 'draft') return null
+ 
+ if (status === 'sent' || status === 'pending') {
+  return { label: 'Unpaid', variant: 'info' }
+ }
+ if (status === 'paid') {
+  return { label: 'Paid', variant: 'success' }
+ }
+ if (status === 'overdue') {
+  return { label: 'Overdue', variant: 'danger' }
+ }
+ if (status === 'cancelled') {
+  return { label: 'Cancelled', variant: 'default' }
+ }
+ 
+ // fallback
+ return { label: status, variant: 'default' }
 }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-      </div>
-    )
-  }
-
-  const firstName = profile?.full_name?.split(' ')[0] || 'there'
-  const nextAppointment = upcomingAppointments[0]
-
-  return (
-    <>
-      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Welcome Header */}
-        <div className={`mb-8 ${styles.animateFadeIn}`}>
-          <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
-            Hi {firstName} 👋
-          </h1>
-          <p className="text-gray-600">Welcome to your customer portal</p>
-        </div>
-
-        {/* Row 1: Next Appointment & Balance */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Next Appointment Card */}
-          <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger1}`}>
-            <Card className={`${styles.heroCard} ${styles.cardHover}`} padding="lg">
-              {nextAppointment ? (
-                <>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold text-[#1C294E]">Next Appointment</h2>
-                    <Badge variant={getStatusBadge(nextAppointment.status)}>
-                      {nextAppointment.status}
-                    </Badge>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Calendar className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-lg font-semibold text-[#1C294E]">
-                          {format(new Date(nextAppointment.scheduled_date), 'EEEE, MMMM d')}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {formatServiceType(nextAppointment.service_type)}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Clock className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      <p className="text-gray-700">
-                        {nextAppointment.scheduled_time_start} - {nextAppointment.scheduled_time_end}
-                      </p>
-                    </div>
-                    {nextAppointment.team_members && nextAppointment.team_members.length > 0 && (
-                      <div className="flex items-center gap-3">
-                        <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                        <p className="text-gray-700">
-                          Team: {nextAppointment.team_members.join(', ')}
-                        </p>
-                      </div>
-                    )}
-                    {primaryAddress && (
-                      <div className="flex items-start gap-3">
-                        <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                        <p className="text-gray-700">
-                          {primaryAddress.street_address}
-                          {primaryAddress.unit && `, ${primaryAddress.unit}`}
-                          <br />
-                          {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex gap-3 mt-6">
-                    <Link href={`/portal/appointments/${nextAppointment.id}`}>
-                      <Button variant="primary" className={styles.smoothTransition}>View Details</Button>
-                    </Link>
-                    <Link href={`/portal/appointments/${nextAppointment.id}/reschedule`}>
-                      <Button variant="secondary" className={styles.smoothTransition}>Reschedule</Button>
-                    </Link>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                    <Calendar className="w-8 h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-[#1C294E] mb-2">
-                    No Upcoming Appointments
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Ready to schedule your next cleaning?
-                  </p>
-                  <div className="flex justify-center">
-                    <Link href="/portal/request-service">
-                      <Button variant="primary" className={styles.smoothTransition}>
-                        <Plus className="w-5 h-5" />
-                        Request Service
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </Card>
-          </div>
-
-          {/* Balance Card */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
-            <Card 
-              className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive} h-full`}
-              padding="lg"
-            >
-              <h2 className="text-lg font-semibold text-[#1C294E] mb-4">Balance</h2>
-              {balance > 0 ? (
-                <>
-                  <div className="mb-6">
-                    <p className="text-4xl font-bold text-[#1C294E] mb-1">
-                      ${balance.toFixed(2)}
-                    </p>
-                    <p className="text-sm text-gray-600">Outstanding balance</p>
-                  </div>
-                  <Link href="/portal/invoices">
-                    <Button variant="primary" fullWidth className={styles.smoothTransition}>
-                      <CreditCard className="w-5 h-5" />
-                      Pay Now
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <div className="text-center py-4">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-3" />
-                  <p className="text-2xl font-bold text-[#1C294E] mb-1">
-                    $0.00
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    All caught up! 🎉
-                  </p>
-                </div>
-              )}
-            </Card>
-          </div>
-        </div>
-
-        {/* Row 2: Invoices & Recent Services */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Invoices & Payments */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
-            <Card className={styles.cardHover}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Invoices & Payments</h2>
-                <Link
-                  href="/portal/invoices"
-                  className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
-                >
-                  View All
-                </Link>
-              </div>
-{invoices && invoices.length > 0 ? (
-  <div className="space-y-3">
-    {invoices
-      .filter((invoice) => invoice.status !== 'draft') // hide drafts on dashboard
-      .map((invoice) => {
-        const statusProps = getInvoiceStatusProps(invoice.status)
-
-        return (
-          <div
-            key={invoice.id}
-            className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
-          >
-            <div className="flex items-start justify-between mb-2">
-              <div>
-                <p className="font-semibold text-[#1C294E]">
-                  Invoice {invoice.invoice_number}
-                </p>
-<p className="text-sm text-gray-600">
-  {format(new Date(invoice.created_at), 'MMM d, yyyy')} • $
-  {parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
-</p>
-              </div>
-              {statusProps && (
-                <Badge variant={statusProps.variant} size="sm">
-                  {statusProps.label}
-                </Badge>
-              )}
-            </div>
-            <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
-              {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
-                <Link href={`/portal/invoices/${invoice.id}/pay`}>
-                  <Button variant="primary" size="sm" className={styles.smoothTransition}>
-                    Pay Now
-                  </Button>
-                </Link>
-              )}
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className={styles.smoothTransition}
-                onClick={() => handleViewInvoice(invoice.id)}
-              >
-                View
-              </Button>
-            </div>
-          </div>
-        )
-      })}
+if (loading) {
+ return (
+  <div className="min-h-screen flex items-center justify-center">
+  <LoadingSpinner size="lg" />
   </div>
-) : (
-  // your "No invoices yet" block stays the same
+ )
+}
 
-                <div className="text-center py-12 text-gray-500">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                    <FileText className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm">No invoices yet</p>
-                </div>
-              )}
-            </Card>
-          </div>
+const firstName = profile?.full_name?.split(' ')[0] || 'there'
+const nextAppointment = upcomingAppointments[0]
 
-          {/* Recent Services */}
-          <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
-            <Card className={styles.cardHover}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#1C294E]">Recent Services</h2>
-                <Link
-                  href="/portal/service-history"
-                  className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
-                >
-                  View All
-                </Link>
-              </div>
-              {recentServices && recentServices.length > 0 ? (
-                <div className="space-y-3">
-                  {recentServices.map((service) => (
-                    <div
-                      key={service.id}
-                      className={`p-4 border border-gray-200 rounded-lg ${styles.smoothTransition} hover:border-gray-300`}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-[#1C294E]">
-                            {format(new Date(service.completed_date), 'MMM d')} • {formatServiceType(service.service_type)}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Completed by {service.team_members?.join(', ') || 'Team'}
-                          </p>
-                        </div>
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      </div>
-                      {service.customer_rating && (
-                        <div className="flex items-center gap-1 mt-2">
-                          {[...Array(service.customer_rating)].map((_, i) => (
-                            <span key={i} className="text-yellow-400 text-lg">★</span>
-                          ))}
-                          {[...Array(5 - service.customer_rating)].map((_, i) => (
-                            <span key={i} className="text-gray-300 text-lg">★</span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                    <FileText className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm">No service history yet</p>
-                </div>
-              )}
-            </Card>
-          </div>
-        </div>
-
-{/* Row 3: Service Address & Support */}
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+return (
+ <>
+ <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+ {/* Welcome Header */}
+ <div className={`mb-8 ${styles.animateFadeIn}`}>
+ <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
+ Hi {firstName} 👋
+ </h1>
+ <p className="text-gray-600">Welcome to your customer portal</p>
+ </div>
+ 
+ {/* Row 1: Next Appointment & Balance */}
+ <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+ {/* Next Appointment Card */}
+ <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger1}`}>
+ <Card className={`${styles.heroCard} ${styles.cardHover}`} padding="lg">
+ {nextAppointment ? (
+  <>
+  <div className="flex items-center justify-between mb-6">
+  <h2 className="text-xl font-bold text-[#1C294E]">Next Appointment</h2>
+  <Badge variant={getStatusBadge(nextAppointment.status)}>
+  {nextAppointment.status}
+  </Badge>
+  </div>
+  <div className="space-y-4">
+  <div className="flex items-start gap-3">
+  <Calendar className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
+  <div>
+  <p className="text-lg font-semibold text-[#1C294E]">
+  {format(new Date(nextAppointment.scheduled_date), 'EEEE, MMMM d')}
+  </p>
+  <p className="text-sm text-gray-600">
+  {formatServiceType(nextAppointment.service_type)}
+  </p>
+  </div>
+  </div>
+  <div className="flex items-center gap-3">
+  <Clock className="w-5 h-5 text-gray-400 flex-shrink-0" />
+  <p className="text-gray-700">
+  {nextAppointment.scheduled_time_start} - {nextAppointment.scheduled_time_end}
+  </p>
+  </div>
+  {nextAppointment.team_members && nextAppointment.team_members.length > 0 && (
+   <div className="flex items-center gap-3">
+   <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
+   <p className="text-gray-700">
+   Team: {nextAppointment.team_members.join(', ')}
+   </p>
+   </div>
+  )}
+  {primaryAddress && (
+   <div className="flex items-start gap-3">
+   <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+   <p className="text-gray-700">
+   {primaryAddress.street_address}
+   {primaryAddress.unit && `, ${primaryAddress.unit}`}
+   <br />
+   {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+   </p>
+   </div>
+  )}
+  </div>
+  <div className="flex gap-3 mt-6">
+  <Link href={`/portal/appointments/${nextAppointment.id}`}>
+  <Button variant="primary" className={styles.smoothTransition}>View Details</Button>
+  </Link>
+  <Link href={`/portal/appointments/${nextAppointment.id}/reschedule`}>
+  <Button variant="secondary" className={styles.smoothTransition}>Reschedule</Button>
+  </Link>
+  </div>
+  </>
+ ) : (
+  <div className="text-center py-12">
+  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+  <Calendar className="w-8 h-8 text-gray-400" />
+  </div>
+  <h3 className="text-lg font-semibold text-[#1C294E] mb-2">
+  No Upcoming Appointments
+  </h3>
+  <p className="text-gray-600 mb-6">
+  Ready to schedule your next cleaning?
+  </p>
+  <div className="flex justify-center">
+  <Link href="/portal/request-service">
+  <Button variant="primary" className={styles.smoothTransition}>
+  <Plus className="w-5 h-5" />
+  Request Service
+  </Button>
+  </Link>
+  </div>
+  </div>
+ )}
+ </Card>
+ </div>
+ 
+ {/* Balance Card */}
+ <div className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
+ <Card 
+ className={`${styles.cardHover} ${balance > 0 ? styles.balanceCardDue : styles.balanceCardPositive} h-full`}
+ padding="lg"
+ >
+ <h2 className="text-lg font-semibold text-[#1C294E] mb-4">Balance</h2>
+ {balance > 0 ? (
+  <>
+  <div className="mb-6">
+  <p className="text-4xl font-bold text-[#1C294E] mb-1">
+  ${balance.toFixed(2)}
+  </p>
+  <p className="text-sm text-gray-600">Outstanding balance</p>
+  </div>
+  <Link href="/portal/invoices">
+  <Button variant="primary" fullWidth className={styles.smoothTransition}>
+  <CreditCard className="w-5 h-5" />
+  Pay Now
+  </Button>
+  </Link>
+  </>
+ ) : (
+  <div className="text-center py-4">
+  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-3" />
+  <p className="text-2xl font-bold text-[#1C294E] mb-1">
+  $0.00
+  </p>
+  <p className="text-sm text-gray-600">
+  All caught up! 🎉
+  </p>
+  </div>
+ )}
+ </Card>
+ </div>
+ </div>
+ 
+ {/* Row 2: Invoices & Recent Services */}
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+ {/* Invoices & Payments */}
+ <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
+ <Card className={styles.cardHover}>
+ <div className="flex items-center justify-between mb-6">
+ <h2 className="text-xl font-bold text-[#1C294E]">Invoices & Payments</h2>
+ <Link
+ href="/portal/invoices"
+ className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
+ >
+ View All
+ </Link>
+ </div>
+ {invoices && invoices.length > 0 ? (
+  <div className="space-y-3">
+  {invoices
+   .filter((invoice) => invoice.status !== 'draft') // hide drafts on dashboard
+   .map((invoice) => {
+    const statusProps = getInvoiceStatusProps(invoice.status)
+    
+    return (
+     <div
+     key={invoice.id}
+     className={`p-4 border border-gray-200 rounded-lg ${styles.cardInteractive}`}
+     >
+     <div className="flex items-start justify-between mb-2">
+     <div>
+     <p className="font-semibold text-[#1C294E]">
+     Invoice {invoice.invoice_number}
+     </p>
+     <p className="text-sm text-gray-600">
+     {format(new Date(invoice.created_at), 'MMM d, yyyy')} • $
+     {parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
+     </p>
+     </div>
+     {statusProps && (
+      <Badge variant={statusProps.variant} size="sm">
+      {statusProps.label}
+      </Badge>
+     )}
+     </div>
+     <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
+     {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+      <Link href={`/portal/invoices/${invoice.id}/pay`}>
+      <Button variant="primary" size="sm" className={styles.smoothTransition}>
+      Pay Now
+      </Button>
+      </Link>
+     )}
+     <Button 
+     variant="outline" 
+     size="sm" 
+     className={styles.smoothTransition}
+     onClick={() => handleViewInvoice(invoice.id)}
+     >
+     View
+     </Button>
+     </div>
+     </div>
+    )
+   })}
+   </div>
+  ) : (
+   // your "No invoices yet" block stays the same
+   
+   <div className="text-center py-12 text-gray-500">
+   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+   <FileText className="w-6 h-6 text-gray-400" />
+   </div>
+   <p className="text-sm">No invoices yet</p>
+   </div>
+  )}
+  </Card>
+  </div>
+  
+  {/* Recent Services */}
+  <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
+  <Card className={styles.cardHover}>
+  <div className="flex items-center justify-between mb-6">
+  <h2 className="text-xl font-bold text-[#1C294E]">Recent Services</h2>
+  <Link
+  href="/portal/service-history"
+  className={`text-sm text-[#079447] font-medium hover:underline ${styles.smoothTransition}`}
+  >
+  View All
+  </Link>
+  </div>
+  {recentServices && recentServices.length > 0 ? (
+   <div className="space-y-3">
+   {recentServices.map((service) => (
+    <div
+    key={service.id}
+    className={`p-4 border border-gray-200 rounded-lg ${styles.smoothTransition} hover:border-gray-300`}
+    >
+    <div className="flex items-start justify-between mb-2">
+    <div>
+    <p className="font-semibold text-[#1C294E]">
+    {format(new Date(service.completed_date), 'MMM d')} • {formatServiceType(service.service_type)}
+    </p>
+    <p className="text-sm text-gray-600">
+    Completed by {service.team_members?.join(', ') || 'Team'}
+    </p>
+    </div>
+    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+    </div>
+    {service.customer_rating && (
+     <div className="flex items-center gap-1 mt-2">
+     {[...Array(service.customer_rating)].map((_, i) => (
+      <span key={i} className="text-yellow-400 text-lg">★</span>
+     ))}
+     {[...Array(5 - service.customer_rating)].map((_, i) => (
+      <span key={i} className="text-gray-300 text-lg">★</span>
+     ))}
+     </div>
+    )}
+    </div>
+   ))}
+   </div>
+  ) : (
+   <div className="text-center py-12 text-gray-500">
+   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+   <FileText className="w-6 h-6 text-gray-400" />
+   </div>
+   <p className="text-sm">No service history yet</p>
+   </div>
+  )}
+  </Card>
+  </div>
+  </div>
+  
+  {/* Row 3: Service Address & Support */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
   {/* Service Address */}
   <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-    <Card className={styles.cardHover}>
-      <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
-      <div className="flex items-start gap-3 mb-4">
-        <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-        <div>
-          <p className="text-[#1C294E] font-medium">
-            {primaryAddress.street_address}
-            {primaryAddress.unit && `, ${primaryAddress.unit}`}
-          </p>
-          <p className="text-gray-600 text-sm">
-            {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-          </p>
-        </div>
-      </div>
-      <Link href="/portal/settings#addresses">
-        <Button variant="text" size="sm" className={styles.smoothTransition}>
-          Edit Address
-        </Button>
-      </Link>
-    </Card>
+  <Card className={styles.cardHover}>
+  <h2 className="text-xl font-bold text-[#1C294E] mb-4">Service Address</h2>
+  <div className="flex items-start gap-3 mb-4">
+  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+  <div>
+  <p className="text-[#1C294E] font-medium">
+  {primaryAddress.street_address}
+  {primaryAddress.unit && `, ${primaryAddress.unit}`}
+  </p>
+  <p className="text-gray-600 text-sm">
+  {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+  </p>
   </div>
-
+  </div>
+  <Link href="/portal/settings#addresses">
+  <Button variant="text" size="sm" className={styles.smoothTransition}>
+  Edit Address
+  </Button>
+  </Link>
+  </Card>
+  </div>
+  
   {/* Support & Help */}
   <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-    <SupportCard />
+  <SupportCard />
   </div>
-</div>
-      </div>
-      {/* Invoice Side Panel */}
-      <InvoiceSidePanel
-        invoiceId={selectedInvoiceId}
-        isOpen={isPanelOpen}
-        onClose={handleCloseSidePanel}
-      />
-    </>
-  )
+  </div>
+  </div>
+  {/* Invoice Side Panel */}
+  <InvoiceSidePanel
+  invoiceId={selectedInvoiceId}
+  isOpen={isPanelOpen}
+  onClose={handleCloseSidePanel}
+  />
+  </>
+ )
 }
