@@ -31,27 +31,41 @@ export default function InvoicesPage() {
   const [showModal, setShowModal] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [processing, setProcessing] = useState(false)
+
   // Filters
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+
   // Create invoice form
   const [customers, setCustomers] = useState([])
-const [newInvoice, setNewInvoice] = useState({
-  customer_id: '',
-  amount: '',
-  due_date: '',
-  notes: '',
-  tax_rate: '', // percent, e.g. 8.25
-  line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
-})
+  const [newInvoice, setNewInvoice] = useState({
+    customer_id: '',
+    amount: '',
+    due_date: '',
+    notes: '',
+    tax_rate: '', // percent, e.g. 8.25
+    line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
+  })
+
+  // Create customer modal
+  const [showCreateCustomerModal, setShowCreateCustomerModal] = useState(false)
+  const [newCustomer, setNewCustomer] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+  })
+
   const supabase = createClient()
+
   useEffect(() => {
     loadInvoices()
     loadCustomers()
   }, [])
+
   useEffect(() => {
     filterInvoices()
   }, [invoices, searchQuery, statusFilter])
+
   const loadInvoices = async () => {
     setLoading(true)
     try {
@@ -62,6 +76,7 @@ const [newInvoice, setNewInvoice] = useState({
           profiles!customer_id(full_name, email)
         `)
         .order('created_at', { ascending: false })
+
       if (error) throw error
       setInvoices(data || [])
     } catch (error) {
@@ -71,6 +86,7 @@ const [newInvoice, setNewInvoice] = useState({
       setLoading(false)
     }
   }
+
   const loadCustomers = async () => {
     try {
       const res = await fetch('/api/admin/get-all-customers')
@@ -84,8 +100,13 @@ const [newInvoice, setNewInvoice] = useState({
       console.error('Error loading customers:', error)
     }
   }
+
   const filterInvoices = () => {
     let filtered = [...invoices]
+
+    // Hide archived invoices
+    filtered = filtered.filter(inv => !inv.archived)
+
     // Search filter
     if (searchQuery) {
       filtered = filtered.filter(inv =>
@@ -94,12 +115,15 @@ const [newInvoice, setNewInvoice] = useState({
         inv.profiles?.email?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
+
     // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(inv => inv.status === statusFilter)
     }
+
     setFilteredInvoices(filtered)
   }
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'paid':
@@ -116,155 +140,240 @@ const [newInvoice, setNewInvoice] = useState({
         return 'default'
     }
   }
+
   const handleViewInvoice = (invoice) => {
     setSelectedInvoice(invoice)
     setShowModal(true)
   }
-const handleSendInvoice = async () => {
-  if (!selectedInvoice) return
-  
-  setProcessing(true)
-  try {
-    const response = await fetch('/api/admin/invoices/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ invoiceId: selectedInvoice.id })
-    })
 
-    if (!response.ok) {
-      const data = await response.json()
-      throw new Error(data.error || 'Failed to send invoice')
-    }
+  const handleSendInvoice = async () => {
+    if (!selectedInvoice) return
 
-    const data = await response.json()
-    console.log('Invoice sent successfully:', data)
-
-    if (!data.notificationId) {
-      console.warn('Invoice sent but no notification ID returned')
-    } else {
-      console.log('Customer notification created with ID:', data.notificationId)
-    }
-    
-    toast.success('Invoice sent successfully!')
-    setShowModal(false)
-    loadInvoices()
-  } catch (error) {
-    console.error('Error sending invoice:', error)
-    toast.error(error.message || 'Failed to send invoice')
-  } finally {
-    setProcessing(false)
-  }
-}
-const handleUpdateStatus = async (newStatus) => {
-  if (!selectedInvoice) return
-  
-  setProcessing(true)
-  try {
-    const { error } = await supabase
-      .from('invoices')
-      .update({ 
-        status: newStatus,
-        updated_at: new Date().toISOString()
+    setProcessing(true)
+    try {
+      const response = await fetch('/api/admin/invoices/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ invoiceId: selectedInvoice.id })
       })
-      .eq('id', selectedInvoice.id)
 
-    if (error) throw error
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to send invoice')
+      }
 
-    toast.success(`Invoice ${newStatus === 'paid' ? 'marked as paid' : 'cancelled'} successfully!`)
-    setShowModal(false)
-    loadInvoices()
-  } catch (error) {
-    console.error('Error updating invoice:', error)
-    toast.error('Failed to update invoice status')
-  } finally {
-    setProcessing(false)
+      const data = await response.json()
+      console.log('Invoice sent successfully:', data)
+
+      if (!data.notificationId) {
+        console.warn('Invoice sent but no notification ID returned')
+      } else {
+        console.log('Customer notification created with ID:', data.notificationId)
+      }
+
+      toast.success('Invoice sent successfully!')
+      setShowModal(false)
+      loadInvoices()
+    } catch (error) {
+      console.error('Error sending invoice:', error)
+      toast.error(error.message || 'Failed to send invoice')
+    } finally {
+      setProcessing(false)
+    }
   }
-}
+
+  const handleUpdateStatus = async (newStatus) => {
+    if (!selectedInvoice) return
+
+    setProcessing(true)
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .update({
+          status: newStatus,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', selectedInvoice.id)
+
+      if (error) throw error
+
+      toast.success(`Invoice ${newStatus === 'paid' ? 'marked as paid' : 'cancelled'} successfully!`)
+      setShowModal(false)
+      loadInvoices()
+    } catch (error) {
+      console.error('Error updating invoice:', error)
+      toast.error('Failed to update invoice status')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
+  const handleArchiveInvoice = async () => {
+    if (!selectedInvoice) return
+
+    setProcessing(true)
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .update({
+          archived: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', selectedInvoice.id)
+
+      if (error) throw error
+
+      toast.success('Invoice archived successfully!')
+      setShowModal(false)
+      loadInvoices()
+    } catch (error) {
+      console.error('Error archiving invoice:', error)
+      toast.error('Failed to archive invoice')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
+  const handleCreateCustomer = async () => {
+    if (!newCustomer.full_name && !newCustomer.email) {
+      toast.error('Name or email is required')
+      return
+    }
+
+    setProcessing(true)
+    try {
+      const res = await fetch('/api/admin/customers/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCustomer),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to create customer')
+      }
+
+      const { customer } = await res.json()
+
+      toast.success('Customer created!')
+      setShowCreateCustomerModal(false)
+      setNewCustomer({ full_name: '', email: '', phone: '' })
+
+      // Reload customers and pre-select the new one
+      await loadCustomers()
+      setNewInvoice((prev) => ({
+        ...prev,
+        customer_id: customer.id,
+      }))
+    } catch (error) {
+      console.error('Error creating customer:', error)
+      toast.error(error.message || 'Failed to create customer')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
   const handleLineItemChange = (index, field, value) => {
     const items = [...newInvoice.line_items]
     items[index][field] = value
-    // Calculate amount for this line item
+
     if (field === 'quantity' || field === 'rate') {
       const qty = parseFloat(items[index].quantity) || 0
       const rate = parseFloat(items[index].rate) || 0
       items[index].amount = qty * rate
     }
+
     setNewInvoice({ ...newInvoice, line_items: items })
   }
+
   const addLineItem = () => {
     setNewInvoice({
       ...newInvoice,
       line_items: [...newInvoice.line_items, { description: '', quantity: 1, rate: '', amount: 0 }]
     })
   }
+
   const removeLineItem = (index) => {
     const items = newInvoice.line_items.filter((_, i) => i !== index)
     setNewInvoice({ ...newInvoice, line_items: items })
   }
+
   const calculateTotal = () => {
     return newInvoice.line_items.reduce((sum, item) => sum + (item.amount || 0), 0)
   }
-const handleCreateInvoice = async () => {
-  if (!newInvoice.customer_id) {
-    toast.error('Please select a customer')
-    return
-  }
-  if (newInvoice.line_items.length === 0 || !newInvoice.line_items[0].description) {
-    toast.error('Please add at least one line item')
-    return
-  }
-  setProcessing(true)
-  try {
-    // Generate invoice number
-    const { data: invoiceNumber, error: numberError } = await supabase
-      .rpc('generate_invoice_number')
-    if (numberError) throw numberError
-const subtotal = calculateTotal()
-const taxRate = parseFloat(newInvoice.tax_rate) || 0
-const taxAmount = subtotal * (taxRate / 100)
-const total = subtotal + taxAmount
 
-const { error } = await supabase
-  .from('invoices')
-  .insert({
-    invoice_number: invoiceNumber,
-    customer_id: newInvoice.customer_id,
-    amount: subtotal,              // base price (pre-tax)
-    tax_rate: taxRate,             // %
-    tax_amount: taxAmount,         // $
-    total,                         // subtotal + tax
-    due_date: newInvoice.due_date || null,
-    notes: sanitizeText(newInvoice.notes) || null,
-    line_items: newInvoice.line_items.map(item => ({
-      ...item,
-      description: sanitizeText(item.description),
-    })),
-    status: 'draft',
-  })
-    if (error) throw error
-    toast.success('Invoice created successfully!')
-    setShowCreateModal(false)
-    setNewInvoice({
-      customer_id: '',
-      amount: '',
-      due_date: '',
-      notes: '',
-      line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
-    })
-    loadInvoices()
-  } catch (error) {
-    console.error('Error creating invoice:', error)
-    toast.error('Failed to create invoice')
-  } finally {
-    setProcessing(false)
+  const handleCreateInvoice = async () => {
+    if (!newInvoice.customer_id) {
+      toast.error('Please select a customer')
+      return
+    }
+
+    if (newInvoice.line_items.length === 0 || !newInvoice.line_items[0].description) {
+      toast.error('Please add at least one line item')
+      return
+    }
+
+    setProcessing(true)
+    try {
+      // Generate invoice number
+      const { data: invoiceNumber, error: numberError } = await supabase
+        .rpc('generate_invoice_number')
+      if (numberError) throw numberError
+
+      const subtotal = calculateTotal()
+      const taxRate = parseFloat(newInvoice.tax_rate) || 0
+      const taxAmount = subtotal * (taxRate / 100)
+      const total = subtotal + taxAmount
+
+      const { error } = await supabase
+        .from('invoices')
+        .insert({
+          invoice_number: invoiceNumber,
+          customer_id: newInvoice.customer_id,
+          amount: subtotal,              // base price (pre-tax)
+          tax_rate: taxRate,             // %
+          tax_amount: taxAmount,         // $
+          total,                         // subtotal + tax
+          due_date: newInvoice.due_date || null,
+          notes: sanitizeText(newInvoice.notes) || null,
+          line_items: newInvoice.line_items.map(item => ({
+            ...item,
+            description: sanitizeText(item.description),
+          })),
+          status: 'draft',
+        })
+
+      if (error) throw error
+
+      toast.success('Invoice created successfully!')
+      setShowCreateModal(false)
+      setNewInvoice({
+        customer_id: '',
+        amount: '',
+        due_date: '',
+        notes: '',
+        tax_rate: '',
+        line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }]
+      })
+      loadInvoices()
+    } catch (error) {
+      console.error('Error creating invoice:', error)
+      toast.error('Failed to create invoice')
+    } finally {
+      setProcessing(false)
+    }
   }
-}  // Calculate stats
+
+  // Stats
   const stats = {
     total: invoices.length,
     paid: invoices.filter(i => i.status === 'paid').length,
     pending: invoices.filter(i => i.status === 'sent' || i.status === 'draft').length,
-    revenue: invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + parseFloat(i.amount), 0),
+    revenue: invoices
+      .filter(i => i.status === 'paid')
+      .reduce((sum, i) => sum + parseFloat(i.amount), 0),
   }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -273,6 +382,7 @@ const { error } = await supabase
       </div>
     )
   }
+
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={0} requestsCount={0} />
@@ -296,6 +406,7 @@ const { error } = await supabase
               Create Invoice
             </Button>
           </div>
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
@@ -345,6 +456,7 @@ const { error } = await supabase
               </div>
             </Card>
           </div>
+
           {/* Filters */}
           <Card className="mb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -370,6 +482,7 @@ const { error } = await supabase
               </div>
             </div>
           </Card>
+
           {/* Invoices List */}
           {filteredInvoices.length > 0 ? (
             <div className="space-y-4">
@@ -399,7 +512,7 @@ const { error } = await supabase
                         <div>
                           <p className="text-xs text-gray-500">Amount</p>
                           <p className="text-sm font-semibold text-[#1C294E]">
-                            ${parseFloat(invoice.amount).toFixed(2)}
+                            ${parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
                           </p>
                         </div>
                         <div>
@@ -458,6 +571,7 @@ const { error } = await supabase
           )}
         </main>
       </div>
+
       {/* View Invoice Modal */}
       <Modal
         isOpen={showModal}
@@ -481,6 +595,7 @@ const { error } = await supabase
                 {selectedInvoice.status}
               </Badge>
             </div>
+
             {/* Customer Info */}
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-2">Bill To:</h3>
@@ -491,6 +606,7 @@ const { error } = await supabase
                 {selectedInvoice.profiles?.email}
               </p>
             </div>
+
             {/* Line Items */}
             {selectedInvoice.line_items && selectedInvoice.line_items.length > 0 && (
               <div>
@@ -510,16 +626,22 @@ const { error } = await supabase
                         <tr key={index}>
                           <td className="px-4 py-3 text-sm text-gray-900">{item.description}</td>
                           <td className="px-4 py-3 text-sm text-right text-gray-900">{item.quantity}</td>
-                          <td className="px-4 py-3 text-sm text-right text-gray-900">${parseFloat(item.rate).toFixed(2)}</td>
-                          <td className="px-4 py-3 text-sm text-right font-medium text-gray-900">${parseFloat(item.amount).toFixed(2)}</td>
+                          <td className="px-4 py-3 text-sm text-right text-gray-900">
+                            ${parseFloat(item.rate).toFixed(2)}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-right font-medium text-gray-900">
+                            ${parseFloat(item.amount).toFixed(2)}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot className="bg-gray-50">
                       <tr>
-                        <td colSpan="3" className="px-4 py-3 text-right font-semibold text-gray-900">Total:</td>
+                        <td colSpan="3" className="px-4 py-3 text-right font-semibold text-gray-900">
+                          Total:
+                        </td>
                         <td className="px-4 py-3 text-right font-bold text-[#1C294E] text-lg">
-                          ${parseFloat(selectedInvoice.amount).toFixed(2)}
+                          ${parseFloat(selectedInvoice.total ?? selectedInvoice.amount ?? 0).toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>
@@ -527,6 +649,7 @@ const { error } = await supabase
                 </div>
               </div>
             )}
+
             {/* Additional Info */}
             {selectedInvoice.due_date && (
               <div>
@@ -536,12 +659,14 @@ const { error } = await supabase
                 </p>
               </div>
             )}
+
             {selectedInvoice.notes && (
               <div>
                 <h3 className="text-sm font-semibold text-gray-700">Notes:</h3>
                 <p className="text-sm text-gray-900">{selectedInvoice.notes}</p>
               </div>
             )}
+
             {/* Actions */}
             <div className="space-y-3 pt-4 border-t border-gray-200">
               {selectedInvoice.status === 'draft' && (
@@ -555,6 +680,7 @@ const { error } = await supabase
                   Mark as Sent
                 </Button>
               )}
+
               {(selectedInvoice.status === 'sent' || selectedInvoice.status === 'overdue') && (
                 <Button
                   variant="success"
@@ -566,6 +692,7 @@ const { error } = await supabase
                   Mark as Paid
                 </Button>
               )}
+
               {selectedInvoice.status !== 'cancelled' && selectedInvoice.status !== 'paid' && (
                 <Button
                   variant="danger"
@@ -577,10 +704,22 @@ const { error } = await supabase
                   Cancel Invoice
                 </Button>
               )}
+
+              {!selectedInvoice.archived && (
+                <Button
+                  variant="outline"
+                  fullWidth
+                  onClick={handleArchiveInvoice}
+                  loading={processing}
+                >
+                  Archive Invoice
+                </Button>
+              )}
             </div>
           </div>
         )}
       </Modal>
+
       {/* Create Invoice Modal */}
       <Modal
         isOpen={showCreateModal}
@@ -591,9 +730,18 @@ const { error } = await supabase
         <div className="space-y-6">
           {/* Customer Selection */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Customer *
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-semibold text-gray-700">
+                Customer *
+              </label>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowCreateCustomerModal(true)}
+              >
+                + Add Customer
+              </Button>
+            </div>
             <select
               value={newInvoice.customer_id}
               onChange={(e) => setNewInvoice({ ...newInvoice, customer_id: e.target.value })}
@@ -608,6 +756,7 @@ const { error } = await supabase
               ))}
             </select>
           </div>
+
           {/* Line Items */}
           <div>
             <div className="flex justify-between items-center mb-3">
@@ -679,26 +828,66 @@ const { error } = await supabase
                 </div>
               ))}
             </div>
+
+            {/* Subtotal / Tax / Total Preview */}
             <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold text-gray-700">Total:</span>
-                <span className="text-2xl font-bold text-[#1C294E]">
-                  ${calculateTotal().toFixed(2)}
-                </span>
-              </div>
+              {(() => {
+                const subtotal = calculateTotal()
+                const taxRate = parseFloat(newInvoice.tax_rate) || 0
+                const taxAmount = subtotal * (taxRate / 100)
+                const estimatedTotal = subtotal + taxAmount
+
+                return (
+                  <div className="w-full space-y-1">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-semibold text-gray-700">Subtotal:</span>
+                      <span className="text-lg font-bold text-[#1C294E]">
+                        ${subtotal.toFixed(2)}
+                      </span>
+                    </div>
+                    {taxRate > 0 && (
+                      <>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-semibold text-gray-700">
+                            Tax ({taxRate.toFixed(2)}%):
+                          </span>
+                          <span className="text-sm font-bold text-[#1C294E]">
+                            ${taxAmount.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-semibold text-gray-700">Total:</span>
+                          <span className="text-2xl font-bold text-[#1C294E]">
+                            ${estimatedTotal.toFixed(2)}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                    {taxRate === 0 && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg font-semibold text-gray-700">Total:</span>
+                        <span className="text-2xl font-bold text-[#1C294E]">
+                          ${subtotal.toFixed(2)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )
+              })()}
             </div>
           </div>
+
           {/* Tax Rate */}
-<Input
-  type="number"
-  label="Tax Rate (%)"
-  value={newInvoice.tax_rate}
-  onChange={(e) =>
-    setNewInvoice({ ...newInvoice, tax_rate: e.target.value })
-  }
-  step="0.01"
-  min="0"
-/>
+          <Input
+            type="number"
+            label="Tax Rate (%)"
+            value={newInvoice.tax_rate}
+            onChange={(e) =>
+              setNewInvoice({ ...newInvoice, tax_rate: e.target.value })
+            }
+            step="0.01"
+            min="0"
+          />
 
           {/* Due Date */}
           <Input
@@ -708,6 +897,7 @@ const { error } = await supabase
             onChange={(e) => setNewInvoice({ ...newInvoice, due_date: e.target.value })}
             min={new Date().toISOString().split('T')[0]}
           />
+
           {/* Notes */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -721,6 +911,7 @@ const { error } = await supabase
               placeholder="Additional notes or payment instructions..."
             />
           </div>
+
           {/* Actions */}
           <div className="flex gap-3 pt-4 border-t border-gray-200">
             <Button
@@ -737,6 +928,57 @@ const { error } = await supabase
               loading={processing}
             >
               Create Invoice
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Create Customer Modal */}
+      <Modal
+        isOpen={showCreateCustomerModal}
+        onClose={() => setShowCreateCustomerModal(false)}
+        title="Add New Customer"
+        maxWidth="md"
+      >
+        <div className="space-y-4">
+          <Input
+            label="Full Name"
+            value={newCustomer.full_name}
+            onChange={(e) =>
+              setNewCustomer({ ...newCustomer, full_name: e.target.value })
+            }
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={newCustomer.email}
+            onChange={(e) =>
+              setNewCustomer({ ...newCustomer, email: e.target.value })
+            }
+          />
+          <Input
+            label="Phone"
+            value={newCustomer.phone}
+            onChange={(e) =>
+              setNewCustomer({ ...newCustomer, phone: e.target.value })
+            }
+          />
+
+          <div className="flex gap-3 pt-4 border-t border-gray-200">
+            <Button
+              variant="outline"
+              fullWidth
+              onClick={() => setShowCreateCustomerModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={handleCreateCustomer}
+              loading={processing}
+            >
+              Save Customer
             </Button>
           </div>
         </div>

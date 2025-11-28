@@ -22,6 +22,7 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
+
 export default function CustomersPage() {
   const [loading, setLoading] = useState(true)
   const [customers, setCustomers] = useState([])
@@ -30,52 +31,69 @@ export default function CustomersPage() {
   const [statusFilter, setStatusFilter] = useState('all') // all, active, pending, suspended
   const [selectedCustomer, setSelectedCustomer] = useState(null)
   const [showModal, setShowModal] = useState(false)
+
+  // NEW: create-customer modal + form state
+  const [showCreateCustomerModal, setShowCreateCustomerModal] = useState(false)
+  const [newCustomer, setNewCustomer] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+  })
+  const [processing, setProcessing] = useState(false)
+
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
     pending: 0,
     suspended: 0,
   })
+
   const supabase = createClient()
+
   useEffect(() => {
     loadCustomers()
   }, [])
+
   useEffect(() => {
     filterCustomers()
   }, [customers, searchQuery, statusFilter])
-const loadCustomers = async () => {
-  setLoading(true)
-  try {
-    // Use the admin API route instead of direct query
-    const response = await fetch('/api/admin/get-all-customers')
-    if (!response.ok) throw new Error('Failed to load customers')
-    
-    const { data, error } = await response.json()
-    if (error) throw new Error(error)
-    
-    setCustomers(data || [])
-    
-    // Calculate stats
-    const total = data?.length || 0
-    const active = data?.filter(c => c.account_status === 'active').length || 0
-    const pending = data?.filter(c => c.account_status === 'pending').length || 0
-    const suspended = data?.filter(c => c.account_status === 'suspended').length || 0
-    
-    setStats({ total, active, pending, suspended })
-  } catch (error) {
-    console.error('Error loading customers:', error)
-    toast.error('Failed to load customers')
-  } finally {
-    setLoading(false)
+
+  const loadCustomers = async () => {
+    setLoading(true)
+    try {
+      // Use the admin API route instead of direct query
+      const response = await fetch('/api/admin/get-all-customers')
+      if (!response.ok) throw new Error('Failed to load customers')
+      
+      const { data, error } = await response.json()
+      if (error) throw new Error(error)
+      
+      setCustomers(data || [])
+      
+      // Calculate stats
+      const total = data?.length || 0
+      const active = data?.filter(c => c.account_status === 'active').length || 0
+      const pending = data?.filter(c => c.account_status === 'pending').length || 0
+      const suspended = data?.filter(c => c.account_status === 'suspended').length || 0
+      
+      setStats({ total, active, pending, suspended })
+    } catch (error) {
+      console.error('Error loading customers:', error)
+      toast.error('Failed to load customers')
+    } finally {
+      setLoading(false)
+    }
   }
-}
+
   const filterCustomers = () => {
     let filtered = customers
+
     // Filter by status
     if (statusFilter !== 'all') {
       filtered = filtered.filter(c => c.account_status === statusFilter)
     }
-    // Search by name or email
+
+    // Search by name, email, or phone
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(c =>
@@ -84,12 +102,15 @@ const loadCustomers = async () => {
         c.phone?.toLowerCase().includes(query)
       )
     }
+
     setFilteredCustomers(filtered)
   }
+
   const handleViewCustomer = (customer) => {
     setSelectedCustomer(customer)
     setShowModal(true)
   }
+
   const getStatusBadge = (status) => {
     const variants = {
       active: 'success',
@@ -98,6 +119,43 @@ const loadCustomers = async () => {
     }
     return variants[status] || 'gray'
   }
+
+  // NEW: create customer handler (uses same API as invoices page)
+  const handleCreateCustomer = async () => {
+    if (!newCustomer.full_name && !newCustomer.email) {
+      toast.error('Name or email is required')
+      return
+    }
+
+    setProcessing(true)
+    try {
+      const res = await fetch('/api/admin/customers/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCustomer),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to create customer')
+      }
+
+      const { customer } = await res.json()
+
+      toast.success('Customer created!')
+      setShowCreateCustomerModal(false)
+      setNewCustomer({ full_name: '', email: '', phone: '' })
+
+      // Reload customers so they appear in the list
+      await loadCustomers()
+    } catch (error) {
+      console.error('Error creating customer:', error)
+      toast.error(error.message || 'Failed to create customer')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -106,20 +164,31 @@ const loadCustomers = async () => {
       </div>
     )
   }
+
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={stats.pending} requestsCount={0} />
       <div className="lg:pl-64">
         <main className="py-8 px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
-              Customer Management
-            </h1>
-            <p className="text-gray-600">
-              View and manage all customer accounts
-            </p>
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
+                Customer Management
+              </h1>
+              <p className="text-gray-600">
+                View and manage all customer accounts
+              </p>
+            </div>
+            {/* NEW: Add Customer button */}
+            <Button
+              variant="primary"
+              onClick={() => setShowCreateCustomerModal(true)}
+            >
+              + Add Customer
+            </Button>
           </div>
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card padding="lg" className="border-l-4 border-l-blue-500">
@@ -159,6 +228,7 @@ const loadCustomers = async () => {
               </div>
             </Card>
           </div>
+
           {/* Search & Filters */}
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
@@ -200,6 +270,7 @@ const loadCustomers = async () => {
               </Button>
             </div>
           </div>
+
           {/* Customers List */}
           {filteredCustomers.length > 0 ? (
             <div className="space-y-4">
@@ -277,6 +348,7 @@ const loadCustomers = async () => {
           )}
         </main>
       </div>
+
       {/* Customer Details Modal */}
       <Modal
         isOpen={showModal}
@@ -324,6 +396,7 @@ const loadCustomers = async () => {
                 </div>
               </div>
             </div>
+
             {/* Service Addresses */}
             {selectedCustomer.service_addresses && selectedCustomer.service_addresses.length > 0 && (
               <div>
@@ -334,7 +407,7 @@ const loadCustomers = async () => {
                   {selectedCustomer.service_addresses.map((addr, idx) => (
                     <div key={idx} className="p-4 bg-gray-50 rounded-lg">
                       <p className="text-sm font-medium text-[#1C294E]">
-           Address {idx + 1}{addr.is_primary && ' (Primary)'}
+                        Address {idx + 1}{addr.is_primary && ' (Primary)'}
                       </p>
                       <p className="text-sm text-gray-600">
                         {addr.street_address}
@@ -348,6 +421,7 @@ const loadCustomers = async () => {
                 </div>
               </div>
             )}
+
             {/* Account Info */}
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3">
@@ -376,6 +450,7 @@ const loadCustomers = async () => {
                 )}
               </div>
             </div>
+
             {/* Actions */}
             <div className="flex gap-3 pt-4 border-t border-gray-200">
               <Button
@@ -388,6 +463,57 @@ const loadCustomers = async () => {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Create Customer Modal */}
+      <Modal
+        isOpen={showCreateCustomerModal}
+        onClose={() => setShowCreateCustomerModal(false)}
+        title="Add New Customer"
+        maxWidth="md"
+      >
+        <div className="space-y-4">
+          <Input
+            label="Full Name"
+            value={newCustomer.full_name}
+            onChange={(e) =>
+              setNewCustomer({ ...newCustomer, full_name: e.target.value })
+            }
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={newCustomer.email}
+            onChange={(e) =>
+              setNewCustomer({ ...newCustomer, email: e.target.value })
+            }
+          />
+          <Input
+            label="Phone"
+            value={newCustomer.phone}
+            onChange={(e) =>
+              setNewCustomer({ ...newCustomer, phone: e.target.value })
+            }
+          />
+
+          <div className="flex gap-3 pt-4 border-t border-gray-200">
+            <Button
+              variant="outline"
+              fullWidth
+              onClick={() => setShowCreateCustomerModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={handleCreateCustomer}
+              loading={processing}
+            >
+              Save Customer
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   )

@@ -99,14 +99,15 @@ export default function DashboardPage() {
 
       setInvoices(invoicesData || [])
 
-      // Calculate balance
-      const unpaidInvoices = invoicesData?.filter(inv => 
-        inv.status !== 'paid' && inv.status !== 'cancelled'
-      ) || []
-      const totalBalance = unpaidInvoices.reduce((sum, inv) => 
-        sum + parseFloat(inv.amount), 0
-      )
-      setBalance(totalBalance)
+// Calculate balance
+const unpaidInvoices = invoicesData?.filter(inv => 
+  inv.status !== 'paid' && inv.status !== 'cancelled'
+) || []
+const totalBalance = unpaidInvoices.reduce((sum, inv) => 
+  sum + parseFloat(inv.total ?? inv.amount ?? 0),
+  0
+)
+setBalance(totalBalance)
 
     } catch (error) {
       console.error('Error loading dashboard:', error)
@@ -343,9 +344,10 @@ const getInvoiceStatusProps = (status) => {
                 <p className="font-semibold text-[#1C294E]">
                   Invoice {invoice.invoice_number}
                 </p>
-                <p className="text-sm text-gray-600">
-                  {format(new Date(invoice.created_at), 'MMM d, yyyy')} • ${parseFloat(invoice.amount).toFixed(2)}
-                </p>
+<p className="text-sm text-gray-600">
+  {format(new Date(invoice.created_at), 'MMM d, yyyy')} • $
+  {parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
+</p>
               </div>
               {statusProps && (
                 <Badge variant={statusProps.variant} size="sm">
