@@ -743,23 +743,26 @@ export default function DashboardPage() {
                    : null
                    
                    const getFreshness = () => {
-                    if (daysSince === null) return { label: 'No data', color: 'bg-gray-300', width: '0%', emoji: '🏠' }
-                    if (daysSince <= 7) return { label: 'Sparkling', color: 'bg-emerald-500', width: '100%', emoji: '✨' }
-                    if (daysSince <= 14) return { label: 'Fresh', color: 'bg-green-400', width: '70%', emoji: '🌿' }
-                    if (daysSince <= 21) return { label: 'Good', color: 'bg-yellow-400', width: '45%', emoji: '👍' }
-                    return { label: 'Due soon', color: 'bg-orange-400', width: '20%', emoji: '🧹' }
+                    if (daysSince === null) return { label: 'No data', color: 'bg-gray-100', iconColor: 'text-gray-400', width: '0%' }
+                    if (daysSince <= 7) return { label: 'Sparkling', color: 'bg-emerald-100', iconColor: 'text-emerald-600', width: '100%', barColor: 'bg-emerald-500' }
+                    if (daysSince <= 14) return { label: 'Fresh', color: 'bg-green-100', iconColor: 'text-green-600', width: '70%', barColor: 'bg-green-400' }
+                    if (daysSince <= 21) return { label: 'Good', color: 'bg-amber-100', iconColor: 'text-amber-600', width: '45%', barColor: 'bg-amber-400' }
+                    return { label: 'Due soon', color: 'bg-orange-100', iconColor: 'text-orange-600', width: '20%', barColor: 'bg-orange-400' }
                    }
                    
                    const freshness = getFreshness()
                    
                    return (
                     <div>
-                    <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-[#1C294E]">{freshness.emoji} {freshness.label}</span>
+                    <div className="flex items-center gap-2 mb-2">
+                    <div className={`w-6 h-6 rounded-full ${freshness.color} flex items-center justify-center`}>
+                    <Sparkles className={`w-3.5 h-3.5 ${freshness.iconColor}`} />
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <span className="text-sm font-semibold text-[#1C294E]">{freshness.label}</span>
+                    </div>
+                    <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                     <div 
-                    className={`h-full ${freshness.color} rounded-full transition-all duration-500`}
+                    className={`h-full ${freshness.barColor || 'bg-gray-300'} rounded-full transition-all duration-500`}
                     style={{ width: freshness.width }}
                     />
                     </div>
@@ -771,6 +774,7 @@ export default function DashboardPage() {
                   </div>
                   </div>
                   </div>
+                  
                   
                   {/* Leave Feedback */}
                   <div className={`${styles.animateFadeInUp} ${styles.stagger7}`}>
