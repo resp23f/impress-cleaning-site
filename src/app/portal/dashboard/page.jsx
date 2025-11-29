@@ -652,100 +652,143 @@ export default function DashboardPage() {
 
      {/* Row 3: Service Address, Account Summary, Feedback */}
      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Service Address Card */}
+{/* Service Address Card */}
       <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
        <div className={`
-      rounded-2xl bg-white p-6 sm:p-8
-      shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
-      border border-gray-100/80
-      ${styles.cardHover}
-    `}>
-        <div className="flex items-center gap-3 mb-6">
-         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
-          <Home className="w-5 h-5 text-gray-500" />
-         </div>
-         <h2 className="text-xl font-bold text-[#1C294E]">
-          Service Address
-         </h2>
-        </div>
-
-        {primaryAddress ? (
-         <div className="space-y-4">
-          <div className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-100">
-           <div className="flex items-start gap-3">
-            <MapPin className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
-            <div>
-             <p className="font-semibold text-[#1C294E]">
-              {primaryAddress.street_address}
-              {primaryAddress.unit && `, Unit ${primaryAddress.unit}`}
-             </p>
-             <p className="text-gray-500 text-sm mt-0.5">
-              {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-             </p>
-            </div>
-           </div>
+        relative overflow-hidden rounded-2xl bg-white h-full
+        shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
+        border border-gray-100/80
+        ${styles.cardHover}
+       `}>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-slate-400 to-gray-300" />
+        <div className="p-6 sm:p-8 flex flex-col h-full">
+         <div className="flex items-center justify-between mb-5">
+          <h2 className="text-lg font-bold text-[#1C294E]">
+           Service Location
+          </h2>
+          <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center">
+           <Home className="w-4 h-4 text-slate-500" />
           </div>
+         </div>
 
-          <Link href="/portal/settings#addresses">
-           <Button
-            variant="outline"
-            size="sm"
-            className={`${styles.smoothTransition} w-full sm:w-auto`}
-           >
-            Edit Address
-            <ChevronRight className="w-4 h-4 ml-1" />
-           </Button>
-          </Link>
-         </div>
-        ) : (
-         <div className="text-center py-8">
-          <p className="text-gray-500 mb-4">No address on file</p>
-          <Link href="/portal/settings#addresses">
-           <Button variant="primary" size="sm">
-            Add Address
-           </Button>
-          </Link>
-         </div>
-        )}
+         {primaryAddress ? (
+          <div className="flex-1 flex flex-col">
+           <div className="flex-1">
+            <p className="text-xl font-semibold text-[#1C294E] mb-1">
+             {primaryAddress.street_address}
+             {primaryAddress.unit && ` #${primaryAddress.unit}`}
+            </p>
+            <p className="text-gray-500">
+             {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+            </p>
+           </div>
+
+           <Link href="/portal/settings#addresses" className="mt-6">
+            <span className={`
+             inline-flex items-center text-sm font-semibold text-[#079447] 
+             hover:text-emerald-600 ${styles.smoothTransition}
+            `}>
+             Manage Addresses
+             <ChevronRight className="w-4 h-4 ml-1" />
+            </span>
+           </Link>
+          </div>
+         ) : (
+          <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
+           <MapPin className="w-8 h-8 text-gray-300 mb-3" />
+           <p className="text-gray-500 text-sm mb-4">No address on file</p>
+           <Link href="/portal/settings#addresses">
+            <Button variant="primary" size="sm">
+             Add Address
+            </Button>
+           </Link>
+          </div>
+         )}
+        </div>
        </div>
       </div>
 
-      {/* Account Summary */}
+{/* Account Summary */}
       <div className={`${styles.animateFadeInUp} ${styles.stagger6}`}>
-       <Card className={`${styles.cardHover} h-full`}>
-        <h2 className="text-xl font-bold text-[#1C294E] mb-4">Account Summary</h2>
-        <div className="space-y-3">
-         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Member Since</span>
-          <span className="font-semibold text-[#1C294E]">
-           {profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '-'}
-          </span>
+       <div className={`
+        relative overflow-hidden rounded-2xl bg-white h-full
+        shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
+        border border-gray-100/80
+        ${styles.cardHover}
+       `}>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-indigo-400" />
+        <div className="p-6 sm:p-8 flex flex-col h-full">
+         <div className="flex items-center justify-between mb-5">
+          <h2 className="text-lg font-bold text-[#1C294E]">
+           Your Account
+          </h2>
+          <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center">
+           <Users className="w-4 h-4 text-blue-500" />
+          </div>
          </div>
-         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Total Cleanings</span>
-          <span className="font-semibold text-[#1C294E]">
-           {recentServices.length > 0 ? recentServices.length : '0'}
-          </span>
+
+         <div className="flex-1 grid grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50">
+           <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Member Since</p>
+           <p className="text-xl font-bold text-[#1C294E]">
+            {profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '-'}
+           </p>
+          </div>
+          <div className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50">
+           <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Cleanings</p>
+           <p className="text-xl font-bold text-[#1C294E]">
+            {recentServices.length > 0 ? recentServices.length : '0'}
+           </p>
+          </div>
          </div>
         </div>
-       </Card>
+       </div>
       </div>
-
-      {/* Leave Feedback */}
+      
+{/* Leave Feedback */}
       <div className={`${styles.animateFadeInUp} ${styles.stagger7}`}>
-       <Card className={`${styles.cardHover} h-full`}>
-        <h2 className="text-xl font-bold text-[#1C294E] mb-4">Share Feedback</h2>
-        <p className="text-sm text-gray-600 mb-4">
-         How was your recent cleaning experience?
-        </p>
-        <Link href="/portal/customer-feedback">
-         <Button variant="primary" fullWidth className={styles.smoothTransition}>
-          Leave Review
-         </Button>
-        </Link>
-       </Card>
+       <div className={`
+        relative overflow-hidden rounded-2xl h-full
+        bg-gradient-to-br from-[#1C294E] to-slate-800
+        shadow-[0_1px_3px_rgba(0,0,0,0.1),0_20px_40px_-15px_rgba(28,41,78,0.4)]
+        ${styles.cardHover}
+       `}>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+        <div className="relative p-6 sm:p-8 flex flex-col h-full">
+         <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-white">
+           We Value Your Input
+          </h2>
+          <div className="flex gap-0.5">
+           {[...Array(5)].map((_, i) => (
+            <span key={i} className="text-amber-400 text-sm">★</span>
+           ))}
+          </div>
+         </div>
+
+         <p className="text-slate-300 text-sm flex-1 mb-6">
+          Your feedback helps us deliver an exceptional experience every time.
+         </p>
+
+         <Link href="/portal/customer-feedback">
+          <Button
+           variant="secondary"
+           fullWidth
+           className={`
+            ${styles.smoothTransition}
+            bg-white text-[#1C294E] font-semibold
+            hover:bg-gray-100
+           `}
+          >
+           Share Your Experience
+          </Button>
+         </Link>
+        </div>
+       </div>
       </div>
      </div>
+
 
      {/* Invoice Side Panel */}
      <InvoiceSidePanel
