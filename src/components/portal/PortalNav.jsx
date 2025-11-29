@@ -33,8 +33,7 @@ export default function PortalNav({ userName }) {
  return (
   <>
   {/* Desktop Sidebar */}
-  <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-white border-r border-gray-200">
-  <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
+<aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-gradient-to-b from-white via-white to-slate-50 border-r border-gray-100 shadow-[1px_0_30px_-15px_rgba(0,0,0,0.1)]">  <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
   {/* Logo */}
   <div className="flex items-center flex-shrink-0 px-6 mb-8">
   <img
@@ -52,14 +51,13 @@ export default function PortalNav({ userName }) {
     <Link
     key={item.href}
     href={item.href}
-    className={`
-                    group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors
+className={`
+                    group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200
                     ${isActive
-     ? 'bg-[#079447] text-white'
-     : 'text-gray-700 hover:bg-gray-100'
+     ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
+     : 'text-gray-600 hover:bg-gray-100/80 hover:text-[#1C294E]'
     }
-                  `}
-    >
+                  `}    >
     <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-700'}`} />
     {item.label}
     </Link>
@@ -123,14 +121,13 @@ export default function PortalNav({ userName }) {
      key={item.href}
      href={item.href}
      onClick={() => setMobileMenuOpen(false)}
-     className={`
-                        group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors
-                        ${isActive
-      ? 'bg-[#079447] text-white'
-      : 'text-gray-700 hover:bg-gray-100'
-     }
-                      `}
-     >
+className={`
+                    group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200
+                    ${isActive
+     ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
+     : 'text-gray-600 hover:bg-gray-100/80 hover:text-[#1C294E]'
+    }
+                  `}     >
      <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500'}`} />
      {item.label}
      </Link>
@@ -141,8 +138,7 @@ export default function PortalNav({ userName }) {
    <div className="px-3 pt-3 border-t border-gray-200">
    <button
    onClick={handleLogout}
-   className="group flex items-center w-full px-3 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
-   >
+className="group flex items-center w-full px-3 py-3 text-sm font-medium text-gray-500 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"   >
    <LogOut className="mr-3 h-5 w-5 text-gray-500" />
    Log Out
    </button>
