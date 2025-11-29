@@ -293,8 +293,7 @@ export default function DashboardPage() {
     <Clock className="w-6 h-6 text-gray-400" />
     </div>
     <div>
-    <p className="text-sm text-gray-500 mb-1">Window</p>
-    <p className="text-lg font-semibold text-[#1C294E]">
+<p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Window</p>    <p className="text-lg font-semibold text-[#1C294E]">
     {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
     </p>
     </div>
@@ -430,8 +429,7 @@ export default function DashboardPage() {
                               hover:shadow-xl hover:shadow-[#079447]/30
                             `}
          >
-         <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-orange-600' : 'text-emerald-600'}`} />
-         Pay Now
+<CreditCard className="w-5 h-5" />         Pay Now
          </Button>
          </Link>
          </div>
