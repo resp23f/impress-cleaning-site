@@ -36,7 +36,7 @@ export default function PortalNav({ userName }) {
   <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-gradient-to-b from-white via-white to-slate-50 border-r border-gray-100 shadow-[1px_0_30px_-15px_rgba(0,0,0,0.1)]">  <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
   
   {/* Logo */}
-  <div className="flex items-center justify-center flex-shrink-0 px-6 py-6 mb-6 border-b border-gray-100">
+<div className="flex items-center justify-center flex-shrink-0 px-6 pt-8 pb-6 mb-6 border-b border-gray-100">
   <img
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
