@@ -92,7 +92,7 @@ export default function DashboardPage() {
    .select('*')
    .eq('customer_id', authUser.id)
    .order('completed_date', { ascending: false })
-   .limit(2)
+   .limit(1)
    
    setRecentServices(servicesData || [])
    
@@ -121,7 +121,7 @@ export default function DashboardPage() {
    .select('*')
    .eq('customer_id', authUser.id)
    .order('created_at', { ascending: false })
-   .limit(2)
+   .limit(1)
    
    setInvoices(invoicesData || [])
    
@@ -474,6 +474,7 @@ export default function DashboardPage() {
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
                 ${styles.cardHover}
+                 h-full
               `}>
          <div className="flex items-center justify-between mb-6">
          <div className="flex items-center gap-3">
