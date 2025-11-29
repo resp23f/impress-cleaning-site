@@ -312,6 +312,16 @@
 .skeletonCircle {
   border-radius: 50%;
 }
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmerWave {
+  animation: shimmer 1.5s infinite;
+}
 
 /* ============================================
    BUTTON HOVER EFFECTS
