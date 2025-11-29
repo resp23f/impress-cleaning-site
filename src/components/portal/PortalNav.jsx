@@ -40,7 +40,7 @@ export default function PortalNav({ userName }) {
   <img
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
-  className="h-14 w-auto"
+  className="h-20 w-auto"
   />
   
   </div>  {/* Navigation */}
