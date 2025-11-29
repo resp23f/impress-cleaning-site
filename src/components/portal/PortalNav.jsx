@@ -33,16 +33,17 @@ export default function PortalNav({ userName }) {
  return (
   <>
   {/* Desktop Sidebar */}
-<aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-gradient-to-b from-white via-white to-slate-50 border-r border-gray-100 shadow-[1px_0_30px_-15px_rgba(0,0,0,0.1)]">  <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
+  <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-gradient-to-b from-white via-white to-slate-50 border-r border-gray-100 shadow-[1px_0_30px_-15px_rgba(0,0,0,0.1)]">  <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
+  
   {/* Logo */}
-  <div className="flex items-center flex-shrink-0 px-6 mb-8">
+  <div className="flex items-center justify-center flex-shrink-0 px-6 py-6 mb-6 border-b border-gray-100">
   <img
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
-  className="h-19 w-auto"
+  className="h-14 w-auto"
   />
-  </div>
-  {/* Navigation */}
+  
+  </div>  {/* Navigation */}
   <nav className="flex-1 px-3 space-y-1">
   {navItems.map((item) => {
    const Icon = item.icon
@@ -51,7 +52,7 @@ export default function PortalNav({ userName }) {
     <Link
     key={item.href}
     href={item.href}
-className={`
+    className={`
                     group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200
                     ${isActive
      ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
@@ -121,12 +122,12 @@ className={`
      key={item.href}
      href={item.href}
      onClick={() => setMobileMenuOpen(false)}
-className={`
+     className={`
                     group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200
                     ${isActive
-     ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
-     : 'text-gray-600 hover:bg-gray-100/80 hover:text-[#1C294E]'
-    }
+      ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
+      : 'text-gray-600 hover:bg-gray-100/80 hover:text-[#1C294E]'
+     }
                   `}     >
      <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500'}`} />
      {item.label}
@@ -138,7 +139,7 @@ className={`
    <div className="px-3 pt-3 border-t border-gray-200">
    <button
    onClick={handleLogout}
-className="group flex items-center w-full px-3 py-3 text-sm font-medium text-gray-500 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"   >
+   className="group flex items-center w-full px-3 py-3 text-sm font-medium text-gray-500 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"   >
    <LogOut className="mr-3 h-5 w-5 text-gray-500" />
    Log Out
    </button>
