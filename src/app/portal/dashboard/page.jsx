@@ -293,15 +293,12 @@ export default function DashboardPage() {
     <Clock className="w-6 h-6 text-gray-400" />
     </div>
     <div>
+    <p className="text-sm text-gray-500 mb-1">Window</p>
     <p className="text-lg font-semibold text-[#1C294E]">
-    {formatTime(nextAppointment.scheduled_time_start)}
-    </p>
-    <p className="text-gray-500">
-    Until {formatTime(nextAppointment.scheduled_time_end)}
+    {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
     </p>
     </div>
-    </div>
-    </div>
+    </div>    </div>
     
     {/* Right Column - Service & Location */}
     <div className="space-y-5">
@@ -391,375 +388,375 @@ export default function DashboardPage() {
                 relative overflow-hidden rounded-2xl h-full
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_20px_40px_-15px_rgba(0,0,0,0.1)]
       ${balance > 0 
-       ? 'bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 border border-orange-200/50' 
-       : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200/50'
-      }                ${styles.cardHover}
+      ? 'bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 border border-orange-200/50' 
+      : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200/50'
+     }                ${styles.cardHover}
               `}>
-      {/* Decorative circles */}
-      <div className={`
+     {/* Decorative circles */}
+     <div className={`
   absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-20
   ${balance > 0 ? 'bg-orange-300' : 'bg-emerald-300'}
 `} />
-       <div className={`
+      <div className={`
   absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-10
   ${balance > 0 ? 'bg-amber-300' : 'bg-green-300'}
 `} />       
-        <div className="relative p-8 h-full flex flex-col">
-        <div className="flex items-center gap-2 mb-6">
-        <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-amber-600' : 'text-emerald-600'}`} />
-        <h2 className="text-lg font-bold text-[#1C294E]">
-        Account Balance
-        </h2>
+       <div className="relative p-8 h-full flex flex-col">
+       <div className="flex items-center gap-2 mb-6">
+       <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-amber-600' : 'text-emerald-600'}`} />
+       <h2 className="text-lg font-bold text-[#1C294E]">
+       Account Balance
+       </h2>
+       </div>
+       
+       {balance > 0 ? (
+        <div className="flex-1 flex flex-col">
+        <div className="mb-8">
+        <p className="text-5xl font-bold text-[#1C294E] mb-2 tracking-tight">
+        ${balance.toFixed(2)}
+        </p>
+        <p className="text-sm text-gray-600">
+        Outstanding balance
+        </p>
         </div>
-        
-        {balance > 0 ? (
-         <div className="flex-1 flex flex-col">
-         <div className="mb-8">
-         <p className="text-5xl font-bold text-[#1C294E] mb-2 tracking-tight">
-         ${balance.toFixed(2)}
-         </p>
-         <p className="text-sm text-gray-600">
-         Outstanding balance
-         </p>
-         </div>
-         <div className="mt-auto">
-         <Link href="/portal/invoices">
-         <Button 
-         variant="primary" 
-         fullWidth 
-         className={`
+        <div className="mt-auto">
+        <Link href="/portal/invoices">
+        <Button 
+        variant="primary" 
+        fullWidth 
+        className={`
                               ${styles.smoothTransition}
                               shadow-lg shadow-[#079447]/20
                               hover:shadow-xl hover:shadow-[#079447]/30
                             `}
-          >
-          <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-orange-600' : 'text-emerald-600'}`} />
-          Pay Now
-          </Button>
-          </Link>
-          </div>
-          </div>
-         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
-          <div className="relative mb-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center shadow-lg shadow-emerald-200">
-          <CheckCircle className="w-10 h-10 text-white" />
-          </div>
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white shadow flex items-center justify-center">
-          <Sparkles className="w-4 h-4 text-emerald-500" />
-          </div>
-          </div>
-          <p className="text-4xl font-bold text-[#1C294E] mb-1">
-          $0.00
-          </p>
-          <p className="text-emerald-600 font-medium">
-          All caught up! 🎉
-          </p>
-          </div>
-         )}
+         >
+         <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-orange-600' : 'text-emerald-600'}`} />
+         Pay Now
+         </Button>
+         </Link>
          </div>
          </div>
+        ) : (
+         <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
+         <div className="relative mb-4">
+         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+         <CheckCircle className="w-10 h-10 text-white" />
+         </div>
+         <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white shadow flex items-center justify-center">
+         <Sparkles className="w-4 h-4 text-emerald-500" />
          </div>
          </div>
-         
-         {/* ========== ROW 2: INVOICES & RECENT SERVICES ========== */}
-         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-         
-         {/* Invoices & Payments Card */}
-         <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
-         <div className={`
+         <p className="text-4xl font-bold text-[#1C294E] mb-1">
+         $0.00
+         </p>
+         <p className="text-emerald-600 font-medium">
+         All caught up! 🎉
+         </p>
+         </div>
+        )}
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        {/* ========== ROW 2: INVOICES & RECENT SERVICES ========== */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        
+        {/* Invoices & Payments Card */}
+        <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
+        <div className={`
                 rounded-2xl bg-white p-6 sm:p-8
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
                 ${styles.cardHover}
                  h-full
               `}>
-          <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-          <FileText className="w-5 h-5 text-blue-500" />
-          </div>
-          <h2 className="text-xl font-bold text-[#1C294E]">
-          Invoices & Payments
-          </h2>
-          </div>
-          <Link
-          href="/portal/invoices"
-          className={`
+         <div className="flex items-center justify-between mb-6">
+         <div className="flex items-center gap-3">
+         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+         <FileText className="w-5 h-5 text-blue-500" />
+         </div>
+         <h2 className="text-xl font-bold text-[#1C294E]">
+         Invoices & Payments
+         </h2>
+         </div>
+         <Link
+         href="/portal/invoices"
+         className={`
                       inline-flex items-center gap-1 text-sm font-semibold text-[#079447] 
                       hover:text-emerald-600 ${styles.smoothTransition}
                     `}
-           >
-           View All
-           <ChevronRight className="w-4 h-4" />
-           </Link>
-           </div>
-           
-           {invoices && invoices.length > 0 ? (
-            <div className="space-y-3">
-            {invoices
-             .filter((invoice) => invoice.status !== 'draft')
-             .map((invoice) => {
-              const statusProps = getInvoiceStatusProps(invoice.status)
-              
-              return (
-               <div
-               key={invoice.id}
-               className={`
+          >
+          View All
+          <ChevronRight className="w-4 h-4" />
+          </Link>
+          </div>
+          
+          {invoices && invoices.length > 0 ? (
+           <div className="space-y-3">
+           {invoices
+            .filter((invoice) => invoice.status !== 'draft')
+            .map((invoice) => {
+             const statusProps = getInvoiceStatusProps(invoice.status)
+             
+             return (
+              <div
+              key={invoice.id}
+              className={`
  p-4 rounded-xl bg-gradient-to-br from-white to-gray-50/50
   hover:shadow-md
   ${styles.smoothTransition}
 `}               >
-                <div className="flex items-start justify-between mb-3">
-                <div>
-                <p className="font-bold text-[#1C294E]">
-                Invoice {invoice.invoice_number}
-                </p>
-                <p className="text-sm text-gray-500 mt-0.5">
-                {format(new Date(invoice.created_at), 'MMM d, yyyy')}
-                </p>
-                </div>
-                <div className="text-right">
-                <p className="text-lg font-bold text-[#1C294E]">
-                ${parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
-                </p>
-                {statusProps && (
-                 <Badge variant={statusProps.variant} size="sm">
-                 {statusProps.label}
-                 </Badge>
-                )}
-                </div>
-                </div>
-                <div className="flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-gray-100">
-                {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
-                 <Link href={`/portal/invoices/${invoice.id}/pay`}>
-                 <Button 
-                 variant="primary" 
-                 size="sm" 
-                 className={`${styles.smoothTransition} shadow-sm`}
-                 >
-                 Pay Now
-                 </Button>
-                 </Link>
-                )}
-                <Button
-                variant="outline"
-                size="sm"
-                className={styles.smoothTransition}
-                onClick={() => handleViewInvoice(invoice.id)}
+               <div className="flex items-start justify-between mb-3">
+               <div>
+               <p className="font-bold text-[#1C294E]">
+               Invoice {invoice.invoice_number}
+               </p>
+               <p className="text-sm text-gray-500 mt-0.5">
+               {format(new Date(invoice.created_at), 'MMM d, yyyy')}
+               </p>
+               </div>
+               <div className="text-right">
+               <p className="text-lg font-bold text-[#1C294E]">
+               ${parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
+               </p>
+               {statusProps && (
+                <Badge variant={statusProps.variant} size="sm">
+                {statusProps.label}
+                </Badge>
+               )}
+               </div>
+               </div>
+               <div className="flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-gray-100">
+               {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+                <Link href={`/portal/invoices/${invoice.id}/pay`}>
+                <Button 
+                variant="primary" 
+                size="sm" 
+                className={`${styles.smoothTransition} shadow-sm`}
                 >
-                View
+                Pay Now
                 </Button>
-                </div>
-                </div>
-               )
-              })}
-              </div>
-             ) : (
-              <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-50 mb-4">
-              <FileText className="w-8 h-8 text-gray-300" />
-              </div>
-              <p className="text-gray-500">No invoices yet</p>
-              </div>
-             )}
+                </Link>
+               )}
+               <Button
+               variant="outline"
+               size="sm"
+               className={styles.smoothTransition}
+               onClick={() => handleViewInvoice(invoice.id)}
+               >
+               View
+               </Button>
+               </div>
+               </div>
+              )
+             })}
              </div>
+            ) : (
+             <div className="text-center py-12">
+             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-50 mb-4">
+             <FileText className="w-8 h-8 text-gray-300" />
              </div>
-             
-             {/* Recent Services Card */}
-             <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
-             <div className={`
+             <p className="text-gray-500">No invoices yet</p>
+             </div>
+            )}
+            </div>
+            </div>
+            
+            {/* Recent Services Card */}
+            <div className={`${styles.animateFadeInUp} ${styles.stagger4}`}>
+            <div className={`
                 rounded-2xl bg-white p-6 sm:p-8
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
                 ${styles.cardHover}
               `}>
-              <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center">
-              <CheckCircle className="w-5 h-5 text-emerald-500" />
-              </div>
-              <h2 className="text-xl font-bold text-[#1C294E]">
-              Recent Services
-              </h2>
-              </div>
-              <Link
-              href="/portal/service-history"
-              className={`
+             <div className="flex items-center justify-between mb-6">
+             <div className="flex items-center gap-3">
+             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center">
+             <CheckCircle className="w-5 h-5 text-emerald-500" />
+             </div>
+             <h2 className="text-xl font-bold text-[#1C294E]">
+             Recent Services
+             </h2>
+             </div>
+             <Link
+             href="/portal/service-history"
+             className={`
                       inline-flex items-center gap-1 text-sm font-semibold text-[#079447] 
                       hover:text-emerald-600 ${styles.smoothTransition}
                     `}
-               >
-               View All
-               <ChevronRight className="w-4 h-4" />
-               </Link>
-               </div>
-               
-               {recentServices && recentServices.length > 0 ? (
-                <div className="space-y-3">
-                {recentServices.map((service) => (
-                 <div
-                 key={service.id}
-                 className={`
+              >
+              View All
+              <ChevronRight className="w-4 h-4" />
+              </Link>
+              </div>
+              
+              {recentServices && recentServices.length > 0 ? (
+               <div className="space-y-3">
+               {recentServices.map((service) => (
+                <div
+                key={service.id}
+                className={`
                           p-4 rounded-xl border border-gray-100 bg-gradient-to-br from-white to-gray-50/50
                           hover:border-emerald-200 hover:shadow-md
                           ${styles.smoothTransition}
                         `}
-                  >
-                  <div className="flex items-start justify-between mb-2">
-                  <div>
-                  <p className="font-bold text-[#1C294E]">
-                  {formatServiceType(service.service_type)}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-0.5">
-                  {format(new Date(service.completed_date), 'MMMM d, yyyy')}
-                  </p>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600">
-                  <CheckCircle className="w-4 h-4" />
-                  <span className="text-xs font-semibold">Completed</span>
-                  </div>
-                  </div>
-                  
-                  <p className="text-sm text-gray-500 mb-3">
-                  Completed by {service.team_members?.join(', ') || 'Team'}
-                  </p>
-                  
-                  {service.customer_rating && (
-                   <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-                   <span className="text-xs text-gray-400 uppercase tracking-wide">Your rating:</span>
-                   <div className="flex items-center gap-0.5">
-                   {[...Array(5)].map((_, i) => (
-                    <span
-                    key={i}
-                    className={`text-lg ${i < service.customer_rating ? 'text-amber-400' : 'text-gray-200'}`}
-                    >
-                    ★
-                    </span>
-                   ))}
-                   </div>
-                   </div>
-                  )}
-                  </div>
-                 ))}
+                 >
+                 <div className="flex items-start justify-between mb-2">
+                 <div>
+                 <p className="font-bold text-[#1C294E]">
+                 {formatServiceType(service.service_type)}
+                 </p>
+                 <p className="text-sm text-gray-500 mt-0.5">
+                 {format(new Date(service.completed_date), 'MMMM d, yyyy')}
+                 </p>
                  </div>
-                ) : (
-                 <div className="text-center py-12">
-                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-50 mb-4">
-                 <FileText className="w-8 h-8 text-gray-300" />
+                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600">
+                 <CheckCircle className="w-4 h-4" />
+                 <span className="text-xs font-semibold">Completed</span>
                  </div>
-                 <p className="text-gray-500">No service history yet</p>
                  </div>
-                )}
+                 
+                 <p className="text-sm text-gray-500 mb-3">
+                 Completed by {service.team_members?.join(', ') || 'Team'}
+                 </p>
+                 
+                 {service.customer_rating && (
+                  <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+                  <span className="text-xs text-gray-400 uppercase tracking-wide">Your rating:</span>
+                  <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                   <span
+                   key={i}
+                   className={`text-lg ${i < service.customer_rating ? 'text-amber-400' : 'text-gray-200'}`}
+                   >
+                   ★
+                   </span>
+                  ))}
+                  </div>
+                  </div>
+                 )}
+                 </div>
+                ))}
                 </div>
+               ) : (
+                <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-50 mb-4">
+                <FileText className="w-8 h-8 text-gray-300" />
                 </div>
+                <p className="text-gray-500">No service history yet</p>
                 </div>
-                
-                {/* Row 3: Service Address, Account Summary, Feedback */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">               
-                {/* Service Address Card */}
-                <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-                <div className={`
+               )}
+               </div>
+               </div>
+               </div>
+               
+               {/* Row 3: Service Address, Account Summary, Feedback */}
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">               
+               {/* Service Address Card */}
+               <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
+               <div className={`
       rounded-2xl bg-white p-6 sm:p-8
       shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
       border border-gray-100/80
       ${styles.cardHover}
     `}>
-                 <div className="flex items-center gap-3 mb-6">
-                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
-                 <Home className="w-5 h-5 text-gray-500" />
-                 </div>
-                 <h2 className="text-xl font-bold text-[#1C294E]">
-                 Service Address
-                 </h2>
-                 </div>
-                 
-                 {primaryAddress ? (
-                  <div className="space-y-4">
-                  <div className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-100">
-                  <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
-                  <div>
-                  <p className="font-semibold text-[#1C294E]">
-                  {primaryAddress.street_address}
-                  {primaryAddress.unit && `, Unit ${primaryAddress.unit}`}
-                  </p>
-                  <p className="text-gray-500 text-sm mt-0.5">
-                  {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
-                  </p>
-                  </div>
-                  </div>
-                  </div>
-                  
-                  <Link href="/portal/settings#addresses">
-                  <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className={`${styles.smoothTransition} w-full sm:w-auto`}
-                  >
-                  Edit Address
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                  </Button>
-                  </Link>
-                  </div>
-                 ) : (
-                  <div className="text-center py-8">
-                  <p className="text-gray-500 mb-4">No address on file</p>
-                  <Link href="/portal/settings#addresses">
-                  <Button variant="primary" size="sm">
-                  Add Address
-                  </Button>
-                  </Link>
-                  </div>
-                 )}
-                 </div>
-                 </div>
-                 
-                 {/* Account Summary */}
-                 <div className={`${styles.animateFadeInUp} ${styles.stagger6}`}>
-                 <Card className={`${styles.cardHover} h-full`}>
-                 <h2 className="text-xl font-bold text-[#1C294E] mb-4">Account Summary</h2>
-                 <div className="space-y-3">
-                 <div className="flex items-center justify-between">
-                 <span className="text-sm text-gray-600">Member Since</span>
-                 <span className="font-semibold text-[#1C294E]">
-                 {profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '-'}
-                 </span>
-                 </div>
-                 <div className="flex items-center justify-between">
-                 <span className="text-sm text-gray-600">Total Cleanings</span>
-                 <span className="font-semibold text-[#1C294E]">
-                 {recentServices.length > 0 ? recentServices.length : '0'}
-                 </span>
-                 </div>
-                 </div>
-                 </Card>
-                 </div>
-                 
-                 {/* Leave Feedback */}
-                 <div className={`${styles.animateFadeInUp} ${styles.stagger7}`}>
-                 <Card className={`${styles.cardHover} h-full`}>
-                 <h2 className="text-xl font-bold text-[#1C294E] mb-4">Share Feedback</h2>
-                 <p className="text-sm text-gray-600 mb-4">
-                 How was your recent cleaning experience?
+                <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
+                <Home className="w-5 h-5 text-gray-500" />
+                </div>
+                <h2 className="text-xl font-bold text-[#1C294E]">
+                Service Address
+                </h2>
+                </div>
+                
+                {primaryAddress ? (
+                 <div className="space-y-4">
+                 <div className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-100">
+                 <div className="flex items-start gap-3">
+                 <MapPin className="w-5 h-5 text-[#079447] mt-0.5 flex-shrink-0" />
+                 <div>
+                 <p className="font-semibold text-[#1C294E]">
+                 {primaryAddress.street_address}
+                 {primaryAddress.unit && `, Unit ${primaryAddress.unit}`}
                  </p>
-                 <Link href="/portal/customer-feedback">
-                 <Button variant="primary" fullWidth className={styles.smoothTransition}>
-                 Leave Review
+                 <p className="text-gray-500 text-sm mt-0.5">
+                 {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
+                 </p>
+                 </div>
+                 </div>
+                 </div>
+                 
+                 <Link href="/portal/settings#addresses">
+                 <Button 
+                 variant="outline" 
+                 size="sm" 
+                 className={`${styles.smoothTransition} w-full sm:w-auto`}
+                 >
+                 Edit Address
+                 <ChevronRight className="w-4 h-4 ml-1" />
                  </Button>
                  </Link>
-                 </Card>
                  </div>
+                ) : (
+                 <div className="text-center py-8">
+                 <p className="text-gray-500 mb-4">No address on file</p>
+                 <Link href="/portal/settings#addresses">
+                 <Button variant="primary" size="sm">
+                 Add Address
+                 </Button>
+                 </Link>
                  </div>
-                 
-                 {/* Invoice Side Panel */}
-                 <InvoiceSidePanel
-                 invoiceId={selectedInvoiceId}
-                 isOpen={isPanelOpen}
-                 onClose={handleCloseSidePanel}
-                 />
-                 </div>
-                 </div>
-                 </>
-                )
-               }
+                )}
+                </div>
+                </div>
+                
+                {/* Account Summary */}
+                <div className={`${styles.animateFadeInUp} ${styles.stagger6}`}>
+                <Card className={`${styles.cardHover} h-full`}>
+                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Account Summary</h2>
+                <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Member Since</span>
+                <span className="font-semibold text-[#1C294E]">
+                {profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '-'}
+                </span>
+                </div>
+                <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Total Cleanings</span>
+                <span className="font-semibold text-[#1C294E]">
+                {recentServices.length > 0 ? recentServices.length : '0'}
+                </span>
+                </div>
+                </div>
+                </Card>
+                </div>
+                
+                {/* Leave Feedback */}
+                <div className={`${styles.animateFadeInUp} ${styles.stagger7}`}>
+                <Card className={`${styles.cardHover} h-full`}>
+                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Share Feedback</h2>
+                <p className="text-sm text-gray-600 mb-4">
+                How was your recent cleaning experience?
+                </p>
+                <Link href="/portal/customer-feedback">
+                <Button variant="primary" fullWidth className={styles.smoothTransition}>
+                Leave Review
+                </Button>
+                </Link>
+                </Card>
+                </div>
+                </div>
+                
+                {/* Invoice Side Panel */}
+                <InvoiceSidePanel
+                invoiceId={selectedInvoiceId}
+                isOpen={isPanelOpen}
+                onClose={handleCloseSidePanel}
+                />
+                </div>
+                </div>
+                </>
+               )
+              }
