@@ -85,7 +85,7 @@ export default function DashboardPage() {
    .select('*')
    .eq('customer_id', authUser.id)
    .order('completed_date', { ascending: false })
-   .limit(3)
+  .limit(2)
    
    setRecentServices(servicesData || [])
 // Load ALL invoices for balance calculations
@@ -146,7 +146,14 @@ const formatServiceType = (type) => {
  }
  return types[type] || type
 }
-
+// ADD THIS:
+const formatTime = (timeStr) => {
+  if (!timeStr) return ''
+  const [h, m, s] = timeStr.split(':') // e.g. "08:00:00"
+  const d = new Date()
+  d.setHours(Number(h || 0), Number(m || 0), Number(s || 0), 0)
+  return format(d, 'h:mm a')
+}
 const getStatusBadge = (status) => {
  // Don't show status badge for 'sent' - that's internal admin status
  if (status === 'sent' || status === 'pending') {
@@ -229,9 +236,9 @@ return (
   </div>
   <div className="flex items-center gap-3">
   <Clock className="w-5 h-5 text-gray-400 flex-shrink-0" />
-  <p className="text-gray-700">
-  {nextAppointment.scheduled_time_start} - {nextAppointment.scheduled_time_end}
-  </p>
+<p className="text-gray-700">
+  {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
+</p>
   </div>
   {nextAppointment.team_members && nextAppointment.team_members.length > 0 && (
    <div className="flex items-center gap-3">
@@ -253,14 +260,13 @@ return (
    </div>
   )}
   </div>
-  <div className="flex gap-3 mt-6">
-  <Link href={`/portal/appointments/${nextAppointment.id}`}>
-  <Button variant="primary" className={styles.smoothTransition}>View Details</Button>
+<div className="flex gap-3 mt-6">
+  <Link href="/portal/appointments">
+    <Button variant="primary" className={styles.smoothTransition}>
+      View Details
+    </Button>
   </Link>
-  <Link href={`/portal/appointments/${nextAppointment.id}/reschedule`}>
-  <Button variant="secondary" className={styles.smoothTransition}>Reschedule</Button>
-  </Link>
-  </div>
+</div>
   </>
  ) : (
   <div className="text-center py-12">

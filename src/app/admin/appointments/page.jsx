@@ -28,7 +28,14 @@ export default function AppointmentsPage() {
  const [selectedAppointment, setSelectedAppointment] = useState(null)
  const [showModal, setShowModal] = useState(false)
  const [processing, setProcessing] = useState(false)
+ // ADD THIS:
+ const [adminReschedule, setAdminReschedule] = useState({
+  date: '',
+  timeStart: '',
+  timeEnd: '',
+ })
  // Filters
+ const [selectedAction, setSelectedAction] = useState('')
  const [searchQuery, setSearchQuery] = useState('')
  const [statusFilter, setStatusFilter] = useState('all')
  const [dateFilter, setDateFilter] = useState('')
@@ -99,8 +106,25 @@ export default function AppointmentsPage() {
   }
   return types[type] || type
  }
+ // Add this:
+ const formatTime = (timeStr) => {
+  if (!timeStr) return ''
+  const [h, m, s] = timeStr.split(':') // "08:00:00"
+  const d = new Date()
+  d.setHours(Number(h || 0), Number(m || 0), Number(s || 0), 0)
+  return format(d, 'h:mm a') // e.g. "8:00 AM"
+ }
+ 
  const handleViewDetails = (appointment) => {
   setSelectedAppointment(appointment)
+  
+  // Prefill admin reschedule fields
+  setAdminReschedule({
+   date: appointment.scheduled_date || '',
+   timeStart: appointment.scheduled_time_start?.slice(0, 5) || '', // "08:00"
+   timeEnd: appointment.scheduled_time_end?.slice(0, 5) || '',
+  })
+  
   setShowModal(true)
  }
  const handleUpdateStatus = async (status) => {
@@ -152,6 +176,56 @@ export default function AppointmentsPage() {
   } finally {
    setProcessing(false)
   }
+ }
+ const handleAdminReschedule = async () => {
+  if (!selectedAppointment) return
+  
+  const { date, timeStart, timeEnd } = adminReschedule
+  if (!date || !timeStart || !timeEnd) {
+   toast.error('Please enter date, start time, and end time')
+   return
+  }
+  
+  setProcessing(true)
+  try {
+   const { error } = await supabase
+   .from('appointments')
+   .update({
+    scheduled_date: date,
+    scheduled_time_start: timeStart, // "HH:MM" is fine; DB will store as time
+    scheduled_time_end: timeEnd,
+    status: 'confirmed',
+    updated_at: new Date().toISOString(),
+    completed_at: null,
+    cancelled_at: null,
+   })
+   .eq('id', selectedAppointment.id)
+   
+   if (error) throw error
+   
+   toast.success('Appointment rescheduled')
+   setShowModal(false)
+   loadAppointments()
+  } catch (error) {
+   console.error('Error rescheduling appointment:', error)
+   toast.error('Failed to reschedule appointment')
+  } finally {
+   setProcessing(false)
+  }
+ }
+ 
+ // ADD THIS:
+ const handleActionApply = async () => {
+  if (!selectedAppointment || !selectedAction) return
+  
+  if (selectedAction === 'delete') {
+   await handleDelete()
+  } else if (selectedAction === 'not_completed') {
+   // NOTE: make sure your appointment_status enum includes 'not_completed'.
+   await handleUpdateStatus('not_completed')
+  }
+  
+  setSelectedAction('')
  }
  // Calculate stats
  const stats = {
@@ -292,7 +366,7 @@ export default function AppointmentsPage() {
     </div>
     <div className="flex items-center gap-2 text-sm text-gray-600">
     <Clock className="w-4 h-4" />
-    {apt.scheduled_time_start} - {apt.scheduled_time_end}
+    {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
     </div>
     {apt.service_addresses && (
      <div className="flex items-start gap-2 text-sm text-gray-600 md:col-span-2">
@@ -400,7 +474,7 @@ export default function AppointmentsPage() {
     <div className="flex justify-between">
     <span className="text-sm text-gray-600">Time:</span>
     <span className="text-sm font-medium text-[#1C294E]">
-    {selectedAppointment.scheduled_time_start} - {selectedAppointment.scheduled_time_end}
+    {formatTime(selectedAppointment.scheduled_time_start)} - {formatTime(selectedAppointment.scheduled_time_end)}
     </span>
     </div>
     <div className="flex justify-between">
@@ -438,6 +512,54 @@ export default function AppointmentsPage() {
     )}
     </div>
     </div>
+    {/* Admin Reschedule */}
+    <div className="pt-4 border-t border-gray-200 space-y-3">
+    <h3 className="text-sm font-semibold text-gray-700">
+    Admin Reschedule
+    </h3>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <Input
+    type="date"
+    label="New Date"
+    value={adminReschedule.date}
+    onChange={(e) =>
+     setAdminReschedule((prev) => ({ ...prev, date: e.target.value }))
+    }
+    />
+    <Input
+    type="time"
+    label="Start Time"
+    value={adminReschedule.timeStart}
+    onChange={(e) =>
+     setAdminReschedule((prev) => ({
+      ...prev,
+      timeStart: e.target.value,
+     }))
+    }
+    />
+    <Input
+    type="time"
+    label="End Time"
+    value={adminReschedule.timeEnd}
+    onChange={(e) =>
+     setAdminReschedule((prev) => ({
+      ...prev,
+      timeEnd: e.target.value,
+     }))
+    }
+    />
+    </div>
+    <Button
+    variant="secondary"
+    fullWidth
+    onClick={handleAdminReschedule}
+    loading={processing}
+    >
+    <Calendar className="w-5 h-5 mr-2" />
+    Reschedule (Admin)
+    </Button>
+    </div>
+    
     {/* Actions */}
     <div className="space-y-3 pt-4 border-t border-gray-200">
     {selectedAppointment.status === 'pending' && (
@@ -451,6 +573,7 @@ export default function AppointmentsPage() {
      Confirm Appointment
      </Button>
     )}
+    
     {(selectedAppointment.status === 'confirmed' || selectedAppointment.status === 'pending') && (
      <Button
      variant="primary"
@@ -462,6 +585,7 @@ export default function AppointmentsPage() {
      Mark as Completed
      </Button>
     )}
+    
     {selectedAppointment.status !== 'cancelled' && (
      <Button
      variant="danger"
@@ -473,15 +597,32 @@ export default function AppointmentsPage() {
      Cancel Appointment
      </Button>
     )}
-    <Button
-    variant="danger"
-    fullWidth
-    onClick={handleDelete}
-    loading={processing}
+    
+    {/* Dropdown for extra actions */}
+    <div className="pt-2 space-y-2">
+    <label className="block text-sm font-medium text-gray-700">
+    More actions
+    </label>
+    <div className="flex gap-2">
+    <select
+    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+    value={selectedAction}
+    onChange={(e) => setSelectedAction(e.target.value)}
     >
-    <Trash2 className="w-5 h-5" />
-    Delete Appointment
+    <option value="">Select an action</option>
+    <option value="not_completed">Mark as Not Completed</option>
+    <option value="delete">Delete Appointment</option>
+    </select>
+    <Button
+    variant="secondary"
+    onClick={handleActionApply}
+    loading={processing}
+    disabled={!selectedAction}
+    >
+    Apply
     </Button>
+    </div>
+    </div>
     </div>
     </div>
    )}
