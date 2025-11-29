@@ -58,10 +58,13 @@ const serviceTypeLabel = (type) => {
 const isWithin48Hours = (apt) => {
  if (!apt?.scheduled_date) return false
  
- const datePart = apt.scheduled_date
- const timePart = apt.scheduled_time_start || '00:00'
+ const raw = apt.scheduled_time_start || '00:00'
+ const [h, m] = raw.split(':') // "08:00:00" or "08:00"
  
- const appointmentDateTime = new Date(`${datePart}T${timePart}:00`)
+ const hh = (h || '00').padStart(2, '0')
+ const mm = (m || '00').padStart(2, '0')
+ 
+ const appointmentDateTime = new Date(`${apt.scheduled_date}T${hh}:${mm}:00`)
  const now = new Date()
  const diffMs = appointmentDateTime.getTime() - now.getTime()
  const diffHours = diffMs / (1000 * 60 * 60)
@@ -70,9 +73,15 @@ const isWithin48Hours = (apt) => {
 }
 const getAppointmentDateTime = (apt) => {
  if (!apt?.scheduled_date) return null
- const datePart = apt.scheduled_date
- const timePart = apt.scheduled_time_start || '00:00'
- return new Date(`${datePart}T${timePart}:00`)
+ 
+ const raw = apt.scheduled_time_start || '00:00'
+ // handle both "08:00:00" and "08:00"
+ const [h, m] = raw.split(':')
+ 
+ const hh = (h || '00').padStart(2, '0')
+ const mm = (m || '00').padStart(2, '0')
+ 
+ return new Date(`${apt.scheduled_date}T${hh}:${mm}:00`)
 }
 
 const TIME_RANGES = [
@@ -233,10 +242,9 @@ export default function AppointmentsPage() {
   load()
  }, [router, supabase])
  
- const now = new Date()
- 
  const UPCOMING_STATUSES = ['pending', 'confirmed', 'en_route']
  const PAST_STATUSES = ['completed', 'cancelled', 'not_completed']
+ const now = new Date()
  
  const upcoming = appointments.filter((apt) => {
   const dt = getAppointmentDateTime(apt)
@@ -249,6 +257,18 @@ export default function AppointmentsPage() {
   if (!dt) return false
   return dt < now || PAST_STATUSES.includes(apt.status)
  })
+ const formatTime = (timeStr) => {
+  if (!timeStr) return ''
+  // handle "08:00:00" or "08:00"
+  const [h, m] = timeStr.split(':')
+  const d = new Date()
+  d.setHours(Number(h || 0), Number(m || 0), 0, 0)
+  return d.toLocaleTimeString('en-US', {
+   hour: 'numeric',
+   minute: '2-digit',
+  }) // e.g. "8:00 AM"
+ }
+ 
  
  const openReschedule = (apt) => {
   setSelectedAppointment(apt)
@@ -462,7 +482,7 @@ return (
    {format(parseISO(apt.scheduled_date), 'EEEE, MMM d')}
    </p>
    <p className="text-gray-600">
-   {apt.scheduled_time_start} - {apt.scheduled_time_end}
+   {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
    </p>
    </div>
    <Badge variant={statusBadges[apt.status] || 'default'}>
@@ -546,7 +566,7 @@ return (
     {format(parseISO(apt.scheduled_date), 'MMM d, yyyy')}
     </p>
     <p className="text-sm text-gray-600">
-    {apt.scheduled_time_start} - {apt.scheduled_time_end}
+    {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
     </p>
     </div>
     <Badge variant={statusBadges[apt.status] || 'default'}>

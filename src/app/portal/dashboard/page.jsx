@@ -67,8 +67,7 @@ export default function DashboardPage() {
    profileData?.service_addresses?.[0]
    setPrimaryAddress(primary)
    
-   // Get upcoming appointments (limit to 5 for the list)
-   // Only pending / confirmed / en_route, and in the future
+   // Get upcoming *active* appointments (limit to 5 for the list)
    const today = new Date().toISOString().split('T')[0]
    
    const { data: upcomingData } = await supabase
@@ -151,25 +150,23 @@ export default function DashboardPage() {
   return types[type] || type
  }
  // ADD THIS:
+ const getAppointmentStatusVariant = (status) => {
+  const map = {
+   pending: 'warning',
+   confirmed: 'info',
+   en_route: 'info',
+   completed: 'success',
+   cancelled: 'danger',
+  }
+  return map[status] || 'default'
+ }
+ 
  const formatTime = (timeStr) => {
   if (!timeStr) return ''
   const [h, m, s] = timeStr.split(':') // e.g. "08:00:00"
   const d = new Date()
   d.setHours(Number(h || 0), Number(m || 0), Number(s || 0), 0)
   return format(d, 'h:mm a')
- }
- const getStatusBadge = (status) => {
-  // Don't show status badge for 'sent' - that's internal admin status
-  if (status === 'sent' || status === 'pending') {
-   return null
-  }
-  
-  const variants = {
-   paid: 'success',
-   overdue: 'danger',
-   cancelled: 'default',
-  }
-  return <Badge variant={variants[status] || 'info'}>{status}</Badge>
  }
  const getInvoiceStatusProps = (status) => {
   if (!status || status === 'draft') return null
@@ -222,7 +219,7 @@ export default function DashboardPage() {
    <>
    <div className="flex items-center justify-between mb-6">
    <h2 className="text-xl font-bold text-[#1C294E]">Next Appointment</h2>
-   <Badge variant={getStatusBadge(nextAppointment.status)}>
+   <Badge variant={getAppointmentStatusVariant(nextAppointment.status)}>
    {nextAppointment.status}
    </Badge>
    </div>
