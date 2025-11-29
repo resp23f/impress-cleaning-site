@@ -158,7 +158,8 @@ function CancellationTooltip() {
   
   if (loading) {
    return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.animateFadeIn}`}>    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+<div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.animateFadeInUp}`}>    
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     <div className="space-y-2">
     <SkeletonLoader height="h-8" className="w-48" />
     <SkeletonLoader height="h-5" className="w-64" />
