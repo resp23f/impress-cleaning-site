@@ -463,7 +463,7 @@ export default function DashboardPage() {
 
       {/* Invoices & Payments Card */}
       <div className={`${styles.animateFadeInUp} ${styles.stagger3} h-full`}>        <div className={`
-                rounded-2xl bg-white p-6 sm:p-8 h-full
+                rounded-2xl bg-white p-6 sm:p-8
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
                 ${styles.cardHover}
@@ -562,7 +562,7 @@ export default function DashboardPage() {
 
       {/* Recent Services Card */}
       <div className={`${styles.animateFadeInUp} ${styles.stagger4} h-full`}>            <div className={`
-                rounded-2xl bg-white p-6 sm:p-8 h-full
+                rounded-2xl bg-white p-6 sm:p-8
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
                 ${styles.cardHover}
