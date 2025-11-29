@@ -402,7 +402,6 @@ service_addresses!address_id(*)
     label="Scheduled Date"
     value={appointmentData.scheduledDate}
     onChange={(e) => setAppointmentData({ ...appointmentData, scheduledDate: e.target.value })}
-    min={new Date().toISOString().split('T')[0]}
     required
     />
     <div className="grid grid-cols-2 gap-4">
