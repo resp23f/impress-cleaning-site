@@ -445,23 +445,29 @@ if (loading) {
 }
 
 return (
- <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10">
- <div className="flex items-center justify-between gap-3">
+<div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+<div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10"> 
+<div className="flex items-center justify-between gap-3">
  <div>
- <h1 className="text-3xl font-bold text-[#1C294E]">Appointments</h1>
- <p className="text-gray-600">Manage your upcoming cleanings</p>
+ <div className="flex items-center gap-3 mb-2">
+  <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
+  <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Appointments</span>
  </div>
- <Link href="/portal/request-service">
+ <h1 className="text-4xl font-bold text-[#1C294E] tracking-tight">Manage Your Cleanings</h1>
+ </div>
+  <Link href="/portal/request-service">
  <Button variant="primary">Book another cleaning</Button>
  </Link>
  </div>
  
  {/* Upcoming */}
  <section>
- <div className="flex items-center gap-2 mb-4">
- <Calendar className="w-5 h-5 text-[#079447]" />
- <h2 className="text-xl font-semibold text-[#1C294E]">Upcoming</h2>
+<div className="flex items-center gap-3 mb-4">
+ <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
+  <Calendar className="w-5 h-5 text-[#079447]" />
  </div>
+ <h2 className="text-xl font-bold text-[#1C294E]">Upcoming</h2>
+</div>
  {upcoming.length === 0 ? (
   <Card className="text-center py-8">
   <div className="flex flex-col items-center gap-2">
@@ -475,8 +481,7 @@ return (
  ) : (
   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
   {upcoming.map((apt) => (
-   <Card key={apt.id} padding="lg" className="space-y-4">
-   <div className="flex items-center justify-between gap-3">
+<Card key={apt.id} padding="lg" className="space-y-4 border-l-4 border-emerald-400 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] transition-shadow duration-200">   <div className="flex items-center justify-between gap-3">
    <div>
    <p className="text-lg font-semibold text-[#1C294E]">
    {format(parseISO(apt.scheduled_date), 'EEEE, MMM d')}
@@ -507,12 +512,14 @@ return (
      {apt.service_addresses.zip_code}
      </span>
      </div>
+      
     )}
     {apt.team_members && apt.team_members.length > 0 && (
      <div className="flex items-center gap-2">
      <Users className="w-4 h-4 text-gray-400" />
      <span>Team: {apt.team_members.join(', ')}</span>
      </div>
+    
     )}
     </div>
     
@@ -546,21 +553,19 @@ return (
   
   {/* Past & Cancelled */}
   <section>
-  <div className="flex items-center gap-2 mb-4">
+<div className="flex items-center gap-3 mb-4">
+ <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
   <Clock className="w-5 h-5 text-gray-500" />
-  <h2 className="text-xl font-semibold text-[#1C294E]">
-  Past & Cancelled
-  </h2>
-  </div>
+ </div>
+ <h2 className="text-xl font-bold text-[#1C294E]">Past & Cancelled</h2>
+</div>
   {past.length === 0 ? (
-   <Card className="text-center py-6 text-gray-600">
-   Nothing here yet.
-   </Card>
-  ) : (
+<Card className="text-center py-8 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] text-gray-500">
+   Nothing here yet
+   </Card>  ) : (
    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
    {past.map((apt) => (
-    <Card key={apt.id} padding="lg" className="space-y-3">
-    <div className="flex items-center justify-between">
+<Card key={apt.id} padding="lg" className="space-y-3 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100">    <div className="flex items-center justify-between">
     <div>
     <p className="font-semibold text-[#1C294E]">
     {format(parseISO(apt.scheduled_date), 'MMM d, yyyy')}
@@ -841,6 +846,7 @@ return (
    )}
    </Modal>
    </div>
+</div>
   )
  }
  
