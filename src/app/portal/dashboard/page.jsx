@@ -657,7 +657,7 @@ export default function DashboardPage() {
                </div>
                </div>
                
-               // Row 3: Service Address, Account Summary, Feedback //
+               {/* Row 3: Service Address, Account Summary, Feedback */}
                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">               
                {/* Service Address Card */}
                <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
@@ -745,7 +745,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-gray-600 mb-4">
                 How was your recent cleaning experience?
                 </p>
-                <Link href="/portal/feedback">
+                <Link href="/portal/customer-feedback">
                 <Button variant="primary" fullWidth className={styles.smoothTransition}>
                 Leave Review
                 </Button>
