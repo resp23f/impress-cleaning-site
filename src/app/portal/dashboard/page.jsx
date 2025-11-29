@@ -657,16 +657,16 @@ export default function DashboardPage() {
                </div>
                </div>
                
-               {/* = ROW 3: SERVICE ADDRESS = */}
-<div className="grid grid-cols-1 gap-6">               
+               // Row 3: Service Address, Account Summary, Feedback //
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">               
                {/* Service Address Card */}
                <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
                <div className={`
-                rounded-2xl bg-white p-6 sm:p-8
-                shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
-                border border-gray-100/80
-                ${styles.cardHover}
-              `}>
+      rounded-2xl bg-white p-6 sm:p-8
+      shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
+      border border-gray-100/80
+      ${styles.cardHover}
+    `}>
                 <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
                 <Home className="w-5 h-5 text-gray-500" />
@@ -717,8 +717,40 @@ export default function DashboardPage() {
                 </div>
                 </div>
                 
+                {/* Account Summary */}
+                <div className={`${styles.animateFadeInUp} ${styles.stagger6}`}>
+                <Card className={`${styles.cardHover} h-full`}>
+                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Account Summary</h2>
+                <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Member Since</span>
+                <span className="font-semibold text-[#1C294E]">
+                {profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '-'}
+                </span>
+                </div>
+                <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Total Cleanings</span>
+                <span className="font-semibold text-[#1C294E]">
+                {recentServices.length > 0 ? recentServices.length : '0'}
+                </span>
+                </div>
+                </div>
+                </Card>
                 </div>
                 
+                {/* Leave Feedback */}
+                <div className={`${styles.animateFadeInUp} ${styles.stagger7}`}>
+                <Card className={`${styles.cardHover} h-full`}>
+                <h2 className="text-xl font-bold text-[#1C294E] mb-4">Share Feedback</h2>
+                <p className="text-sm text-gray-600 mb-4">
+                How was your recent cleaning experience?
+                </p>
+                <Link href="/portal/feedback">
+                <Button variant="primary" fullWidth className={styles.smoothTransition}>
+                Leave Review
+                </Button>
+                </Link>
+                </Card>
                 </div>
                 </div>
                 
@@ -728,6 +760,8 @@ export default function DashboardPage() {
                 isOpen={isPanelOpen}
                 onClose={handleCloseSidePanel}
                 />
+                </div>
+                </div>
                 </>
                )
               }
