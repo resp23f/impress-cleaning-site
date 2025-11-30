@@ -128,7 +128,7 @@ function LoginPageContent() {
               alt="Impress Cleaning Services"
               width={200}
               height={70}
-              className="h-14 w-auto"
+              className="h-25 w-auto"
               priority
             />
           </div>
