@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format, parseISO, isAfter, isBefore } from 'date-fns'
+import styles from '../shared-animations.module.css'
 import {
   History,
   Calendar,
@@ -132,7 +133,7 @@ if (loading) {
  }
    return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
-      <div className="flex items-center justify-between gap-3">
+      <div className={`flex items-center justify-between gap-3 ${styles.animateFadeIn}`}>
         <div>
           <h1 className="text-3xl font-bold text-[#1C294E]">Service History</h1>
           <p className="text-gray-600">Your completed cleanings and receipts</p>
@@ -142,7 +143,7 @@ if (loading) {
           Auto-synced after each completed visit
         </div>
       </div>
-      <Card padding="lg" className="space-y-4">
+      <Card padding="lg" className={`space-y-4 ${styles.animateFadeInUp} ${styles.stagger1}`}>
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-500" />
           <p className="text-sm font-medium text-[#1C294E]">Filters</p>
@@ -178,11 +179,11 @@ if (loading) {
         </div>
       </Card>
       {filtered.length === 0 ? (
-        <Card className="text-center py-8 text-gray-600">
+        <Card className={`text-center py-8 text-gray-600 ${styles.animateFadeInUp} ${styles.stagger2}`}>
           No services match these filters yet.
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-5 ${styles.animateFadeInUp} ${styles.stagger2}`}>
           {filtered.map((svc) => (
             <Card key={svc.id} padding="lg" className="space-y-4">
               <div className="flex items-start justify-between">

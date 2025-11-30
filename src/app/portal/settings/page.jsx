@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import styles from '../shared-animations.module.css'
 import {
   User,
   Phone,
@@ -313,12 +314,12 @@ if (loading) {
  }
    return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
-      <div>
+      <div className={styles.animateFadeIn}>
         <h1 className="text-3xl font-bold text-[#1C294E]">Settings</h1>
         <p className="text-gray-600">Manage your profile, addresses, and payments</p>
       </div>
       {/* Profile */}
-      <Card padding="lg" className="space-y-6">
+      <Card padding="lg" className={`space-y-6 ${styles.animateFadeInUp} ${styles.stagger1}`}>
         <div className="flex items-center gap-2">
           <User className="w-5 h-5 text-[#079447]" />
           <h2 className="text-xl font-semibold text-[#1C294E]">Profile</h2>
@@ -366,7 +367,7 @@ if (loading) {
         </div>
       </Card>
       {/* Addresses */}
-      <Card padding="lg" className="space-y-4">
+      <Card padding="lg" className={`space-y-4 ${styles.animateFadeInUp} ${styles.stagger2}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <MapPin className="w-5 h-5 text-[#079447]" />
@@ -412,7 +413,7 @@ if (loading) {
         </div>
       </Card>
       {/* Password */}
-      <Card padding="lg" className="space-y-4">
+      <Card padding="lg" className={`space-y-4 ${styles.animateFadeInUp} ${styles.stagger3}`}>
         <div className="flex items-center gap-2">
           <KeyRound className="w-5 h-5 text-[#079447]" />
           <h2 className="text-xl font-semibold text-[#1C294E]">Security</h2>
@@ -442,7 +443,7 @@ if (loading) {
         </div>
       </Card>
       {/* Payment methods */}
-      <Card padding="lg" className="space-y-5">
+      <Card padding="lg" className={`space-y-5 ${styles.animateFadeInUp} ${styles.stagger4}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-[#079447]" />

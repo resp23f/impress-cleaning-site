@@ -3,6 +3,7 @@ import Script from 'next/script'
 import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import styles from '../shared-animations.module.css'
 import {
  Sparkles,
  Home,
@@ -453,7 +454,7 @@ if (!user) {
   
   <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
   {/* Header */}
-  <div className="mb-8">
+  <div className={`mb-8 ${styles.animateFadeIn}`}>
   <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
   Request Service
   </h1>
@@ -463,7 +464,7 @@ if (!user) {
   </div>
   
   {/* Progress Bar */}
-  <div className="mb-8">
+  <div className={`mb-8 ${styles.animateFadeInUp} ${styles.stagger1}`}>
   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
   <div
   className="h-full bg-[#079447] transition-all duration-300"
@@ -471,8 +472,8 @@ if (!user) {
   />
   </div>
   </div>
-  
-  <Card padding="lg">
+
+  <Card padding="lg" className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
   {/* Step 1: Service Type */}
   {step === 1 && (
    <div>

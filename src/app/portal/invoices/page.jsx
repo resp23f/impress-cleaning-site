@@ -169,7 +169,7 @@ if (loading) {
    <>
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">   {/* Header */}
-   <div className="mb-8">
+   <div className={`mb-8 ${styles.animateFadeIn}`}>
    <div className="flex items-center gap-3 mb-2">
    <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
    <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Invoices</span>
@@ -178,7 +178,7 @@ if (loading) {
    </div>
    
    {/* Balance Summary */}
-   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+   <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 ${styles.animateFadeInUp} ${styles.stagger1}`}>
    <Card className="p-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] bg-gradient-to-br from-white to-slate-50">
    <div className="flex items-center justify-between mb-3">
    <span className="text-sm font-medium text-gray-500">
@@ -205,7 +205,7 @@ if (loading) {
    </div>
    
    {/* Filters */}
-   <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+   <div className={`flex gap-2 mb-6 overflow-x-auto pb-2 ${styles.animateFadeInUp} ${styles.stagger2}`}>
    {['unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
     <button
     key={filterOption}
@@ -224,7 +224,7 @@ if (loading) {
    </div>
    
    {/* Invoices List */}
-   <div>
+   <div className={`${styles.animateFadeInUp} ${styles.stagger3}`}>
    {filteredInvoices.length === 0 ? (
     <Card className="p-12 text-center !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]">
     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-50 to-slate-100 flex items-center justify-center mx-auto mb-4">
