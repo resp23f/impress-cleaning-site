@@ -103,9 +103,9 @@ function LoginPageContent() {
         <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
         
         {/* Soft colored orbs */}
-        <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/40 to-teal-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/50 to-indigo-100/40 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/50 to-green-100/40 rounded-full blur-3xl" />
+        <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-300/50 to-teal-300/40 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-200/60 to-indigo-200/50 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-200/60 to-green-200/50 rounded-full blur-3xl" />
         
         {/* Subtle pattern overlay */}
         <div 
@@ -120,7 +120,7 @@ function LoginPageContent() {
         <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-between p-16 w-full">
+<div className="relative z-10 flex flex-col justify-center p-16 w-full h-full">
           {/* Logo */}
           <div>
             <Image
@@ -152,31 +152,8 @@ function LoginPageContent() {
             </p>
           </div>
 
-          {/* Bottom features */}
-          <div className="flex gap-8">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100/80 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Sparkles className="w-4 h-4 text-emerald-500" />
-              </div>
-              <div>
-                <p className="text-slate-700 font-medium text-sm">Easy Scheduling</p>
-                <p className="text-slate-400 text-xs">Book with ease</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100/80 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <svg className="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-slate-700 font-medium text-sm">Secure Payments</p>
-                <p className="text-slate-400 text-xs">Pay online</p>
-              </div>
             </div>
           </div>
-        </div>
-      </div>
 
       {/* Right Side - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-white p-6 sm:p-12">
