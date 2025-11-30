@@ -615,7 +615,7 @@ if (loading) {
             <span className="font-bold text-red-700">Warning:</span> This action is permanent
           </p>
           <p className="text-sm text-gray-600">
-            Permanently delete your account and all associated data. This action cannot be undone.
+            Permanently delete your account. This action cannot be undone.
           </p>
         </div>
         <Button variant="danger" onClick={handleDeleteAccount}>

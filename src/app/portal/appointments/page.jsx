@@ -151,7 +151,8 @@ export default function AppointmentsPage() {
  })
  const [rescheduleTimeRange, setRescheduleTimeRange] = useState('') // morning | afternoon | evening
  const [cancelReason, setCancelReason] = useState('')
- 
+ const [cancelReasonOther, setCancelReasonOther] = useState('')
+
  // Calendar state for rescheduling
  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
  const [calendarMonth, setCalendarMonth] = useState(() => {
@@ -294,12 +295,12 @@ export default function AppointmentsPage() {
   setModalMode('reschedule')
  }
  
- const openCancel = (apt) => {
+const openCancel = (apt) => {
   setSelectedAppointment(apt)
   setCancelReason('')
+  setCancelReasonOther('')
   setModalMode('cancel')
- }
- 
+} 
  const closeModal = () => {
   setSelectedAppointment(null)
   setModalMode(null)
@@ -379,22 +380,26 @@ const handleCancel = async () => {
   )
   return
  }
- // Require a reason
- if (!cancelReason) {
+// Require a reason
+if (!cancelReason) {
   toast.error('Please select a cancellation reason')
   return
- }
- 
+}
+
+// Require text if "Other" is selected
+if (cancelReason === 'Other' && !cancelReasonOther?.trim()) {
+  toast.error('Please specify your cancellation reason')
+  return
+} 
  setProcessing(true)
  try {
   const { error } = await supabase
   .from('appointments')
-  .update({
-   status: 'cancelled',
-   cancellation_reason: cancelReason || null,
-   cancelled_at: new Date().toISOString(),
-  })
-  .eq('id', selectedAppointment.id)
+.update({
+  status: 'cancelled',
+  cancellation_reason: cancelReason === 'Other' ? cancelReasonOther : cancelReason,
+  cancelled_at: new Date().toISOString(),
+})  .eq('id', selectedAppointment.id)
   .eq('customer_id', userId)
   
   if (error) throw error
@@ -810,26 +815,73 @@ return (
     Are you sure you want to cancel this appointment?
     </p>
     
-    <div>
-    <label className="block text-sm font-medium text-[#1C294E] mb-1">
-    Cancellation reason <span className="text-red-500">*</span>
+<div className="space-y-4">
+  <div>
+    <label className="block text-sm font-medium text-[#1C294E] mb-3">
+      Cancellation reason <span className="text-red-500">*</span>
     </label>
-    <select
-    className="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 text-sm"
-    value={cancelReason}
-    onChange={(e) => setCancelReason(e.target.value)}
-    required
-    >
-    <option value="">Select a reason</option>
-    <option value="Schedule conflict">Schedule conflict</option>
-    <option value="No longer need the service">No longer need the service</option>
-    <option value="Going with another provider">Going with another provider</option>
-    <option value="Financial reasons / budget">Financial reasons / budget</option>
-    <option value="Moving or out of town">Moving or out of town</option>
-    <option value="Other">Other</option>
-    </select>
+    <div className="space-y-2">
+      {[
+        { value: 'Schedule conflict', label: 'Schedule conflict' },
+        { value: 'No longer need the service', label: 'No longer need the service' },
+        { value: 'Going with another provider', label: 'Going with another provider' },
+        { value: 'Financial reasons / budget', label: 'Financial reasons / budget' },
+        { value: 'Moving or out of town', label: 'Moving or out of town' },
+        { value: 'Other', label: 'Other (please specify)' },
+      ].map((reason) => {
+        const isSelected = cancelReason === reason.value
+        return (
+          <button
+            key={reason.value}
+            type="button"
+            onClick={() => setCancelReason(reason.value)}
+            className={`w-full p-3 rounded-xl border-2 transition-all duration-200 text-left ${
+              isSelected
+                ? 'border-red-400 bg-red-50 ring-2 ring-red-100'
+                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                  isSelected
+                    ? 'border-red-500 bg-red-500'
+                    : 'border-gray-300'
+                }`}
+              >
+                {isSelected && (
+                  <div className="w-2 h-2 bg-white rounded-full" />
+                )}
+              </div>
+              <span className={`text-sm font-medium ${
+                isSelected ? 'text-red-700' : 'text-gray-700'
+              }`}>
+                {reason.label}
+              </span>
+            </div>
+          </button>
+        )
+      })}
     </div>
-    
+  </div>
+
+  {cancelReason === 'Other' && (
+    <div className="animate-fadeIn">
+      <label className="block text-sm font-medium text-[#1C294E] mb-2">
+        Please specify your reason <span className="text-red-500">*</span>
+      </label>
+      <textarea
+        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-100 transition-all duration-200 text-sm resize-none"
+        rows="3"
+        placeholder="Tell us why you're cancelling..."
+        value={cancelReason === 'Other' ? (cancelReasonOther || '') : ''}
+        onChange={(e) => setCancelReasonOther(e.target.value)}
+        required
+      />
+    </div>
+  )}
+</div>
+
     <div className="flex justify-end gap-3">
     <Button variant="ghost" onClick={closeModal}>
     Keep appointment
