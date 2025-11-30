@@ -120,11 +120,10 @@ function LoginPageContent() {
   <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
   
   {/* Content */}
-  <div className="relative z-10 flex flex-col justify-center p-16 w-full h-full">
-  <div className="max-w-sm">
+<div className="relative z-10 flex flex-col justify-start pt-32 p-16 w-full h-full"> 
   
   {/* Logo */}
-<div className="mb-8">
+<div className="mb-16">
   <Image
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
@@ -134,10 +133,12 @@ function LoginPageContent() {
   priority
   />
   </div>
+
   
   {/* Middle content */}
-  <div className="flex items-center gap-2 mb-4">
-  <div className="h-0.5 w-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" />
+  <div className="max-w-sm">
+    <div className="flex items-center gap-2 mb-4">
+      <div className="h-0.5 w-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" />
   <span className="text-xs font-semibold text-emerald-600/80 uppercase tracking-widest">
   Customer Portal
   </span>
