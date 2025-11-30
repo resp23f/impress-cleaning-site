@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
-  UserCheck,
   ClipboardList,
   Users,
   Calendar,
@@ -20,7 +19,6 @@ import { createClient } from '@/lib/supabase/client'
 import Badge from '@/components/ui/Badge'
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
-  { icon: UserCheck, label: 'Pending Registrations', href: '/admin/registrations', badge: true },
   { icon: ClipboardList, label: 'Service Requests', href: '/admin/requests', badge: true },
   { icon: Users, label: 'Customers', href: '/admin/customers' },
   { icon: Calendar, label: 'Appointments', href: '/admin/appointments' },
@@ -28,7 +26,7 @@ const navItems = [
   { icon: BarChart3, label: 'Reports', href: '/admin/reports' },
   { icon: Settings, label: 'Settings', href: '/admin/settings' },
 ]
-export default function AdminNav({ pendingCount = 0, requestsCount = 0 }) {
+export default function AdminNav({ requestsCount = 0 }) {
   const pathname = usePathname()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -37,11 +35,10 @@ export default function AdminNav({ pendingCount = 0, requestsCount = 0 }) {
     await supabase.auth.signOut()
     router.push('/auth/login')
   }
-  const getBadgeCount = (item) => {
-    if (item.href === '/admin/registrations') return pendingCount
-    if (item.href === '/admin/requests') return requestsCount
-    return 0
-  }
+const getBadgeCount = (item) => {
+  if (item.href === '/admin/requests') return requestsCount
+  return 0
+}
   return (
     <>
       {/* Desktop Sidebar */}
