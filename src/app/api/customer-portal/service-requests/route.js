@@ -6,104 +6,104 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request) {
+ try {
+  const supabase = await createClient()
+  const {
+   data: { user },
+  } = await supabase.auth.getUser()
+  
+  if (!user) {
+   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  
+  const body = await request.json()
+  
+  const {
+   service_type,
+   preferred_date,
+   preferred_time,
+   is_flexible,
+   address_id,
+   special_requests,
+   is_recurring,
+   recurring_frequency,
+  } = body || {}
+  
+  if (!service_type || !preferred_date || !address_id) {
+   return NextResponse.json(
+    { error: 'service_type, preferred_date, and address_id are required' },
+    { status: 422 }
+   )
+  }
+  
+  // Get customer profile for email
+  const { data: profile } = await supabaseAdmin
+  .from('profiles')
+  .select('full_name, email, phone')
+  .eq('id', user.id)
+  .single()
+  
+  // Get address details
+  const { data: address } = await supabaseAdmin
+  .from('service_addresses')
+  .select('*')
+  .eq('id', address_id)
+  .single()
+  
+  const { data: serviceRequest, error } = await supabase
+  .from('service_requests')
+  .insert({
+   customer_id: user.id,
+   service_type,
+   preferred_date,
+   preferred_time,
+   is_flexible: !!is_flexible,
+   address_id,
+   special_requests: special_requests || null,
+   is_recurring: !!is_recurring,
+   recurring_frequency: is_recurring ? recurring_frequency || null : null,
+   status: 'pending',
+  })
+  .select()
+  .single()
+  
+  if (error) {
+   return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+  
+  // Create admin notification in database
   try {
-    const supabase = await createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const body = await request.json()
-
-    const {
-      service_type,
-      preferred_date,
-      preferred_time,
-      is_flexible,
-      address_id,
-      special_requests,
-      is_recurring,
-      recurring_frequency,
-    } = body || {}
-
-    if (!service_type || !preferred_date || !address_id) {
-      return NextResponse.json(
-        { error: 'service_type, preferred_date, and address_id are required' },
-        { status: 422 }
-      )
-    }
-
-    // Get customer profile for email
-    const { data: profile } = await supabaseAdmin
-      .from('profiles')
-      .select('full_name, email, phone')
-      .eq('id', user.id)
-      .single()
-
-    // Get address details
-    const { data: address } = await supabaseAdmin
-      .from('service_addresses')
-      .select('*')
-      .eq('id', address_id)
-      .single()
-
-    const { data: serviceRequest, error } = await supabase
-      .from('service_requests')
-      .insert({
-        customer_id: user.id,
-        service_type,
-        preferred_date,
-        preferred_time,
-        is_flexible: !!is_flexible,
-        address_id,
-        special_requests: special_requests || null,
-        is_recurring: !!is_recurring,
-        recurring_frequency: is_recurring ? recurring_frequency || null : null,
-        status: 'pending',
-      })
-      .select()
-      .single()
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    // Create admin notification in database
-    try {
-      await supabaseAdmin.from('admin_notifications').insert({
-        type: 'new_service_request',
-        title: 'New service request submitted',
-        message: `Customer ${profile?.full_name || user.email} requested ${service_type}`,
-        link: `/admin/requests`,
-      })
-    } catch (notifyError) {
-      console.error('Failed to create admin notification', notifyError)
-    }
-
-    // Send email notification to admin
-    try {
-      const timeRangeLabels = {
-        morning: 'Morning (8:00 AM - 12:00 PM)',
-        afternoon: 'Afternoon (12:00 PM - 3:00 PM)',
-        evening: 'Evening (3:00 PM - 5:45 PM)',
-      }
-
-      const serviceTypeLabels = {
-        standard: 'Standard Cleaning',
-        deep: 'Deep Cleaning',
-        move_in_out: 'Move In/Out Cleaning',
-        post_construction: 'Post-Construction Cleaning',
-        office: 'Office Cleaning',
-      }
-
-      await resend.emails.send({
-        from: 'Impress Cleaning <notifications@impressyoucleaning.com>',
-        to: 'admin@impressyoucleaning.com',
-        subject: `🧹 New Service Request from ${profile?.full_name || 'Customer'}`,
-        html: `
+   await supabaseAdmin.from('admin_notifications').insert({
+    type: 'new_service_request',
+    title: 'New service request submitted',
+    message: `Customer ${profile?.full_name || user.email} requested ${service_type}`,
+    link: `/admin/requests`,
+   })
+  } catch (notifyError) {
+   console.error('Failed to create admin notification', notifyError)
+  }
+  
+  // Send email notification to admin
+  try {
+   const timeRangeLabels = {
+    morning: 'Morning (8:00 AM - 12:00 PM)',
+    afternoon: 'Afternoon (12:00 PM - 3:00 PM)',
+    evening: 'Evening (3:00 PM - 5:45 PM)',
+   }
+   
+   const serviceTypeLabels = {
+    standard: 'Standard Cleaning',
+    deep: 'Deep Cleaning',
+    move_in_out: 'Move In/Out Cleaning',
+    post_construction: 'Post-Construction Cleaning',
+    office: 'Office Cleaning',
+   }
+   
+   await resend.emails.send({
+    from: 'Impress Cleaning <notifications@impressyoucleaning.com>',
+    to: 'admin@impressyoucleaning.com',
+    subject: `🧹 New Service Request from ${profile?.full_name || 'Customer'}`,
+    html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #079447; padding: 20px; text-align: center;">
               <h1 style="color: white; margin: 0;">New Service Request</h1>
@@ -151,15 +151,39 @@ export async function POST(request) {
             </div>
           </div>
         `,
-      })
-    } catch (emailError) {
-      console.error('Failed to send admin email notification', emailError)
-      // Don't fail the request if email fails
-    }
-
-    return NextResponse.json({ data: serviceRequest }, { status: 201 })
-  } catch (err) {
-    console.error('Service request error', err)
-    return NextResponse.json({ error: err.message || 'Failed to submit request' }, { status: 500 })
+   })
+  } catch (emailError) {
+   console.error('Failed to send admin email notification', emailError)
+   // Don't fail the request if email fails
   }
+  
+  // Send confirmation email to customer
+  try {
+   const addressLine = address
+   ? `${address.street_address}${address.unit ? ', ' + address.unit : ''}, ${address.city}, ${address.state} ${address.zip_code}`
+   : 'N/A'
+   
+   await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/service-request-received`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+     customerEmail: profile?.email || user.email,
+     customerName: profile?.full_name || user.email.split('@')[0],
+     serviceType: service_type,
+     preferredDate: preferred_date,
+     preferredTime: preferred_time,
+     address: addressLine,
+    }),
+   })
+  } catch (emailError) {
+   console.error('Failed to send customer confirmation email', emailError)
+   // Don't fail the request if email fails
+  }
+  
+  return NextResponse.json({ data: serviceRequest }, { status: 201 })
+  
+ } catch (err) {
+  console.error('Service request error', err)
+  return NextResponse.json({ error: err.message || 'Failed to submit request' }, { status: 500 })
+ }
 }
