@@ -737,7 +737,7 @@ if (loading) {
              : null
 
             const getFreshness = () => {
-             if (daysSince === null) return { label: 'No cleanings yet', color: 'bg-gray-100', iconColor: 'text-gray-400', width: '0%' }
+             if (daysSince === null) return { label: 'No cleanings', color: 'bg-gray-100', iconColor: 'text-gray-400', width: '0%' }
              if (daysSince <= 7) return { label: 'Sparkling', color: 'bg-emerald-100', iconColor: 'text-emerald-600', width: '100%', barColor: 'bg-emerald-500' }
              if (daysSince <= 14) return { label: 'Fresh', color: 'bg-green-100', iconColor: 'text-green-600', width: '70%', barColor: 'bg-green-400' }
              if (daysSince <= 21) return { label: 'Good', color: 'bg-amber-100', iconColor: 'text-amber-600', width: '45%', barColor: 'bg-amber-400' }
