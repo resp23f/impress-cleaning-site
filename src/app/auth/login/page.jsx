@@ -120,10 +120,9 @@ function LoginPageContent() {
   <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
   
   {/* Content */}
-<div className="relative z-10 flex flex-col justify-start pt-32 p-16 w-full h-full"> 
+<div className="relative z-10 flex flex-col justify-start pt-16 p-16 w-full h-full"> 
   
   {/* Logo */}
-<div className="mb-32">
   <Image
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
@@ -154,7 +153,6 @@ function LoginPageContent() {
   </p>
   </div>
   
-  </div>
   </div>
   
   {/* Right Side - Login Form */}
