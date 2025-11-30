@@ -58,21 +58,19 @@ export default function PortalNav({ userName }) {
     key={item.href}
     href={item.href}
     className={`
-          group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-200
-          ${isActive
+ group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
+ ${isActive
      ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-     : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-slate-50 hover:text-[#1C294E]'
+     : 'text-gray-600 hover:bg-gray-50 hover:text-[#1C294E]'
     }
-         `}
-    >
+`}    >
     <div className={`
-          w-9 h-9 rounded-lg flex items-center justify-center transition-all
-          ${isActive 
-     ? 'bg-white/20' 
-     : 'bg-gray-100 group-hover:bg-emerald-100'
+ w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
+ ${isActive
+     ? 'bg-white/20'
+     : 'bg-gray-100 group-hover:bg-emerald-50'
     }
-         `}>
-    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+`}>    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
     </div>
     <span className="flex-1">{item.label}</span>
     {isActive && (
@@ -139,21 +137,19 @@ export default function PortalNav({ userName }) {
      href={item.href}
      onClick={() => setMobileMenuOpen(false)}
      className={`
-            group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-200
-            ${isActive
+ group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
+ ${isActive
       ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-      : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-slate-50 hover:text-[#1C294E]'
+      : 'text-gray-600 hover:bg-gray-50 hover:text-[#1C294E]'
      }
-           `}
-     >
+`}     >
      <div className={`
-            w-9 h-9 rounded-lg flex items-center justify-center transition-all
-            ${isActive 
-      ? 'bg-white/20' 
-      : 'bg-gray-100 group-hover:bg-emerald-100'
+ w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
+ ${isActive
+      ? 'bg-white/20'
+      : 'bg-gray-100 group-hover:bg-emerald-50'
      }
-           `}>
-     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+`}>     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
      </div>
      <span className="flex-1">{item.label}</span>
      {isActive && (
@@ -195,8 +191,8 @@ export default function PortalNav({ userName }) {
     >
     <div className={`
          w-10 h-10 rounded-xl flex items-center justify-center transition-all
-         ${isActive 
-     ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50' 
+         ${isActive
+     ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
      : 'bg-gray-50 group-hover:bg-emerald-50'
     }
         `}>
@@ -215,7 +211,7 @@ export default function PortalNav({ userName }) {
   <div className={`
        w-10 h-10 rounded-xl flex items-center justify-center transition-all
        ${pathname === '/portal/settings'
-   ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50' 
+   ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
    : 'bg-gray-50 group-hover:bg-emerald-50'
   }
       `}>
