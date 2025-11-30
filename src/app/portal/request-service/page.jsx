@@ -11,7 +11,6 @@ import {
  Wrench,
  Calendar as CalendarIcon,
  MapPin,
- FileText,
  Repeat,
  CheckCircle,
  Sun,
@@ -26,7 +25,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import SelectableCard from '@/components/ui/SelectableCard'
 import Input from '@/components/ui/Input'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 import { sanitizeText } from '@/lib/sanitize'
 
@@ -379,14 +378,15 @@ export default function RequestServicePage() {
  const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
  
  
- if (!user) {
+if (!user) {
   return (
-   <div className="min-h-screen flex items-center justify-center">
-   <LoadingSpinner size="lg" />
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+     <DashboardSkeleton />
+    </div>
    </div>
   )
- }
- 
+ } 
  // Success screen
  if (step === 6) {
   return (

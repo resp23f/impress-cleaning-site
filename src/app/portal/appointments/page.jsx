@@ -436,12 +436,14 @@ closeModal()
 }
 
 if (loading) {
- return (
-  <div className="min-h-screen flex items-center justify-center">
-  <LoadingSpinner size="lg" />
-  </div>
- )
-}
+  return (
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+     <DashboardSkeleton />
+    </div>
+   </div>
+  )
+ }
 
 return (
 <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">

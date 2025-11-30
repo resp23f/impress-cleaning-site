@@ -15,7 +15,6 @@ import {
   CreditCard,
   Shield,
   Loader2,
-  Clock,
 } from 'lucide-react'
 import { loadStripe } from '@stripe/stripe-js'
 import { createClient } from '@/lib/supabase/client'
@@ -23,7 +22,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
@@ -303,14 +302,16 @@ const handleProfileSave = async () => {
       toast.error(err.message || 'Could not update default card')
     }
   }
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-      </div>
-    )
-  }
+if (loading) {
   return (
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+     <DashboardSkeleton />
+    </div>
+   </div>
+  )
+ }
+   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-[#1C294E]">Settings</h1>

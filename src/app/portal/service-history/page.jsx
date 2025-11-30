@@ -17,7 +17,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Badge from '@/components/ui/Badge'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 const serviceTypeLabel = (type) => {
   const labels = {
@@ -121,14 +121,16 @@ export default function ServiceHistoryPage() {
     }
     return true
   })
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-      </div>
-    )
-  }
+if (loading) {
   return (
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+     <DashboardSkeleton />
+    </div>
+   </div>
+  )
+ }
+   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
       <div className="flex items-center justify-between gap-3">
         <div>

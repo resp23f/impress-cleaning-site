@@ -7,7 +7,7 @@ import { FileText, DollarSign, AlertCircle, Calendar } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
-import SkeletonLoader, { CardSkeleton, InvoiceCardSkeleton } from '@/components/ui/SkeletonLoader'
+import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
  const [open, setOpen] = useState(false)
@@ -156,27 +156,15 @@ function CancellationTooltip() {
   .filter((inv) => inv.status === 'overdue')
   .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0)
   
-  if (loading) {
-   return (
-<div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.animateFadeInUp}`}>    
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-    <div className="space-y-2">
-    <SkeletonLoader height="h-8" className="w-48" />
-    <SkeletonLoader height="h-5" className="w-64" />
+if (loading) {
+  return (
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+     <DashboardSkeleton />
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <CardSkeleton />
-    <CardSkeleton />
-    </div>
-    <div className="space-y-4">
-    <InvoiceCardSkeleton />
-    <InvoiceCardSkeleton />
-    <InvoiceCardSkeleton />
-    </div>
-    </div>
-    </div>
-   )
-  }
+   </div>
+  )
+ }
   return (
    <>
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
