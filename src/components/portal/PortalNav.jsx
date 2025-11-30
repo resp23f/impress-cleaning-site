@@ -61,107 +61,24 @@ export default function PortalNav({ userName }) {
  group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
  ${isActive
      ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-     : 'text-gray-600 hover:bg-gray-50 hover:text-[#1C294E]'
-    }
+     : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 hover:shadow-sm'    }
 `}    >
-    <div className={`
- w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
- ${isActive
-     ? 'bg-white/20'
-     : 'bg-gray-100 group-hover:bg-emerald-50'
-    }
-`}>    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
-    </div>
-    <span className="flex-1">{item.label}</span>
-    {isActive && (
-     <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-    )}
-    </Link>
-   )
-  })}
-  </nav>
-  
-  {/* Logout */}
-  <div className="p-4 mt-auto border-t border-gray-100">
-  <button
-  onClick={handleLogout}
-  className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
-  >
-  <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-all">
-  <LogOut className="w-5 h-5 text-gray-500 group-hover:text-red-600" />
-  </div>
-  <span className="flex-1">Log Out</span>
-  </button>
-  </div>
-  </div>
-  </aside>
-  
-  {/* Mobile Header */}
-  <div className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-100 shadow-sm">
-  <div className="flex items-center">
-  <img
-  src="/ImpressLogoNoBackgroundBlue.png"
-  alt="Impress Cleaning Services"
-  className="h-10 w-auto"
-  />
-  </div>
-  <button
-  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-  className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
-  >
-  {mobileMenuOpen ? (
-   <X className="w-6 h-6 text-gray-700" />
-  ) : (
-   <Menu className="w-6 h-6 text-gray-700" />
-  )}
-  </button>
-  </div>
-  
-  {/* Mobile Menu */}
-  {mobileMenuOpen && (
-   <div className="lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
-   <div
-   className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl"
-   onClick={(e) => e.stopPropagation()}
-   >
-   <div className="flex flex-col h-full pt-20 pb-4">
-   
-   {/* Navigation */}
-   <nav className="flex-1 px-4 space-y-1.5">
-   {navItems.map((item) => {
-    const Icon = item.icon
-    const isActive = pathname === item.href
-    return (
-     <Link
-     key={item.href}
-     href={item.href}
-     onClick={() => setMobileMenuOpen(false)}
-     className={`
- group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
- ${isActive
-      ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-      : 'text-gray-600 hover:bg-gray-50 hover:text-[#1C294E]'
-     }
-`}     >
      <div className={`
  w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
  ${isActive
       ? 'bg-white/20'
       : 'bg-gray-100 group-hover:bg-emerald-50'
      }
-`}>     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+`}>    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
      </div>
      <span className="flex-1">{item.label}</span>
-     {isActive && (
-      <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-     )}
      </Link>
     )
    })}
    </nav>
    
    {/* Logout */}
-   <div className="px-4 pt-4 border-t border-gray-100">
+   <div className="p-4 mt-auto border-t border-gray-100">
    <button
    onClick={handleLogout}
    className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
@@ -173,56 +90,131 @@ export default function PortalNav({ userName }) {
    </button>
    </div>
    </div>
+   </aside>
+   
+   {/* Mobile Header */}
+   <div className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-100 shadow-sm">
+   <div className="flex items-center">
+   <img
+   src="/ImpressLogoNoBackgroundBlue.png"
+   alt="Impress Cleaning Services"
+   className="h-10 w-auto"
+   />
    </div>
+   <button
+   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+   className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
+   >
+   {mobileMenuOpen ? (
+    <X className="w-6 h-6 text-gray-700" />
+   ) : (
+    <Menu className="w-6 h-6 text-gray-700" />
+   )}
+   </button>
    </div>
-  )}
-  
-  {/* Mobile Bottom Navigation */}
-  <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)]">
-  <nav className="flex justify-around px-2 py-2">
-  {navItems.slice(0, 4).map((item) => {
-   const Icon = item.icon
-   const isActive = pathname === item.href
-   return (
+   
+   {/* Mobile Menu */}
+   {mobileMenuOpen && (
+    <div className="lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+    <div
+    className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl"
+    onClick={(e) => e.stopPropagation()}
+    >
+    <div className="flex flex-col h-full pt-20 pb-4">
+    
+    {/* Navigation */}
+    <nav className="flex-1 px-4 space-y-1.5">
+    {navItems.map((item) => {
+     const Icon = item.icon
+     const isActive = pathname === item.href
+     return (
+      <Link
+      key={item.href}
+      href={item.href}
+      onClick={() => setMobileMenuOpen(false)}
+      className={`
+ group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
+ ${isActive
+       ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+       : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 hover:shadow-sm'     }
+`}     >
+       <div className={`
+ w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
+ ${isActive
+        ? 'bg-white/20'
+        : 'bg-gray-100 group-hover:bg-emerald-50'
+       }
+`}>     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+       </div>
+       <span className="flex-1">{item.label}</span>
+       </Link>
+      )
+     })}
+     </nav>
+     
+     {/* Logout */}
+     <div className="px-4 pt-4 border-t border-gray-100">
+     <button
+     onClick={handleLogout}
+     className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+     >
+     <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-all">
+     <LogOut className="w-5 h-5 text-gray-500 group-hover:text-red-600" />
+     </div>
+     <span className="flex-1">Log Out</span>
+     </button>
+     </div>
+     </div>
+     </div>
+     </div>
+    )}
+    
+    {/* Mobile Bottom Navigation */}
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)]">
+    <nav className="flex justify-around px-2 py-2">
+    {navItems.slice(0, 4).map((item) => {
+     const Icon = item.icon
+     const isActive = pathname === item.href
+     return (
+      <Link
+      key={item.href}
+      href={item.href}
+      className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
+      >
+      <div className={`
+         w-10 h-10 rounded-xl flex items-center justify-center transition-all
+         ${isActive
+       ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
+       : 'bg-gray-50 group-hover:bg-emerald-50'
+      }
+        `}>
+      <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+      </div>
+      <span className={`text-xs font-medium ${isActive ? 'text-emerald-600' : 'text-gray-500'}`}>
+      {item.label.split(' ')[0]}
+      </span>
+      </Link>
+     )
+    })}
     <Link
-    key={item.href}
-    href={item.href}
+    href="/portal/settings"
     className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
     >
     <div className={`
-         w-10 h-10 rounded-xl flex items-center justify-center transition-all
-         ${isActive
+       w-10 h-10 rounded-xl flex items-center justify-center transition-all
+       ${pathname === '/portal/settings'
      ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
      : 'bg-gray-50 group-hover:bg-emerald-50'
     }
-        `}>
-    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+      `}>
+    <Settings className={`w-5 h-5 ${pathname === '/portal/settings' ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
     </div>
-    <span className={`text-xs font-medium ${isActive ? 'text-emerald-600' : 'text-gray-500'}`}>
-    {item.label.split(' ')[0]}
+    <span className={`text-xs font-medium ${pathname === '/portal/settings' ? 'text-emerald-600' : 'text-gray-500'}`}>
+    Settings
     </span>
     </Link>
+    </nav>
+    </div>
+    </>
    )
-  })}
-  <Link
-  href="/portal/settings"
-  className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
-  >
-  <div className={`
-       w-10 h-10 rounded-xl flex items-center justify-center transition-all
-       ${pathname === '/portal/settings'
-   ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
-   : 'bg-gray-50 group-hover:bg-emerald-50'
   }
-      `}>
-  <Settings className={`w-5 h-5 ${pathname === '/portal/settings' ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
-  </div>
-  <span className={`text-xs font-medium ${pathname === '/portal/settings' ? 'text-emerald-600' : 'text-gray-500'}`}>
-  Settings
-  </span>
-  </Link>
-  </nav>
-  </div>
-  </>
- )
-}
