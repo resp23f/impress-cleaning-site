@@ -123,7 +123,7 @@ function LoginPageContent() {
 <div className="relative z-10 flex flex-col justify-start p-16 w-full h-full"> 
   
   {/* Logo */}
-    <div className="mb-24">
+    <div className="mb-40">
   <Image
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
