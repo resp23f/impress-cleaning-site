@@ -1,86 +1,87 @@
-import styles from '@/app/portal/shared-animations.module.css'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-export default function SkeletonLoader({ className = '', count = 1, height = 'h-4' }) {
+export default function SkeletonLoader({ count = 1, height, width, circle = false, className = '' }) {
   return (
-    <>
-      {[...Array(count)].map((_, i) => (
-        <div
-          key={i}
-          className={`
-            ${height} rounded relative overflow-hidden bg-gray-200
-            ${className}
-          `}
-        >
-          <div 
-            className={`absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 to-transparent ${styles.shimmerWave}`} 
-          />
-        </div>
-      ))}
-    </>
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      <Skeleton 
+        count={count} 
+        height={height} 
+        width={width} 
+        circle={circle}
+        className={className}
+      />
+    </SkeletonTheme>
   )
 }
 
 export function CardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
-      <SkeletonLoader height="h-6" className="w-1/3" />
-      <SkeletonLoader height="h-4" className="w-full" />
-      <SkeletonLoader height="h-4" className="w-5/6" />
-      <SkeletonLoader height="h-4" className="w-4/6" />
-    </div>
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
+        <Skeleton height={24} width="40%" />
+        <Skeleton count={3} height={16} />
+      </div>
+    </SkeletonTheme>
   )
 }
 
 export function InvoiceCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 border border-gray-100/50">
-      <div className="flex items-center gap-4">
-        <SkeletonLoader height="h-12 w-12" className="!rounded-xl" />
-        <div className="flex-1 space-y-2">
-          <SkeletonLoader height="h-5" className="w-1/3" />
-          <SkeletonLoader height="h-4" className="w-1/4" />
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 border border-gray-100/50">
+        <div className="flex items-center gap-4">
+          <Skeleton circle height={48} width={48} />
+          <div className="flex-1">
+            <Skeleton height={20} width="50%" />
+            <Skeleton height={16} width="30%" style={{ marginTop: 8 }} />
+          </div>
+          <Skeleton height={40} width={100} borderRadius={12} />
         </div>
-        <SkeletonLoader height="h-10" className="w-24 !rounded-xl" />
       </div>
-    </div>
+    </SkeletonTheme>
   )
 }
 
 export function AppointmentCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border-l-4 border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <SkeletonLoader height="h-5" className="w-32" />
-          <SkeletonLoader height="h-4" className="w-24" />
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      <div className="bg-white rounded-2xl border-l-4 border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <Skeleton height={20} width={140} />
+            <Skeleton height={16} width={100} style={{ marginTop: 8 }} />
+          </div>
+          <Skeleton height={28} width={80} borderRadius={20} />
         </div>
-        <SkeletonLoader height="h-6" className="w-20 !rounded-full" />
+        <div className="space-y-2">
+          <Skeleton height={16} width={180} />
+          <Skeleton height={16} width={240} />
+        </div>
+        <div className="flex gap-3">
+          <Skeleton height={36} width={110} borderRadius={12} />
+          <Skeleton height={36} width={80} borderRadius={12} />
+        </div>
       </div>
-      <div className="space-y-2">
-        <SkeletonLoader height="h-4" className="w-40" />
-        <SkeletonLoader height="h-4" className="w-56" />
-      </div>
-      <div className="flex gap-3">
-        <SkeletonLoader height="h-9" className="w-28 !rounded-xl" />
-        <SkeletonLoader height="h-9" className="w-20 !rounded-xl" />
-      </div>
-    </div>
+    </SkeletonTheme>
   )
 }
 
 export function DashboardSkeleton() {
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <SkeletonLoader height="h-8" className="w-48" />
-        <SkeletonLoader height="h-5" className="w-64" />
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      <div className="space-y-6">
+        <div>
+          <Skeleton height={32} width={200} />
+          <Skeleton height={20} width={280} style={{ marginTop: 8 }} />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <CardSkeleton />
+          </div>
           <CardSkeleton />
         </div>
-        <CardSkeleton />
       </div>
-    </div>
+    </SkeletonTheme>
   )
 }

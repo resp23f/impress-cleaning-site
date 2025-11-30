@@ -23,7 +23,7 @@ import { createClient } from '@/lib/supabase/client'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from '../invoices/InvoiceSidePanel'
 import styles from '../shared-animations.module.css'
 
@@ -200,17 +200,15 @@ export default function DashboardPage() {
   return 'Good evening'
  }
 
- if (loading) {
+if (loading) {
   return (
-   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-    <div className="text-center">
-     <LoadingSpinner size="lg" />
-     <p className="mt-4 text-gray-500 text-sm">Loading your dashboard...</p>
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+     <DashboardSkeleton />
     </div>
    </div>
   )
  }
-
  const firstName = profile?.full_name?.split(' ')[0] || 'there'
  const nextAppointment = upcomingAppointments[0]
 
