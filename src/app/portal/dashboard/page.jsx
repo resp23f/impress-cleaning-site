@@ -16,11 +16,8 @@ import {
  Sparkles,
  Home,
  Quote,
- Phone,
- Mail,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'

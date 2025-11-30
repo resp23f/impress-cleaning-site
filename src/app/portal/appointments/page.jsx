@@ -10,7 +10,6 @@ import {
  RefreshCw,
  XCircle,
  CheckCircle,
- AlertCircle,
  ShieldCheck,
  ChevronLeft,
  ChevronRight,
@@ -25,7 +24,7 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 
 const statusBadges = {
