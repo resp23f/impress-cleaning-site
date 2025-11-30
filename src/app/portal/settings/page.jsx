@@ -303,6 +303,30 @@ const handleProfileSave = async () => {
       toast.error(err.message || 'Could not update default card')
     }
   }
+    const handleDeleteAccount = async () => {
+    if (!window.confirm('This will permanently delete your account. Continue?')) return
+
+    try {
+      const res = await fetch('/api/customer-portal/delete-account', {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to delete account')
+      }
+
+      toast.success('Your account has been deleted')
+
+      // sign out and send them away
+      await supabase.auth.signOut()
+      router.push('/auth/login')
+    } catch (err) {
+      console.error('Delete account failed', err)
+      toast.error(err.message || 'Could not delete account')
+    }
+  }
+
 if (loading) {
   return (
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
@@ -594,13 +618,13 @@ if (loading) {
             Permanently delete your account and all associated data. This action cannot be undone.
           </p>
         </div>
-        <Button variant="danger" onClick={() => router.push('/auth/support')}>
+        <Button variant="danger" onClick={handleDeleteAccount}>
           <Trash2 className="w-4 h-4" />
-          Request Account Deletion
+          Delete My Account
         </Button>
       </Card>
       <Modal
-        open={addressModal.open}
+        isOpen={addressModal.open}
         onClose={() => setAddressModal({ open: false, editing: null })}
         title={addressModal.editing ? 'Edit address' : 'Add address'}
       >

@@ -383,22 +383,22 @@ if (loading) {
                 relative overflow-hidden rounded-2xl h-full
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_20px_40px_-15px_rgba(0,0,0,0.1)]
       ${balance > 0
-         ? 'bg-gradient-to-br from-orange-100 via-orange-50 to-amber-50 border border-orange-300/50'
+         ? 'bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 border border-red-200/60'
          : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200/50'
         }              ${styles.cardHover}
               `}>
         {/* Decorative circles */}
         <div className={`
-  absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-20
-  ${balance > 0 ? 'bg-orange-300' : 'bg-emerald-300'}
+  absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-15
+  ${balance > 0 ? 'bg-red-300' : 'bg-emerald-300'}
 `} />
         <div className={`
   absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-10
-  ${balance > 0 ? 'bg-amber-300' : 'bg-green-300'}
+  ${balance > 0 ? 'bg-rose-300' : 'bg-green-300'}
 `} />
         <div className="relative p-8 h-full flex flex-col">
          <div className="flex items-center gap-2 mb-6">
-          <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-amber-600' : 'text-emerald-600'}`} />
+          <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-red-600' : 'text-emerald-600'}`} />
           <h2 className="text-lg font-bold text-[#1C294E]">
            Account Balance
           </h2>
@@ -407,11 +407,11 @@ if (loading) {
          {balance > 0 ? (
           <div className="flex-1 flex flex-col">
            <div className="mb-8">
-            <p className="text-5xl font-bold text-[#1C294E] mb-2 tracking-tight">
+            <p className="text-5xl font-bold text-red-600 mb-2 tracking-tight">
              ${balance.toFixed(2)}
             </p>
-            <p className="text-sm text-gray-600">
-             Outstanding balance
+            <p className="text-sm font-medium text-gray-700">
+             Balance Due
             </p>
            </div>
            <div className="mt-auto">
@@ -421,8 +421,9 @@ if (loading) {
               fullWidth
               className={`
                               ${styles.smoothTransition}
-                              shadow-lg shadow-[#079447]/20
-                              hover:shadow-xl hover:shadow-[#079447]/30
+                              bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700
+                              shadow-lg shadow-red-200
+                              hover:shadow-xl hover:shadow-red-300
                             `}
              >
               <CreditCard className="w-5 h-5" />         Pay Now
