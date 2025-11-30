@@ -3,11 +3,11 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function SkeletonLoader({ count = 1, height, width, circle = false, className = '' }) {
   return (
-    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
-      <Skeleton 
-        count={count} 
-        height={height} 
-        width={width} 
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
+      <Skeleton
+        count={count}
+        height={height}
+        width={width}
         circle={circle}
         className={className}
       />
@@ -17,7 +17,7 @@ export default function SkeletonLoader({ count = 1, height, width, circle = fals
 
 export function CardSkeleton() {
   return (
-    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
       <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
         <Skeleton height={24} width="40%" />
         <Skeleton count={3} height={16} />
@@ -28,7 +28,7 @@ export function CardSkeleton() {
 
 export function InvoiceCardSkeleton() {
   return (
-    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
       <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 border border-gray-100/50">
         <div className="flex items-center gap-4">
           <Skeleton circle height={48} width={48} />
@@ -45,7 +45,7 @@ export function InvoiceCardSkeleton() {
 
 export function AppointmentCardSkeleton() {
   return (
-    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
       <div className="bg-white rounded-2xl border-l-4 border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div>
@@ -69,7 +69,7 @@ export function AppointmentCardSkeleton() {
 
 export function DashboardSkeleton() {
   return (
-    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
       <div className="space-y-6">
         <div>
           <Skeleton height={32} width={200} />
