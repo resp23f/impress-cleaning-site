@@ -10,10 +10,10 @@ import {
  Settings,
  LogOut,
  Menu,
- X
+ X,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import Button from '@/components/ui/Button'
+
 const navItems = [
  { icon: Home, label: 'Dashboard', href: '/portal/dashboard' },
  { icon: Calendar, label: 'Appointments', href: '/portal/appointments' },
@@ -21,30 +21,35 @@ const navItems = [
  { icon: Receipt, label: 'Invoices', href: '/portal/invoices' },
  { icon: Settings, label: 'Settings', href: '/portal/settings' },
 ]
+
 export default function PortalNav({ userName }) {
  const pathname = usePathname()
  const router = useRouter()
  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
  const supabase = createClient()
+ 
  const handleLogout = async () => {
   await supabase.auth.signOut()
   router.push('/auth/login')
  }
+ 
  return (
   <>
   {/* Desktop Sidebar */}
-  <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-gradient-to-b from-white via-white to-slate-50 border-r border-gray-100 shadow-[1px_0_30px_-15px_rgba(0,0,0,0.1)]">  <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
+  <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col bg-white border-r border-gray-100 shadow-[4px_0_24px_-8px_rgba(0,0,0,0.08)]">
+  <div className="flex flex-col flex-grow pt-8 overflow-y-auto">
   
-  {/* Logo */}
-<div className="flex items-center justify-center flex-shrink-0 px-6 pt-8 pb-6 mb-6 border-b border-gray-100">
+  {/* Logo & Welcome */}
+  <div className="flex-shrink-0 px-6 mb-8">
   <img
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
-  className="h-20 w-auto"
+  className="h-16 w-auto mx-auto mb-6"
   />
+  </div>
   
-  </div>  {/* Navigation */}
-  <nav className="flex-1 px-3 space-y-1">
+  {/* Navigation */}
+  <nav className="flex-1 px-4 space-y-1.5">
   {navItems.map((item) => {
    const Icon = item.icon
    const isActive = pathname === item.href
@@ -53,42 +58,58 @@ export default function PortalNav({ userName }) {
     key={item.href}
     href={item.href}
     className={`
-                    group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200
-                    ${isActive
-     ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
-     : 'text-gray-600 hover:bg-gray-100/80 hover:text-[#1C294E]'
+          group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-200
+          ${isActive
+     ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+     : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-slate-50 hover:text-[#1C294E]'
     }
-                  `}    >
-    <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-700'}`} />
-    {item.label}
+         `}
+    >
+    <div className={`
+          w-9 h-9 rounded-lg flex items-center justify-center transition-all
+          ${isActive 
+     ? 'bg-white/20' 
+     : 'bg-gray-100 group-hover:bg-emerald-100'
+    }
+         `}>
+    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+    </div>
+    <span className="flex-1">{item.label}</span>
+    {isActive && (
+     <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+    )}
     </Link>
    )
   })}
   </nav>
+  
   {/* Logout */}
-  <div className="p-3 border-t border-gray-200">
+  <div className="p-4 mt-auto border-t border-gray-100">
   <button
   onClick={handleLogout}
-  className="group flex items-center w-full px-3 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+  className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
   >
-  <LogOut className="mr-3 h-5 w-5 text-gray-500 group-hover:text-gray-700" />
-  Log Out
+  <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-all">
+  <LogOut className="w-5 h-5 text-gray-500 group-hover:text-red-600" />
+  </div>
+  <span className="flex-1">Log Out</span>
   </button>
   </div>
   </div>
   </aside>
+  
   {/* Mobile Header */}
-  <div className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+  <div className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-100 shadow-sm">
   <div className="flex items-center">
   <img
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
-  className="h-11 w-auto"
+  className="h-10 w-auto"
   />
   </div>
   <button
   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-  className="p-2 rounded-lg hover:bg-gray-100"
+  className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
   >
   {mobileMenuOpen ? (
    <X className="w-6 h-6 text-gray-700" />
@@ -97,23 +118,18 @@ export default function PortalNav({ userName }) {
   )}
   </button>
   </div>
+  
   {/* Mobile Menu */}
   {mobileMenuOpen && (
-   <div className="lg:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setMobileMenuOpen(false)}>
+   <div className="lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
    <div
-   className="fixed inset-y-0 right-0 w-64 bg-white shadow-xl"
+   className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl"
    onClick={(e) => e.stopPropagation()}
    >
    <div className="flex flex-col h-full pt-20 pb-4">
-   {/* User Info */}
-   {userName && (
-    <div className="px-6 mb-6">
-    <p className="text-sm text-gray-600">Welcome back,</p>
-    <p className="text-lg font-semibold text-[#1C294E]">{userName}</p>
-    </div>
-   )}
+   
    {/* Navigation */}
-   <nav className="flex-1 px-3 space-y-1">
+   <nav className="flex-1 px-4 space-y-1.5">
    {navItems.map((item) => {
     const Icon = item.icon
     const isActive = pathname === item.href
@@ -123,34 +139,51 @@ export default function PortalNav({ userName }) {
      href={item.href}
      onClick={() => setMobileMenuOpen(false)}
      className={`
-                    group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200
-                    ${isActive
-      ? 'bg-gradient-to-r from-[#079447] to-emerald-500 text-white shadow-md shadow-emerald-200'
-      : 'text-gray-600 hover:bg-gray-100/80 hover:text-[#1C294E]'
+            group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-200
+            ${isActive
+      ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+      : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-slate-50 hover:text-[#1C294E]'
      }
-                  `}     >
-     <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500'}`} />
-     {item.label}
+           `}
+     >
+     <div className={`
+            w-9 h-9 rounded-lg flex items-center justify-center transition-all
+            ${isActive 
+      ? 'bg-white/20' 
+      : 'bg-gray-100 group-hover:bg-emerald-100'
+     }
+           `}>
+     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+     </div>
+     <span className="flex-1">{item.label}</span>
+     {isActive && (
+      <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+     )}
      </Link>
     )
    })}
    </nav>
+   
    {/* Logout */}
-   <div className="px-3 pt-3 border-t border-gray-200">
+   <div className="px-4 pt-4 border-t border-gray-100">
    <button
    onClick={handleLogout}
-   className="group flex items-center w-full px-3 py-3 text-sm font-medium text-gray-500 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"   >
-   <LogOut className="mr-3 h-5 w-5 text-gray-500" />
-   Log Out
+   className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+   >
+   <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-all">
+   <LogOut className="w-5 h-5 text-gray-500 group-hover:text-red-600" />
+   </div>
+   <span className="flex-1">Log Out</span>
    </button>
    </div>
    </div>
    </div>
    </div>
   )}
+  
   {/* Mobile Bottom Navigation */}
-  <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200">
-  <nav className="flex justify-around">
+  <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)]">
+  <nav className="flex justify-around px-2 py-2">
   {navItems.slice(0, 4).map((item) => {
    const Icon = item.icon
    const isActive = pathname === item.href
@@ -158,28 +191,42 @@ export default function PortalNav({ userName }) {
     <Link
     key={item.href}
     href={item.href}
-    className={`
-                  flex flex-col items-center py-2 px-3 min-w-0
-                  ${isActive ? 'text-[#079447]' : 'text-gray-600'}
-                `}
-     >
-     <Icon className="h-6 w-6" />
-     <span className="text-xs mt-1">{item.label.split(' ')[0]}</span>
-     </Link>
-    )
-   })}
-   <Link
-   href="/portal/settings"
-   className={`
-              flex flex-col items-center py-2 px-3 min-w-0
-              ${pathname === '/portal/settings' ? 'text-[#079447]' : 'text-gray-600'}
-            `}
+    className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
     >
-    <Settings className="h-6 w-6" />
-    <span className="text-xs mt-1">Settings</span>
-    </Link>
-    </nav>
+    <div className={`
+         w-10 h-10 rounded-xl flex items-center justify-center transition-all
+         ${isActive 
+     ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50' 
+     : 'bg-gray-50 group-hover:bg-emerald-50'
+    }
+        `}>
+    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
     </div>
-    </>
+    <span className={`text-xs font-medium ${isActive ? 'text-emerald-600' : 'text-gray-500'}`}>
+    {item.label.split(' ')[0]}
+    </span>
+    </Link>
    )
+  })}
+  <Link
+  href="/portal/settings"
+  className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
+  >
+  <div className={`
+       w-10 h-10 rounded-xl flex items-center justify-center transition-all
+       ${pathname === '/portal/settings'
+   ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50' 
+   : 'bg-gray-50 group-hover:bg-emerald-50'
   }
+      `}>
+  <Settings className={`w-5 h-5 ${pathname === '/portal/settings' ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+  </div>
+  <span className={`text-xs font-medium ${pathname === '/portal/settings' ? 'text-emerald-600' : 'text-gray-500'}`}>
+  Settings
+  </span>
+  </Link>
+  </nav>
+  </div>
+  </>
+ )
+}
