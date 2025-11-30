@@ -13,6 +13,7 @@ import {
  X,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import styles from '../../app/portal/shared-animations.module.css'
 
 const navItems = [
  { icon: Home, label: 'Dashboard', href: '/portal/dashboard' },
@@ -57,14 +58,16 @@ export default function PortalNav({ userName }) {
     <Link
     key={item.href}
     href={item.href}
-    className={`
- group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
+className={`
+ group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
  ${isActive
-     ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-     : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 hover:shadow-sm'    }
-`}    >
-     <div className={`
- w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
+  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+  : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 shadow-sm shadow-transparent hover:shadow-gray-200/50'
+ }
+`}
+>
+<div className={`
+ w-9 h-9 rounded-lg flex items-center justify-center ${styles.smoothTransition}
  ${isActive
       ? 'bg-white/20'
       : 'bg-gray-100 group-hover:bg-emerald-50'
@@ -132,14 +135,16 @@ export default function PortalNav({ userName }) {
       key={item.href}
       href={item.href}
       onClick={() => setMobileMenuOpen(false)}
-      className={`
- group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 ease-out
+className={`
+ group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
  ${isActive
-       ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-       : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 hover:shadow-sm'     }
-`}     >
-       <div className={`
- w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ease-out
+  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+  : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 shadow-sm shadow-transparent hover:shadow-gray-200/50'
+ }
+`}
+>
+<div className={`
+ w-9 h-9 rounded-lg flex items-center justify-center ${styles.smoothTransition}
  ${isActive
         ? 'bg-white/20'
         : 'bg-gray-100 group-hover:bg-emerald-50'
