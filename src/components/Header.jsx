@@ -99,8 +99,8 @@ function SiteHeader() {
   setHeaderOffset();
   
   const resizeObserver = typeof ResizeObserver !== "undefined"
-   ? new ResizeObserver(setHeaderOffset)
-   : null;
+  ? new ResizeObserver(setHeaderOffset)
+  : null;
   if (resizeObserver && headerRef.current) {
    resizeObserver.observe(headerRef.current);
   }
@@ -129,7 +129,7 @@ function SiteHeader() {
    document.body.style.overflow = "";
   };
  }, [mobileMenuOpen]);
-
+ 
  // Toggle body class to sync safe-area glass with header state
  useEffect(() => {
   const body = document.body;
@@ -151,8 +151,7 @@ function SiteHeader() {
           fixed top-0 left-0 right-0 z-50 w-full
           transform transition-transform duration-300 ease-out
           ${isHidden ? "-translate-y-full" : "translate-y-0"}
-          ${
-   isScrolled
+          ${isScrolled
    ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm"
    : "bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100 border-b border-gray-200/40"
   }
@@ -161,39 +160,39 @@ function SiteHeader() {
   >
   <div className="w-full mx-auto relative px-3 sm:px-4 lg:px-6 xl:px-8 max-w-[1600px]">
   
-<div className="flex items-center justify-between gap-2 flex-nowrap py-2 lg:py-3 2xl:py-4">
+  <div className="flex items-center justify-between gap-2 flex-nowrap py-2 lg:py-3 2xl:py-4">
   {/* MOBILE LOGO - Far left */}
   <Link
-    href="/"
-    className="flex md:hidden items-center select-none shrink-0 relative z-10 -ml-8"
-    aria-label="Impress Cleaning Home"
+  href="/"
+  className="flex md:hidden items-center select-none shrink-0 relative z-10 -ml-12"
+  aria-label="Impress Cleaning Home"
   >
-    <Image
-      src="/optimized-header-logo.png"
-      alt="Impress Cleaning Services"
-      width={240}
-      height={140}
-      className="h-[60px] object-contain"
-      priority
-    />
+  <Image
+  src="/optimized-header-logo.png"
+  alt="Impress Cleaning Services"
+  width={240}
+  height={140}
+  className="h-[60px] object-contain"
+  priority
+  />
   </Link>
-
+  
   {/* DESKTOP LOGO - Normal positioning */}
   <Link
-    href="/"
-    className="hidden md:flex items-center select-none shrink-0 relative z-10 -ml-6 lg:-ml-8 xl:-ml-10 2xl:-ml-12"
-    aria-label="Impress Cleaning Home"
+  href="/"
+  className="hidden md:flex items-center select-none shrink-0 relative z-10 -ml-6 lg:-ml-8 xl:-ml-10 2xl:-ml-12"
+  aria-label="Impress Cleaning Home"
   >
-    <Image
-      src="/optimized-header-logo.png"
-      alt="Impress Cleaning Services"
-      width={240}
-      height={140}
-      className="h-[70px] lg:h-[80px] xl:h-[85px] 2xl:h-[95px] object-contain"
-      priority
-    />
+  <Image
+  src="/optimized-header-logo.png"
+  alt="Impress Cleaning Services"
+  width={240}
+  height={140}
+  className="h-[70px] lg:h-[80px] xl:h-[85px] 2xl:h-[95px] object-contain"
+  priority
+  />
   </Link>
-    
+  
   {/* MOBILE HAMBURGER */}
   <button
   type="button"
@@ -232,101 +231,102 @@ function SiteHeader() {
   )}
   </button>
   
-  {/* DESKTOP NAV */}
-  <nav className="hidden md:flex flex-1 items-center justify-center">
-<div className="flex flex-1 items-center justify-center gap-[clamp(2px,1vw,24px)]">
+  {/* DESKTOP NAV - True centered positioning */}
+  <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+  <div className="flex items-center justify-center gap-[clamp(2px,1vw,24px)] pointer-events-auto">
   <Link
-    href="/"
-    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+  href="/"
+  className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-    Home
+  Home
   </Link>
   <Link
-    href="/residential-section"
-    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+  href="/residential-section"
+  className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-    Residential
+  Residential
   </Link>
   <Link
-    href="/commercial"
-    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+  href="/commercial"
+  className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-    Commercial
+  Commercial
   </Link>
   <Link
-    href="/gift-certificate"
-    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+  href="/gift-certificate"
+  className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-    <span className="hidden xl:inline">Gift Certificates</span>
-    <span className="xl:hidden">Gifts</span>
+  <span className="hidden xl:inline">Gift Certificates</span>
+  <span className="xl:hidden">Gifts</span>
   </Link>
   <Link
-    href="/faq"
-    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+  href="/faq"
+  className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-    FAQ
+  FAQ
   </Link>
   <Link
-    href="/about-us"
-    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+  href="/about-us"
+  className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-    <span className="hidden xl:inline">About Us</span>
-    <span className="xl:hidden">About</span>
+  <span className="hidden xl:inline">About Us</span>
+  <span className="xl:hidden">About</span>
   </Link>
+  </div>
+  
+  </nav>
+  
   {/* RIGHT-SIDE ACTIONS */}
-<div className="flex items-center gap-0.5 lg:gap-1 xl:gap-2 2xl:gap-3 ml-auto shrink-0">
+  <div className="hidden md:flex items-center gap-0.5 lg:gap-1 xl:gap-2 2xl:gap-3 ml-auto shrink-0">
   {/* Book Now – PRIMARY */}
-<Link
+  <Link
   href="/booking"
   className="inline-flex items-center justify-center px-3 lg:px-4 xl:px-6 py-2 lg:py-2.5 xl:py-3 rounded-xl font-bold text-white text-[13px] lg:text-[14px] xl:text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
->
+  >
   <span className="hidden sm:inline">Book Now</span>
   <span className="sm:hidden">Book</span>
-</Link>
+  
+  </Link>
+  
   {/* Customer Portal – OUTLINED BUTTON */}
-<Link
+  <Link
   href="/auth/login"
   className="inline-flex items-center justify-center gap-1 px-2.5 lg:px-3 xl:px-5 py-2 lg:py-2.5 xl:py-3 rounded-xl border border-slate-300 text-slate-700 text-[13px] lg:text-[14px] xl:text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
->
-  <svg
-    className="w-4 h-4"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    strokeWidth="2"
   >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-    />
+  <svg
+  className="w-4 h-4"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  strokeWidth="2"
+  >
+  <path
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+  />
   </svg>
   <span className="hidden xl:inline">Portal</span>
-</Link>
-</div>
-
-
-
-
+  </Link>
+  
   {/* Hamburger Menu – DESKTOP DROPDOWN TRIGGER */}
   <div className="relative">
-<button
+  <button
   ref={desktopButtonRef}
   type="button"
   aria-label="More options"
   onClick={() => setDesktopMenuOpen((prev) => !prev)}
-  className={`inline-flex items-center justify-center w-8 lg:w-9 xl:w-10 2xl:w-11 h-8 lg:h-9 xl:h-10 2xl:h-11 rounded-full border transition-all duration-200 ${
-    desktopMenuOpen
-      ? "border-slate-400 bg-slate-50 shadow-sm"
-      : "border-slate-300 bg-white hover:border-slate-400 hover:shadow-sm"
+  className={`inline-flex items-center justify-center w-8 lg:w-9 xl:w-10 2xl:w-11 h-8 lg:h-9 xl:h-10 2xl:h-11 rounded-full border transition-all duration-200 ${desktopMenuOpen
+   ? "border-slate-400 bg-slate-50 shadow-sm"
+   : "border-slate-300 bg-white hover:border-slate-400 hover:shadow-sm"
   }`}
->
+  >
   <svg
-    className="w-3.5 lg:w-4 xl:w-5 h-3.5 lg:h-4 xl:h-5 text-slate-600"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth="2"
+  className="w-3.5 lg:w-4 xl:w-5 h-3.5 lg:h-4 xl:h-5 text-slate-600"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+  strokeWidth="2"
   >
   <path
   strokeLinecap="round"
@@ -334,7 +334,9 @@ function SiteHeader() {
   d="M4 6h16M4 12h16M4 18h16"
   />
   </svg>
+  
   </button>
+  
   
   {/* DESKTOP DROPDOWN MENU */}
   {desktopMenuOpen && (
@@ -392,7 +394,6 @@ function SiteHeader() {
    <p className="text-xs text-slate-500">Business hours</p>
    </div>
    </div>
-   
    <div className="my-2 border-t border-slate-100" />
    
    {/* Apply */}
@@ -456,25 +457,26 @@ function SiteHeader() {
    </Link>
    </div>
   )}
+  
   </div>
   </div>
-  </nav>
   </div>
   </div>
   </header>
   
   {/* MOBILE MENU OVERLAY */}
-  {mobileMenuOpen && (
-   <div
-   className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-200"
-   onClick={() => setMobileMenuOpen(false)}
-   />
-  )}
+  {
+   mobileMenuOpen && (
+    <div
+    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-200"
+    onClick={() => setMobileMenuOpen(false)}
+    />
+   )
+  }
   
   {/* MOBILE DROPDOWN MENU */}
   <div
-  className={`fixed top-0 left-0 right-0 z-50 md:hidden transform transition-all duration-300 ease-out ${
-   mobileMenuOpen
+  className={`fixed top-0 left-0 right-0 z-50 md:hidden transform transition-all duration-300 ease-out ${mobileMenuOpen
    ? "translate-y-0 opacity-100"
    : "-translate-y-full opacity-0 pointer-events-none"
   }`}
@@ -632,6 +634,8 @@ function SiteHeader() {
   </div>
   </div>
   </div>
+  
   </>
  );
+ 
 }
