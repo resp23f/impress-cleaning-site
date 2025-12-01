@@ -2,13 +2,16 @@
 import React, { useState } from "react";
 import { track } from '@vercel/analytics';
 import Link from 'next/link';
+import Image from 'next/image';
 import StaggerItem from '@/components/StaggerItem';
+
 const ShieldCheckIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
     <path d="M12 3l7 3v5.5c0 4.2-2.9 8-7 9-4.1-1-7-4.8-7-9V6l7-3z" stroke="currentColor" strokeWidth="1.5"/>
     <path d="M9.5 12.5l2 2 3.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
+
 const HomeIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
     <path d="M3 10.5l9-7 9 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -16,6 +19,7 @@ const HomeIcon = (props) => (
     <path d="M9 19v-5h6v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
   </svg>
 );
+
 const Chip = ({ icon, label, detail }) => (
   <div className="relative group">
     <span className="inline-flex items-center gap-1.5 rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-sm text-slate-700 shadow-sm transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
@@ -29,15 +33,18 @@ const Chip = ({ icon, label, detail }) => (
     ) : null}
   </div>
 );
+
 export default function ImpressCleaningSite() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const FORM_ENDPOINT = "https://formspree.io/f/xblzwdek";
+
   async function handleSubmit(e) {
     e.preventDefault();
     setSending(true);
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
+
     if (!FORM_ENDPOINT) {
       const body = encodeURIComponent(
         Object.entries(data).map(([k, v]) => `${k}: ${v}`).join("\n")
@@ -49,6 +56,7 @@ export default function ImpressCleaningSite() {
       form.reset();
       return;
     }
+
     try {
       const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
@@ -73,6 +81,7 @@ export default function ImpressCleaningSite() {
       setSending(false);
     }
   }
+
   return (
     <main id="top" className="min-h-screen bg-white">
       <Hero />
@@ -83,22 +92,26 @@ export default function ImpressCleaningSite() {
     </main>
   );
 }
+
 function Hero() {
   return (
     <StaggerItem>
       <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
         <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
-          <img
+          <Image
             src="/hero-cleaners1.jpg"
-            alt="Impress Cleaning pro team"
-            className="absolute inset-0 h-full w-full object-cover object-[79%_59%] md:object-center"
+            alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
+            fill
+            priority
+            className="object-cover object-[79%_59%] md:object-center"
+            quality={85}
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
           <div className="relative z-10">
-<div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
-  <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-32 pb-12 md:py-16">
+            <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
+              <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-32 pb-12 md:py-16">
                 <div className="max-w-[650px]">
-                  {/* Headline with better line breaks and spacing */}
                   <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight" 
                       style={{ 
                         fontSize: 'clamp(2rem, 5vw, 4rem)', 
@@ -110,7 +123,6 @@ function Hero() {
                       So You Can Focus On What Matters&nbsp;Most.
                     </span>
                   </h1>
-                  {/* CTAs with better spacing and hierarchy */}
                   <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <a 
                       href="tel:+15122775364"
@@ -154,10 +166,12 @@ function Hero() {
     </StaggerItem>
   );
 }
+
 function WhyChoose() {
   const scrollRef = React.useRef(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
+
   const cards = [
     { 
       t: 'Reliable Results', 
@@ -166,7 +180,8 @@ function WhyChoose() {
       extra: 'scale-[1.15] translate-y-[7px]',
       color: 'from-green-500 to-green-700',
       bgColor: 'bg-green-50',
-      iconBg: 'bg-green-100'
+      iconBg: 'bg-green-100',
+      alt: 'Quality checklist icon representing reliable cleaning results'
     },
     { 
       t: 'Easy Booking & Reminders', 
@@ -174,7 +189,8 @@ function WhyChoose() {
       icon: "/calendar.png",
       color: 'from-green-500 to-green-700',
       bgColor: 'bg-green-50',
-      iconBg: 'bg-green-100'
+      iconBg: 'bg-green-100',
+      alt: 'Calendar icon for easy online booking and scheduling'
     },
     { 
       t: 'Clear Communication', 
@@ -182,7 +198,8 @@ function WhyChoose() {
       icon: "/communication.png",
       color: 'from-green-500 to-green-700',
       bgColor: 'bg-green-50',
-      iconBg: 'bg-green-100'
+      iconBg: 'bg-green-100',
+      alt: 'Communication icon representing transparent customer service'
     },
     { 
       t: 'Locally Owned', 
@@ -190,9 +207,11 @@ function WhyChoose() {
       icon: "/local-home.png",
       color: 'from-green-500 to-green-700',
       bgColor: 'bg-green-50',
-      iconBg: 'bg-green-100'
+      iconBg: 'bg-green-100',
+      alt: 'Local home icon representing locally owned Georgetown business'
     },
   ];
+
   const updateArrows = () => {
     const container = scrollRef.current;
     if (!container) return;
@@ -200,6 +219,7 @@ function WhyChoose() {
     setCanScrollLeft(scrollLeft > 10);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
   };
+
   React.useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -211,6 +231,7 @@ function WhyChoose() {
       window.removeEventListener('resize', updateArrows);
     };
   }, []);
+
   const scroll = (direction) => {
     const container = scrollRef.current;
     if (!container) return;
@@ -221,6 +242,7 @@ function WhyChoose() {
       behavior: 'smooth'
     });
   };
+
   return (
     <section className="bg-gradient-to-b from-white to-gray-50 py-16 md:py-24 relative overflow-hidden">
       <div className="absolute top-20 left-10 w-72 h-72 bg-[#079447]/5 rounded-full blur-3xl" />
@@ -239,6 +261,7 @@ function WhyChoose() {
             </p>
           </div>
         </StaggerItem>
+
         {/* Desktop: Scrollable with arrows */}
         <div className="relative hidden md:block" style={{ touchAction: 'pan-y pan-x' }}>
           {canScrollLeft && (
@@ -265,8 +288,14 @@ function WhyChoose() {
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
                   <div className="relative h-full rounded-2xl bg-white border border-gray-200/50 group-hover:border-[#079447]/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] p-6 transition-all duration-500 group-hover:-translate-y-2">
-                    <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
+                    <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 relative`}>
+                      <Image 
+                        src={c.icon} 
+                        alt={c.alt} 
+                        width={48} 
+                        height={48} 
+                        className={`object-contain ${c.extra || ''}`} 
+                      />
                     </div>
                     <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
                       {c.t}
@@ -291,6 +320,7 @@ function WhyChoose() {
             </button>
           )}
         </div>
+
         {/* Mobile: Horizontal scroll carousel */}
         <div className="md:hidden">
           <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-4 px-4">
@@ -302,8 +332,14 @@ function WhyChoose() {
                 <div className="group relative h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${c.color} opacity-0 rounded-2xl transition-opacity duration-300`} />
                   <div className="relative h-full rounded-2xl bg-white border-2 border-gray-200 shadow-sm p-6">
-                    <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4`}>
-                      <img src={c.icon} alt={c.t} className={`w-12 h-12 object-contain ${c.extra || ''}`} />
+                    <div className={`w-20 h-20 ${c.iconBg} rounded-xl flex items-center justify-center mb-4 relative`}>
+                      <Image 
+                        src={c.icon} 
+                        alt={c.alt} 
+                        width={48} 
+                        height={48} 
+                        className={`object-contain ${c.extra || ''}`} 
+                      />
                     </div>
                     <h3 className="font-manrope font-bold text-xl text-[#18335A] mb-3">
                       {c.t}
@@ -329,6 +365,7 @@ function WhyChoose() {
     </section>
   );
 }
+
 function HowItWorks() {
   const steps = [
     {
@@ -368,6 +405,7 @@ function HowItWorks() {
       )
     },
   ];
+
   return (
     <section className="bg-white py-16 md:py-24 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#079447]/5 rounded-full blur-3xl" />
@@ -386,6 +424,7 @@ function HowItWorks() {
             </p>
           </div>
         </StaggerItem>
+
         {/* Vertical Timeline - Desktop & Mobile */}
         <div className="relative">
           {/* Timeline Line */}
@@ -423,6 +462,7 @@ function HowItWorks() {
             </StaggerItem>
           ))}
         </div>
+
         <StaggerItem delay={500}>
           <div className="mt-12 text-center">
             <Link
@@ -440,9 +480,11 @@ function HowItWorks() {
     </section>  
   );
 }
+
 function WhyFamiliesChooseUs() {
   const scrollRef = React.useRef(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
+
   React.useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -455,6 +497,7 @@ function WhyFamiliesChooseUs() {
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
+
   const proofCards = [
     {
       title: 'Principles That Matter.',
@@ -473,6 +516,7 @@ function WhyFamiliesChooseUs() {
       description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.'
     }
   ];
+
   return (
     <StaggerItem>
       <section className="bg-gray-50 py-12 md:py-16 mb-16 md:mb-24 md:overflow-hidden">
@@ -508,6 +552,7 @@ function WhyFamiliesChooseUs() {
     </StaggerItem>
   );
 }
+
 function TestimonialsSection() {
   const testimonials = [
     {
@@ -523,7 +568,8 @@ function TestimonialsSection() {
       author: "Omally O, Verified Customer"
     }
   ];
-return (
+
+  return (
     <StaggerItem>
       <section className="bg-white py-12 md:py-16 relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
