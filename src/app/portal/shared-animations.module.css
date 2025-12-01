@@ -641,3 +641,10 @@
     animation-duration: 0.4s;
   }
 }
+/* Mobile date input fix */
+@media (max-width: 640px) {
+  input[type="date"] {
+    min-width: 0;
+    width: 100%;
+  }
+}
