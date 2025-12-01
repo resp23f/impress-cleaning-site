@@ -14,71 +14,70 @@ export default function Header() {
  return <SiteHeader />;
 }
 function SiteHeader() {
- const [open, setOpen] = useState(false);
- const [isScrolled, setIsScrolled] = useState(false);
- const [isHidden, setIsHidden] = useState(false); // replaces scrollDirection
+  const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+
+  const pathname = usePathname() || "/";
+  const active = useMemo(
+    () => (href) => (pathname === href ? "text-green font-semibold" : ""),
+    [pathname]
+  );
+
+  const lastScrollY = useRef(0);
+  const scrollState = useRef({ isScrolled: false, isHidden: false });
  
- const pathname = usePathname() || "/";
- const active = useMemo(
-  () => (href) => (pathname === href ? "text-green font-semibold" : ""),
-  [pathname]
- );
- 
- const lastScrollY = useRef(0);
- const scrollState = useRef({ isScrolled: false, isHidden: false });
- 
- 
- useEffect(() => {
-  const handleScroll = () => {
-   const y = window.scrollY;
-   const atTop = y < 20;
-   
-   const scrollingDown = y > lastScrollY.current;
-   const scrollingUp = y < lastScrollY.current;
-   
-   let nextIsScrolled = !atTop;
-   let nextIsHidden = scrollState.current.isHidden;
-   
-   if (atTop) {
-    // At very top: show header, no glass
-    nextIsHidden = false;
-   } else {
-    // Below top: glass turns on, and we hide/show based on direction
-    if (scrollingUp && y > 100) {
-     // scrolling UP away from top → hide
-     nextIsHidden = true;
-    } else if (scrollingDown) {
-     // scrolling DOWN → show
-     nextIsHidden = false;
-    }
-   }
-   
-   lastScrollY.current = y;
-   
-   if (
-    nextIsScrolled !== scrollState.current.isScrolled ||
-    nextIsHidden !== scrollState.current.isHidden
-   ) {
-    scrollState.current = {
-     isScrolled: nextIsScrolled,
-     isHidden: nextIsHidden,
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      const atTop = y < 10;
+
+      const scrollingDown = y > lastScrollY.current;
+      const scrollingUp = y < lastScrollY.current;
+
+      let nextIsScrolled = !atTop;
+      let nextIsHidden = scrollState.current.isHidden;
+
+      if (atTop) {
+        // At very top → show header, no glass
+        nextIsHidden = false;
+      } else {
+        // Below top → glass on, hide/show based on direction
+        if (scrollingUp && y > 80) {
+          // scrolling UP away from top → hide
+          nextIsHidden = true;
+        } else if (scrollingDown) {
+          // scrolling DOWN → show
+          nextIsHidden = false;
+        }
+      }
+
+      lastScrollY.current = y;
+
+      if (
+        nextIsScrolled !== scrollState.current.isScrolled ||
+        nextIsHidden !== scrollState.current.isHidden
+      ) {
+        scrollState.current = {
+          isScrolled: nextIsScrolled,
+          isHidden: nextIsHidden,
+        };
+        setIsScrolled(nextIsScrolled);
+        setIsHidden(nextIsHidden);
+      }
     };
-    setIsScrolled(nextIsScrolled);
-    setIsHidden(nextIsHidden);
-   }
-  };
-  
-  // Initialize on load
-  handleScroll();
-  
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  return () => window.removeEventListener("scroll", handleScroll);
- }, []);
+
+    // init on load
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
  
  return (
   <>
   {/* = TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY = */}
-  <div className="hidden md:block bg-background border-b border-gray-100">
+  <div className="hidden md:block bg-gray-50 border-b border-gray-100">
   <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
   <div className="flex items-center gap-1.5 text-slate-600">
   <svg className="w-3.5 h-3.5 text-[#079447]" fill="currentColor" viewBox="0 0 20 20">
@@ -98,18 +97,18 @@ function SiteHeader() {
   </div>
   
   {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-  <header
+<header
   className={`
-      sticky top-0 z-50 w-full
-      transform transition-transform duration-300 ease-out
-      ${isHidden ? "-translate-y-full" : "translate-y-0"}
-      ${
-   isScrolled
-   ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out"
-   : "bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out"
-  }
-    `}
-  >
+    fixed top-0 left-0 right-0 z-50 w-full
+    transform transition-transform duration-300 ease-out
+    ${isHidden ? "-translate-y-full" : "translate-y-0"}
+    ${
+      isScrolled
+        ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out"
+        : "bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out"
+    }
+  `}
+>
   
   {/* CONTAINER WITH FLUID MAX-WIDTH */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
