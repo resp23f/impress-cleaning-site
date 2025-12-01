@@ -213,17 +213,17 @@ export default function ServiceHistoryPage() {
   type="date"
   value={filters.startDate}
   onChange={(e) => setFilters((prev) => ({ ...prev, startDate: e.target.value }))}
-  className={`${styles.smoothTransition} ${styles.mobileInput}`}
-/>    </div>
-    
+  className={`min-w-0 max-w-full box-border ${styles.smoothTransition}`}
+/>
+    </div>    
     <div>
     <label className="text-sm font-semibold text-gray-700 mb-2 block">To Date</label>
 <Input
   type="date"
   value={filters.endDate}
   onChange={(e) => setFilters((prev) => ({ ...prev, endDate: e.target.value }))}
-  className={`${styles.smoothTransition} ${styles.mobileInput}`}
-/>    </div>
+  className={`min-w-0 max-w-full box-border ${styles.smoothTransition}`}
+/> </div>
     
     <div>
     <label className="text-sm font-semibold text-gray-700 mb-2 block">Service Type</label>
