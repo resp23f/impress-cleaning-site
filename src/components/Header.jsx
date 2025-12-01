@@ -2,7 +2,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useMemo, useEffect } from "react"; // ← Add useEffect
+import { useState, useMemo, useEffect, useRef } from "react"; 
+useEffect
 const NAV = [
  { label: "Residential", href: "/#services" },
  { label: "Commercial", href: "/#services" },
@@ -14,62 +15,66 @@ export default function Header() {
  return <SiteHeader />;
 }
 function SiteHeader() {
- const [open, setOpen] = useState(false);
- const [isScrolled, setIsScrolled] = useState(false);
- const [scrollDirection, setScrollDirection] = useState("static");
- 
- const pathname = usePathname() || "/";
- const active = useMemo(
-  () => (href) => (pathname === href ? "text-green font-semibold" : ""),
-  [pathname]
- );
- 
- useEffect(() => {
-  let lastScrollY = window.scrollY;
-  let ticking = false;
-  
-  const handleScroll = () => {
-   if (!ticking) {
-    window.requestAnimationFrame(() => {
-     const currentScrollY = window.scrollY;
-     
-     // Check if at top
-     const atTop = currentScrollY < 20;
-     
-     // Determine scroll direction
-     const scrollingDown = currentScrollY > lastScrollY;
-     const scrollingUp = currentScrollY < lastScrollY;
-     
-     // Update scrolled state
-     setIsScrolled(!atTop);
-     
-     // Update header behavior
-     if (atTop) {
-      // At top - static position
-      setScrollDirection("static");
-     } else if (scrollingDown && currentScrollY > 100) {
-      // Scrolling down - show sticky header
-      setScrollDirection("down");
-     } else if (scrollingUp && currentScrollY > 100) {
-      // Scrolling up (not at top) - hide header
-      setScrollDirection("up");
-     }
-     
-     lastScrollY = currentScrollY;
-     ticking = false;
-    });
-    ticking = true;
-   }
-  };
-  
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  return () => window.removeEventListener('scroll', handleScroll);
- }, []);
- 
+  const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState("static");
+
+  const pathname = usePathname() || "/";
+  const active = useMemo(
+    () => (href) => (pathname === href ? "text-green font-semibold" : ""),
+    [pathname]
+  );
+
+  // NEW: refs for scroll state
+  const lastScrollY = useRef(0);
+  const scrollState = useRef({ isScrolled: false, direction: "static" });
+
+  // NEW: smoother scroll listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const atTop = currentY < 20;
+
+      const scrollingDown = currentY > lastScrollY.current;
+      const scrollingUp = currentY < lastScrollY.current;
+
+      let nextIsScrolled = !atTop;
+      let nextDirection = scrollState.current.direction;
+
+      if (atTop) {
+        nextDirection = "static";
+      } else if (scrollingDown && currentY > 100) {
+        nextDirection = "down";
+      } else if (scrollingUp && currentY > 100) {
+        nextDirection = "up";
+      }
+
+      lastScrollY.current = currentY;
+
+      // Only update React state if something actually changed
+      if (
+        nextIsScrolled !== scrollState.current.isScrolled ||
+        nextDirection !== scrollState.current.direction
+      ) {
+        scrollState.current = {
+          isScrolled: nextIsScrolled,
+          direction: nextDirection,
+        };
+        setIsScrolled(nextIsScrolled);
+        setScrollDirection(nextDirection);
+      }
+    };
+
+    // set initial state on load
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
  
  return (
   <>
-  {/* ========== TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY ========== */}
+  {/* = TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY = */}
   <div className="hidden md:block bg-background border-b border-gray-100">
   <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
   <div className="flex items-center gap-1.5 text-slate-600">
@@ -90,36 +95,41 @@ function SiteHeader() {
   </div>
   
   {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-  <header className={`
-  ${scrollDirection === "static" ? 'relative' : 'fixed top-0 left-0 right-0'} 
-  z-50 w-full
-  ${scrollDirection === "up" ? '-translate-y-full' : 'translate-y-0'}
-  ${isScrolled 
-   ? 'bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out' 
-   : 'bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out'
-  }
-`}>
+<header
+  className={`
+    ${scrollDirection === "static" ? "relative" : "fixed top-0 left-0 right-0"}
+    z-50 w-full
+    transform transition-transform duration-300 ease-out
+    ${scrollDirection === "up" ? "-translate-y-full" : "translate-y-0"}
+    ${
+      isScrolled
+        ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out"
+        : "bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out"
+    }
+  `}
+>
   
-  {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
+  {/* CONTAINER WITH FLUID MAX-WIDTH */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
   <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
   
-  {/* ========== LOGO - FIXED POSITIONING ========== */}
-  <Link
+  {/* LOGO - FIXED POSITIONING */}
+<Link
   href="/"
-  className="flex items-center select-none shrink-0 relative z-10 md:-ml-2 lg:-ml-4 xl:-ml-6"
+  className="flex items-center select-none shrink-0 relative z-10 md:-ml-4 lg:-ml-6 xl:-ml-8"
   aria-label="Impress Cleaning Home"
-  >
+>
   <Image
-  src="/optimized-header-logo.png"
-  alt="Impress Cleaning Services"
-  width={350}
-  height={210}
-  className="h-[115px] w-auto md:h-[135px] lg:h-[155px] xl:h-[175px] 2xl:h-[195px] object-contain"
-  priority
+    src="/optimized-header-logo.png"
+    alt="Impress Cleaning Services"
+    width={300}
+    height={180}
+    className="h-[90px] w-auto md:h-[110px] lg:h-[130px] xl:h-[150px] 2xl:h-[165px] object-contain"
+    priority
   />
-  </Link>
-  {/* ========== HAMBURGER MENU Icon (Mobile Only) ========== */}
+</Link>
+
+  {/* HAMBURGER MENU Icon (Mobile Only) */}
   <button
   type="button"
   aria-label="Toggle navigation"
@@ -173,7 +183,7 @@ function SiteHeader() {
   {/* Book Now - Hero CTA */}
   <Link
   href="/booking"
-  className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-bold text-white text-sm bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/25 hover:scale-105 transition-all duration-300 font-manrope whitespace-nowrap"
+className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
   >
   Book Now
   </Link>
@@ -181,7 +191,7 @@ function SiteHeader() {
   {/* Phone - Secondary CTA */}
   
   <a href="tel:+15122775364"
-  className="hidden md:inline-flex items-center justify-center px-4 py-2.5 rounded-lg font-semibold text-sm border-2 border-[#079447] text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 font-manrope whitespace-nowrap"
+className="hidden md:inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold text-[15px] border-2 border-[#079447] text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 font-manrope whitespace-nowrap"
   >
   (512) 277-5364
   </a>
