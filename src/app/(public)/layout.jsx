@@ -8,9 +8,9 @@ export default function PublicLayout({ children }) {
     <>
       <Header />
       <PageTransition>
-<main className="min-h-screen flex-col">
+<main className="min-h-screen">
     {children}
-        </main>
+</main>
       </PageTransition>
       <Footer />
       <ContactButton />

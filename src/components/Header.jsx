@@ -125,20 +125,20 @@ function SiteHeader() {
   
   <div className="flex items-center justify-between gap-2 flex-nowrap py-2 lg:py-3 2xl:py-4">
   {/* LOGO */}
-  <Link
+<Link
   href="/"
-  className="flex items-center select-none shrink-0 relative z-10 -ml-2 md:-ml-3 lg:-ml-4 xl:-ml-5"
+  className="flex items-center select-none shrink-0 relative z-10 -ml-4 md:-ml-6 lg:-ml-8 xl:-ml-10 2xl:-ml-12"
   aria-label="Impress Cleaning Home"
-  >
+>
   <Image
-  src="/optimized-header-logo.png"
-  alt="Impress Cleaning Services"
-  width={240}
-  height={140}
-  className="h-[60px] md:h-[70px] lg:h-[80px] xl:h-[85px] 2xl:h-[95px] object-contain"
-  priority
+    src="/optimized-header-logo.png"
+    alt="Impress Cleaning Services"
+    width={240}
+    height={140}
+    className="h-[60px] md:h-[70px] lg:h-[80px] xl:h-[85px] 2xl:h-[95px] object-contain"
+    priority
   />
-  </Link>
+</Link>
   
   {/* MOBILE HAMBURGER */}
   <button
@@ -179,83 +179,81 @@ function SiteHeader() {
   </button>
   
   {/* DESKTOP NAV */}
-  <nav
-  className="hidden lg:flex lg:flex-1 lg:items-center font-display font-medium text-navy whitespace-nowrap"
-  style={{
-   gap: "clamp(8px, 1.5vw, 48px)",
-   fontSize: "clamp(12px, 1.3vw, 21px)",
-  }}
-  aria-label="Primary"
-  >
-  {/* CENTERED NAV LINKS */}
-<div className="flex flex-1 items-center justify-center gap-[clamp(4px,1.2vw,32px)]">
+  <nav>
+<div className="flex flex-1 items-center justify-center gap-[clamp(2px,1vw,24px)]">
   <Link
-  href="/"
-  className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+    href="/"
+    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-  Home
+    Home
   </Link>
   <Link
-  href="/residential-section"
-  className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+    href="/residential-section"
+    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-  Residential
+    Residential
   </Link>
   <Link
-  href="/commercial"
-  className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+    href="/commercial"
+    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-  Commercial
+    Commercial
   </Link>
   <Link
-  href="/gift-certificate"
-  className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+    href="/gift-certificate"
+    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-  Gift Certificates
+    <span className="hidden xl:inline">Gift Certificates</span>
+    <span className="xl:hidden">Gifts</span>
   </Link>
   <Link
-  href="/faq"
-  className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+    href="/faq"
+    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-  FAQ
+    FAQ
   </Link>
   <Link
-  href="/about-us"
-  className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
+    href="/about-us"
+    className="relative font-display px-2 lg:px-3 xl:px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
-  About Us
+    <span className="hidden xl:inline">About Us</span>
+    <span className="xl:hidden">About</span>
   </Link>
-  </div>
-  
   {/* RIGHT-SIDE ACTIONS */}
-<div className="flex items-center gap-1 lg:gap-1.5 xl:gap-2 2xl:gap-3 ml-auto shrink-0">
+<div className="flex items-center gap-0.5 lg:gap-1 xl:gap-2 2xl:gap-3 ml-auto shrink-0">
   {/* Book Now – PRIMARY */}
-  <Link
+<Link
   href="/booking"
-  className="inline-flex items-center justify-center px-4 xl:px-6 py-2.5 xl:py-3 rounded-xl font-bold text-white text-[14px] xl:text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
-  >
-  Book Now
-  </Link>
+  className="inline-flex items-center justify-center px-3 lg:px-4 xl:px-6 py-2 lg:py-2.5 xl:py-3 rounded-xl font-bold text-white text-[13px] lg:text-[14px] xl:text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
+>
+  <span className="hidden sm:inline">Book Now</span>
+  <span className="sm:hidden">Book</span>
+</Link>
   {/* Customer Portal – OUTLINED BUTTON */}
-  <Link
+<Link
   href="/auth/login"
-  className="inline-flex items-center justify-center gap-1.5 px-3 xl:px-5 py-2.5 xl:py-3 rounded-xl border border-slate-300 text-slate-700 text-[14px] xl:text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
-  >
+  className="inline-flex items-center justify-center gap-1 px-2.5 lg:px-3 xl:px-5 py-2 lg:py-2.5 xl:py-3 rounded-xl border border-slate-300 text-slate-700 text-[13px] lg:text-[14px] xl:text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
+>
   <svg
-  className="w-4 h-4"
-  fill="none"
-  stroke="currentColor"
-  viewBox="0 0 24 24"
-  strokeWidth="2"
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    strokeWidth="2"
   >
-  <path
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-  />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+    />
   </svg>
   <span className="hidden xl:inline">Portal</span>
-  </Link>
+</Link>
+</div>
+
+
+
+
   {/* Hamburger Menu – DESKTOP DROPDOWN TRIGGER */}
   <div className="relative">
 <button
@@ -263,19 +261,19 @@ function SiteHeader() {
   type="button"
   aria-label="More options"
   onClick={() => setDesktopMenuOpen((prev) => !prev)}
-  className={`inline-flex items-center justify-center w-9 xl:w-10 2xl:w-11 h-9 xl:h-10 2xl:h-11 rounded-full border transition-all duration-200 ${
+  className={`inline-flex items-center justify-center w-8 lg:w-9 xl:w-10 2xl:w-11 h-8 lg:h-9 xl:h-10 2xl:h-11 rounded-full border transition-all duration-200 ${
     desktopMenuOpen
       ? "border-slate-400 bg-slate-50 shadow-sm"
       : "border-slate-300 bg-white hover:border-slate-400 hover:shadow-sm"
   }`}
 >
-<svg
-  className="w-4 xl:w-5 h-4 xl:h-5 text-slate-600"
-  fill="none"
-  viewBox="0 0 24 24"
-  stroke="currentColor"
-  strokeWidth="2"
->
+  <svg
+    className="w-3.5 lg:w-4 xl:w-5 h-3.5 lg:h-4 xl:h-5 text-slate-600"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
   <path
   strokeLinecap="round"
   strokeLinejoin="round"
