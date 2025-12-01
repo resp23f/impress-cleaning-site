@@ -188,7 +188,7 @@ function SiteHeader() {
   aria-label="Primary"
   >
   {/* CENTERED NAV LINKS */}
-  <div className="flex flex-1 items-center justify-center gap-[clamp(8px,1.5vw,48px)]">
+<div className="flex flex-1 items-center justify-center gap-[clamp(4px,1.2vw,32px)]">
   <Link
   href="/"
   className="relative font-display px-4 py-2 rounded-full transition-all duration-300 ease-out hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
@@ -228,7 +228,7 @@ function SiteHeader() {
   </div>
   
   {/* RIGHT-SIDE ACTIONS */}
-  <div className="flex items-center gap-1.5 xl:gap-2 2xl:gap-3 ml-auto shrink-0">
+<div className="flex items-center gap-1 lg:gap-1.5 xl:gap-2 2xl:gap-3 ml-auto shrink-0">
   {/* Book Now – PRIMARY */}
   <Link
   href="/booking"
@@ -258,24 +258,24 @@ function SiteHeader() {
   </Link>
   {/* Hamburger Menu – DESKTOP DROPDOWN TRIGGER */}
   <div className="relative">
-  <button
+<button
   ref={desktopButtonRef}
   type="button"
   aria-label="More options"
   onClick={() => setDesktopMenuOpen((prev) => !prev)}
-  className={`inline-flex items-center justify-center w-11 h-11 rounded-full border transition-all duration-200 ${
-   desktopMenuOpen
-   ? "border-slate-400 bg-slate-50 shadow-sm"
-   : "border-slate-300 bg-white hover:border-slate-400 hover:shadow-sm"
+  className={`inline-flex items-center justify-center w-9 xl:w-10 2xl:w-11 h-9 xl:h-10 2xl:h-11 rounded-full border transition-all duration-200 ${
+    desktopMenuOpen
+      ? "border-slate-400 bg-slate-50 shadow-sm"
+      : "border-slate-300 bg-white hover:border-slate-400 hover:shadow-sm"
   }`}
-  >
-  <svg
-  className="w-5 h-5 text-slate-600"
+>
+<svg
+  className="w-4 xl:w-5 h-4 xl:h-5 text-slate-600"
   fill="none"
   viewBox="0 0 24 24"
   stroke="currentColor"
   strokeWidth="2"
-  >
+>
   <path
   strokeLinecap="round"
   strokeLinejoin="round"
