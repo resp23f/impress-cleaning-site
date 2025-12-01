@@ -69,13 +69,13 @@
   transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
 html {
-  background-color: var(--background);
+  background-color: #e5e7eb; /* match footer base for seamless overscroll */
   -webkit-text-size-adjust: 100%;
 }
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background);
+  background: linear-gradient(180deg, var(--background) 0%, #e5e7eb 100%);
   color: var(--foreground);
 }
 html, body { 
@@ -155,7 +155,14 @@ select.no-native::-ms-expand {
       left: 0;
       right: 0;
       height: env(safe-area-inset-top, 0px);
-      background: white;
+      background: linear-gradient(
+        to bottom,
+        rgba(248, 249, 251, 0.92),
+        rgba(248, 249, 251, 0.78)
+      );
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
       z-index: 51;
     }
   }
