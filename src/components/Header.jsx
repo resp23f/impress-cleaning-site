@@ -169,7 +169,10 @@ function SiteHeader() {
   <div className="flex flex-1 items-center justify-center gap-[clamp(8px,1.5vw,48px)]">
   <Link
   href="/"
-  className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
+className="
+  relative font-display px-4 py-2 rounded-full
+  transition-all duration-300 ease-out
+  hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
   Home
   </Link>
@@ -207,7 +210,24 @@ function SiteHeader() {
   
   {/* RIGHT-SIDE ACTIONS */}
   <div className="flex items-center gap-3 ml-auto">
-  {/* Portal */}
+  
+  {/* Book Now - PRIMARY CTA */}
+  <Link
+  href="/booking"
+  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
+  >
+  Book Now
+  </Link>
+  
+  {/* Phone Number - Secondary CTA */}
+  <a
+  href="tel:+15122775364"
+  className="hidden md:inline-flex items-center justify-center px-5 py-3 rounded-xl border border-slate-300 text-slate-700 text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
+  >
+  (512) 277-5364
+  </a>
+  
+  {/* Customer Portal - Utility CTA */}
   <Link
   href="/auth/login"
   className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white/70 text-slate-700 text-xs font-semibold shadow-sm hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope backdrop-blur-sm"
@@ -227,22 +247,6 @@ function SiteHeader() {
   </svg>
   <span>Customer Portal</span>
   </Link>
-  
-  {/* Book Now */}
-  <Link
-  href="/booking"
-  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
-  >
-  Book Now
-  </Link>
-  
-  {/* Phone */}
-  <a
-  href="tel:+15122775364"
-  className="hidden md:inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold text-[15px] border-2 border-[#079447] text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 font-manrope whitespace-nowrap"
-  >
-  (512) 277-5364
-  </a>
   </div>
   </nav>
   </div>
