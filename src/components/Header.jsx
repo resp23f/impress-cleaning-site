@@ -125,7 +125,7 @@ function SiteHeader() {
   className="w-full mx-auto relative px-4 lg:px-8"
   style={{ maxWidth: "clamp(900px, 95vw, 1600px)" }}
   >
-  <div className="flex items-center justify-between gap-2 flex-nowrap py-2 md:py-3 2xl:py-4">
+  <div className="flex items-center justify-between gap-2 flex-nowrap py-2 lg:py-3 2xl:py-4">
   {/* LOGO */}
   <Link
   href="/"
@@ -147,7 +147,7 @@ function SiteHeader() {
   type="button"
   aria-label="Toggle navigation"
   onClick={() => setMobileMenuOpen((prev) => !prev)}
-  className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 hover:border-slate-300 hover:shadow-sm bg-white text-slate-600 hover:text-[#079447] transition-all duration-200"
+  className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 hover:border-slate-300 hover:shadow-sm bg-white text-slate-600 hover:text-[#079447] transition-all duration-200"
   >
   {mobileMenuOpen ? (
    <svg
@@ -182,7 +182,7 @@ function SiteHeader() {
   
   {/* DESKTOP NAV */}
   <nav
-  className="hidden md:flex md:flex-1 md:items-center font-display font-medium text-navy whitespace-nowrap"
+  className="hidden lg:flex lg:flex-1 lg:items-center font-display font-medium text-navy whitespace-nowrap"
   style={{
    gap: "clamp(8px, 1.5vw, 48px)",
    fontSize: "clamp(12px, 1.3vw, 21px)",
@@ -257,7 +257,7 @@ function SiteHeader() {
   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
   />
   </svg>
-  <span className="hidden lg:inline">Portal</span>
+  <span className="hidden xl:inline">Portal</span>
   </Link>
   
   {/* Hamburger Menu – DESKTOP DROPDOWN TRIGGER */}
@@ -418,14 +418,14 @@ function SiteHeader() {
   {/* MOBILE MENU OVERLAY */}
   {mobileMenuOpen && (
    <div
-   className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-200"
+   className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
    onClick={() => setMobileMenuOpen(false)}
    />
   )}
   
   {/* MOBILE DROPDOWN MENU */}
   <div
-  className={`fixed top-0 left-0 right-0 z-50 md:hidden transform transition-all duration-300 ease-out ${
+  className={`fixed top-0 left-0 right-0 z-50 lg:hidden transform transition-all duration-300 ease-out ${
    mobileMenuOpen
    ? "translate-y-0 opacity-100"
    : "-translate-y-full opacity-0 pointer-events-none"
