@@ -111,7 +111,7 @@ function SiteHeader() {
   aria-label="Impress Cleaning Home"
   >
   <Image
-  src="/three-dimensionlogo.png"
+  src="/optimized-header-logo.png"
   alt="Impress Cleaning Services"
   width={350}
   height={210}
