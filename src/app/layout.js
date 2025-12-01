@@ -25,8 +25,68 @@ export const viewport = {
 };
 
 export const metadata = {
- title: "Impress Cleaning Services - Residential Cleaning Service",
- description: "Residential cleaning services in Central Texas. Reliable and Trusted.",
+ metadataBase: new URL('https://impressyoucleaning.com'),
+ 
+ title: {
+  default: 'Impress Cleaning Services - Professional Residential & Commercial Cleaning | Georgetown, TX',
+  template: '%s | Impress Cleaning Services'
+ },
+ 
+ description: 'Professional residential & commercial cleaning serving Georgetown, Round Rock, Cedar Park, Austin & Central Texas since 1998. Eco-friendly products, reliable service, locally trusted for over 25 years.',
+ 
+ keywords: [
+  'cleaning service Georgetown TX',
+  'house cleaning Austin',
+  'maid service Round Rock',
+  'commercial cleaning Cedar Park',
+  'eco-friendly cleaning Central Texas',
+  'residential cleaning Georgetown',
+  'move out cleaning Austin',
+  'deep cleaning service Texas',
+  'professional cleaners Georgetown',
+  'cleaning company Round Rock'
+ ],
+ 
+ // OPEN GRAPH for Facebook/LinkedIn
+ openGraph: {
+  title: 'Impress Cleaning Services - Professional Cleaning in Georgetown, TX',
+  description: 'Professional residential & commercial cleaning serving Georgetown, Round Rock, Cedar Park & Central Texas since 1998. Eco-friendly, reliable, locally trusted.',
+  url: 'https://impressyoucleaning.com',
+  siteName: 'Impress Cleaning Services',
+  images: [
+   {
+    url: '/impress-final-logo.PNG',
+    width: 1200,
+    height: 630,
+    alt: 'Impress Cleaning Services - Professional Cleaning in Georgetown Texas',
+   },
+  ],
+  locale: 'en_US',
+  type: 'website',
+ },
+ 
+ // TWITTER CARDS for Twitter/X
+ twitter: {
+  card: 'summary_large_image',
+  title: 'Impress Cleaning Services - Professional Cleaning Georgetown TX',
+  description: 'Professional cleaning serving Georgetown & Central Texas since 1998. Eco-friendly products, reliable service.',
+  images: ['/impress-final-logo.PNG'],
+ },
+ 
+ // ROBOTS for search engines
+ robots: {
+  index: true,
+  follow: true,
+  googleBot: {
+   index: true,
+   follow: true,
+   'max-video-preview': -1,
+   'max-image-preview': 'large',
+   'max-snippet': -1,
+  },
+ },
+ 
+ // Keep your existing icons
  icons: {
   icon: [
    { url: '/favicon.png' },
@@ -35,6 +95,8 @@ export const metadata = {
    { url: '/apple-touch-icon.png' },
   ],
  },
+ 
+ // Keep your existing apple web app settings
  appleWebApp: {
   capable: true,
   statusBarStyle: 'default',

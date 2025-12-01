@@ -3,6 +3,70 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import StaggerItem from '@/components/StaggerItem';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// FAQ Schema for Google Rich Snippets
+const faqSchema = {
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "What areas do you serve?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "We proudly serve Georgetown, TX and surrounding areas including Austin, Round Rock, Cedar Park, Leander, Pflugerville, Hutto, Lakeway, Bee Cave, Liberty Hill, Jarrell, Florence, Taylor, and Jonestown."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How long have you been in business?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "We've been serving the Georgetown community for over 25 years since 1998."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What's included in a standard cleaning?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Our standard cleaning covers dusting, vacuuming, mopping, kitchen cleaning (counters, sinks, appliances), bathroom cleaning (toilets, showers, sinks, mirrors), and tidying common areas."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do you offer deep cleaning services?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes! Our move-out and make-ready cleanings are comprehensive deep cleans covering everything top-to-bottom, including inside appliances and cabinets."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What cleaning products do you use?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "We use professional-grade, eco-friendly cleaning products that are safe for your family and pets."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How much does cleaning cost?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Pricing varies based on your home's size, type of cleaning, and service frequency. We provide transparent, no-obligation quotes."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do you require a contract?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No long-term contracts required! We work on a service-by-service basis."
+   }
+  }
+ ]
+};
 export default function FAQPage() {
  // Add this useEffect hook right at the start of the component
  useEffect(() => {
@@ -19,12 +83,18 @@ export default function FAQPage() {
  }, []);
  return (
   <main className="min-h-screen bg-background">
-    <Breadcrumbs 
-    items={[
-      { label: 'FAQ', href: '/faq' }
-    ]} 
+  {/* ADD THIS 👇 */}
+  <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
   />
-
+  {/* Breadcrumbs */}
+  <Breadcrumbs
+  items={[
+   { label: 'FAQ', href: '/faq' }
+  ]}
+  />
+  
   {/* Hero Section */}
   <StaggerItem>
   <section className="relative pt-32 pb-20 px-4 overflow-hidden">
@@ -49,57 +119,57 @@ export default function FAQPage() {
   {/* FAQ Sections */}
   <section className="py-24 px-4 bg-background">
   <div className="max-w-4xl mx-auto space-y-12">
-{/* General Questions */}
-<StaggerItem delay={100}>
-  <FAQSection 
-    title="General Questions" 
-    icon={
-      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-      </svg>
-    }
-    questions={generalQuestions}
+  {/* General Questions */}
+  <StaggerItem delay={100}>
+  <FAQSection
+  title="General Questions"
+  icon={
+   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+   </svg>
+  }
+  questions={generalQuestions}
   />
-</StaggerItem>
-
-{/* Service Questions */}
-<StaggerItem delay={200}>
-  <FAQSection 
-    title="Service Questions" 
-    icon={
-      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-      </svg>
-    }
-    questions={serviceQuestions}
+  </StaggerItem>
+  
+  {/* Service Questions */}
+  <StaggerItem delay={200}>
+  <FAQSection
+  title="Service Questions"
+  icon={
+   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+   </svg>
+  }
+  questions={serviceQuestions}
   />
-</StaggerItem>
-
-{/* Billing & Payments */}
-<StaggerItem delay={300}>
-  <FAQSection 
-    title="Billing & Payments" 
-    icon={
-      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-      </svg>
-    }
-    questions={billingQuestions}
+  </StaggerItem>
+  
+  {/* Billing & Payments */}
+  <StaggerItem delay={300}>
+  <FAQSection
+  title="Billing & Payments"
+  icon={
+   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+   </svg>
+  }
+  questions={billingQuestions}
   />
-</StaggerItem>
-
-{/* Other Common Questions */}
-<StaggerItem delay={400}>
-  <FAQSection 
-    title="Other Common Questions" 
-    icon={
-      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-      </svg>
-    }
-    questions={otherQuestions}
+  </StaggerItem>
+  
+  {/* Other Common Questions */}
+  <StaggerItem delay={400}>
+  <FAQSection
+  title="Other Common Questions"
+  icon={
+   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+   </svg>
+  }
+  questions={otherQuestions}
   />
-</StaggerItem>
+  </StaggerItem>
   </div>
   </section>
   {/* Still Have Questions CTA */}
@@ -114,14 +184,14 @@ export default function FAQPage() {
   We're here to help! Reach out and we'll get back to you as soon as possible.
   </p>
   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-  <a 
-  href="tel:+15122775364" 
+  <a
+  href="tel:+15122775364"
   className="px-8 py-4 bg-[#001F3F] text-white rounded-lg font-semibold text-lg hover:bg-[#003D7A] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
   >
   Call Us: (512) 277-5364
   </a>
-  <a 
-  href="mailto:admin@impressyoucleaning.com" 
+  <a
+  href="mailto:admin@impressyoucleaning.com"
   className="px-8 py-4 bg-white text-[#001F3F] rounded-lg font-semibold text-lg border-2 border-[#001F3F] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
   >
   Email Us
@@ -135,35 +205,35 @@ export default function FAQPage() {
 }
 // FAQ Section Component
 function FAQSection({ title, icon, questions }) {
-  const [openSection, setOpenSection] = useState(true);
+ const [openSection, setOpenSection] = useState(true);
+ 
+ return (
+  <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+  {/* Section Header */}
+  <button
+  onClick={() => setOpenSection(!openSection)}
+  className="w-full px-8 py-6 flex items-center justify-between bg-gradient-to-r from-[#001F3F] to-[#003D7A] text-white hover:from-[#003D7A] hover:to-[#001F3F] transition-all duration-300"
+  >
+  <div className="flex items-center gap-4">
+  {/* UPDATED: Now accepts SVG icon instead of emoji */}
+  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+  {icon}
+  </div>
+  <h2 className="text-2xl md:text-3xl font-display font-bold">{title}</h2>
+  </div>
+  <motion.svg
+  className="w-6 h-6 flex-shrink-0"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  animate={{ rotate: openSection ? 180 : 0 }}
+  transition={{ duration: 0.3 }}
+  >
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+  </motion.svg>
+  </button>
   
-  return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-      {/* Section Header */}
-      <button
-        onClick={() => setOpenSection(!openSection)}
-        className="w-full px-8 py-6 flex items-center justify-between bg-gradient-to-r from-[#001F3F] to-[#003D7A] text-white hover:from-[#003D7A] hover:to-[#001F3F] transition-all duration-300"
-      >
-        <div className="flex items-center gap-4">
-          {/* UPDATED: Now accepts SVG icon instead of emoji */}
-          <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-            {icon}
-          </div>
-          <h2 className="text-2xl md:text-3xl font-display font-bold">{title}</h2>
-        </div>
-        <motion.svg 
-          className="w-6 h-6 flex-shrink-0" 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-          animate={{ rotate: openSection ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </motion.svg>
-      </button>
-      
-        {/* Questions List */}
+  {/* Questions List */}
   <AnimatePresence initial={false}>
   {openSection && (
    <motion.div
@@ -195,10 +265,10 @@ function FAQItem({ question, answer }) {
   <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#079447] transition-colors duration-200 flex-1">
   {question}
   </h3>
-  <motion.svg 
-  className="w-5 h-5 flex-shrink-0 text-[#079447] mt-1" 
-  fill="none" 
-  stroke="currentColor" 
+  <motion.svg
+  className="w-5 h-5 flex-shrink-0 text-[#079447] mt-1"
+  fill="none"
+  stroke="currentColor"
   viewBox="0 0 24 24"
   animate={{ rotate: isOpen ? 180 : 0 }}
   transition={{ duration: 0.2 }}
@@ -345,3 +415,4 @@ const otherQuestions = [
   a: "Often within a few days! We'll work with you to find a time that fits your schedule. During busy seasons, booking a week or two ahead is helpful, but we'll always do our best to accommodate your needs."
  }
 ];
+

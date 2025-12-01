@@ -591,7 +591,7 @@ export default function ImpressCleaningSite() {
   <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
   <img
   src="/residential-section-group-photo.png"
-  alt="Professional cleaning team at work"
+alt="Professional Impress Cleaning Services team members in uniform posing together in Georgetown Texas"
   className="absolute inset-0 w-full h-full object-cover"
   />
   </div>
