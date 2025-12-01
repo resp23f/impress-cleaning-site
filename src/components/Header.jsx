@@ -171,7 +171,7 @@ function SiteHeader() {
   type="button"
   aria-label="Toggle navigation"
   onClick={() => setMobileMenuOpen((prev) => !prev)}
-  className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 hover:border-slate-300 hover:shadow-sm bg-white text-slate-600 hover:text-[#079447] transition-all duration-200"
+  className="inline-flex md:hidden items-center justify-center w-10 h-10 rounded-full border border-slate-200 hover:border-slate-300 hover:shadow-sm bg-white text-slate-600 hover:text-[#079447] transition-all duration-200"
   >
   {mobileMenuOpen ? (
    <svg
@@ -205,7 +205,7 @@ function SiteHeader() {
   </button>
   
   {/* DESKTOP NAV */}
-  <nav>
+  <nav className="hidden md:flex flex-1 items-center justify-center">
 <div className="flex flex-1 items-center justify-center gap-[clamp(2px,1vw,24px)]">
   <Link
     href="/"
@@ -438,14 +438,14 @@ function SiteHeader() {
   {/* MOBILE MENU OVERLAY */}
   {mobileMenuOpen && (
    <div
-   className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+   className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-200"
    onClick={() => setMobileMenuOpen(false)}
    />
   )}
   
   {/* MOBILE DROPDOWN MENU */}
   <div
-  className={`fixed top-0 left-0 right-0 z-50 lg:hidden transform transition-all duration-300 ease-out ${
+  className={`fixed top-0 left-0 right-0 z-50 md:hidden transform transition-all duration-300 ease-out ${
    mobileMenuOpen
    ? "translate-y-0 opacity-100"
    : "-translate-y-full opacity-0 pointer-events-none"
