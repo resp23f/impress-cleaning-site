@@ -74,17 +74,16 @@ function SiteHeader() {
           fixed top-0 left-0 right-0 z-50 w-full
           transform transition-transform duration-300 ease-out
           ${isHidden ? "-translate-y-full" : "translate-y-0"}
-          ${
-   isScrolled
+          ${isScrolled
    ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm"
-:"bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100 border-b border-gray-200/40"
+   : "bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100 border-b border-gray-200/40"
   }
           transition-[background,backdrop-filter] duration-300 ease-out
         `}
   >
   {/* TOP BAR (now INSIDE header) */}
-<div className="hidden md:block bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100">
-<div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
+  <div className="hidden md:block">
+  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
   <div className="flex items-center gap-1.5 text-slate-600">
   <svg
   className="w-3.5 h-3.5 text-[#079447]"
@@ -116,10 +115,12 @@ function SiteHeader() {
   style={{ maxWidth: "clamp(900px, 95vw, 1600px)" }}
   >
   <div className="flex items-center justify-between gap-2 flex-nowrap py-2 md:py-3 2xl:py-4">
+  
+  
   {/* LOGO */}
   <Link
   href="/"
-  className="flex items-center select-none shrink-0 relative z-10 md:-ml-2 lg:-ml-3 xl:-ml-4"
+  className="flex items-center select-none shrink-0 relative z-10 md:-ml-1 lg:-ml-2 xl:-ml-3"
   aria-label="Impress Cleaning Home"
   >
   <Image
@@ -157,13 +158,15 @@ function SiteHeader() {
   
   {/* DESKTOP NAV */}
   <nav
-  className="hidden md:flex md:flex-1 md:items-center md:justify-center font-display font-medium text-navy whitespace-nowrap"
+  className="hidden md:flex md:flex-1 md:items-center font-display font-medium text-navy whitespace-nowrap"
   style={{
    gap: "clamp(8px, 1.5vw, 48px)",
    fontSize: "clamp(12px, 1.3vw, 21px)",
   }}
   aria-label="Primary"
   >
+  {/* CENTERED NAV LINKS */}
+  <div className="flex flex-1 items-center justify-center gap-[clamp(8px,1.5vw,48px)]">
   <Link
   href="/"
   className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
@@ -200,12 +203,14 @@ function SiteHeader() {
   >
   About Us
   </Link>
+  </div>
   
-  {/* ACTION BUTTONS */}
+  {/* RIGHT-SIDE ACTIONS */}
   <div className="flex items-center gap-3 ml-auto">
+  {/* Portal */}
   <Link
   href="/auth/login"
-  className="hidden lg:inline-flex items-center gap-1.5 text-slate-600 hover:text-[#079447] transition-colors font-manrope text-sm font-medium"
+  className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white/70 text-slate-700 text-xs font-semibold shadow-sm hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope backdrop-blur-sm"
   >
   <svg
   className="w-4 h-4"
@@ -220,9 +225,10 @@ function SiteHeader() {
   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
   />
   </svg>
-  Portal
+  <span>Customer Portal</span>
   </Link>
   
+  {/* Book Now */}
   <Link
   href="/booking"
   className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
@@ -230,6 +236,7 @@ function SiteHeader() {
   Book Now
   </Link>
   
+  {/* Phone */}
   <a
   href="tel:+15122775364"
   className="hidden md:inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold text-[15px] border-2 border-[#079447] text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 font-manrope whitespace-nowrap"
@@ -252,8 +259,7 @@ function SiteHeader() {
   
   {/* MOBILE DRAWER */}
   <div
-  className={`fixed top-0 left-0 h-screen w-[75vw] max-w-[320px] z-50 bg-[#001F3F] text-white transform transition-transform duration-300 ease-in-out md:hidden ${
-   open ? "translate-x-0" : "-translate-x-full"
+  className={`fixed top-0 left-0 h-screen w-[75vw] max-w-[320px] z-50 bg-[#001F3F] text-white transform transition-transform duration-300 ease-in-out md:hidden ${open ? "translate-x-0" : "-translate-x-full"
   } shadow-2xl overflow-y-auto`}
   >
   <div className="sticky top-0 bg-[#001F3F] p-6 border-b border-white/10">
