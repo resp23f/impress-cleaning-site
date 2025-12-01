@@ -560,14 +560,23 @@ export default function ImpressCleaningSite() {
   <div className="flex items-start group">
   <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
   <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
   </svg>
   </div>
   <div className="ml-4">
-  <h3 className="text-lg font-bold text-gray-900 mb-1">Customer Portal Coming Soon</h3>
-  <p className="text-gray-600 leading-relaxed">
-  Manage your cleaning schedule, view service history, and communicate with our team—all from one convenient online portal designed with you in mind.
+  <h3 className="text-lg font-bold text-gray-900 mb-2">Already a Customer?</h3>
+  <p className="text-gray-600 leading-relaxed mb-3">
+  Access your customer portal to manage appointments, view service history, and track billing—all in one convenient place.
   </p>
+  <Link
+  href="/auth/login"
+  className="inline-flex items-center text-[#079447] hover:text-[#08A855] font-semibold text-base group/link"
+  >
+  Access Customer Portal
+  <svg className="w-4 h-4 ml-1.5 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+  </svg>
+  </Link>
   </div>
   </div>
   <div className="flex items-start group">
@@ -591,7 +600,7 @@ export default function ImpressCleaningSite() {
   <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
   <img
   src="/residential-section-group-photo.png"
-alt="Professional Impress Cleaning Services team members in uniform posing together in Georgetown Texas"
+  alt="Professional Impress Cleaning Services team members in uniform posing together in Georgetown Texas"
   className="absolute inset-0 w-full h-full object-cover"
   />
   </div>
