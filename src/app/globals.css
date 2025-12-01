@@ -120,12 +120,7 @@ select.no-native::-ms-expand {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  body {
-    padding-top: calc(80px + env(safe-area-inset-top, 0px));
-  }
-}
+
 @media (min-width: 1280px) {
   .container {
     padding-left: 3rem;
