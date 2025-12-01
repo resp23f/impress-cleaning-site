@@ -165,7 +165,7 @@ function SiteHeader() {
   {/* LOGO */}
 <Link
   href="/"
-  className="flex items-center select-none shrink-0 relative z-10 -ml-4 md:-ml-6 lg:-ml-8 xl:-ml-10 2xl:-ml-12"
+  className="flex items-center select-none shrink-0 relative z-10 -ml-6 md:-ml-6 lg:-ml-8 xl:-ml-10 2xl:-ml-12"
   aria-label="Impress Cleaning Home"
 >
   <Image
