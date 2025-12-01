@@ -120,7 +120,7 @@ function SiteHeader() {
   {/* LOGO */}
   <Link
   href="/"
-  className="flex items-center select-none shrink-0 relative z-10 md:-ml-1 lg:-ml-2 xl:-ml-3"
+  className="flex items-center select-none shrink-0 relative z-10 md:-ml-3 lg:-ml-4 xl:-ml-5"
   aria-label="Impress Cleaning Home"
   >
   <Image
@@ -169,7 +169,7 @@ function SiteHeader() {
   <div className="flex flex-1 items-center justify-center gap-[clamp(8px,1.5vw,48px)]">
   <Link
   href="/"
-className="
+  className="
   relative font-display px-4 py-2 rounded-full
   transition-all duration-300 ease-out
   hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
@@ -178,31 +178,46 @@ className="
   </Link>
   <Link
   href="/residential-section"
-  className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
+  className="
+  relative font-display px-4 py-2 rounded-full
+  transition-all duration-300 ease-out
+  hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
   Residential
   </Link>
   <Link
   href="/commercial"
-  className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
+  className="
+  relative font-display px-4 py-2 rounded-full
+  transition-all duration-300 ease-out
+  hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
   Commercial
   </Link>
   <Link
   href="/gift-certificate"
-  className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
+  className="
+  relative font-display px-4 py-2 rounded-full
+  transition-all duration-300 ease-out
+  hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
   Gift Certificates
   </Link>
   <Link
   href="/faq"
-  className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
+  className="
+  relative font-display px-4 py-2 rounded-full
+  transition-all duration-300 ease-out
+  hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
   FAQ
   </Link>
   <Link
   href="/about-us"
-  className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50"
+  className="
+  relative font-display px-4 py-2 rounded-full
+  transition-all duration-300 ease-out
+  hover:bg-green-50/60 hover:text-[#079447] hover:shadow-sm hover:-translate-y-[1px]"
   >
   About Us
   </Link>
@@ -210,8 +225,7 @@ className="
   
   {/* RIGHT-SIDE ACTIONS */}
   <div className="flex items-center gap-3 ml-auto">
-  
-  {/* Book Now - PRIMARY CTA */}
+  {/* Book Now – PRIMARY */}
   <Link
   href="/booking"
   className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white text-[15px] bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.05] transition-all duration-300 font-manrope whitespace-nowrap"
@@ -219,7 +233,7 @@ className="
   Book Now
   </Link>
   
-  {/* Phone Number - Secondary CTA */}
+  {/* Phone – OUTLINE */}
   <a
   href="tel:+15122775364"
   className="hidden md:inline-flex items-center justify-center px-5 py-3 rounded-xl border border-slate-300 text-slate-700 text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
@@ -227,22 +241,22 @@ className="
   (512) 277-5364
   </a>
   
-  {/* Customer Portal - Utility CTA */}
+  {/* Customer Portal – OUTLINE, SAME SHAPE AS PHONE */}
   <Link
   href="/auth/login"
-  className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white/70 text-slate-700 text-xs font-semibold shadow-sm hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope backdrop-blur-sm"
+  className="hidden lg:inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl border border-slate-300 text-slate-700 text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
   >
   <svg
   className="w-4 h-4"
   fill="none"
   stroke="currentColor"
   viewBox="0 0 24 24"
+  strokeWidth="2"
   >
   <path
   strokeLinecap="round"
   strokeLinejoin="round"
-  strokeWidth={2}
-  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+  d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"
   />
   </svg>
   <span>Customer Portal</span>
