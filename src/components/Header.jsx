@@ -113,7 +113,7 @@ function SiteHeader() {
   
   {/* CONTAINER WITH FLUID MAX-WIDTH */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
-  <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
+  <div className="flex items-center justify-between gap-2 flex-nowrap py-2 md:py-3 2xl:py-4">
   
   {/* LOGO */}
   <Link
