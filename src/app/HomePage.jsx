@@ -125,7 +125,7 @@ function Hero() {
     
     <div className="relative z-10">
       <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
-        <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-16 md:pt-72 lg:pt-16 xl:pt-20 pb-10 md:pb-14">
+        <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-16 md:pt-32 lg:pt-16 xl:pt-20 pb-10 md:pb-14">
           <div className="max-w-[650px]">
             <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 md:pt-32 leading-[1.15] tracking-tight" 
               style={{ 
