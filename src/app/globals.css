@@ -13,6 +13,7 @@
   --border-gray: #E7EBF0;
   --green-hover: #08A855;
   --softgreen: #7AC699;
+  --header-offset: 112px;    /* Fallback main padding equals header height */
 }
 /* Remove the duplicate dark mode section since you're not using dark mode */
 /* If you want to add dark mode later, update with actual dark colors */

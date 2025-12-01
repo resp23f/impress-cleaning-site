@@ -15,6 +15,7 @@ function SiteHeader() {
  const [isScrolled, setIsScrolled] = useState(false);
  const [isHidden, setIsHidden] = useState(false);
  
+ const headerRef = useRef(null);
  const desktopMenuRef = useRef(null);
  const desktopButtonRef = useRef(null);
  
@@ -87,6 +88,30 @@ function SiteHeader() {
   return () => document.removeEventListener("mousedown", handleClickOutside);
  }, [desktopMenuOpen]);
  
+ // Sync main offset to actual header height across breakpoints
+ useEffect(() => {
+  const setHeaderOffset = () => {
+   if (!headerRef.current) return;
+   const height = headerRef.current.getBoundingClientRect().height;
+   document.documentElement.style.setProperty("--header-offset", `${height}px`);
+  };
+  
+  setHeaderOffset();
+  
+  const resizeObserver = typeof ResizeObserver !== "undefined"
+   ? new ResizeObserver(setHeaderOffset)
+   : null;
+  if (resizeObserver && headerRef.current) {
+   resizeObserver.observe(headerRef.current);
+  }
+  
+  window.addEventListener("resize", setHeaderOffset);
+  return () => {
+   window.removeEventListener("resize", setHeaderOffset);
+   if (resizeObserver) resizeObserver.disconnect();
+  };
+ }, []);
+ 
  // Close mobile menu on route change
  useEffect(() => {
   setMobileMenuOpen(false);
@@ -109,6 +134,7 @@ function SiteHeader() {
   <>
   {/* HEADER */}
   <header
+  ref={headerRef}
   className={`
           fixed top-0 left-0 right-0 z-50 w-full
           transform transition-transform duration-300 ease-out
