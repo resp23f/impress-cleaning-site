@@ -83,7 +83,7 @@ function SiteHeader() {
   >
   {/* TOP BAR (now INSIDE header) */}
   <div className="hidden md:block">
-  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
+  <div className="max-w-[1600px] mx-auto flex items-center justify-end gap-6 py-2 pr-8 lg:pr-10 font-manrope text-[13px] font-bold">
   <div className="flex items-center gap-1.5 text-slate-600">
   <svg
   className="w-3.5 h-3.5 text-[#079447]"
@@ -241,10 +241,10 @@ function SiteHeader() {
   (512) 277-5364
   </a>
   
-  {/* Customer Portal – OUTLINE, SAME SHAPE AS PHONE */}
+  {/* Customer Portal – TEXT LINK WITH ICON */}
   <Link
   href="/auth/login"
-  className="hidden lg:inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl border border-slate-300 text-slate-700 text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
+  className="hidden lg:inline-flex items-center gap-1.5 text-slate-600 hover:text-[#079447] transition-colors font-manrope text-sm font-semibold"
   >
   <svg
   className="w-4 h-4"
@@ -256,7 +256,7 @@ function SiteHeader() {
   <path
   strokeLinecap="round"
   strokeLinejoin="round"
-  d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"
+  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
   />
   </svg>
   <span>Customer Portal</span>
