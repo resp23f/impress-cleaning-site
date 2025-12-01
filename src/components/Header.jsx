@@ -45,7 +45,7 @@ function SiteHeader() {
       <svg className="w-3.5 h-3.5 text-[#079447]" fill="currentColor" viewBox="0 0 20 20">
         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
       </svg>
-      <span>Mon-Fri 8AM-6PM</span>
+      <span>Mon-Fri 7:00AM-6:30PM</span>
     </div>
     <span className="text-gray-300 font-bold">•</span>
     <Link href="/aplicar" className="hover:text-green transition-colors">
@@ -100,22 +100,22 @@ function SiteHeader() {
   style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.3vw, 21px)' }}
   aria-label="Primary"
   >
-<Link href="/" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
+<Link href="/" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Home
 </Link>
-<Link href="/residential-section" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
+<Link href="/residential-section" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Residential
 </Link>
-<Link href="/commercial" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
+<Link href="/commercial" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Commercial
 </Link>
-<Link href="/gift-certificate" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
+<Link href="/gift-certificate" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Gift Certificates
 </Link>
-<Link href="/faq" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
+<Link href="/faq" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   FAQ
 </Link>
-<Link href="/about-us" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
+<Link href="/about-us" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   About Us
 </Link>
 
