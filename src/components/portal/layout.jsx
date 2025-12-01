@@ -26,7 +26,7 @@ export default async function PortalLayout({ children }) {
  }
  const firstName = profile?.full_name?.split(' ')[0] || 'there'
  return (
-  <div className="min-h-screen bg-gray-50">
+<div className="min-h-screen bg-gray-50 overflow-x-hidden overscroll-x-none">
   <PortalNav userName={firstName} />
   {/* Main Content */}
   <div className="lg:pl-72">
