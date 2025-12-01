@@ -60,8 +60,7 @@ export default function GiftCertificatePage() {
   
   {/* Hero Section */}
   <StaggerItem>
-  <section className="relative pt-32 pb-16 px-4 overflow-hidden">
-  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-green-50 via-transparent to-transparent" />
+<section className="relative pt-8 pb-20 px-4 overflow-hidden">  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-green-50 via-transparent to-transparent" />
   <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-50 via-transparent to-transparent" />
   <div className="relative max-w-7xl mx-auto text-center">
   <div className="inline-flex items-center gap-2 px-6 py-2 bg-green-50 border border-green-100 rounded-full mb-6">

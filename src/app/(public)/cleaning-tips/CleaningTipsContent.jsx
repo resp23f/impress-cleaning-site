@@ -2407,8 +2407,7 @@ export default function CleaningTipsPage() {
   <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#1C294E]/10 dark:bg-[#1C294E]/5 rounded-full blur-3xl"></div>
   <div className="absolute top-60 -left-40 w-80 h-80 bg-[#079447]/10 dark:bg-[#079447]/5 rounded-full blur-3xl"></div>
   </div>
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-  <motion.div
+<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">  <motion.div
   initial={{ opacity: 0, y: 20 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.5 }}

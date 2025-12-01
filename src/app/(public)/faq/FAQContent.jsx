@@ -97,8 +97,7 @@ export default function FAQPage() {
   
   {/* Hero Section */}
   <StaggerItem>
-  <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-  <div className="absolute inset-0 bg-gradient-to-br from-[#001F3F] to-[#003D7A] opacity-90" />
+<section className="relative pt-8 pb-20 px-4 overflow-hidden">  <div className="absolute inset-0 bg-gradient-to-br from-[#001F3F] to-[#003D7A] opacity-90" />
   <div className="absolute inset-0">
   <div className="absolute top-20 right-20 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
   <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
