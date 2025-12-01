@@ -98,16 +98,15 @@ function Hero() {
   <StaggerItem>
   <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
   <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
-  <Image
+<Image
   src="/hero-cleaners1.jpg"
   alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
   fill
   priority
-className="object-cover object-[60%_18%] md:object-[center_top]"
- quality={85}
+  className="object-cover object-[50%_18%] md:object-[center_25%] lg:object-[center_30%] xl:object-[center_35%]"
+  quality={85}
   sizes="100vw"
-  />
-  <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
+/>  <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
   <div className="relative z-10">
   <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
 <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-16 md:pt-20 lg:pt-16 xl:pt-20 pb-10 md:pb-14">
