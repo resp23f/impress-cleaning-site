@@ -8,7 +8,7 @@ export default function PublicLayout({ children }) {
     <>
       <Header />
       <PageTransition>
-<main className="pt-[140px] md:pt-[180px] lg:pt-[190px] min-h-screen flex-col">
+<main className="pt-[130px] md:pt-[150px] lg:pt-[160px] min-h-screen flex-col">
   {children}
 </main>
       </PageTransition>
