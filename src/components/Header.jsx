@@ -21,21 +21,6 @@ function SiteHeader() {
   () => (href) => (pathname === href ? "text-green font-semibold" : ""),
   [pathname]
  );
- // ← ADD THIS useEffect
- useEffect(() => {
-  let ticking = false;
-  const handleScroll = () => {
-   if (!ticking) {
-    window.requestAnimationFrame(() => {
-     setIsScrolled(window.scrollY > 20);
-     ticking = false;
-    });
-    ticking = true;
-   }
-  };
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  return () => window.removeEventListener('scroll', handleScroll);
- }, []);
  return (
   <>
 {/* ========== TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY ========== */}
@@ -64,6 +49,7 @@ function SiteHeader() {
     ? 'bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-b border-gray-100' 
     : 'bg-white'
 }`}>
+
   {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
   <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
