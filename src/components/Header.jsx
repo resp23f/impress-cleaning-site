@@ -164,7 +164,7 @@ function SiteHeader() {
   {/* MOBILE LOGO - Far left */}
   <Link
   href="/"
-  className="flex md:hidden items-center select-none shrink-0 relative z-10 -ml-12"
+  className="flex md:hidden items-center select-none shrink-0 relative z-10 -ml-16"
   aria-label="Impress Cleaning Home"
   >
   <Image
