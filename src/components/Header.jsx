@@ -38,9 +38,16 @@ function SiteHeader() {
  }, []);
  return (
   <>
-{/* ========== TOP BAR (Aplicar | Apply) - DESKTOP ONLY ========== */}
+{/* ========== TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY ========== */}
 <div className="hidden md:block bg-background border-b border-gray-100">
-  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] text-gray-600 font-bold">
+  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
+    <div className="flex items-center gap-1.5 text-slate-600">
+      <svg className="w-3.5 h-3.5 text-[#079447]" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+      </svg>
+      <span>Mon-Fri 8AM-6PM</span>
+    </div>
+    <span className="text-gray-300 font-bold">•</span>
     <Link href="/aplicar" className="hover:text-green transition-colors">
       Aplicar
     </Link>
@@ -52,10 +59,11 @@ function SiteHeader() {
 </div>
 
   {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-  <header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-   ? 'bg-white backdrop-blur-md shadow-lg'
-   : 'bg-white'
-  }`}>
+<header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+  isScrolled 
+    ? 'bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-b border-gray-100' 
+    : 'bg-white'
+}`}>
   {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
   <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
@@ -92,43 +100,46 @@ function SiteHeader() {
   style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.3vw, 21px)' }}
   aria-label="Primary"
   >
-  <Link href="/" className="hover:text-green transition-colors duration-200 font-display">
+<Link href="/" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
   Home
-  </Link>
-  <Link href="/residential-section" className="hover:text-green transition-colors duration-200 font-display">
+</Link>
+<Link href="/residential-section" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
   Residential
-  </Link>
-  <Link href="/commercial" className="hover:text-green transition-colors duration-200 font-display">
+</Link>
+<Link href="/commercial" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
   Commercial
-  </Link>
-  <Link href="/gift-certificate" className="hover:text-green transition-colors duration-200 font-display">
+</Link>
+<Link href="/gift-certificate" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
   Gift Certificates
-  </Link>
-  <Link href="/faq" className="hover:text-green transition-colors duration-200 font-display">
+</Link>
+<Link href="/faq" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
   FAQ
-  </Link>
-  <Link href="/about-us" className="hover:text-green transition-colors duration-200 font-display">
+</Link>
+<Link href="/about-us" className="relative hover:text-green transition-colors duration-200 font-display after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green after:transition-all after:duration-300 hover:after:w-full">
   About Us
-  </Link>
+</Link>
+
   {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
   <div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)', marginLeft: 'clamp(24px, 3vw, 48px)' }}>
-  <Link
+<Link
   href="/auth/login"
-  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300 border-2 font-manrope text-[#079447] border-[#079447] hover:bg-[#079447] hover:text-white group"
+  className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 font-manrope text-slate-600 hover:text-[#079447] hover:bg-green-50"
   style={{ padding: 'clamp(4px, 0.7vw, 10px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.7vw, 20px)' }}
-  >
+>
   <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
   </svg>
   Portal
-  </Link>
-  <Link
+</Link>
+
+<Link
   href="/booking"
-  className="inline-flex items-center justify-center rounded-lg font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 bg-[#079447] hover:bg-[#08A855] font-manrope"
+  className="inline-flex items-center justify-center rounded-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 font-manrope"
   style={{ padding: 'clamp(6px, 0.8vw, 12px) clamp(14px, 1.8vw, 28px)', fontSize: 'clamp(13px, 2vw, 24px)' }}
-  >
+>
   Book Now
-  </Link>
+</Link>
+
   <a
   href="tel:+15122775364"
   className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300 border-2 font-manrope text-[#079447] border-[#079447] hover:bg-[#079447] hover:text-white"
