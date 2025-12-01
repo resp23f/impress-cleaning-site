@@ -122,39 +122,49 @@ className="object-cover object-[center_top]"
   So You Can Focus On What Matters&nbsp;Most.
   </span>
   </h1>
-  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-<a 
-  href="tel:+15122775364"
-  className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group max-w-[200px]"
-  style={{ 
-   padding: 'clamp(0.75rem, 1.8vw, 1rem) clamp(1.5rem, 2.8vw, 2rem)', 
-   fontSize: 'clamp(1rem, 1.5vw, 1.2rem)' 
-  }}
->
-  <svg className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform" fill="none" stroke="white" viewBox="0 0 24 24" strokeWidth={2.5}>
-  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-  </svg>
-  Call Now
-  </a>
-<Link
-  href="/service-quote"
-  className="inline-flex items-center justify-center bg-[#079447] text-white rounded-lg font-bold hover:bg-[#068338] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] group max-w-[220px]"
-  style={{ 
-   padding: 'clamp(0.75rem, 1.8vw, 1rem) clamp(1.5rem, 2.8vw, 2rem)', 
-   fontSize: 'clamp(1rem, 1.5vw, 1.2rem)' 
-  }}
->  Request Free Quote
-  <svg
-  className="w-5 h-5 ml-2.5 group-hover:translate-x-1 transition-transform"
-  fill="none"
-  stroke="white"
-  viewBox="0 0 24 24"
-  strokeWidth="2.5"
+<div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto items-stretch sm:items-center">
+  {/* Primary: Call Now */}
+  <a
+    href="tel:+15122775364"
+    className="inline-flex w-full sm:w-auto items-center justify-center rounded-xl bg-[#079447] text-white font-manrope font-bold text-[15px] md:text-[16px] px-6 py-3 shadow-lg hover:shadow-xl hover:bg-[#068338] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
   >
-  <polyline points="9 5 16 12 9 19" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
+    <svg
+      className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      strokeWidth={2.2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+      />
+    </svg>
+    Call Now
+  </a>
+
+  {/* Secondary: Request Free Quote */}
+  <Link
+    href="/service-quote"
+    className="inline-flex w-full sm:w-auto items-center justify-center rounded-xl border-2 border-[#079447] bg-white/95 text-[#079447] font-manrope font-semibold text-[15px] md:text-[16px] px-6 py-3 shadow-md hover:bg-[#079447] hover:text-white hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
+  >
+    Request Free Quote
+    <svg
+      className="w-5 h-5 ml-2.5 group-hover:translate-x-1 transition-transform"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      strokeWidth={2.2}
+    >
+      <polyline
+        points="9 5 16 12 9 19"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   </Link>
-  </div>
+</div>
   </div>
   </div>
   </div>
