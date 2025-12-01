@@ -96,7 +96,7 @@ export default function ImpressCleaningSite() {
 function Hero() {
  return (
   <StaggerItem>
-  <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
+<section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden -mt-[75px] md:-mt-[90px] lg:-mt-[110px] xl:-mt-[120px] 2xl:-mt-[135px]">
   <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
   <Image
   src="/hero-cleaners1.jpg"
@@ -109,8 +109,7 @@ className="object-cover object-[79%_59%] md:object-[center_20%]"  quality={85}
   <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
   <div className="relative z-10">
   <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
-  <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-32 pb-12 md:py-16">
-  <div className="max-w-[650px]">
+<div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-[100px] pb-12 md:pt-[140px] md:pb-16 lg:pt-[160px] xl:pt-[170px] 2xl:pt-[185px]">  <div className="max-w-[650px]">
   <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight" 
   style={{ 
    fontSize: 'clamp(2rem, 5vw, 4rem)', 
