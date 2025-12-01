@@ -129,6 +129,18 @@ function SiteHeader() {
    document.body.style.overflow = "";
   };
  }, [mobileMenuOpen]);
+
+ // Toggle body class to sync safe-area glass with header state
+ useEffect(() => {
+  const body = document.body;
+  if (!body) return;
+  if (isScrolled) {
+   body.classList.add("header-scrolled");
+  } else {
+   body.classList.remove("header-scrolled");
+  }
+  return () => body.classList.remove("header-scrolled");
+ }, [isScrolled]);
  
  return (
   <>
