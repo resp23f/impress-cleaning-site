@@ -21,6 +21,23 @@ function SiteHeader() {
   () => (href) => (pathname === href ? "text-green font-semibold" : ""),
   [pathname]
  );
+ 
+ // ← ADD THIS ENTIRE useEffect HERE
+useEffect(() => {
+  let ticking = false;
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 20);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+
  return (
   <>
 {/* ========== TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY ========== */}
@@ -47,7 +64,7 @@ function SiteHeader() {
 <header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
   isScrolled 
     ? 'bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-b border-gray-100' 
-    : 'bg-white'
+    : 'bg-gray-50'
 }`}>
 
   {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
@@ -106,7 +123,8 @@ function SiteHeader() {
 </Link>
 
   {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
-  <div className="flex items-center" style={{ gap: 'clamp(6px, 1vw, 16px)', marginLeft: 'clamp(24px, 3vw, 48px)' }}>
+<div className="flex items-center flex-wrap" style={{ gap: 'clamp(6px, 1vw, 12px)', marginLeft: 'clamp(16px, 2vw, 32px)' }}>
+
 <Link
   href="/auth/login"
   className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 font-manrope text-slate-600 hover:text-[#079447] hover:bg-green-50"
