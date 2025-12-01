@@ -90,16 +90,16 @@ function SiteHeader() {
   </div>
   
   {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-<header className={`
+  <header className={`
   ${scrollDirection === "static" ? 'relative' : 'fixed top-0 left-0 right-0'} 
   z-50 w-full
   ${scrollDirection === "up" ? '-translate-y-full' : 'translate-y-0'}
   ${isScrolled 
-    ? 'bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out' 
-    : 'bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out'
+   ? 'bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out' 
+   : 'bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out'
   }
 `}>
-
+  
   {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
   <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
@@ -156,40 +156,41 @@ function SiteHeader() {
   About Us
   </Link>
   
-  {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
-  <div className="flex items-center flex-wrap" style={{ gap: 'clamp(6px, 1vw, 12px)', marginLeft: 'clamp(16px, 2vw, 32px)' }}>
+  {/* ========== ACTION BUTTONS - PREMIUM LAYOUT ========== */}
+  <div className="flex items-center gap-3 ml-auto">
   
+  {/* Portal - Subtle text link */}
   <Link
   href="/auth/login"
-  className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 font-manrope text-slate-600 hover:text-[#079447] hover:bg-green-50"
-  style={{ padding: 'clamp(4px, 0.7vw, 10px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.7vw, 20px)' }}
+  className="hidden lg:inline-flex items-center gap-1.5 text-slate-600 hover:text-[#079447] transition-colors font-manrope text-sm font-medium"
   >
-  <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
   </svg>
   Portal
   </Link>
   
+  {/* Book Now - Hero CTA */}
   <Link
   href="/booking"
-  className="inline-flex items-center justify-center rounded-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 font-manrope"
-  style={{ padding: 'clamp(6px, 0.8vw, 12px) clamp(14px, 1.8vw, 28px)', fontSize: 'clamp(13px, 2vw, 24px)' }}
+  className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-bold text-white text-sm bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/25 hover:scale-105 transition-all duration-300 font-manrope whitespace-nowrap"
   >
   Book Now
   </Link>
   
-  <a
-  href="tel:+15122775364"
-  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300 border-2 font-manrope text-[#079447] border-[#079447] hover:bg-[#079447] hover:text-white"
-  style={{ padding: 'clamp(4px, 0.7vw, 10px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.7vw, 20px)' }}
+  {/* Phone - Secondary CTA */}
+  
+  <a href="tel:+15122775364"
+  className="hidden md:inline-flex items-center justify-center px-4 py-2.5 rounded-lg font-semibold text-sm border-2 border-[#079447] text-[#079447] hover:bg-[#079447] hover:text-white transition-all duration-300 font-manrope whitespace-nowrap"
   >
   (512) 277-5364
   </a>
-  </div> 
+  </div>
   </nav>
   </div>
   </div>
   </header>
+  
   {/* ========== MOBILE MENU OVERLAY ========== */}
   {open && (
    <div
