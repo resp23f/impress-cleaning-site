@@ -118,7 +118,8 @@ className={`
    
 {/* Mobile Menu */}
 {mobileMenuOpen && (
-  <div className="lg:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+<div className="lg:hidden fixed inset-0 z-50 bg-black/60"
+  onClick={() => setMobileMenuOpen(false)}>
     <div
       className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl flex flex-col"
       onClick={(e) => e.stopPropagation()}

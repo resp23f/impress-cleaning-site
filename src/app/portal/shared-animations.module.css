@@ -641,10 +641,3 @@
     animation-duration: 0.4s;
   }
 }
-/* Mobile date input fix */
-@media (max-width: 640px) {
-  .mobileInput {
-    min-width: 0 !important;
-    width: 100% !important;
-  }
-}
