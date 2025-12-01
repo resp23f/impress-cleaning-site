@@ -116,64 +116,64 @@ className={`
    </button>
    </div>
    
-   {/* Mobile Menu */}
-   {mobileMenuOpen && (
-    <div className="lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+{/* Mobile Menu */}
+{mobileMenuOpen && (
+  <div className="lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
     <div
-    className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl"
-    onClick={(e) => e.stopPropagation()}
+      className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl flex flex-col"
+      onClick={(e) => e.stopPropagation()}
     >
-    <div className="flex flex-col h-full pt-20 pb-4">
-    
-    {/* Navigation */}
-    <nav className="flex-1 px-4 space-y-1.5">
-    {navItems.map((item) => {
-     const Icon = item.icon
-     const isActive = pathname === item.href
-     return (
-      <Link
-      key={item.href}
-      href={item.href}
-      onClick={() => setMobileMenuOpen(false)}
-className={`
- group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
- ${isActive
-  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
-  : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 shadow-sm shadow-transparent hover:shadow-gray-200/50'
- }
-`}
->
-<div className={`
- w-9 h-9 rounded-lg flex items-center justify-center ${styles.smoothTransition}
- ${isActive
-        ? 'bg-white/20'
-        : 'bg-gray-100 group-hover:bg-emerald-50'
-       }
-`}>     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
-       </div>
-       <span className="flex-1">{item.label}</span>
-       </Link>
-      )
-     })}
-     </nav>
-     
-     {/* Logout */}
-     <div className="px-4 pt-4 border-t border-gray-100">
-     <button
-     onClick={handleLogout}
-     className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
-     >
-     <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-all">
-     <LogOut className="w-5 h-5 text-gray-500 group-hover:text-red-600" />
-     </div>
-     <span className="flex-1">Log Out</span>
-     </button>
-     </div>
-     </div>
-     </div>
-     </div>
-    )}
-    
+      {/* Header with user greeting */}
+      <div className="pt-20 px-6 pb-4 border-b border-gray-100">
+        <p className="text-sm text-gray-500">Welcome back,</p>
+        <p className="text-lg font-semibold text-[#1C294E]">{userName}</p>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
+        {navItems.map((item) => {
+          const Icon = item.icon
+          const isActive = pathname === item.href
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`
+                group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
+                ${isActive
+                  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+                  : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900'
+                }
+              `}
+            >
+              <div className={`
+                w-9 h-9 rounded-lg flex items-center justify-center ${styles.smoothTransition}
+                ${isActive ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-emerald-50'}
+              `}>
+                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+              </div>
+              <span className="flex-1">{item.label}</span>
+            </Link>
+          )
+        })}
+      </nav>
+
+      {/* Logout - pinned to bottom */}
+      <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+        <button
+          onClick={handleLogout}
+          className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-red-600 rounded-xl bg-red-50 hover:bg-red-100 transition-all duration-200"
+        >
+          <div className="w-9 h-9 rounded-lg bg-red-100 group-hover:bg-red-200 flex items-center justify-center transition-all">
+            <LogOut className="w-5 h-5 text-red-600" />
+          </div>
+          <span className="flex-1 text-left">Log Out</span>
+        </button>
+      </div>
+    </div>
+  </div>
+)}    
     {/* Mobile Bottom Navigation */}
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)]">
     <nav className="flex justify-around px-2 py-2">

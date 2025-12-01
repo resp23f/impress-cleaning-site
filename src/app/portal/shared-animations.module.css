@@ -643,8 +643,8 @@
 }
 /* Mobile date input fix */
 @media (max-width: 640px) {
-  input[type="date"] {
-    min-width: 0;
-    width: 100%;
+  .mobileInput {
+    min-width: 0 !important;
+    width: 100% !important;
   }
 }
