@@ -480,140 +480,169 @@ function HowItWorks() {
  );
 }
 
+// ============================================
+// REPLACE your existing WhyFamiliesChooseUs and TestimonialsSection 
+// functions in HomePage.jsx with these two updated versions
+// ============================================
+
 function WhyFamiliesChooseUs() {
- const scrollRef = React.useRef(null);
- const [activeIndex, setActiveIndex] = React.useState(0);
- 
- React.useEffect(() => {
-  const scrollContainer = scrollRef.current;
-  if (!scrollContainer) return;
-  const handleScroll = () => {
-   const scrollLeft = scrollContainer.scrollLeft;
-   const cardWidth = 300 + 16;
-   const currentIndex = Math.round(scrollLeft / cardWidth);
-   setActiveIndex(currentIndex);
-  };
-  scrollContainer.addEventListener('scroll', handleScroll);
-  return () => scrollContainer.removeEventListener('scroll', handleScroll);
- }, []);
- 
- const proofCards = [
-  {
-   title: 'Principles That Matter.',
-   description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.'
-  },
-  {
-   title: 'Proven Reputation.',
-   description: 'Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.'
-  },
-  {
-   title: 'People Who Care.',
-   description: 'We\'re more than a cleaning company. We\'re neighbors who take pride in helping families enjoy their homes.'
-  },
-  {
-   title: 'Peace of Mind.',
-   description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.'
-  }
- ];
- 
- return (
-  <StaggerItem>
-  <section className="bg-gray-50 py-12 md:py-16 mb-16 md:mb-24 md:overflow-hidden">
-  <div className="mx-auto max-w-[1600px] md:px-6 lg:px-4 w-full md:w-auto flex-1">
-  <h3 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]">
-  Why Texas Families Trust Impress
-  </h3>
-  <div ref={scrollRef} className="mt-6 flex overflow-x-auto gap-4 pl-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:overflow-x-visible md:px-0 md:gap-6 lg:gap-8 md:snap-none tracking-wide pb-2">
-  {proofCards.map((card, index) => (
-   <div 
-   key={index}
-   className="rounded-2xl bg-white p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 min-w-[300px] max-w-[300px] md:min-w-0 md:max-w-none snap-center flex-shrink-0 min-h-[220px] md:min-h-0 flex flex-col border-t-4 border-[#079447]"
-   >
-   <div className="font-manrope font-semibold text-[18px] md:text-[20px] lg:text-[22px] mb-2 text-[#1e293b]">
-   {card.title}
-   </div>
-   <div className="font-manrope font-regular text-[15px] md:text-[16px] lg:text-[17px] text-[#475569] leading-relaxed tracking-normal break-words">
-   {card.description}
-   </div>
-   </div>
-  ))}
-  </div>
-  <div className="flex justify-center gap-2 mt-6 md:hidden">
-  {proofCards.map((_, index) => (
-   <div 
-   key={index}
-   className={`w-2 h-2 rounded-full transition-colors ${activeIndex === index ? 'bg-[#079447]' : 'bg-gray-400'}`}
-   />
-  ))}
-  </div>
-  </div> 
-  </section>
-  </StaggerItem>
- );
+  const proofCards = [
+    {
+      title: 'Principles That Matter',
+      description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Proven Reputation',
+      description: 'Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+        </svg>
+      )
+    },
+    {
+      title: 'People Who Care',
+      description: "We're more than a cleaning company. We're neighbors who take pride in helping families enjoy their homes.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Peace of Mind',
+      description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+        </svg>
+      )
+    }
+  ];
+
+  return (
+    <StaggerItem>
+      <section className="bg-white py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6 md:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
+              <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Trusted Locally</span>
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight tracking-tight text-[#0B2850]">
+              Why Texas Families Trust Impress
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {proofCards.map((card, index) => (
+              <div
+                key={index}
+                className="group relative bg-gradient-to-b from-gray-50 to-white rounded-2xl p-6 border border-gray-100 hover:border-[#079447]/30 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 bg-[#079447]/10 rounded-xl flex items-center justify-center text-[#079447] mb-4 group-hover:bg-[#079447] group-hover:text-white transition-all duration-300">
+                  {card.icon}
+                </div>
+                <h3 className="font-manrope font-bold text-lg text-[#1e293b] mb-2">
+                  {card.title}
+                </h3>
+                <p className="font-manrope text-[15px] text-slate-600 leading-relaxed">
+                  {card.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </StaggerItem>
+  );
 }
 
 function TestimonialsSection() {
- const testimonials = [
-  {
-   text: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. The whole team with her are such hard workers. Keep up the good work!",
-   author: "Shantell R, Verified Customer"
-  },
-  {
-   text: "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You can reach them at admin@impressyoucleaning.com. You will be very happy you called. They are awesome!",
-   author: "Juli E, Verified Customer"
-  },
-  {
-   text: "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.",
-   author: "Omally O, Verified Customer"
-  }
- ];
- 
- return (
-  <StaggerItem>
-  <section className="bg-white py-12 md:py-16 relative overflow-hidden">
-  <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
-  <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#079447]/5 rounded-full blur-3xl" />
-  <div className="container mx-auto mb-12 md:max-w-[1800px]">
-  <h2 className="font-display text-[22px] md:text-[35px] lg:text-[38px] font-bold leading-tight tracking-tight text-center text-[#0B2850]"> 
-  What Our Clients Are Saying
-  </h2>
-  </div>
-  <div className="relative max-w-full mx-auto">
-  <div className="overflow-hidden">
-  <div className="flex animate-scroll -translate-x-[10%]">
-  {[...Array(12)].map((_, setIndex) => (
-   testimonials.map((testimonial, index) => (
-    <div 
-    key={`set-${setIndex}-${index}`} 
-    className="flex-shrink-0 w-[90vw] md:w-[600px] px-4 text-center inline-block"
-    >
-    <p className={`text-slate-900 text-[17px] md:text-[19px] font-manrope mb-4 leading-[1.6] max-w-md mx-auto ${(setIndex * testimonials.length + index) % 2 === 0 ? 'font-semibold' : 'font-medium font-manrope'}`}>
-    "{testimonial.text}"
-    </p>
-    <p className="text-slate-500 text-[13px] md:text-[14px] font-manrope italic">
-    – {testimonial.author}
-    </p>
-    </div>
-   ))
-  ))}
-  </div>
-  </div>
-  </div>
-  <style jsx>{`
-          @keyframes scroll {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-50%);
-            }
-          }
-          .animate-scroll {
-            animation: scroll 30s linear infinite;
-            will-change: transform;
-          }
-        `}</style>
-   </section>
-   </StaggerItem>
+  const testimonials = [
+    {
+      text: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. Keep up the good work!",
+      author: "Shantell R.",
+      location: "Georgetown, TX",
+      rating: 5
+    },
+    {
+      text: "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You will be very happy you called. They are awesome!",
+      author: "Juli E.",
+      location: "Austin, TX",
+      rating: 5
+    },
+    {
+      text: "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.",
+      author: "Omally O.",
+      location: "Round Rock, TX",
+      rating: 5
+    }
+  ];
+
+  return (
+    <StaggerItem>
+      <section className="bg-gradient-to-b from-white via-gray-50/50 to-gray-100 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6 md:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
+              <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Reviews</span>
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight tracking-tight text-[#0B2850]">
+              What Our Clients Are Saying
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="group relative bg-white rounded-2xl p-6 lg:p-8 shadow-sm hover:shadow-xl border border-gray-100 hover:border-[#079447]/20 transition-all duration-300 hover:-translate-y-1"
+              >
+                {/* Quote Icon */}
+                <div className="absolute -top-3 left-6 w-10 h-10 bg-[#079447] rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+
+                {/* Stars */}
+                <div className="flex gap-1 mb-4 mt-2">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+
+                {/* Quote Text */}
+                <p className="font-manrope text-[15px] md:text-base text-slate-700 leading-relaxed mb-6">
+                  "{testimonial.text}"
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    {testimonial.author.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-manrope font-semibold text-[#1e293b]">
+                      {testimonial.author}
+                    </p>
+                    <p className="font-manrope text-sm text-slate-500">
+                      {testimonial.location}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </StaggerItem>
   );
- }
+}
