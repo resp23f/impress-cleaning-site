@@ -79,7 +79,8 @@ body {
   color: var(--foreground);
 }
 html, body { 
-  overflow-x: hidden; 
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 /* Tiny superscript for "LLC" */
 .align-super { 
