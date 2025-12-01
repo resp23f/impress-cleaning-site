@@ -103,7 +103,8 @@ function Hero() {
   alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
   fill
   priority
-className="object-cover object-[79%_59%] md:object-[center_20%]"  quality={85}
+className="object-cover object-[79%_59%] md:object-[center_15%]"
+ quality={85}
   sizes="100vw"
   />
   <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              

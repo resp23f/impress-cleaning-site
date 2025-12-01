@@ -121,10 +121,10 @@ function SiteHeader() {
           transition-[background,backdrop-filter] duration-300 ease-out
         `}
       >
-        <div
-          className="w-full mx-auto relative px-4 lg:px-8"
-          style={{ maxWidth: "clamp(900px, 95vw, 1600px)" }}
-        >
+<div
+  className="w-full mx-auto relative px-4 lg:px-6 xl:px-8"
+  style={{ maxWidth: "clamp(900px, 98vw, 1600px)" }}
+>
           <div className="flex items-center justify-between gap-2 flex-nowrap py-2 lg:py-3 2xl:py-4">
             {/* LOGO */}
             <Link
@@ -230,7 +230,7 @@ function SiteHeader() {
               </div>
 
               {/* RIGHT-SIDE ACTIONS */}
-              <div className="flex items-center gap-3 ml-auto">
+<div className="flex items-center gap-2 lg:gap-3 ml-auto shrink-0">
                 {/* Book Now – PRIMARY */}
                 <Link
                   href="/booking"
