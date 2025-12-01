@@ -123,11 +123,18 @@ className="object-cover object-[60%_18%] md:object-[center_top]"
   So You Can Focus On What Matters&nbsp;Most.
   </span>
   </h1>
-<div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto items-center sm:items-center max-w-[320px] mx-auto sm:max-w-none sm:mx-0">
+<div
+  className="
+    mt-6
+    flex flex-col sm:flex-row
+    gap-3 sm:gap-4
+    items-start sm:items-center
+    max-w-[240px] sm:max-w-none"
+>
   {/* Primary: Call Now */}
   <a
     href="tel:+15122775364"
-    className="inline-flex w-full sm:w-auto items-center justify-center rounded-xl bg-[#079447] text-white font-manrope font-bold text-[15px] md:text-[16px] px-6 py-3 shadow-lg hover:shadow-xl hover:bg-[#068338] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
+className="inline-flex items-center justify-center rounded-xll bg-[#079447] text-white font-manrope font-bold text-[15px] md:text-[16px] px-6 py-3 shadow-lg hover:shadow-xl hover:bg-[#068338] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
   >
     <svg
       className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform"
@@ -148,7 +155,7 @@ className="object-cover object-[60%_18%] md:object-[center_top]"
   {/* Secondary: Request Free Quote */}
   <Link
     href="/service-quote"
-    className="inline-flex w-full sm:w-auto items-center justify-center rounded-xl border-2 border-[#079447] bg-white/95 text-[#079447] font-manrope font-semibold text-[15px] md:text-[16px] px-6 py-3 shadow-md hover:bg-[#079447] hover:text-white hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
+className="inline-flex items-center justify-center rounded-xl  border-2 border-[#079447] bg-white/95 text-[#079447] font-manrope font-semibold text-[15px] md:text-[16px] px-6 py-3 shadow-md hover:bg-[#079447] hover:text-white hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
   >
     Request Free Quote
     <svg
