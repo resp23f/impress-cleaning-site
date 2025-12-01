@@ -15,61 +15,95 @@ export default function Header() {
 }
 function SiteHeader() {
  const [open, setOpen] = useState(false);
- const [isScrolled, setIsScrolled] = useState(false); // ← ADD THIS
+ const [isScrolled, setIsScrolled] = useState(false);
+ const [scrollDirection, setScrollDirection] = useState("static");
+ 
  const pathname = usePathname() || "/";
  const active = useMemo(
   () => (href) => (pathname === href ? "text-green font-semibold" : ""),
   [pathname]
  );
  
- // ← ADD THIS ENTIRE useEffect HERE
-useEffect(() => {
+ useEffect(() => {
+  let lastScrollY = window.scrollY;
   let ticking = false;
+  
   const handleScroll = () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        setIsScrolled(window.scrollY > 20);
-        ticking = false;
-      });
-      ticking = true;
-    }
+   if (!ticking) {
+    window.requestAnimationFrame(() => {
+     const currentScrollY = window.scrollY;
+     
+     // Check if at top
+     const atTop = currentScrollY < 20;
+     
+     // Determine scroll direction
+     const scrollingDown = currentScrollY > lastScrollY;
+     const scrollingUp = currentScrollY < lastScrollY;
+     
+     // Update scrolled state
+     setIsScrolled(!atTop);
+     
+     // Update header behavior
+     if (atTop) {
+      // At top - static position
+      setScrollDirection("static");
+     } else if (scrollingDown && currentScrollY > 100) {
+      // Scrolling down - show sticky header
+      setScrollDirection("down");
+     } else if (scrollingUp && currentScrollY > 100) {
+      // Scrolling up (not at top) - hide header
+      setScrollDirection("up");
+     }
+     
+     lastScrollY = currentScrollY;
+     ticking = false;
+    });
+    ticking = true;
+   }
   };
+  
   window.addEventListener('scroll', handleScroll, { passive: true });
   return () => window.removeEventListener('scroll', handleScroll);
-}, []);
-
+ }, []);
+ 
+ 
  return (
   <>
-{/* ========== TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY ========== */}
-<div className="hidden md:block bg-background border-b border-gray-100">
+  {/* ========== TOP BAR (Hours | Aplicar | Apply) - DESKTOP ONLY ========== */}
+  <div className="hidden md:block bg-background border-b border-gray-100">
   <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
-    <div className="flex items-center gap-1.5 text-slate-600">
-      <svg className="w-3.5 h-3.5 text-[#079447]" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-      </svg>
-      <span>Mon-Fri 7:00AM-6:30PM</span>
-    </div>
-    <span className="text-gray-300 font-bold">•</span>
-    <Link href="/aplicar" className="hover:text-green transition-colors">
-      Aplicar
-    </Link>
-    <span className="text-gray-300 font-bold">•</span>
-    <Link href="/apply" className="hover:text-green transition-colors">
-      Apply
-    </Link>
+  <div className="flex items-center gap-1.5 text-slate-600">
+  <svg className="w-3.5 h-3.5 text-[#079447]" fill="currentColor" viewBox="0 0 20 20">
+  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+  </svg>
+  <span>Mon-Fri 7:00AM-6:30PM</span>
   </div>
-</div>
-
+  <span className="text-gray-300 font-bold">•</span>
+  <Link href="/aplicar" className="hover:text-green transition-colors">
+  Aplicar
+  </Link>
+  <span className="text-gray-300 font-bold">•</span>
+  <Link href="/apply" className="hover:text-green transition-colors">
+  Apply
+  </Link>
+  </div>
+  </div>
+  
   {/* ========== MAIN HEADER (Logo + Navigation) ========== */}
-<header className={`md:sticky fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-  isScrolled 
-    ? 'bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-b border-gray-100' 
-    : 'bg-gray-50'
-}`}>
+<header className={`
+  ${scrollDirection === "static" ? 'relative' : 'fixed top-0 left-0 right-0'} 
+  z-50 w-full
+  ${scrollDirection === "up" ? '-translate-y-full' : 'translate-y-0'}
+  ${isScrolled 
+    ? 'bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm transition-[background,backdrop-filter] duration-300 ease-out' 
+    : 'bg-gray-50 transition-[background,backdrop-filter] duration-300 ease-out'
+  }
+`}>
 
   {/* ========== CONTAINER WITH FLUID MAX-WIDTH ========== */}
   <div className="w-full mx-auto relative px-4 lg:px-8" style={{ maxWidth: 'clamp(900px, 95vw, 1600px)' }}>
   <div className="flex items-center justify-between gap-2 flex-nowrap py-3 md:py-4 2xl:py-5">
+  
   {/* ========== LOGO - FIXED POSITIONING ========== */}
   <Link
   href="/"
@@ -103,47 +137,47 @@ useEffect(() => {
   style={{ gap: 'clamp(8px, 1.5vw, 48px)', fontSize: 'clamp(12px, 1.3vw, 21px)' }}
   aria-label="Primary"
   >
-<Link href="/" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
+  <Link href="/" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Home
-</Link>
-<Link href="/residential-section" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
+  </Link>
+  <Link href="/residential-section" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Residential
-</Link>
-<Link href="/commercial" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
+  </Link>
+  <Link href="/commercial" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Commercial
-</Link>
-<Link href="/gift-certificate" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
+  </Link>
+  <Link href="/gift-certificate" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   Gift Certificates
-</Link>
-<Link href="/faq" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
+  </Link>
+  <Link href="/faq" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   FAQ
-</Link>
-<Link href="/about-us" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
+  </Link>
+  <Link href="/about-us" className="relative hover:text-green transition-all duration-200 font-display px-3 py-1.5 rounded-full hover:bg-green-50/50">
   About Us
-</Link>
-
+  </Link>
+  
   {/* ========== ACTION BUTTONS WITH FLUID SIZING ========== */}
-<div className="flex items-center flex-wrap" style={{ gap: 'clamp(6px, 1vw, 12px)', marginLeft: 'clamp(16px, 2vw, 32px)' }}>
-
-<Link
+  <div className="flex items-center flex-wrap" style={{ gap: 'clamp(6px, 1vw, 12px)', marginLeft: 'clamp(16px, 2vw, 32px)' }}>
+  
+  <Link
   href="/auth/login"
   className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 font-manrope text-slate-600 hover:text-[#079447] hover:bg-green-50"
   style={{ padding: 'clamp(4px, 0.7vw, 10px) clamp(12px, 1.5vw, 24px)', fontSize: 'clamp(11px, 1.7vw, 20px)' }}
->
+  >
   <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
   </svg>
   Portal
-</Link>
-
-<Link
+  </Link>
+  
+  <Link
   href="/booking"
   className="inline-flex items-center justify-center rounded-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-[#079447] to-[#08A855] hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 font-manrope"
   style={{ padding: 'clamp(6px, 0.8vw, 12px) clamp(14px, 1.8vw, 28px)', fontSize: 'clamp(13px, 2vw, 24px)' }}
->
+  >
   Book Now
-</Link>
-
+  </Link>
+  
   <a
   href="tel:+15122775364"
   className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300 border-2 font-manrope text-[#079447] border-[#079447] hover:bg-[#079447] hover:text-white"
@@ -182,23 +216,23 @@ useEffect(() => {
   </div>
   
   {/* ADD THIS ENTIRE BLOCK HERE ↓ */}
-<div className="px-6 pt-6">
+  <div className="px-6 pt-6">
   {/* Customer Portal - Featured */}
   <Link
-    href="/auth/login"
-    className="block text-center rounded-lg bg-gradient-to-r from-[#079447] to-[#08A855] hover:from-[#08A855] hover:to-[#079447] px-6 py-4 text-white font-bold text-lg transition-all duration-300 shadow-lg"
-    onClick={() => setOpen(false)}
+  href="/auth/login"
+  className="block text-center rounded-lg bg-gradient-to-r from-[#079447] to-[#08A855] hover:from-[#08A855] hover:to-[#079447] px-6 py-4 text-white font-bold text-lg transition-all duration-300 shadow-lg"
+  onClick={() => setOpen(false)}
   >
-    <div className="flex items-center justify-center gap-2">
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-      Customer Portal
-    </div>
+  <div className="flex items-center justify-center gap-2">
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+  Customer Portal
+  </div>
   </Link>
   <div className="border-t border-white/10 mt-6" />
-</div>
-
+  </div>
+  
   <nav className="p-6 space-y-6 font-display text-xl">
   <Link href="/" className="block hover:text-green-400 transition font-display" onClick={() => setOpen(false)}>
   Home
