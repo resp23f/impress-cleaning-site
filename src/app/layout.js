@@ -26,14 +26,14 @@ export const viewport = {
 
 export const metadata = {
  metadataBase: new URL('https://impressyoucleaning.com'),
- 
+
  title: {
   default: 'Impress Cleaning Services - Professional Residential & Commercial Cleaning | Georgetown, TX',
   template: '%s | Impress Cleaning Services'
  },
- 
+
  description: 'Professional residential & commercial cleaning serving Georgetown, Round Rock, Cedar Park, Austin & Central Texas since 1998. Eco-friendly products, reliable service, locally trusted for over 25 years.',
- 
+
  keywords: [
   'cleaning service Georgetown TX',
   'house cleaning Austin',
@@ -46,7 +46,7 @@ export const metadata = {
   'professional cleaners Georgetown',
   'cleaning company Round Rock'
  ],
- 
+
  // OPEN GRAPH for Facebook/LinkedIn
  openGraph: {
   title: 'Impress Cleaning Services - Professional Cleaning in Georgetown, TX',
@@ -64,7 +64,7 @@ export const metadata = {
   locale: 'en_US',
   type: 'website',
  },
- 
+
  // TWITTER CARDS for Twitter/X
  twitter: {
   card: 'summary_large_image',
@@ -72,7 +72,7 @@ export const metadata = {
   description: 'Professional cleaning serving Georgetown & Central Texas since 1998. Eco-friendly products, reliable service.',
   images: ['/impress-final-logo.PNG'],
  },
- 
+
  // ROBOTS for search engines
  robots: {
   index: true,
@@ -85,7 +85,7 @@ export const metadata = {
    'max-snippet': -1,
   },
  },
- 
+
  // Keep your existing icons
  icons: {
   icon: [
@@ -95,7 +95,7 @@ export const metadata = {
    { url: '/apple-touch-icon.png' },
   ],
  },
- 
+
  // Keep your existing apple web app settings
  appleWebApp: {
   capable: true,
@@ -311,6 +311,23 @@ export default function RootLayout({ children }) {
  return (
   <html lang="en" className={`${manrope.variable} ${onest.variable}`}>
    <head>
+    {/* Google Analytics */}
+    <script
+     async
+     src="https://www.googletagmanager.com/gtag/js?id=G-99P0RRZZ61"
+    />
+    <script
+     dangerouslySetInnerHTML={{
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-99P0RRZZ61');
+      `,
+     }}
+    />
+
+    {/* Schema.org markup */}
     <script
      type="application/ld+json"
      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
