@@ -116,7 +116,7 @@ function Hero() {
       alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
       fill
       priority
-      className="hidden md:block object-cover object-[center_25%] lg:object-[center_17%] xl:object-[center_30%]"
+      className="hidden md:block object-cover object-[center_38%] lg:object-[center_14%] xl:object-[center_27%]"
       quality={85}
       sizes="100vw"
     />
