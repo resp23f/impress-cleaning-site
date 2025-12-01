@@ -37,15 +37,15 @@ export default function AboutPage() {
   <div className="inline-flex items-center gap-2 mb-6">
   </div>                
   <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-6 leading-tight">
-  15 Years of Creating
+  25+ Years of Creating
   <span className="block text-[#001F3F] mt-2">Time for What Matters</span>
   </h1>
   <p className="text-xl text-gray-600 mb-8 leading-relaxed font-manrope">
-  Since 2009, we've been more than just a cleaning service. We're time givers, stress relievers, and your neighbors who understand that a clean home means more moments with the people you love.
+  Since 1998, we've been more than just a cleaning service. We're time givers, stress relievers, and your neighbors who understand that a clean home means more moments with the people you love.
   </p>
   <div className="flex items-center gap-8">
   <div>
-  <div className="text-3xl font-bold text-[#001F3F]">15+</div>
+  <div className="text-3xl font-bold text-[#001F3F]">25+</div>
   <div className="text-sm text-gray-600">Years Serving Central Texas</div>
   </div>
   <div>
@@ -90,7 +90,7 @@ export default function AboutPage() {
   </div>
   <h3 className="text-xl font-bold text-gray-900 mb-3">The Beginning</h3>
   <p className="text-gray-600 leading-relaxed">
-  In 2009, our family started Impress after noticing how many of our Austin neighbors struggled to balance demanding careers with home maintenance. We believed professional cleaning shouldn't be a luxury, it should be accessible support that gives families their evenings and weekends back.
+  In 1998, our family started Impress after noticing how many of our Austin neighbors struggled to balance demanding careers with home maintenance. We believed professional cleaning shouldn't be a luxury, it should be accessible support that gives families their evenings and weekends back.
   </p>
   </div>
   </FadeInWhenVisible>

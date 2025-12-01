@@ -39,7 +39,7 @@ export default function CommercialPage() {
   </p>
   <div className="grid grid-cols-2 gap-6 mb-10 max-w-lg">
   <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-lg p-4">
-  <div className="text-3xl font-bold text-green-400 mb-1">15+</div>
+  <div className="text-3xl font-bold text-green-400 mb-1">25+</div>
   <div className="text-sm text-slate-400">Years Experience</div>
   </div>
   <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-lg p-4">
@@ -365,7 +365,7 @@ export default function CommercialPage() {
   Trusted Commercial Partner
   </h2>
   <p className="text-xl text-slate-600 mb-8">
-  Over 15 years serving Central Texas businesses with reliable, professional cleaning services.
+  Over 25 years serving Central Texas businesses with reliable, professional cleaning services.
   </p>
   <div className="grid grid-cols-2 gap-6 mb-8">
   <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
@@ -377,7 +377,7 @@ export default function CommercialPage() {
   <div className="text-slate-700 font-medium">Service Availability</div>
   </div>
   <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
-  <div className="text-4xl font-bold text-green-500 mb-2">15+</div>
+  <div className="text-4xl font-bold text-green-500 mb-2">25+</div>
   <div className="text-slate-700 font-medium">Years Experience</div>
   </div>
   <div className="bg-slate-50 rounded-xl p-6 border-2 border-slate-200">
@@ -419,14 +419,6 @@ export default function CommercialPage() {
   <p className="text-slate-600 text-sm">Regular inspections and detailed checklists ensure consistent excellence.</p>
   </div>
   </div>
-  </div>
-  </div>
-  {/* Right - Image Placeholder */}
-  <div className="bg-slate-100 rounded-2xl aspect-[4/3] flex items-center justify-center border-2 border-slate-200">
-  <div className="text-center p-8">
-  <svg className="w-24 h-24 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-  </svg>
   </div>
   </div>
   </div>
