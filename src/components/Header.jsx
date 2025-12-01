@@ -137,7 +137,7 @@ function SiteHeader() {
   alt="Impress Cleaning Services"
   width={240}
   height={140}
-  className="h-[70px] w-auto md:h-[85px] lg:h-[95px] xl:h-[105px] 2xl:h-[115px] object-contain"
+  className="h-[60px] md:h-[70px] lg:h-[80px] xl:h-[85px] 2xl:h-[95px] object-contain"
   priority
   />
   </Link>
