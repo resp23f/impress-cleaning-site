@@ -77,14 +77,14 @@ function SiteHeader() {
           ${
    isScrolled
    ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm"
-   : "bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100 border-b border-gray-100"
+:"bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100 border-b border-gray-200/40"
   }
           transition-[background,backdrop-filter] duration-300 ease-out
         `}
   >
   {/* TOP BAR (now INSIDE header) */}
-  <div className="hidden md:block border-b border-gray-100/70">
-  <div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
+<div className="hidden md:block bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100">
+<div className="max-w-[1400px] mx-auto flex items-center justify-end gap-4 py-2 px-6 lg:px-8 font-manrope text-[13px] font-bold">
   <div className="flex items-center gap-1.5 text-slate-600">
   <svg
   className="w-3.5 h-3.5 text-[#079447]"
