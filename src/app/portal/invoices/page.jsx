@@ -12,44 +12,89 @@ import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
  const [open, setOpen] = useState(false)
  
- // Auto-close after 5 seconds when opened by click
- useEffect(() => {
-  if (!open) return
-  const timer = setTimeout(() => setOpen(false), 5000)
-  return () => clearTimeout(timer)
- }, [open])
- 
  return (
-  <div className="relative group inline-block">
-  <AlertCircle
-  className="w-5 h-5 text-red-500 cursor-pointer"
-  onClick={() => setOpen((prev) => !prev)}
-  />
-  
-  <div
-  className={`
-          absolute left-1/2 -translate-x-1/2 -top-14 w-56 px-3 py-2 
-          rounded bg-black text-white text-xs text-center z-50
-          pointer-events-none
-          opacity-0 scale-95
-          transition-opacity transition-transform duration-200 ease-out
-          ${open ? 'opacity-100 scale-100' : ''}
-          group-hover:opacity-100 group-hover:scale-100
-        `}
+  <>
+   <button
+    onClick={() => setOpen(true)}
+    className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors duration-200"
    >
-   <p className="mb-1">
-   Please provide 48 hours’ notice to cancel or reschedule.
-   </p>
-   <p className="mb-1">
-   Cancellations within 48 hours may incur a $50 late-cancellation fee.
-   </p>
-   <p>
-   Cancellations within 24 hours or no access may be charged the full
-   service fee.
-   </p>
-   </div>
-   </div>
-  )
+    <AlertCircle className="w-4 h-4 text-red-500" />
+   </button>
+   
+   {/* Modal Overlay */}
+   {open && (
+    <div 
+     className="fixed inset-0 z-50 flex items-center justify-center p-4"
+     onClick={() => setOpen(false)}
+    >
+     {/* Backdrop */}
+     <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
+     
+     {/* Modal Content */}
+     <div 
+      className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+      onClick={(e) => e.stopPropagation()}
+     >
+      {/* Header */}
+      <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4">
+       <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+         <AlertCircle className="w-5 h-5 text-white" />
+        </div>
+        <div>
+         <h3 className="text-lg font-bold text-white">Cancellation Policy</h3>
+         <p className="text-red-100 text-sm">Please review before cancelling</p>
+        </div>
+       </div>
+      </div>
+      
+      {/* Body */}
+      <div className="px-6 py-5 space-y-4">
+       <div className="flex items-start gap-3">
+        <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+         <Calendar className="w-4 h-4 text-amber-600" />
+        </div>
+        <div>
+         <p className="font-semibold text-[#1C294E] text-sm">48+ Hours Notice</p>
+         <p className="text-gray-500 text-sm">Free cancellation or reschedule</p>
+        </div>
+       </div>
+       
+       <div className="flex items-start gap-3">
+        <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+         <DollarSign className="w-4 h-4 text-orange-600" />
+        </div>
+        <div>
+         <p className="font-semibold text-[#1C294E] text-sm">24-48 Hours Notice</p>
+         <p className="text-gray-500 text-sm">$50 late-cancellation fee</p>
+        </div>
+       </div>
+       
+       <div className="flex items-start gap-3">
+        <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+         <AlertCircle className="w-4 h-4 text-red-600" />
+        </div>
+        <div>
+         <p className="font-semibold text-[#1C294E] text-sm">Under 24 Hours / No Access</p>
+         <p className="text-gray-500 text-sm">Full service fee may be charged</p>
+        </div>
+       </div>
+      </div>
+      
+      {/* Footer */}
+      <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+       <button
+        onClick={() => setOpen(false)}
+        className="w-full py-2.5 rounded-xl bg-[#1C294E] hover:bg-[#2a3a5e] text-white font-semibold transition-colors duration-200"
+       >
+        Got it
+       </button>
+      </div>
+     </div>
+    </div>
+   )}
+  </>
+ )
  }
  
  function formatDateLocal(dateStr) {

@@ -95,10 +95,12 @@ function LoginPageContent() {
   }
  }
  
- return (
+return (
+  <>
+  <style>{`html, body { background: #ffffff; }`}</style>
   <div className="min-h-screen flex">
   {/* Left Side - Softened Branding Panel */}
-  <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+    <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
   {/* Soft gradient background */}
   <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
   
@@ -269,6 +271,7 @@ function LoginPageContent() {
   </div>
   </div>
   </div>
+  </>
  )
 }
 
