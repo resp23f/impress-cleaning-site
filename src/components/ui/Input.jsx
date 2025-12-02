@@ -17,8 +17,7 @@ const Input = forwardRef(({
           {label}
         </label>
       )}
-      <div className="relative">
-        {icon && (
+<div className="relative min-w-0 overflow-hidden">        {icon && (
           <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
             {icon}
           </div>
