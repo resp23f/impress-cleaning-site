@@ -67,7 +67,7 @@ export default function ServiceHistoryPage() {
   }
  }, [])
  
- const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'] 
+ const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
  useEffect(() => {
   const load = async () => {
    setLoading(true)
@@ -207,8 +207,8 @@ export default function ServiceHistoryPage() {
             w-full box-border rounded-xl border px-4 py-2.5
             bg-white text-left font-medium
             transition-all duration-200 ease-out
-            ${open 
-    ? 'border-emerald-500 ring-2 ring-emerald-500/20 text-gray-900' 
+            ${open
+    ? 'border-emerald-500 ring-2 ring-emerald-500/20 text-gray-900'
     : 'border-gray-200 text-gray-900 hover:border-gray-300'
    }
           `}
@@ -217,13 +217,13 @@ export default function ServiceHistoryPage() {
    </button>
    
    {open && (
-    <div 
+    <div
     className="
-              absolute z-[9999] mt-2 w-72 bg-white rounded-2xl p-5
+              absolute z-[9999] mt-2 w-[calc(100vw-3rem)] sm:w-72 bg-white rounded-2xl p-4 sm:p-5
               shadow-[0_20px_50px_-15px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.05)]
               animate-in fade-in slide-in-from-top-2 duration-200
+              left-0 sm:left-1/2 sm:-translate-x-1/2
             "
-    style={{ left: '50%', transform: 'translateX(-50%)' }}
     >
     {/* Calendar header */}
     <div className="flex items-center justify-between mb-4">
