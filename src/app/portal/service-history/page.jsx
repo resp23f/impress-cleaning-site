@@ -312,12 +312,13 @@ className={`
    </div>
   )
  }
- return (
-<div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
-  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-  {/* Header */}
-  <div className={`mb-10 ${styles.animateFadeIn}`}>
-  <div className="flex items-center gap-3 mb-2">
+return (
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
+      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Header */}
+        <div className={`mb-10 ${styles.cardReveal}`}>
+        
+          <div className="flex items-center gap-3 mb-2">
   <div className="h-1 w-12 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" />
   <span className="text-sm font-medium text-emerald-600 uppercase tracking-wider">
   History
@@ -337,15 +338,15 @@ className={`
   </div>
   </div>
   {/* Filters */}
-  <div
-  className={`
+<div
+          className={`
           relative z-10 rounded-2xl bg-white p-6 sm:p-8 mb-8 
           shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
           border border-gray-100/80
-          ${styles.animateFadeInUp} ${styles.stagger1}
+          ${styles.cardReveal1}
         `}
-   >
-   <div className="flex items-center gap-3 mb-6">
+        >
+           <div className="flex items-center gap-3 mb-6">
    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
    <Filter className="w-5 h-5 text-gray-500" />
    </div>
@@ -398,15 +399,15 @@ className={`
     </div>
     {/* Results */}
     {filtered.length === 0 ? (
-     <div
-     className={`
+<div
+            className={`
             rounded-2xl bg-white p-12 text-center
             shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
             border border-gray-100/80
-            ${styles.animateFadeInUp} ${styles.stagger2}
+            ${styles.cardReveal2}
           `}
-      >
-      <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gray-50 to-slate-100 mb-6">
+          >
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gray-50 to-slate-100 mb-6">
       <History className="w-10 h-10 text-gray-300" />
       </div>
       <h3 className="text-xl font-bold text-[#1C294E] mb-2">No Services Found</h3>
@@ -425,21 +426,24 @@ className={`
        )}
        </div>
       ) : (
-       <div
-       className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${styles.animateFadeInUp} ${styles.stagger2}`}
-       >
-       {filtered.map((svc, index) => (
-        <div
-        key={svc.id}
-        className={`
+<div
+            className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${styles.cardReveal2}`}
+          >
+                 {filtered.map((svc, index) => (
+<div
+                key={svc.id}
+                className={`
                   relative overflow-hidden rounded-2xl bg-white
                   shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                   border border-gray-100/80
-                  ${styles.cardHover} ${styles.animateFadeInUp}
+                  ${styles.cardHover}
                 `}
-         style={{ animationDelay: `${0.1 * (index % 4)}s`, opacity: 0 }}
-         >
-         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
+                style={{ 
+                  opacity: 0,
+                  animation: `appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${0.3 + (index * 0.12)}s forwards`
+                }}
+              >
+                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
          <div className="p-6 sm:p-8">
          <div className="flex items-start justify-between mb-6">
          <div>
