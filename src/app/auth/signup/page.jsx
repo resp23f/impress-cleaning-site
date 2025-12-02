@@ -121,7 +121,7 @@ export default function SignUpPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
           
           {/* Soft colored orbs */}
-          <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-300/50 to-teal-300/40 rounded-full blur-3xl" />
+<div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-teal-300/50 to-cyan-300/40 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-200/60 to-indigo-200/50 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-200/60 to-green-200/50 rounded-full blur-3xl" />
           
