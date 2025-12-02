@@ -115,6 +115,17 @@
   }
 }
 
+@keyframes slideOutMenuPanel {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%) scale(0.98);
+  }
+}
+
 @keyframes fadeInOverlaySmooth {
   from {
     opacity: 0;
@@ -123,6 +134,17 @@
   to {
     opacity: 1;
     backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes fadeOutOverlaySmooth {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
   }
 }
 
@@ -158,11 +180,19 @@
   animation: glow 2s ease-in-out infinite;
 }
 .slideInMenuPanel {
-  animation: slideInMenuPanel 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInMenuPanel 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slideOutMenuPanel {
+  animation: slideOutMenuPanel 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .fadeInOverlaySmooth {
-  animation: fadeInOverlaySmooth 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeInOverlaySmooth 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.fadeOutOverlaySmooth {
+  animation: fadeOutOverlaySmooth 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* ============================================

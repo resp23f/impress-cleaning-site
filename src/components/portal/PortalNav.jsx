@@ -26,8 +26,17 @@ const navItems = [
 export default function PortalNav({ userName }) {
  const pathname = usePathname()
  const router = useRouter()
- const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
- const supabase = createClient()
+const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+const [isClosing, setIsClosing] = useState(false)
+
+const closeMenu = () => {
+  setIsClosing(true)
+  setTimeout(() => {
+    setMobileMenuOpen(false)
+    setIsClosing(false)
+  }, 400)
+}
+const supabase = createClient()
  
  const handleLogout = async () => {
   await supabase.auth.signOut()
@@ -104,11 +113,11 @@ className={`
    className="h-10 w-auto"
    />
    </div>
-   <button
-   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+<button
+   onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
    className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
    >
-   {mobileMenuOpen ? (
+      {mobileMenuOpen ? (
     <X className="w-6 h-6 text-gray-700" />
    ) : (
     <Menu className="w-6 h-6 text-gray-700" />
@@ -118,13 +127,14 @@ className={`
    
 {/* Mobile Menu */}
 {mobileMenuOpen && (
-<div className="lg:hidden fixed inset-0 z-50 bg-slate-100/30 ${styles.fadeInOverlaySmooth}`}"
+<div className={`lg:hidden fixed inset-0 z-50 bg-slate-100/30 ${styles.fadeInOverlaySmooth}`}
+
   onClick={() => setMobileMenuOpen(false)}>
 <div
-      className={`fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${styles.slideInMenuPanel}`}
+      className={`fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
       onClick={(e) => e.stopPropagation()}
     >
-        {/* Header with user greeting */}
+            {/* Header with user greeting */}
 {/* Header with user greeting */}
       <div className="pt-6 px-6 pb-4">
               <p className="text-sm text-gray-500">Welcome back,</p>
@@ -140,7 +150,7 @@ className={`
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
+onClick={closeMenu}
               className={`
                 group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
                 ${isActive
