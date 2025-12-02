@@ -217,13 +217,8 @@ export default function ServiceHistoryPage() {
    </button>
    
    {open && (
-    <div
-    className="
-              absolute z-[9999] mt-2 w-[calc(100vw-3rem)] sm:w-72 bg-white rounded-2xl p-4 sm:p-5
-              shadow-[0_20px_50px_-15px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.05)]
-              animate-in fade-in slide-in-from-top-2 duration-200
-              left-0 sm:left-1/2 sm:-translate-x-1/2
-            "
+    <div 
+    className="absolute z-[9999] mt-2 w-64 sm:w-72 bg-white rounded-2xl p-3 sm:p-5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.05)] animate-in fade-in slide-in-from-top-2 duration-200 left-0 sm:left-1/2 sm:-translate-x-1/2"
     >
     {/* Calendar header */}
     <div className="flex items-center justify-between mb-4">
@@ -281,10 +276,9 @@ export default function ServiceHistoryPage() {
        setFilters((prev) => ({ ...prev, [field]: iso }))
        toggle(false)
       }}
-      className={`
-                      w-9 h-9 flex items-center justify-center rounded-xl text-sm
-                      transition-all duration-150 ease-out
-                      ${isSelected
+className={`
+                      w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl text-xs sm:text-sm transition-all duration-150 ease-out
+   ${isSelected
        ? 'bg-gradient-to-br from-emerald-500 to-teal-500 text-white font-semibold shadow-md shadow-emerald-500/30'
        : isToday && isCurrentMonth
        ? 'bg-emerald-50 text-emerald-600 font-semibold ring-1 ring-emerald-200'
