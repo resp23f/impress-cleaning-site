@@ -336,11 +336,11 @@ if (loading) {
    </div>
   )
  }
-   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+return (
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
-      <div className={styles.animateFadeIn}>
-        <div className="flex items-center gap-3 mb-2">
+      <div className={styles.cardReveal}>
+              <div className="flex items-center gap-3 mb-2">
           <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
           <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Settings</span>
         </div>
@@ -348,7 +348,7 @@ if (loading) {
         <p className="text-gray-600">Manage your profile, addresses, and payments</p>
       </div>
       {/* Profile */}
-      <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.animateFadeInUp} ${styles.stagger1}`}>
+<Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal1}`}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
             <User className="w-5 h-5 text-blue-600" />
@@ -402,8 +402,7 @@ if (loading) {
         </div>
       </Card>
       {/* Addresses */}
-      <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.animateFadeInUp} ${styles.stagger2}`}>
-        <div className="flex items-center justify-between">
+<Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal2}`}>        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center">
               <MapPin className="w-5 h-5 text-emerald-600" />
@@ -450,8 +449,7 @@ if (loading) {
         </div>
       </Card>
       {/* Password */}
-      <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.animateFadeInUp} ${styles.stagger3}`}>
-        <div className="flex items-center gap-3">
+<Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal3}`}>        <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-50 to-violet-50 flex items-center justify-center">
             <KeyRound className="w-5 h-5 text-purple-600" />
           </div>
@@ -484,8 +482,7 @@ if (loading) {
         </div>
       </Card>
       {/* Payment methods */}
-      <Card padding="lg" className={`space-y-5 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.animateFadeInUp} ${styles.stagger4}`}>
-        <div className="flex items-center justify-between">
+<Card padding="lg" className={`space-y-5 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal4}`}>        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
               <CreditCard className="w-5 h-5 text-amber-600" />
@@ -548,8 +545,7 @@ if (loading) {
         </div>
       </Card>
       {/* Support & Help */}
-<Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.animateFadeInUp} ${styles.stagger5}`}>
-  <div className="flex items-center gap-3">
+<Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal5}`}>  <div className="flex items-center gap-3">
     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 flex items-center justify-center">
       <Phone className="w-5 h-5 text-teal-600" />
     </div>
@@ -603,8 +599,7 @@ if (loading) {
   </div>
 </Card>
       {/* Account deletion */}
-      <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-2 border-red-100 bg-gradient-to-br from-red-50/30 to-white ${styles.animateFadeInUp} ${styles.stagger6}`}>
-        <div className="flex items-center gap-3">
+<Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-2 border-red-100 bg-gradient-to-br from-red-50/30 to-white ${styles.cardReveal6}`}>        <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
             <Trash2 className="w-5 h-5 text-red-600" />
           </div>

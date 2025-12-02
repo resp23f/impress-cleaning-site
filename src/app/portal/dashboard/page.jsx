@@ -211,13 +211,13 @@ if (loading) {
 
  return (
   <>
-   {/* Premium Background */}
-   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+{/* Premium Background */}
+   <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
 
      {/* ========== WELCOME HEADER ========== */}
-     <div className={`mb-10 ${styles.animateFadeIn}`}>
-      <div className="flex items-center gap-3 mb-2">
+     <div className={`mb-10 ${styles.cardReveal}`}>
+           <div className="flex items-center gap-3 mb-2">
        <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
        <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">
         Dashboard
@@ -235,7 +235,7 @@ if (loading) {
      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
 
       {/* Next Appointment Card - Premium Hero Style */}
-      <div className={`lg:col-span-2 ${styles.animateFadeInUp} ${styles.stagger1}`}>
+<div className={`lg:col-span-2 ${styles.cardReveal1}`}>
        <div className={`
                 relative overflow-hidden rounded-2xl bg-white 
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_20px_40px_-15px_rgba(0,0,0,0.1)]
@@ -378,8 +378,7 @@ if (loading) {
       </div>
 
       {/* Balance Card - Premium Gradient Style */}
-      <div className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
-       <div className={`
+<div className={styles.cardReveal2}>       <div className={`
                 relative overflow-hidden rounded-2xl h-full
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_20px_40px_-15px_rgba(0,0,0,0.1)]
       ${balance > 0
@@ -458,7 +457,8 @@ if (loading) {
      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
 
       {/* Invoices & Payments Card */}
-      <div className={`${styles.animateFadeInUp} ${styles.stagger3} h-full`}>        <div className={`
+<div className={`${styles.cardReveal3} h-full`}>
+             <div className={`
                 rounded-2xl bg-white p-6 sm:p-8 h-full
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
@@ -557,7 +557,8 @@ if (loading) {
       </div>
 
       {/* Recent Services Card */}
-      <div className={`${styles.animateFadeInUp} ${styles.stagger4} h-full`}>            <div className={`
+<div className={`${styles.cardReveal4} h-full`}>
+           <div className={`
                 rounded-2xl bg-white p-6 sm:p-8 h-full
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
@@ -647,8 +648,7 @@ if (loading) {
      {/* Row 3: Service Address, Account Summary, Feedback */}
      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Service Address Card */}
-      <div className={`${styles.animateFadeInUp} ${styles.stagger5}`}>
-       <div className={`
+<div className={styles.cardReveal5}>       <div className={`
         relative overflow-hidden rounded-2xl bg-white h-full
         shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
         border border-gray-100/80
@@ -703,7 +703,7 @@ if (loading) {
       </div>
 
       {/* Account Summary */}
-      <div className={`${styles.animateFadeInUp} ${styles.stagger6}`}>
+<div className={styles.cardReveal6}>
        <div className={`
         relative overflow-hidden rounded-2xl bg-white h-full
         shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
@@ -771,7 +771,7 @@ if (loading) {
 
 
       {/* Leave Feedback */}
-      <div className={`${styles.animateFadeInUp} ${styles.stagger7}`}>
+<div className={styles.cardReveal} style={{ animationDelay: '0.9s' }}>
        <div className={`
         relative overflow-hidden rounded-2xl h-full
         bg-gradient-to-br from-[#1C294E] to-slate-800

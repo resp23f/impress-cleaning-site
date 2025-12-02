@@ -452,10 +452,10 @@ if (!user) {
   src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places`}        strategy="beforeInteractive"
   />
   
-  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+<div className={`py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto ${styles.contentReveal}`}>
   {/* Header */}
-  <div className={`mb-8 ${styles.animateFadeIn}`}>
-  <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
+  <div className={`mb-8 ${styles.cardReveal}`}>
+    <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
   Request Service
   </h1>
   <p className="text-gray-600">
@@ -464,7 +464,7 @@ if (!user) {
   </div>
   
   {/* Progress Bar */}
-  <div className={`mb-8 ${styles.animateFadeInUp} ${styles.stagger1}`}>
+<div className={`mb-8 ${styles.cardReveal1}`}>
   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
   <div
   className="h-full bg-[#079447] transition-all duration-300"
@@ -473,7 +473,7 @@ if (!user) {
   </div>
   </div>
 
-  <Card padding="lg" className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
+<Card padding="lg" className={styles.cardReveal2}>
   {/* Step 1: Service Type */}
   {step === 1 && (
    <div>

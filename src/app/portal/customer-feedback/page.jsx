@@ -80,11 +80,11 @@ export default function CustomerFeedbackPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+<div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
         
-        <div className={`mb-8 ${styles.animateFadeIn}`}>
-          <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
+        <div className={`mb-8 ${styles.cardReveal}`}>
+                  <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
             Share Your Feedback
           </h1>
           <p className="text-gray-600">
@@ -92,7 +92,7 @@ export default function CustomerFeedbackPage() {
           </p>
         </div>
 
-        <div className={`${styles.animateFadeInUp} ${styles.stagger1}`}>
+<div className={styles.cardReveal1}>
           <Card className={styles.cardHover} padding="lg">
             <form onSubmit={handleSubmit} className="space-y-6">
               

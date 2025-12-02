@@ -452,9 +452,9 @@ if (loading) {
 }
 
 return (
- <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+ <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10"> 
-<div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${styles.animateFadeIn}`}>
+<div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${styles.cardReveal}`}>
  <div>
  <div className="flex items-center gap-3 mb-2">
  <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
@@ -468,7 +468,7 @@ return (
 </div>
  
  {/* Upcoming */}
- <section className={`${styles.animateFadeInUp} ${styles.stagger1}`}>
+<section className={styles.cardReveal1}>
  <div className="flex items-center gap-3 mb-4">
  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
  <Calendar className="w-5 h-5 text-[#079447]" />
@@ -559,7 +559,7 @@ return (
   </section>
   
   {/* Past & Cancelled */}
-  <section className={`${styles.animateFadeInUp} ${styles.stagger2}`}>
+<section className={styles.cardReveal2}>
   <div className="flex items-center gap-3 mb-4">
   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
   <Clock className="w-5 h-5 text-gray-500" />
