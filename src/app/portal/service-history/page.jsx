@@ -438,11 +438,10 @@ return (
                   border border-gray-100/80
                   ${styles.cardHover}
                 `}
-                style={{ 
+style={{ 
                   opacity: 0,
-                  animation: `appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${0.3 + (index * 0.12)}s forwards`
-                }}
-              >
+                  animation: `gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) ${0.2 + (index * 0.15)}s forwards`
+                }}              >
                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
          <div className="p-6 sm:p-8">
          <div className="flex items-start justify-between mb-6">

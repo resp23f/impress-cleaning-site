@@ -180,72 +180,72 @@
   animation: glow 2s ease-in-out infinite;
 }
 /* ============================================
-   APPLE-STYLE PAGE REVEAL SYSTEM
+   BUTTER-SMOOTH PAGE REVEAL SYSTEM
    ============================================ */
 
-@keyframes appleReveal {
-  from {
+@keyframes gentleReveal {
+  0% {
     opacity: 0;
-    filter: blur(8px);
-    transform: translateY(20px) scale(0.98);
+    filter: blur(12px);
+    transform: translateY(8px);
   }
-  to {
+  100% {
     opacity: 1;
     filter: blur(0px);
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-@keyframes appleCardReveal {
-  from {
+@keyframes gentleCardReveal {
+  0% {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateY(30px) scale(0.96);
+    filter: blur(6px);
+    transform: translateY(12px);
   }
-  to {
+  100% {
     opacity: 1;
     filter: blur(0px);
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
 .contentReveal {
-  animation: appleReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: gentleReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 .cardReveal {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 .cardReveal1 {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s forwards;
 }
 
 .cardReveal2 {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards;
 }
 
 .cardReveal3 {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s forwards;
 }
 
 .cardReveal4 {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s forwards;
 }
 
 .cardReveal5 {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s forwards;
 }
 
 .cardReveal6 {
   opacity: 0;
-  animation: appleCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.9s forwards;
 }
 
 .slideInMenuPanel {
