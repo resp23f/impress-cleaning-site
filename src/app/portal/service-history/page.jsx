@@ -207,28 +207,29 @@ export default function ServiceHistoryPage() {
     <h2 className="text-xl font-bold text-[#1C294E]">Filter Services</h2>
     </div>
     
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="min-w-0">
     <label className="text-sm font-semibold text-gray-700 mb-2 block">From Date</label>
-<Input
+    <Input
   type="date"
   value={filters.startDate}
   onChange={(e) => setFilters((prev) => ({ ...prev, startDate: e.target.value }))}
   className={styles.smoothTransition}
 />
     </div>    
-    <div>
+<div className="min-w-0">
     <label className="text-sm font-semibold text-gray-700 mb-2 block">To Date</label>
-<Input
+    <Input
   type="date"
   value={filters.endDate}
   onChange={(e) => setFilters((prev) => ({ ...prev, endDate: e.target.value }))}
   className={styles.smoothTransition}
 /></div>
     
-    <div>
+<div className="min-w-0">
     <label className="text-sm font-semibold text-gray-700 mb-2 block">Service Type</label>
-    <select
+    
+        <select
     value={filters.serviceType}
     onChange={(e) => setFilters((prev) => ({ ...prev, serviceType: e.target.value }))}
     className={`
