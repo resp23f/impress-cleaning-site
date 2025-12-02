@@ -6,7 +6,7 @@ const nextConfig = {
     'http://localhost:3000'
   ],
   
-  // Skip ESLint during builds (you have this already)
+  // Skip ESLint during builds
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -20,12 +20,47 @@ const nextConfig = {
 
   // Production optimizations
   compress: true,
-  poweredByHeader: false,
+  poweredByHeader: false, // Good - already hiding this!
   reactStrictMode: true,
 
   // Environment variables you want exposed to browser
   env: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  },
+
+  // Security headers
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+        ],
+      },
+    ]
   },
 };
 

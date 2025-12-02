@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
-
+import { sanitizeText } from '@/lib/sanitize'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request) {
@@ -59,7 +59,7 @@ export async function POST(request) {
    preferred_time,
    is_flexible: !!is_flexible,
    address_id,
-   special_requests: special_requests || null,
+special_requests: special_requests ? sanitizeText(special_requests).slice(0, 2000) : null,
    is_recurring: !!is_recurring,
    recurring_frequency: is_recurring ? recurring_frequency || null : null,
    status: 'pending',

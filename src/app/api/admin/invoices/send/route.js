@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -48,12 +49,23 @@ export async function POST(request) {
       )
     }
 
-    // Create line items for Stripe
-    const lineItems = invoice.line_items?.map(item => ({
+    // Sanitize customer data before using
+    const sanitizedEmail = sanitizeEmail(customer.email)
+    const sanitizedName = sanitizeText(customer.full_name)?.slice(0, 100) || customer.email.split('@')[0]
+
+    if (!sanitizedEmail) {
+      return NextResponse.json(
+        { error: 'Invalid customer email' },
+        { status: 400 }
+      )
+    }
+
+    // Sanitize line item descriptions
+    const sanitizedLineItems = invoice.line_items?.map(item => ({
       price_data: {
         currency: 'usd',
         product_data: {
-          name: item.description,
+          name: sanitizeText(item.description)?.slice(0, 200) || 'Service',
         },
         unit_amount: Math.round(parseFloat(item.rate) * 100),
       },
@@ -72,9 +84,9 @@ export async function POST(request) {
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: lineItems,
+      line_items: sanitizedLineItems,
       mode: 'payment',
-      customer_email: customer.email,
+      customer_email: sanitizedEmail,
       client_reference_id: invoice.id,
       metadata: {
         invoice_id: invoice.id,
@@ -103,13 +115,13 @@ export async function POST(request) {
       )
     }
 
-    // Send email with payment link
+    // Send email with payment link (using sanitized data)
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: customer.email,
-        name: customer.full_name || customer.email.split('@')[0],
+        email: sanitizedEmail,
+        name: sanitizedName,
         invoiceNumber: invoice.invoice_number,
         amount: invoice.amount,
         dueDate: invoice.due_date,

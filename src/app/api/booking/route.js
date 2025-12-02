@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import { sanitizeText, sanitizeEmail, sanitizePhone } from '@/lib/sanitize';
 const resend = new Resend(process.env.RESEND_API_KEY_STAGING);
 function createBookingConfirmationEmail(bookingData) {
   const { name, email, phone, address, serviceType, serviceLevel, preferredDate, preferredTime, specialRequests, estimatedPrice } = bookingData;
@@ -143,8 +144,23 @@ function createBookingConfirmationEmail(bookingData) {
 }
 export async function POST(request) {
   try {
-    const bookingData = await request.json();
-    // Format the service level for display
+const bookingData = await request.json();
+
+    // Sanitize user inputs
+    const sanitized = {
+      name: sanitizeText(sanitized.name)?.slice(0, 100) || '',
+      email: sanitizeEmail(sanitized.email) || '',
+      phone: sanitizePhone(sanitized.phone) || '',
+      address: sanitizeText(sanitized.address)?.slice(0, 300) || '',
+      serviceType: sanitized.serviceType,
+      serviceLevel: sanitized.serviceLevel,
+      preferredDate: sanitized.preferredDate,
+      preferredTime: sanitized.preferredTime,
+      specialRequests: sanitizeText(sanitized.specialRequests)?.slice(0, 1000) || '',
+      giftCertificate: sanitizeText(sanitized.giftCertificate)?.slice(0, 50) || '',
+      spaceSize: sanitized.spaceSize,
+    };
+        // Format the service level for display
     const serviceLevelMap = {
       'basic': 'Basic Clean',
       'deep': 'Deep Clean',
@@ -157,14 +173,14 @@ export async function POST(request) {
     };
     // Calculate estimated price for email
     let estimatedPrice = 'TBD';
-    if (bookingData.serviceType === 'commercial') {
+    if (sanitized.serviceType === 'commercial') {
       estimatedPrice = 'Starting at $300';
-    } else if (bookingData.serviceType === 'residential') {
-      if (bookingData.serviceLevel === 'basic') {
+    } else if (sanitized.serviceType === 'residential') {
+      if (sanitized.serviceLevel === 'basic') {
         estimatedPrice = 'Starting at $150';
-      } else if (bookingData.serviceLevel === 'deep') {
+      } else if (sanitized.serviceLevel === 'deep') {
         estimatedPrice = 'Starting at $325';
-      } else if (bookingData.serviceLevel === 'move') {
+      } else if (sanitized.serviceLevel === 'move') {
         estimatedPrice = 'Starting at $400';
       }
     }
@@ -172,7 +188,7 @@ export async function POST(request) {
     const { data: notificationData, error: notificationError } = await resend.emails.send({
       from: 'Bookings <bookings@impressyoucleaning.com>',
       to: ['contact@impressyoucleaning.com'], // Changed to your real email
-      subject: `New Booking Request - ${bookingData.name}`,
+      subject: `New Booking Request - ${sanitized.name}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -263,74 +279,74 @@ export async function POST(request) {
               <div style="font-size: 16px; color: #666;">Estimated Price Range</div>
               <div class="estimate-price">${estimatedPrice}</div>
               <div style="font-size: 14px; color: #666;">
-                ${bookingData.giftCertificate ? '⚠️ Customer has a gift certificate to apply' : 'Final pricing to be confirmed'}
+                ${sanitized.giftCertificate ? '⚠️ Customer has a gift certificate to apply' : 'Final pricing to be confirmed'}
               </div>
             </div>
             <div class="section">
               <div class="section-title">📋 Customer Information</div>
               <div class="info-row">
                 <span class="label">Name:</span>
-                <span class="value">${bookingData.name}</span>
+                <span class="value">${sanitized.name}</span>
               </div>
               <div class="info-row">
                 <span class="label">Email:</span>
-                <span class="value">${bookingData.email}</span>
+                <span class="value">${sanitized.email}</span>
               </div>
               <div class="info-row">
                 <span class="label">Phone:</span>
-                <span class="value">${bookingData.phone}</span>
+                <span class="value">${sanitized.phone}</span>
               </div>
               <div class="info-row">
                 <span class="label">Address:</span>
-                <span class="value">${bookingData.address}</span>
+                <span class="value">${sanitized.address}</span>
               </div>
             </div>
             <div class="section">
               <div class="section-title">🧹 Service Details</div>
               <div class="info-row">
                 <span class="label">Service Type:</span>
-                <span class="value">${bookingData.serviceType === 'residential' ? 'Residential' : 'Commercial'}</span>
+                <span class="value">${sanitized.serviceType === 'residential' ? 'Residential' : 'Commercial'}</span>
               </div>
               <div class="info-row">
                 <span class="label">Service Level:</span>
-                <span class="value">${serviceLevelMap[bookingData.serviceLevel]}</span>
+                <span class="value">${serviceLevelMap[sanitized.serviceLevel]}</span>
               </div>
               <div class="info-row">
                 <span class="label">Space Size:</span>
-                <span class="value">${bookingData.spaceSize}</span>
+                <span class="value">${sanitized.spaceSize}</span>
               </div>
             </div>
             <div class="section">
               <div class="section-title">📅 Scheduling</div>
               <div class="info-row">
                 <span class="label">Preferred Date:</span>
-                <span class="value">${bookingData.preferredDate}</span>
+                <span class="value">${sanitized.preferredDate}</span>
               </div>
               <div class="info-row">
                 <span class="label">Preferred Time:</span>
-                <span class="value">${timeMap[bookingData.preferredTime]}</span>
+                <span class="value">${timeMap[sanitized.preferredTime]}</span>
               </div>
             </div>
-            ${bookingData.giftCertificate ? `
+            ${sanitized.giftCertificate ? `
               <div class="section">
                 <div class="section-title">🎁 Gift Certificate</div>
                 <div class="info-row">
                   <span class="label">Code:</span>
-                  <span class="value highlight">${bookingData.giftCertificate}</span>
+                  <span class="value highlight">${sanitized.giftCertificate}</span>
                 </div>
                 <p style="color: #d97706; font-weight: bold;">⚠️ Remember to validate and apply this certificate to the final invoice!</p>
               </div>
             ` : ''}
-            ${bookingData.specialRequests ? `
+            ${sanitized.specialRequests ? `
               <div class="section">
                 <div class="section-title">📝 Special Requests</div>
-                <p class="value">${bookingData.specialRequests}</p>
+                <p class="value">${sanitized.specialRequests}</p>
               </div>
             ` : ''}
           </div>
           <div class="footer">
             <p><strong>Action Required:</strong> Respond to customer within 24 hours with confirmed pricing and appointment details.</p>
-            <p style="margin-top: 10px;">Reply to: ${bookingData.email} | Call: ${bookingData.phone}</p>
+            <p style="margin-top: 10px;">Reply to: ${sanitized.email} | Call: ${sanitized.phone}</p>
           </div>
         </body>
         </html>
@@ -341,20 +357,20 @@ export async function POST(request) {
     }
     // Send confirmation email TO CUSTOMER
     const confirmationHtml = createBookingConfirmationEmail({
-      name: bookingData.name,
-      email: bookingData.email,
-      phone: bookingData.phone,
-      address: bookingData.address,
-      serviceType: bookingData.serviceType,
-      serviceLevel: bookingData.serviceLevel,
-      preferredDate: bookingData.preferredDate,
-      preferredTime: bookingData.preferredTime,
-      specialRequests: bookingData.specialRequests,
+      name: sanitized.name,
+      email: sanitized.email,
+      phone: sanitized.phone,
+      address: sanitized.address,
+      serviceType: sanitized.serviceType,
+      serviceLevel: sanitized.serviceLevel,
+      preferredDate: sanitized.preferredDate,
+      preferredTime: sanitized.preferredTime,
+      specialRequests: sanitized.specialRequests,
       estimatedPrice: estimatedPrice
     });
     const { data: confirmationData, error: confirmationError } = await resend.emails.send({
       from: 'Impress Cleaning Bookings <bookings@impressyoucleaning.com>',
-      to: bookingData.email,
+      to: sanitized.email,
       subject: 'Your Booking Request Has Been Received',
       html: confirmationHtml,
     });

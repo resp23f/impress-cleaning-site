@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize';
 const resend = new Resend(process.env.RESEND_API_KEY_STAGING);
 function createGiftCertificateEmail(giftData) {
   const { code, recipientName, senderName, message, amount } = giftData;
@@ -129,9 +130,18 @@ function createGiftCertificateEmail(giftData) {
 }
 export async function POST(request) {
   try {
-    const giftData = await request.json();
-    const { code, recipientName, recipientEmail, senderName, amount } = giftData;
-    console.log('Attempting to send gift certificate:', { code, recipientName, recipientEmail, senderName, amount });
+const giftData = await request.json();
+
+    // Sanitize user inputs
+    const sanitized = {
+      code: sanitizeText(giftData.code)?.slice(0, 50) || '',
+      recipientName: sanitizeText(giftData.recipientName)?.slice(0, 100) || '',
+      recipientEmail: sanitizeEmail(giftData.recipientEmail) || '',
+      senderName: sanitizeText(giftData.senderName)?.slice(0, 100) || '',
+      message: sanitizeText(giftData.message)?.slice(0, 500) || '',
+      amount: giftData.amount,
+    };
+const { code, recipientName, recipientEmail, senderName, amount } = sanitized;    console.log('Attempting to send gift certificate:', { code, recipientName, recipientEmail, senderName, amount });
     if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
       console.error('Missing required fields:', { code, recipientName, recipientEmail, senderName, amount });
       return Response.json(
@@ -146,7 +156,7 @@ export async function POST(request) {
         { status: 500 }
       );
     }
-    const emailHtml = createGiftCertificateEmail(giftData);
+    const emailHtml = createGiftCertificateEmail(sanitized);
     console.log('Sending email to:', recipientEmail);
     const emailResponse = await resend.emails.send({
       from: 'Impress Cleaning Services Gift Certificate <gifts@impressyoucleaning.com>',
