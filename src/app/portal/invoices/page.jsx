@@ -12,36 +12,46 @@ import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
  const [open, setOpen] = useState(false)
  
- const handleClose = () => {
-  setOpen(false)
- }
+ // Close on Escape key
+ useEffect(() => {
+  if (!open) return
+  const handleEsc = (e) => {
+   if (e.key === 'Escape') setOpen(false)
+  }
+  window.addEventListener('keydown', handleEsc)
+  return () => window.removeEventListener('keydown', handleEsc)
+ }, [open])
  
  return (
   <>
-   <button
-    type="button"
+   <div
+    role="button"
+    tabIndex={0}
     onClick={() => setOpen(true)}
-    className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors duration-200"
+    onKeyDown={(e) => e.key === 'Enter' && setOpen(true)}
+    className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors duration-200 cursor-pointer"
    >
     <AlertCircle className="w-4 h-4 text-red-500" />
-   </button>
+   </div>
    
-   {/* Modal Overlay */}
+   {/* Modal Overlay - clicking anywhere closes */}
    {open && (
     <div 
-     className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-     onClick={handleClose}
+     className="fixed inset-0 z-[9999] flex items-center justify-center p-4 cursor-pointer"
+     onMouseDown={() => setOpen(false)}
+     onTouchStart={() => setOpen(false)}
     >
-     {/* Apple Glass Backdrop */}
-     <div className="absolute inset-0 bg-white/40 backdrop-blur-2xl" />
+     {/* Apple Glass Backdrop - lighter opacity */}
+     <div className="absolute inset-0 bg-white/20 backdrop-blur-xl" />
      
      {/* Modal Content */}
      <div 
-      className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] max-w-sm w-full overflow-hidden border border-white/60"
-      onClick={(e) => e.stopPropagation()}
+      className="relative bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] max-w-sm w-full overflow-hidden border border-white/40"
+      onMouseDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
      >
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4 rounded-t-3xl">
+      <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4">
        <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
          <AlertCircle className="w-5 h-5 text-white" />
@@ -87,14 +97,17 @@ function CancellationTooltip() {
       </div>
       
       {/* Footer */}
-      <div className="px-6 py-4 bg-white/50 border-t border-gray-100/50 rounded-b-3xl">
-       <button
-        type="button"
-        onClick={handleClose}
-        className="w-full py-3 rounded-2xl bg-[#1C294E] hover:bg-[#2a3a5e] text-white font-semibold transition-colors duration-200 active:scale-[0.98]"
+      <div className="px-6 py-4 bg-white/30 border-t border-gray-100/30">
+       <div
+        role="button"
+        tabIndex={0}
+        onMouseDown={() => setOpen(false)}
+        onTouchStart={() => setOpen(false)}
+        onKeyDown={(e) => e.key === 'Enter' && setOpen(false)}
+        className="w-full py-3 rounded-2xl bg-[#1C294E] hover:bg-[#2a3a5e] text-white font-semibold transition-colors duration-200 active:scale-[0.98] text-center cursor-pointer select-none"
        >
         Got it
-       </button>
+       </div>
       </div>
      </div>
     </div>
