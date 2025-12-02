@@ -8,7 +8,7 @@ export default function Card({ children, className = '', padding = 'default', ho
       return (
         <div
 className={`
-  bg-white rounded-xl shadow-sm overflow-hidden
+  bg-white rounded-xl shadow-sm
               ${hover ? 'transition-shadow hover:shadow-md' : ''}
             ${paddings[padding]}
             ${className}

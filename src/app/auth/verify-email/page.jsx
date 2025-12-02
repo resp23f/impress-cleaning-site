@@ -1,6 +1,6 @@
 'use client'
 import { Suspense } from 'react'
-import { useState, useEffect } from 'react' // FIX: Was 'use' in Claude Code version
+import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, CheckCircle, AlertCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'

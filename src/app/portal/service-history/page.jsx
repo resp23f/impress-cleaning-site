@@ -194,7 +194,7 @@ export default function ServiceHistoryPage() {
    
    {/* Filters Card */}
 <div className={`
-      rounded-2xl bg-white p-6 sm:p-8 mb-8 overflow-hidden
+      rounded-2xl bg-white p-6 sm:p-8 mb-8 
       shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
       border border-gray-100/80
       ${styles.animateFadeInUp} ${styles.stagger1}
