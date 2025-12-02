@@ -99,97 +99,97 @@ function Hero() {
   <section id="home" className="relative w-screen left-1/2 -ml-[50vw] overflow-hidden">
   {/* Only ONE container div here */}
   <div className="relative min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] w-full overflow-hidden">
-    {/* MOBILE HERO IMAGE */}
-    <Image
-      src="/hero-cleaners1.jpg"
-      alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
-      fill
-      priority
-      className="md:hidden object-cover object-[65%_18%]"
-      quality={85}
-      sizes="100vw"
-    />
-    
-    {/* DESKTOP HERO IMAGE */}
-    <Image
-      src="/hero-cleaners1.jpg"
-      alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
-      fill
-      priority
-      className="hidden md:block object-cover object-[center_48%] lg:object-[center_9%] xl:object-[center_20%]"
-      quality={85}
-      sizes="100vw"
-    />
-    
-    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
-    
-    <div className="relative z-10">
-      <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
-        <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-16 md:pt-32 lg:pt-16 xl:pt-20 pb-10 md:pb-14">
-          <div className="max-w-[650px]">
-            <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 md:pt-32 leading-[1.15] tracking-tight" 
-              style={{ 
-                fontSize: 'clamp(2rem, 5vw, 4rem)', 
-                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)',
-                letterSpacing: '-0.02em'
-              }}>
-              We'll Make Your Space&nbsp;Shine
-              <span className="block mt-2">
-                So You Can Focus On What Matters&nbsp;Most.
-              </span>
-            </h1>
-            
-            <div
+  {/* MOBILE HERO IMAGE */}
+  <Image
+  src="/hero-cleaners1.jpg"
+  alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
+  fill
+  priority
+  className="md:hidden object-cover object-[65%_18%]"
+  quality={85}
+  sizes="100vw"
+  />
+  
+  {/* DESKTOP HERO IMAGE */}
+  <Image
+  src="/hero-cleaners1.jpg"
+  alt="Professional cleaning team from Impress Cleaning Services in Georgetown Texas"
+  fill
+  priority
+  className="hidden md:block object-cover object-[center_48%] lg:object-[center_9%] xl:object-[center_20%]"
+  quality={85}
+  sizes="100vw"
+  />
+  
+  <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/15 to-transparent pointer-events-none" />              
+  
+  <div className="relative z-10">
+  <div className="mx-auto max-w-[1440px] 3xl:max-w-[1600px] px-6 md:px-12 lg:px-16">
+  <div className="grid md:grid-cols-2 items-center min-h-[65vh] md:min-h-[75vh] 2xl:min-h-[82vh] pt-16 md:pt-32 lg:pt-16 xl:pt-20 pb-10 md:pb-14">
+  <div className="max-w-[650px]">
+  <h1 className="font-display font-extrabold text-white mb-6 md:mb-8 md:pt-32 leading-[1.15] tracking-tight" 
+  style={{ 
+   fontSize: 'clamp(2rem, 5vw, 4rem)', 
+   textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5), 0px 0px 20px rgba(0, 0, 0, 0.3)',
+   letterSpacing: '-0.02em'
+  }}>
+  We'll Make Your Space&nbsp;Shine
+  <span className="block mt-2">
+  So You Can Focus On What Matters&nbsp;Most.
+  </span>
+  </h1>
+  
+  <div
   className="
     mt-6
     flex flex-col sm:flex-row
     gap-3 sm:gap-4
     items-start sm:items-center
     max-w-[240px] sm:max-w-none"
->
+  >
   {/* Primary: Call Now */}
   <a
-    href="tel:+15122775364"
-className="inline-flex items-center justify-center rounded-xll bg-[#079447] text-white font-manrope font-bold text-[15px] md:text-[16px] px-6 py-3 shadow-lg hover:shadow-xl hover:bg-[#068338] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
+  href="tel:+15122775364"
+  className="inline-flex items-center justify-center rounded-full bg-[#0ba355] text-white font-manrope font-bold text-[15px] md:text-[16px] px-7 py-3.5 shadow-lg hover:shadow-xl hover:bg-[#0d9e50] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
   >
-    <svg
-      className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      strokeWidth={2.2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-      />
-    </svg>
-    Call Now
+  <svg
+  className="w-5 h-5 mr-2.5 group-hover:rotate-12 transition-transform"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  strokeWidth={2.2}
+  >
+  <path
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+  />
+  </svg>
+  Call Now
   </a>
-
+  
   {/* Secondary: Request Free Quote */}
   <Link
-    href="/service-quote"
-className="inline-flex items-center justify-center rounded-xl  border-2 border-[#079447] bg-white/95 text-[#079447] font-manrope font-semibold text-[15px] md:text-[16px] px-6 py-3 shadow-md hover:bg-[#079447] hover:text-white hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
+  href="/service-quote"
+  className="inline-flex items-center justify-center rounded-full bg-[#0ba355] text-white font-manrope font-bold text-[15px] md:text-[16px] px-7 py-3.5 shadow-lg hover:shadow-xl hover:bg-[#0d9e50] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
   >
-    Request Free Quote
-    <svg
-      className="w-5 h-5 ml-2.5 group-hover:translate-x-1 transition-transform"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      strokeWidth={2.2}
-    >
-      <polyline
-        points="9 5 16 12 9 19"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+  Request Free Quote
+  <svg
+  className="w-5 h-5 ml-2.5 group-hover:translate-x-1 transition-transform"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  strokeWidth={2.2}
+  >
+  <polyline
+  points="9 5 16 12 9 19"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  />
+  </svg>
   </Link>
-</div>
   </div>
+  </div> 
   </div>
   </div>
   </div>
@@ -519,163 +519,163 @@ function HowItWorks() {
 // ============================================
 
 function WhyFamiliesChooseUs() {
-  const proofCards = [
-    {
-      title: 'Principles That Matter',
-      description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-        </svg>
-      )
-    },
-    {
-      title: 'Proven Reputation',
-      description: 'Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-        </svg>
-      )
-    },
-    {
-      title: 'People Who Care',
-      description: "We're more than a cleaning company. We're neighbors who take pride in helping families enjoy their homes.",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-        </svg>
-      )
-    },
-    {
-      title: 'Peace of Mind',
-      description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-        </svg>
-      )
-    }
-  ];
-
-  return (
-    <StaggerItem>
-      <section className="bg-white py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-6 md:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
-              <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Trusted Locally</span>
-            </div>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight tracking-tight text-[#0B2850]">
-              Why Texas Families Trust Impress
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {proofCards.map((card, index) => (
-              <div
-                key={index}
-                className="group relative bg-gradient-to-b from-gray-50 to-white rounded-2xl p-6 border border-gray-100 hover:border-[#079447]/30 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 bg-[#079447]/10 rounded-xl flex items-center justify-center text-[#079447] mb-4 group-hover:bg-[#079447] group-hover:text-white transition-all duration-300">
-                  {card.icon}
-                </div>
-                <h3 className="font-manrope font-bold text-lg text-[#1e293b] mb-2">
-                  {card.title}
-                </h3>
-                <p className="font-manrope text-[15px] text-slate-600 leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </StaggerItem>
-  );
+ const proofCards = [
+  {
+   title: 'Principles That Matter',
+   description: 'Our clients trust us because we care about their homes, communicate clearly, and always give our best with every clean.',
+   icon: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+    </svg>
+   )
+  },
+  {
+   title: 'Proven Reputation',
+   description: 'Our clients stay with us for years, thanks to consistent quality, reliable service, and attention to detail.',
+   icon: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+    </svg>
+   )
+  },
+  {
+   title: 'People Who Care',
+   description: "We're more than a cleaning company. We're neighbors who take pride in helping families enjoy their homes.",
+   icon: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+    </svg>
+   )
+  },
+  {
+   title: 'Peace of Mind',
+   description: 'You can relax knowing your clean is backed by our satisfaction guarantee and handled with professionalism every time.',
+   icon: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+    </svg>
+   )
+  }
+ ];
+ 
+ return (
+  <StaggerItem>
+  <section className="bg-white py-16 md:py-20">
+  <div className="mx-auto max-w-7xl px-6 md:px-8">
+  <div className="text-center mb-12">
+  <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
+  <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Trusted Locally</span>
+  </div>
+  <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight tracking-tight text-[#0B2850]">
+  Why Texas Families Trust Impress
+  </h2>
+  </div>
+  
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  {proofCards.map((card, index) => (
+   <div
+   key={index}
+   className="group relative bg-gradient-to-b from-gray-50 to-white rounded-2xl p-6 border border-gray-100 hover:border-[#079447]/30 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+   >
+   <div className="w-12 h-12 bg-[#079447]/10 rounded-xl flex items-center justify-center text-[#079447] mb-4 group-hover:bg-[#079447] group-hover:text-white transition-all duration-300">
+   {card.icon}
+   </div>
+   <h3 className="font-manrope font-bold text-lg text-[#1e293b] mb-2">
+   {card.title}
+   </h3>
+   <p className="font-manrope text-[15px] text-slate-600 leading-relaxed">
+   {card.description}
+   </p>
+   </div>
+  ))}
+  </div>
+  </div>
+  </section>
+  </StaggerItem>
+ );
 }
 
 function TestimonialsSection() {
-  const testimonials = [
-    {
-      text: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. Keep up the good work!",
-      author: "Shantell R.",
-      location: "Georgetown, TX",
-      rating: 5
-    },
-    {
-      text: "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You will be very happy you called. They are awesome!",
-      author: "Juli E.",
-      location: "Austin, TX",
-      rating: 5
-    },
-    {
-      text: "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.",
-      author: "Omally O.",
-      location: "Round Rock, TX",
-      rating: 5
-    }
-  ];
-
-  return (
-    <StaggerItem>
-      <section className="bg-gradient-to-b from-white via-gray-50/50 to-gray-100 py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-6 md:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
-              <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Reviews</span>
-            </div>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight tracking-tight text-[#0B2850]">
-              What Our Clients Are Saying
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="group relative bg-white rounded-2xl p-6 lg:p-8 shadow-sm hover:shadow-xl border border-gray-100 hover:border-[#079447]/20 transition-all duration-300 hover:-translate-y-1"
-              >
-                {/* Quote Icon */}
-                <div className="absolute -top-3 left-6 w-10 h-10 bg-[#079447] rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
-                </div>
-
-                {/* Stars */}
-                <div className="flex gap-1 mb-4 mt-2">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-
-                {/* Quote Text */}
-                <p className="font-manrope text-[15px] md:text-base text-slate-700 leading-relaxed mb-6">
-                  "{testimonial.text}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {testimonial.author.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-manrope font-semibold text-[#1e293b]">
-                      {testimonial.author}
-                    </p>
-                    <p className="font-manrope text-sm text-slate-500">
-                      {testimonial.location}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </StaggerItem>
-  );
+ const testimonials = [
+  {
+   text: "House smelled so nice when I came home! Everything just SPARKLED. I love how they polish my granite and the care they take with the rest of the house. We have three dogs so it was very important that they got along with our babies. Team is wonderful to work with. Keep up the good work!",
+   author: "Shantell R.",
+   location: "Georgetown, TX",
+   rating: 5
+  },
+  {
+   text: "I love this company! I have had house cleaners for many years. At the recommendation of a friend I decided to try them. I was VERY impressed. They did a spotless job. I would recommend them to anyone; their prices are very fair. You will be very happy you called. They are awesome!",
+   author: "Juli E.",
+   location: "Austin, TX",
+   rating: 5
+  },
+  {
+   text: "Extremely impressed with the cleaning service I received! My house was spotless and the customer service from the employees was exceptional! Along with the great service, the price was definitely something I cannot complain about. I am extremely pleased and will definitely utilize them again.",
+   author: "Omally O.",
+   location: "Round Rock, TX",
+   rating: 5
+  }
+ ];
+ 
+ return (
+  <StaggerItem>
+  <section className="bg-gradient-to-b from-white via-gray-50/50 to-gray-100 py-16 md:py-20">
+  <div className="mx-auto max-w-7xl px-6 md:px-8">
+  <div className="text-center mb-12">
+  <div className="inline-block px-4 py-2 bg-[#079447]/10 border border-[#079447]/20 rounded-full mb-4">
+  <span className="text-[#079447] text-sm font-semibold uppercase tracking-wide">Reviews</span>
+  </div>
+  <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight tracking-tight text-[#0B2850]">
+  What Our Clients Are Saying
+  </h2>
+  </div>
+  
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+  {testimonials.map((testimonial, index) => (
+   <div
+   key={index}
+   className="group relative bg-white rounded-2xl p-6 lg:p-8 shadow-sm hover:shadow-xl border border-gray-100 hover:border-[#079447]/20 transition-all duration-300 hover:-translate-y-1"
+   >
+   {/* Quote Icon */}
+   <div className="absolute -top-3 left-6 w-10 h-10 bg-[#079447] rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
+   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+   </svg>
+   </div>
+   
+   {/* Stars */}
+   <div className="flex gap-1 mb-4 mt-2">
+   {[...Array(testimonial.rating)].map((_, i) => (
+    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+    </svg>
+   ))}
+   </div>
+   
+   {/* Quote Text */}
+   <p className="font-manrope text-[15px] md:text-base text-slate-700 leading-relaxed mb-6">
+   "{testimonial.text}"
+   </p>
+   
+   {/* Author */}
+   <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+   <div className="w-10 h-10 bg-gradient-to-br from-[#079447] to-[#08A855] rounded-full flex items-center justify-center text-white font-bold text-sm">
+   {testimonial.author.charAt(0)}
+   </div>
+   <div>
+   <p className="font-manrope font-semibold text-[#1e293b]">
+   {testimonial.author}
+   </p>
+   <p className="font-manrope text-sm text-slate-500">
+   {testimonial.location}
+   </p>
+   </div>
+   </div>
+   </div>
+  ))}
+  </div>
+  </div>
+  </section>
+  </StaggerItem>
+ );
 }
