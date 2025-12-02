@@ -27,8 +27,7 @@ export default async function PortalLayout({ children }) {
  const firstName = profile?.full_name?.split(' ')[0] || 'there'
  return (
   <>
-  <style>{`html, body { background: linear-gradient(to bottom right, #f8fafc, #f9fafb, #f1f5f9); }`}</style>
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+<style>{`html, body { background: #f9fafb; }`}</style>  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
   <PortalNav userName={firstName} />
   {/* Main Content */}
   <div className="lg:pl-64">
