@@ -29,7 +29,7 @@ const Input = forwardRef(({
           placeholder={placeholder}
 className={`
   w-full min-w-0 px-4 py-3 rounded-lg border-2 border-gray-200
-              focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20
+              focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20
             transition-all duration-200
             ${icon ? 'pl-12' : ''}
             ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}
