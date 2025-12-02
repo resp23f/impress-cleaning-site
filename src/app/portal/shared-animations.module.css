@@ -179,6 +179,9 @@
 .animateGlow {
   animation: glow 2s ease-in-out infinite;
 }
+.contentReveal {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 .slideInMenuPanel {
   animation: slideInMenuPanel 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
