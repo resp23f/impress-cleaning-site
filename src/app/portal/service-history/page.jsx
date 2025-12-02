@@ -431,17 +431,15 @@ return (
           >
                  {filtered.map((svc, index) => (
 <div
-                key={svc.id}
-                className={`
-                  relative overflow-hidden rounded-2xl bg-white
-                  shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
-                  border border-gray-100/80
-                  ${styles.cardHover}
-                `}
-style={{ 
-                  opacity: 0,
-                  animation: `gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) ${0.2 + (index * 0.15)}s forwards`
-                }}              >
+  key={svc.id}
+  className={`
+    relative overflow-hidden rounded-2xl bg-white
+    shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
+    border border-gray-100/80
+    ${styles.cardHover} ${styles.cardReveal}
+  `}
+  style={{ animationDelay: `${0.2 + (index * 0.15)}s` }}
+>
                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
          <div className="p-6 sm:p-8">
          <div className="flex items-start justify-between mb-6">
