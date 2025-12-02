@@ -1,15 +1,11 @@
 'use client'
-import Script from 'next/script'
-import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { User, Phone, MapPin, MessageSquare } from 'lucide-react'
+import Image from 'next/image'
+import { User, Phone, MapPin, MessageSquare, Mail, MessageCircle, ArrowRight, RefreshCw } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLoadScript } from '@react-google-maps/api'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import Card from '@/components/ui/Card'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 import toast from 'react-hot-toast'
 import { sanitizeText, sanitizePhone } from '@/lib/sanitize'
 
@@ -59,7 +55,6 @@ export default function ProfileSetupPage() {
         return
       }
       setUser(user)
-      // Pre-fill name from OAuth if available
       if (user.user_metadata?.full_name) {
         setFormData(prev => ({ ...prev, fullName: user.user_metadata.full_name }))
       }
@@ -83,7 +78,6 @@ export default function ProfileSetupPage() {
     e.preventDefault()
     if (!user) return
 
-    // Validate address fields
     if (!addressData.street_address || !addressData.city || !addressData.state || !addressData.zip_code) {
       toast.error('Please complete your address')
       return
@@ -91,12 +85,11 @@ export default function ProfileSetupPage() {
 
     setLoading(true)
     try {
-      // Update profile
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
-        full_name: sanitizeText(formData.fullName),  // ← ADD
-        phone: sanitizePhone(formData.phone),         // ← ADD
+          full_name: sanitizeText(formData.fullName),
+          phone: sanitizePhone(formData.phone),
           communication_preference: formData.communicationPreference,
           account_status: 'active',
         })
@@ -104,7 +97,6 @@ export default function ProfileSetupPage() {
 
       if (profileError) throw profileError
 
-      // Insert service address
       const { error: addressError } = await supabase
         .from('service_addresses')
         .insert({
@@ -120,7 +112,6 @@ export default function ProfileSetupPage() {
 
       if (addressError) throw addressError
 
-      // Send admin notification email
       fetch('/api/email/admin-new-registration', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -141,209 +132,293 @@ export default function ProfileSetupPage() {
     }
   }
 
+  // Loading state
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-      </div>
+      <>
+        <style>{`html, body { background: #ffffff; }`}</style>
+        <div className="min-h-screen flex items-center justify-center bg-white p-6">
+          <div className="text-center">
+            <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-slate-600 font-medium">Loading...</p>
+          </div>
+        </div>
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
-      <div className="max-w-2xl mx-auto">
-        <Card>
+    <>
+      <style>{`html, body { background: #ffffff; }`}</style>
+      <div className="min-h-screen bg-white py-8 px-4 sm:py-12">
+        <div className="max-w-lg mx-auto">
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <Image
+              src="/ImpressLogoNoBackgroundBlue.png"
+              alt="Impress Cleaning Services"
+              width={180}
+              height={60}
+              className="h-12 w-auto"
+              priority
+            />
+          </div>
+
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
-              Set Up Your Service Profile
-            </h1>
-            <p className="text-gray-600">
-              Help us provide the best cleaning experience
-            </p>
-            <div className="mt-4 text-sm text-gray-500">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-sm font-medium mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               Step 2 of 2
             </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+              Complete your profile
+            </h1>
+            <p className="text-slate-400">
+              Help us provide the best cleaning experience
+            </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            
             {/* Your Information */}
             <div>
-              <h2 className="text-lg font-semibold text-[#1C294E] mb-4">
+              <h2 className="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-4 flex items-center gap-2">
+                <User className="w-4 h-4 text-emerald-500" />
                 Your Information
               </h2>
               <div className="space-y-4">
-                <Input
-                  label="Full Name"
-                  name="name"
-                  placeholder="John Smith"
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  required
-                  icon={<User className="w-5 h-5" />}
-                  autoComplete="name"
-                />
-                <Input
-                  label="Phone Number"
-                  name="tel"
-                  placeholder="(512) 555-1234"
-                  value={formData.phone}
-                  onChange={handlePhoneChange}
-                  required
-                  maxLength={14}
-                  icon={<Phone className="w-5 h-5" />}
-                  autoComplete="tel"
-                />
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="John Smith"
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                      required
+                      autoComplete="name"
+                      className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                      <Phone className="w-5 h-5" />
+                    </div>
+                    <input
+                      type="tel"
+                      name="tel"
+                      placeholder="(512) 555-1234"
+                      value={formData.phone}
+                      onChange={handlePhoneChange}
+                      required
+                      maxLength={14}
+                      autoComplete="tel"
+                      className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Service Address */}
             <div>
-              <h2 className="text-lg font-semibold text-[#1C294E] mb-4">
+              <h2 className="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-4 flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-emerald-500" />
                 Service Address
               </h2>
               <div className="space-y-4">
+                <AddressAutocomplete 
+                  onSelect={handleAddressSelect}
+                  defaultValue={addressData.street_address}
+                />
+
                 <div>
-                  <AddressAutocomplete 
-                    onSelect={handleAddressSelect}
-                    defaultValue={addressData.street_address}
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Apt/Unit <span className="text-slate-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address-line2"
+                    placeholder="Apt 123"
+                    value={addressData.unit}
+                    onChange={(e) => setAddressData({ ...addressData, unit: e.target.value })}
+                    autoComplete="address-line2"
+                    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
                   />
                 </div>
 
-                <Input
-                  label="Apt/Unit (Optional)"
-                  name="address-line2"
-                  placeholder="Apt 123"
-                  value={addressData.unit}
-                  onChange={(e) => setAddressData({ ...addressData, unit: e.target.value })}
-                  autoComplete="address-line2"
-                />
-
-                {/* City, State, Zip - Now editable with autofill support */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      City *
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                      City
                     </label>
                     <input
                       type="text"
                       name="city"
                       value={addressData.city}
                       onChange={(e) => setAddressData({ ...addressData, city: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
                       placeholder="Austin"
                       required
                       autoComplete="address-level2"
+                      className="w-full px-3 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      State *
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                      State
                     </label>
                     <input
                       type="text"
                       name="state"
                       value={addressData.state}
                       onChange={(e) => setAddressData({ ...addressData, state: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
                       placeholder="TX"
                       maxLength={2}
                       required
                       autoComplete="address-level1"
+                      className="w-full px-3 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      ZIP *
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                      ZIP
                     </label>
                     <input
                       type="text"
                       name="postal-code"
                       value={addressData.zip_code}
                       onChange={(e) => setAddressData({ ...addressData, zip_code: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
                       placeholder="78701"
                       maxLength={5}
                       required
                       autoComplete="postal-code"
+                      className="w-full px-3 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400 text-sm"
                     />
                   </div>
                 </div>
 
-                <p className="text-xs text-gray-500">
-                  💡 Use Google autocomplete above, or your browser autofill will work too!
+                <p className="text-xs text-slate-400 flex items-center gap-1.5">
+                  <span className="text-emerald-500">Tip:</span>
+                  Use Google autocomplete above, or your browser autofill works too!
                 </p>
               </div>
             </div>
 
             {/* Communication Preferences */}
             <div>
-              <h2 className="text-lg font-semibold text-[#1C294E] mb-4 flex items-center gap-2">
-                <MessageSquare className="w-5 h-5" />
+              <h2 className="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-4 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-emerald-500" />
                 Communication Preferences
               </h2>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer hover:border-[#079447] transition-colors">
+                <label className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                  formData.communicationPreference === 'text' 
+                    ? 'border-emerald-500 bg-emerald-50/50' 
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}>
                   <input
                     type="radio"
                     name="communication"
                     value="text"
                     checked={formData.communicationPreference === 'text'}
                     onChange={(e) => setFormData({ ...formData, communicationPreference: e.target.value })}
-                    className="w-5 h-5 text-[#079447] focus:ring-[#079447]"
+                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 border-slate-300"
                   />
-                  <div>
-                    <div className="font-medium text-[#1C294E]">Text messages (recommended)</div>
-                    <div className="text-sm text-gray-600">Get updates via SMS</div>
+                  <div className="flex-1">
+                    <div className="font-medium text-slate-800 flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-emerald-500" />
+                      Text messages
+                      <span className="text-xs bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-medium">Recommended</span>
+                    </div>
+                    <div className="text-sm text-slate-500 mt-0.5">Get updates via SMS</div>
                   </div>
                 </label>
 
-                <label className="flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer hover:border-[#079447] transition-colors">
+                <label className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                  formData.communicationPreference === 'email' 
+                    ? 'border-emerald-500 bg-emerald-50/50' 
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}>
                   <input
                     type="radio"
                     name="communication"
                     value="email"
                     checked={formData.communicationPreference === 'email'}
                     onChange={(e) => setFormData({ ...formData, communicationPreference: e.target.value })}
-                    className="w-5 h-5 text-[#079447] focus:ring-[#079447]"
+                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 border-slate-300"
                   />
-                  <div>
-                    <div className="font-medium text-[#1C294E]">Email only</div>
-                    <div className="text-sm text-gray-600">Receive updates via email</div>
+                  <div className="flex-1">
+                    <div className="font-medium text-slate-800 flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-blue-500" />
+                      Email only
+                    </div>
+                    <div className="text-sm text-slate-500 mt-0.5">Receive updates via email</div>
                   </div>
                 </label>
 
-                <label className="flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer hover:border-[#079447] transition-colors">
+                <label className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                  formData.communicationPreference === 'both' 
+                    ? 'border-emerald-500 bg-emerald-50/50' 
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}>
                   <input
                     type="radio"
                     name="communication"
                     value="both"
                     checked={formData.communicationPreference === 'both'}
                     onChange={(e) => setFormData({ ...formData, communicationPreference: e.target.value })}
-                    className="w-5 h-5 text-[#079447] focus:ring-[#079447]"
+                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 border-slate-300"
                   />
-                  <div>
-                    <div className="font-medium text-[#1C294E]">Both</div>
-                    <div className="text-sm text-gray-600">Stay informed via text and email</div>
+                  <div className="flex-1">
+                    <div className="font-medium text-slate-800 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-purple-500" />
+                      Both
+                    </div>
+                    <div className="text-sm text-slate-500 mt-0.5">Stay informed via text and email</div>
                   </div>
                 </label>
               </div>
             </div>
 
             {/* Submit Button */}
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              fullWidth
-              size="lg"
-              loading={loading}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Complete Setup
-            </Button>
+              {loading ? (
+                <>
+                  <RefreshCw className="w-5 h-5 animate-spin" />
+                  Setting up...
+                </>
+              ) : (
+                <>
+                  Complete Setup
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
           </form>
-        </Card>
+
+          {/* Footer */}
+          <p className="text-center text-xs text-slate-300 mt-8">
+            © {new Date().getFullYear()} Impress Cleaning Services
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
