@@ -67,24 +67,7 @@ export default function ServiceHistoryPage() {
     }
   }, [])
 
- const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
- 
- const getCalendarDays = () => {
-  const firstOfMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1)
-  const start = new Date(firstOfMonth)
-  start.setDate(start.getDate() - firstOfMonth.getDay())
-  
-  const days = []
-  for (let i = 0; i < 42; i++) {
-   const d = new Date(start)
-   start.setDate(start.getDate() + 1)
-   days.push(d)
-  }
-  return days
- }
- 
- const calendarDays = getCalendarDays()
- 
+const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'] 
  useEffect(() => {
   const load = async () => {
    setLoading(true)
