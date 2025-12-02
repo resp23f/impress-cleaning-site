@@ -12,16 +12,6 @@ import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
  const [open, setOpen] = useState(false)
  
- // Close on Escape key
- useEffect(() => {
-  if (!open) return
-  const handleEsc = (e) => {
-   if (e.key === 'Escape') setOpen(false)
-  }
-  window.addEventListener('keydown', handleEsc)
-  return () => window.removeEventListener('keydown', handleEsc)
- }, [open])
- 
  return (
   <>
    <div
@@ -31,77 +21,27 @@ function CancellationTooltip() {
     <AlertCircle className="w-4 h-4 text-red-500" />
    </div>
    
-   {/* Modal Overlay */}
    {open && (
-    <>
-     {/* Backdrop - separate clickable layer */}
-     <div 
-      className="fixed inset-0 z-[9998] bg-white/20 backdrop-blur-xl"
-      onClick={() => setOpen(false)}
-     />
-     
-     {/* Modal Content - on top of backdrop */}
-     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none">
-      <div className="relative bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] max-w-sm w-full overflow-hidden border border-white/40 pointer-events-auto">
-       {/* Header */}
-       <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4">
-        <div className="flex items-center gap-3">
-         <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
-          <AlertCircle className="w-5 h-5 text-white" />
-         </div>
-         <div>
-          <h3 className="text-lg font-bold text-white">Cancellation Policy</h3>
-          <p className="text-red-100 text-sm">Please review before cancelling</p>
-         </div>
-        </div>
-       </div>
-       
-       {/* Body */}
-       <div className="px-6 py-5 space-y-4">
-        <div className="flex items-start gap-3">
-         <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <Calendar className="w-4 h-4 text-amber-600" />
-         </div>
-         <div>
-          <p className="font-semibold text-[#1C294E] text-sm">48+ Hours Notice</p>
-          <p className="text-gray-500 text-sm">Free cancellation or reschedule</p>
-         </div>
-        </div>
-        
-        <div className="flex items-start gap-3">
-         <div className="w-8 h-8 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <DollarSign className="w-4 h-4 text-orange-600" />
-         </div>
-         <div>
-          <p className="font-semibold text-[#1C294E] text-sm">24-48 Hours Notice</p>
-          <p className="text-gray-500 text-sm">$50 late-cancellation fee</p>
-         </div>
-        </div>
-        
-        <div className="flex items-start gap-3">
-         <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <AlertCircle className="w-4 h-4 text-red-600" />
-         </div>
-         <div>
-          <p className="font-semibold text-[#1C294E] text-sm">Under 24 Hours / No Access</p>
-          <p className="text-gray-500 text-sm">Full service fee may be charged</p>
-         </div>
-        </div>
-       </div>
-       
-       {/* Footer */}
-       <div className="px-6 py-4 bg-white/30 border-t border-gray-100/30">
-        <button
-         type="button"
-         onClick={() => setOpen(false)}
-         className="w-full py-3 rounded-2xl bg-[#1C294E] hover:bg-[#2a3a5e] text-white font-semibold transition-colors duration-200 active:scale-[0.98] cursor-pointer"
-        >
-         Got it
-        </button>
-       </div>
+    <div 
+     className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-white/20 backdrop-blur-xl"
+     onClick={() => setOpen(false)}
+    >
+     <div className="bg-white rounded-3xl shadow-xl max-w-sm w-full overflow-hidden">
+      <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4">
+       <h3 className="text-lg font-bold text-white">Cancellation Policy</h3>
+      </div>
+      
+      <div className="px-6 py-5 space-y-3 text-sm">
+       <p><span className="font-semibold">48+ Hours:</span> Free cancellation</p>
+       <p><span className="font-semibold">24-48 Hours:</span> $50 fee</p>
+       <p><span className="font-semibold">Under 24 Hours:</span> Full service fee</p>
+      </div>
+      
+      <div className="px-6 py-4 bg-gray-50 text-center text-sm text-gray-500">
+       Tap anywhere to close
       </div>
      </div>
-    </>
+    </div>
    )}
   </>
  )
