@@ -127,11 +127,11 @@ className={`
    
 {/* Mobile Menu */}
 {mobileMenuOpen && (
-<div className={`lg:hidden fixed inset-0 z-50 bg-slate-100/30 ${styles.fadeInOverlaySmooth}`}
-
-  onClick={() => setMobileMenuOpen(false)}>
-<div
-      className={`fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
+<div 
+  className={`lg:hidden fixed inset-0 z-50 bg-slate-100/30 ${isClosing ? styles.fadeOutOverlaySmooth : styles.fadeInOverlaySmooth}`}
+  onClick={closeMenu}
+>
+      <div className={`fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
       onClick={(e) => e.stopPropagation()}
     >
             {/* Header with user greeting */}
