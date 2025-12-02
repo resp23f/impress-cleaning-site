@@ -49,9 +49,9 @@ export default function PortalNav({ userName }) {
   />
   </div>
   
-  {/* Navigation */}
-  <nav className="flex-1 px-4 space-y-1.5">
-  {navItems.map((item) => {
+{/* Navigation */}
+      <nav className="flex-1 px-4 pt-2 pb-4 space-y-1.5 overflow-y-auto">
+        {navItems.map((item) => {
    const Icon = item.icon
    const isActive = pathname === item.href
    return (
@@ -120,14 +120,14 @@ className={`
 {mobileMenuOpen && (
 <div className="lg:hidden fixed inset-0 z-50 bg-black/60"
   onClick={() => setMobileMenuOpen(false)}>
-    <div
-      className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl flex flex-col"
+<div
+      className="fixed inset-y-0 right-0 w-80 backdrop-blur-2xl bg-white/70 shadow-2xl flex flex-col border-l border-white/50"
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Header with user greeting */}
-      <div className="pt-20 px-6 pb-4 border-b border-gray-100">
+{/* Header with user greeting */}
+      <div className="pt-6 px-6 pb-4 border-b border-white/30">
         <p className="text-sm text-gray-500">Welcome back,</p>
-        <p className="text-lg font-semibold text-[#1C294E]">{userName}</p>
+        <p className="text-xl font-bold text-[#1C294E]">{userName}</p>
       </div>
 
       {/* Navigation */}
@@ -160,9 +160,9 @@ className={`
         })}
       </nav>
 
-      {/* Logout - pinned to bottom */}
-      <div className="p-4 border-t border-gray-100 bg-gray-50/50">
-        <button
+{/* Logout - pinned to bottom */}
+      <div className="p-4 border-t border-white/30 bg-white/30">
+              <button
           onClick={handleLogout}
           className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-red-600 rounded-xl bg-red-50 hover:bg-red-100 transition-all duration-200"
         >
