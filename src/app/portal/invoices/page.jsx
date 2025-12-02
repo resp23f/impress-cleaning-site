@@ -168,8 +168,7 @@ if (loading) {
   return (
    <>
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">   {/* Header */}
-   <div className={`mb-8 ${styles.animateFadeIn}`}>
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">   <div className={`mb-8 ${styles.animateFadeIn}`}>
    <div className="flex items-center gap-3 mb-2">
    <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
    <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Invoices</span>
@@ -205,8 +204,8 @@ if (loading) {
    </div>
    
    {/* Filters */}
-<div className={`flex gap-2 mb-6 overflow-x-auto pb-2 max-w-full ${styles.animateFadeInUp} ${styles.stagger2}`}>
-   {['unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
+<div className={`overflow-hidden ${styles.animateFadeInUp} ${styles.stagger2}`}>
+  <div className="flex gap-2 mb-6 overflow-x-auto pb-2">   {['unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
     <button
     key={filterOption}
     onClick={() => {
@@ -221,6 +220,7 @@ if (loading) {
     {filterOption.charAt(0).toUpperCase() + filterOption.slice(1)}
     </button>
    ))}
+   </div>
    </div>
    
    {/* Invoices List */}
