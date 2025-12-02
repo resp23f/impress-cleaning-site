@@ -193,8 +193,12 @@ export default function ServiceHistoryPage() {
    </div>
    
    {/* Filters Card */}
-<Card padding="lg" className={`!rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.animateFadeInUp} ${styles.stagger1}`}>
-
+<div className={`
+      rounded-2xl bg-white p-6 sm:p-8 mb-8 overflow-hidden
+      shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
+      border border-gray-100/80
+      ${styles.animateFadeInUp} ${styles.stagger1}
+    `}>
 
     <div className="flex items-center gap-3 mb-6">
     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
@@ -257,8 +261,8 @@ export default function ServiceHistoryPage() {
       </button>
       </div>
      )}
- </Card>     
- 
+ </div>     
+
      {/* Services Grid */}
      {filtered.length === 0 ? (
       <div className={`
