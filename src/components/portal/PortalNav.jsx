@@ -118,13 +118,13 @@ className={`
    
 {/* Mobile Menu */}
 {mobileMenuOpen && (
-<div className="lg:hidden fixed inset-0 z-50 bg-slate-100/30"
+<div className="lg:hidden fixed inset-0 z-50 bg-slate-100/30 ${styles.fadeInOverlaySmooth}`}"
   onClick={() => setMobileMenuOpen(false)}>
-    <div
-      className="fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col"
+<div
+      className={`fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${styles.slideInMenuPanel}`}
       onClick={(e) => e.stopPropagation()}
     >
-    {/* Header with user greeting */}
+        {/* Header with user greeting */}
 {/* Header with user greeting */}
       <div className="pt-6 px-6 pb-4">
               <p className="text-sm text-gray-500">Welcome back,</p>

@@ -104,6 +104,27 @@
     background-position: 0% 50%;
   }
 }
+@keyframes slideInMenuPanel {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInOverlaySmooth {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
 
 /* ============================================
    ANIMATION CLASSES
@@ -135,6 +156,13 @@
 
 .animateGlow {
   animation: glow 2s ease-in-out infinite;
+}
+.slideInMenuPanel {
+  animation: slideInMenuPanel 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fadeInOverlaySmooth {
+  animation: fadeInOverlaySmooth 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* ============================================
