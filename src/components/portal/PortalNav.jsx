@@ -121,12 +121,13 @@ className={`
 <div className="lg:hidden fixed inset-0 z-50 bg-black/60"
   onClick={() => setMobileMenuOpen(false)}>
 <div
-      className="fixed inset-y-0 right-0 w-80 backdrop-blur-2xl bg-white/70 shadow-2xl flex flex-col border-l border-white/50"
+      className="fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col"
       onClick={(e) => e.stopPropagation()}
     >
+    {/* Header with user greeting */}
 {/* Header with user greeting */}
-      <div className="pt-6 px-6 pb-4 border-b border-white/30">
-        <p className="text-sm text-gray-500">Welcome back,</p>
+      <div className="pt-6 px-6 pb-4">
+              <p className="text-sm text-gray-500">Welcome back,</p>
         <p className="text-xl font-bold text-[#1C294E]">{userName}</p>
       </div>
 
@@ -161,8 +162,8 @@ className={`
       </nav>
 
 {/* Logout - pinned to bottom */}
-      <div className="p-4 border-t border-white/30 bg-white/30">
-              <button
+      <div className="p-4">    
+                <button
           onClick={handleLogout}
           className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-red-600 rounded-xl bg-red-50 hover:bg-red-100 transition-all duration-200"
         >
