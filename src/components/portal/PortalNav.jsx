@@ -118,7 +118,7 @@ className={`
    
 {/* Mobile Menu */}
 {mobileMenuOpen && (
-<div className="lg:hidden fixed inset-0 z-50 bg-slate-100/50"
+<div className="lg:hidden fixed inset-0 z-50 bg-slate-100/30"
   onClick={() => setMobileMenuOpen(false)}>
     <div
       className="fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col"
@@ -162,8 +162,8 @@ className={`
       </nav>
 
 {/* Logout - pinned to bottom */}
-      <div className="p-4">    
-                <button
+      <div className="p-4 flex-shrink-0">
+                      <button
           onClick={handleLogout}
           className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-red-600 rounded-xl bg-red-50 hover:bg-red-100 transition-all duration-200"
         >
