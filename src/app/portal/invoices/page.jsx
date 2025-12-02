@@ -12,9 +12,14 @@ import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
  const [open, setOpen] = useState(false)
  
+ const handleClose = () => {
+  setOpen(false)
+ }
+ 
  return (
   <>
    <button
+    type="button"
     onClick={() => setOpen(true)}
     className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors duration-200"
    >
@@ -24,21 +29,21 @@ function CancellationTooltip() {
    {/* Modal Overlay */}
    {open && (
     <div 
-     className="fixed inset-0 z-50 flex items-center justify-center p-4"
-     onClick={() => setOpen(false)}
+     className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+     onClick={handleClose}
     >
-     {/* Backdrop */}
-     <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
+     {/* Apple Glass Backdrop */}
+     <div className="absolute inset-0 bg-white/40 backdrop-blur-2xl" />
      
      {/* Modal Content */}
      <div 
-      className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+      className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] max-w-sm w-full overflow-hidden border border-white/60"
       onClick={(e) => e.stopPropagation()}
      >
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4">
+      <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4 rounded-t-3xl">
        <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
          <AlertCircle className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -51,7 +56,7 @@ function CancellationTooltip() {
       {/* Body */}
       <div className="px-6 py-5 space-y-4">
        <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
          <Calendar className="w-4 h-4 text-amber-600" />
         </div>
         <div>
@@ -61,7 +66,7 @@ function CancellationTooltip() {
        </div>
        
        <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <div className="w-8 h-8 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
          <DollarSign className="w-4 h-4 text-orange-600" />
         </div>
         <div>
@@ -71,7 +76,7 @@ function CancellationTooltip() {
        </div>
        
        <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
          <AlertCircle className="w-4 h-4 text-red-600" />
         </div>
         <div>
@@ -82,10 +87,11 @@ function CancellationTooltip() {
       </div>
       
       {/* Footer */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+      <div className="px-6 py-4 bg-white/50 border-t border-gray-100/50 rounded-b-3xl">
        <button
-        onClick={() => setOpen(false)}
-        className="w-full py-2.5 rounded-xl bg-[#1C294E] hover:bg-[#2a3a5e] text-white font-semibold transition-colors duration-200"
+        type="button"
+        onClick={handleClose}
+        className="w-full py-3 rounded-2xl bg-[#1C294E] hover:bg-[#2a3a5e] text-white font-semibold transition-colors duration-200 active:scale-[0.98]"
        >
         Got it
        </button>
@@ -95,7 +101,7 @@ function CancellationTooltip() {
    )}
   </>
  )
- }
+}
  
  function formatDateLocal(dateStr) {
   if (!dateStr) return '—'
