@@ -454,7 +454,7 @@ if (loading) {
 return (
  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10"> 
- <div className={`flex items-center justify-between gap-3 ${styles.animateFadeIn}`}>
+<div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${styles.animateFadeIn}`}>
  <div>
  <div className="flex items-center gap-3 mb-2">
  <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
@@ -462,10 +462,10 @@ return (
  </div>
  <h1 className="text-4xl font-bold text-[#1C294E] tracking-tight">Manage Your Cleanings</h1>
  </div>
- <Link href="/portal/request-service">
- <Button variant="primary">Book another cleaning</Button>
+ <Link href="/portal/request-service" className="w-full sm:w-auto">
+ <Button variant="primary" className="w-full sm:w-auto whitespace-nowrap">Book another cleaning</Button>
  </Link>
- </div>
+</div>
  
  {/* Upcoming */}
  <section className={`${styles.animateFadeInUp} ${styles.stagger1}`}>

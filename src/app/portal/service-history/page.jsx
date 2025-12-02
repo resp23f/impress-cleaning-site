@@ -19,7 +19,6 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { CardSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
-
 const serviceTypeLabel = (type) => {
  const labels = {
   standard: 'Standard Cleaning',
@@ -30,27 +29,22 @@ const serviceTypeLabel = (type) => {
  }
  return labels[type] || type
 }
-
 export default function ServiceHistoryPage() {
  const router = useRouter()
  const supabase = useMemo(() => createClient(), [])
- 
  const [loading, setLoading] = useState(true)
  const [services, setServices] = useState([])
- 
  const [filters, setFilters] = useState({
   startDate: '',
   endDate: '',
   serviceType: 'all',
  })
- 
  // custom date picker state
  const [openFromCal, setOpenFromCal] = useState(false)
  const [openToCal, setOpenToCal] = useState(false)
  const [fromCalendarMonth, setFromCalendarMonth] = useState(new Date())
  const [toCalendarMonth, setToCalendarMonth] = useState(new Date())
  const calendarRef = useRef(null)
- 
  // Close calendar when clicking outside
  useEffect(() => {
   const handleClickOutside = (event) => {
@@ -66,7 +60,6 @@ export default function ServiceHistoryPage() {
    document.removeEventListener('touchstart', handleClickOutside)
   }
  }, [])
- 
  const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
  useEffect(() => {
   const load = async () => {
@@ -79,24 +72,19 @@ export default function ServiceHistoryPage() {
      router.push('/auth/login')
      return
     }
-    
     const { data: history, error } = await supabase
     .from('service_history')
     .select('*')
     .eq('customer_id', user.id)
     .order('completed_date', { ascending: false })
-    
     if (error) throw error
-    
     if (!history || history.length === 0) {
      setServices([])
      return
     }
-    
     const appointmentIds = history.map((h) => h.appointment_id).filter(Boolean)
     const appointmentsMap = {}
     const invoicesMap = {}
-    
     if (appointmentIds.length > 0) {
      const { data: appointments, error: apptError } = await supabase
      .from('appointments')
@@ -117,31 +105,24 @@ export default function ServiceHistoryPage() {
             `
      )
      .in('id', appointmentIds)
-     
      if (apptError) throw apptError
-     
      appointments?.forEach((apt) => {
       appointmentsMap[apt.id] = apt
      })
-     
      const { data: invoices, error: invoiceError } = await supabase
      .from('invoices')
      .select('id, appointment_id, invoice_number, amount, status')
      .in('appointment_id', appointmentIds)
-     
      if (invoiceError) throw invoiceError
-     
      invoices?.forEach((inv) => {
       invoicesMap[inv.appointment_id] = inv
      })
     }
-    
     const merged = history.map((h) => ({
      ...h,
      appointment: h.appointment_id ? appointmentsMap[h.appointment_id] : null,
      invoice: h.appointment_id ? invoicesMap[h.appointment_id] : null,
     }))
-    
     setServices(merged)
    } catch (err) {
     console.error('Error loading history', err)
@@ -152,7 +133,6 @@ export default function ServiceHistoryPage() {
   }
   load()
  }, [router, supabase])
- 
  const filtered = services.filter((svc) => {
   const date = svc.completed_date ? parseISO(svc.completed_date) : null
   if (filters.startDate && date && isBefore(date, parseISO(filters.startDate))) {
@@ -166,7 +146,6 @@ export default function ServiceHistoryPage() {
   }
   return true
  })
- 
  const DatePicker = ({ label, field }) => {
   const isFrom = field === 'startDate'
   const open = isFrom ? openFromCal : openToCal
@@ -174,7 +153,6 @@ export default function ServiceHistoryPage() {
   const value = filters[field]
   const calendarMonth = isFrom ? fromCalendarMonth : toCalendarMonth
   const setCalendarMonth = isFrom ? setFromCalendarMonth : setToCalendarMonth
-  
   const getCalendarDays = () => {
    const firstOfMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1)
    const start = new Date(firstOfMonth)
@@ -187,14 +165,11 @@ export default function ServiceHistoryPage() {
    }
    return days
   }
-  
   const calendarDays = getCalendarDays()
   const today = new Date().toISOString().split('T')[0]
-  
   return (
    <div className="min-w-0 relative" ref={open ? calendarRef : null}>
    <label className="text-sm font-semibold text-gray-700 mb-2 block">{label}</label>
-   
    <button
    type="button"
    onClick={() => {
@@ -215,7 +190,6 @@ export default function ServiceHistoryPage() {
    >
    {value ? format(parseISO(value), 'MMM d, yyyy') : 'Select a date'}
    </button>
-   
    {open && (
     <div 
     className="absolute z-[9999] mt-2 w-64 sm:w-72 bg-white rounded-2xl p-3 sm:p-5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.05)] animate-in fade-in slide-in-from-top-2 duration-200 left-0 sm:left-1/2 sm:-translate-x-1/2"
@@ -248,7 +222,6 @@ export default function ServiceHistoryPage() {
     <ChevronRight className="w-5 h-5 text-gray-600" />
     </button>
     </div>
-    
     {/* Weekday labels */}
     <div className="grid grid-cols-7 mb-2">
     {weekdayLabels.map((d) => (
@@ -257,7 +230,6 @@ export default function ServiceHistoryPage() {
      </div>
     ))}
     </div>
-    
     {/* Days grid */}
     <div className="grid grid-cols-7 gap-1">
     {calendarDays.map((dateObj, idx) => {
@@ -267,7 +239,6 @@ export default function ServiceHistoryPage() {
      dateObj.getFullYear() === calendarMonth.getFullYear()
      const isSelected = value === iso
      const isToday = iso === today
-     
      return (
       <button
       key={`${iso}-${idx}`}
@@ -293,7 +264,6 @@ className={`
      )
     })}
     </div>
-    
     {/* Quick actions */}
     <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
     <button
@@ -324,7 +294,6 @@ className={`
    </div>
   )
  }
- 
  if (loading) {
   return (
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
@@ -343,7 +312,6 @@ className={`
    </div>
   )
  }
- 
  return (
   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
   <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -368,7 +336,6 @@ className={`
   </div>
   </div>
   </div>
-  
   {/* Filters */}
   <div
   className={`
@@ -384,11 +351,9 @@ className={`
    </div>
    <h2 className="text-xl font-bold text-[#1C294E]">Filter Services</h2>
    </div>
-   
    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
    <DatePicker label="From Date" field="startDate" />
    <DatePicker label="To Date" field="endDate" />
-   
    <div className="min-w-0">
    <label className="text-sm font-semibold text-gray-700 mb-2 block">
    Service Type
@@ -414,7 +379,6 @@ className={`
     </select>
     </div>
     </div>
-    
     {(filters.startDate || filters.endDate || filters.serviceType !== 'all') && (
      <div className="mt-4 flex items-center justify-between pt-4 border-t border-gray-100">
      <p className="text-sm text-gray-600">
@@ -432,7 +396,6 @@ className={`
      </div>
     )}
     </div>
-    
     {/* Results */}
     {filtered.length === 0 ? (
      <div
@@ -477,7 +440,6 @@ className={`
          style={{ animationDelay: `${0.1 * (index % 4)}s`, opacity: 0 }}
          >
          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
-         
          <div className="p-6 sm:p-8">
          <div className="flex items-start justify-between mb-6">
          <div>
@@ -493,7 +455,6 @@ className={`
          Completed
          </Badge>
          </div>
-         
          <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 mb-6">
          <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">
          Service Type
@@ -502,7 +463,6 @@ className={`
          {serviceTypeLabel(svc.service_type)}
          </p>
          </div>
-         
          <div className="space-y-3 mb-6">
          {svc.appointment?.service_addresses && (
           <div className="flex items-start gap-2">
@@ -517,7 +477,6 @@ className={`
            </p>
            </div>
           )}
-          
           {svc.team_members && svc.team_members.length > 0 && (
            <div className="flex items-center gap-2">
            <Users className="w-4 h-4 text-gray-400 flex-shrink-0" />
@@ -527,7 +486,6 @@ className={`
            </div>
           )}
           </div>
-          
           </div>
           </div>
          ))}
