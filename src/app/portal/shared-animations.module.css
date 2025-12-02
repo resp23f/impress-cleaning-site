@@ -184,17 +184,16 @@
 }
 
 .slideOutMenuPanel {
-  animation: slideOutMenuPanel 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slideOutMenuPanel 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .fadeInOverlaySmooth {
-  animation: fadeInOverlaySmooth 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeInOverlaySmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .fadeOutOverlaySmooth {
-  animation: fadeOutOverlaySmooth 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeOutOverlaySmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-
 /* ============================================
    STAGGER DELAYS FOR SEQUENTIAL ANIMATIONS
    ============================================ */

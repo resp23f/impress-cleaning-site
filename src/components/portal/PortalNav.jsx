@@ -34,7 +34,7 @@ const closeMenu = () => {
   setTimeout(() => {
     setMobileMenuOpen(false)
     setIsClosing(false)
-  }, 400)
+  }, 600)
 }
 const supabase = createClient()
  
