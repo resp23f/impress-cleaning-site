@@ -68,16 +68,36 @@ export function AppointmentCardSkeleton() {
 export function DashboardSkeleton() {
   return (
     <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
-      <div className="space-y-6">
-        <div>
-          <Skeleton height={32} width={200} />
-          <Skeleton height={20} width={280} style={{ marginTop: 8 }} />
+      <div className="space-y-8">
+        {/* Header area */}
+        <div className="space-y-3 max-w-xl">
+          {/* small "Dashboard" label */}
+          <Skeleton height={14} width={90} />
+          {/* big greeting heading */}
+          <Skeleton height={36} width={260} />
+          {/* subheading */}
+          <Skeleton height={18} width={200} />
         </div>
+
+        {/* Row 1: Next appointment (2 cols) + balance (1 col) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <CardSkeleton />
-          </div>
-          <CardSkeleton />
+          {/* Large hero-style tile for next appointment */}
+          <Skeleton className="w-full lg:col-span-2" height={240} />
+          {/* Side tile for balance card */}
+          <Skeleton className="w-full" height={240} />
+        </div>
+
+        {/* Row 2: Invoices & Recent services */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Skeleton className="w-full" height={220} />
+          <Skeleton className="w-full" height={220} />
+        </div>
+
+        {/* Row 3: Service address, account summary, feedback */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Skeleton className="w-full" height={190} />
+          <Skeleton className="w-full" height={190} />
+          <Skeleton className="w-full" height={190} />
         </div>
       </div>
     </SkeletonTheme>
