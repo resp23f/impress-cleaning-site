@@ -139,13 +139,13 @@ function LoginPageContent() {
 <Image
   src="/ImpressLogoNoBackgroundBlue.png"
   alt="Impress Cleaning Services"
-  width={200}
-  height={80}
-  className="h-20 w-auto"
-  style={{ minHeight: '80px' }}
+  width={220}
+  height={88}
+  className="h-[88px] w-auto"
+  style={{ minHeight: '88px' }}
   priority
-/>            </div>
-
+/>
+            </div>       
             {/* Middle content */}
             <div className="max-w-sm">
               <div className="flex items-center gap-2 mb-4">
@@ -170,18 +170,18 @@ function LoginPageContent() {
         {/* Right Side - Login Form */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-white p-6 sm:p-12">
           <div className="w-full max-w-md">
-            {/* Mobile logo */}
+{/* Mobile logo */}
             <div className="lg:hidden flex justify-center mb-8">
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
                 width={180}
-                height={60}
-                className="h-12 w-auto"
+                height={56}
+                className="h-14 w-auto"
+                style={{ minHeight: '56px' }}
                 priority
               />
             </div>
-
             {/* Form Container */}
             <div className="lg:px-4">
               <div className="text-center mb-8">
@@ -285,9 +285,16 @@ className="!py-3.5 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-pulse">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100" />
+      <div className="min-h-screen flex bg-white">
+        {/* Left panel placeholder */}
+        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
+        {/* Right panel with centered loader */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center">
+          <img
+            src="/ImpressLogoNoBackgroundBlue.png"
+            alt="Loading..."
+            className="h-20 w-auto animate-pulse"
+          />
         </div>
       </div>
     }>

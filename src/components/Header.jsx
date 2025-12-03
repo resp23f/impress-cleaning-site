@@ -145,15 +145,13 @@ function SiteHeader() {
   ref={headerRef}
   className={`
           fixed top-0 left-0 right-0 z-50 w-full
-          transform transition-transform duration-300 ease-out
           ${isHidden ? "-translate-y-full" : "translate-y-0"}
           ${isScrolled
    ? "bg-white/25 backdrop-blur-[20px] border-b border-white/30 shadow-sm"
-   : "bg-gradient-to-b from-gray-50 via-gray-50/95 to-gray-100 border-b border-gray-200/40"
+   : "bg-white/90 backdrop-blur-[12px] border-b border-gray-200/40"
   }
-          transition-[background,backdrop-filter] duration-300 ease-out
-        `}
-  >
+          transition-all duration-300 ease-out
+        `}  >
   <div className="w-full mx-auto relative px-3 sm:px-4 lg:px-6 xl:px-8 max-w-[1600px]">
   
   <div className="flex items-center justify-between gap-2 flex-nowrap py-2 lg:py-3 2xl:py-4">
@@ -390,17 +388,15 @@ function SiteHeader() {
    <p className="text-xs text-slate-500">Business hours</p>
    </div>
    </div>
-   <div className="my-2 border-t border-slate-100" />
    
-   {/* Apply */}
-   <Link
-   href="/apply"
+   {/* Email */}
+   <a
+   href="mailto:admin@impressyoucleaning.com"
    className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
-   onClick={() => setDesktopMenuOpen(false)}
    >
-   <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center">
+   <div className="w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center">
    <svg
-   className="w-4 h-4 text-slate-600"
+   className="w-4 h-4 text-purple-600"
    fill="none"
    stroke="currentColor"
    viewBox="0 0 24 24"
@@ -409,7 +405,35 @@ function SiteHeader() {
    <path
    strokeLinecap="round"
    strokeLinejoin="round"
-   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+   />
+   </svg>
+   </div>
+   <div>
+   <p className="text-sm font-semibold text-slate-800">admin@impressyoucleaning.com</p>
+   <p className="text-xs text-slate-500">Email us</p>
+   </div>
+   </a>
+   
+   <div className="my-2 border-t border-slate-100" />   
+   {/* Apply */}
+   <Link
+   href="/apply"
+   className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
+   onClick={() => setDesktopMenuOpen(false)}
+   >
+   <div className="w-9 h-9 rounded-full bg-emerald-50 flex items-center justify-center">
+   <svg
+   className="w-4 h-4 text-emerald-600"
+   fill="none"
+   stroke="currentColor"
+   viewBox="0 0 24 24"
+   strokeWidth="2"
+   >
+   <path
+   strokeLinecap="round"
+   strokeLinejoin="round"
+   d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
    />
    </svg>
    </div>
@@ -427,9 +451,9 @@ function SiteHeader() {
    className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
    onClick={() => setDesktopMenuOpen(false)}
    >
-   <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center">
+   <div className="w-9 h-9 rounded-full bg-amber-50 flex items-center justify-center">
    <svg
-   className="w-4 h-4 text-slate-600"
+   className="w-4 h-4 text-amber-600"
    fill="none"
    stroke="currentColor"
    viewBox="0 0 24 24"
@@ -438,7 +462,7 @@ function SiteHeader() {
    <path
    strokeLinecap="round"
    strokeLinejoin="round"
-   d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+   d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
    />
    </svg>
    </div>
@@ -607,31 +631,92 @@ function SiteHeader() {
   <p className="text-sm text-white/60">Business hours</p>
   </div>
   </div>
+  
+  {/* Email */}
+  <a
+  href="mailto:admin@impressyoucleaning.com"
+  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
+  >
+  <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+  <svg
+  className="w-5 h-5 text-purple-400"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  strokeWidth="2"
+  >
+  <path
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+  />
+  </svg>
+  </div>
+  <div>
+  <p className="font-semibold">admin@impressyoucleaning.com</p>
+  <p className="text-sm text-white/60">Tap to email</p>
+  </div>
+  </a>
   </div>
   
   <div className="border-t border-white/10" />
   
   {/* Apply Links */}
-  <div className="px-5 py-4 pb-6 flex gap-3">
+  <div className="px-5 py-4 pb-6 space-y-3">
   <Link
   href="/apply"
-  className="flex-1 text-center px-4 py-3 rounded-xl border border-white/20 font-semibold hover:bg-white/10 transition-colors"
+  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
   onClick={() => setMobileMenuOpen(false)}
   >
-  Apply
+  <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+  <svg
+  className="w-5 h-5 text-emerald-400"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  strokeWidth="2"
+  >
+  <path
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+  />
+  </svg>
+  </div>
+  <div>
+  <p className="font-semibold">Apply</p>
+  <p className="text-sm text-white/60">Join our team</p>
+  </div>
   </Link>
+  
   <Link
   href="/aplicar"
-  className="flex-1 text-center px-4 py-3 rounded-xl border border-white/20 font-semibold hover:bg-white/10 transition-colors"
+  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
   onClick={() => setMobileMenuOpen(false)}
   >
-  Aplicar
+  <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+  <svg
+  className="w-5 h-5 text-amber-400"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  strokeWidth="2"
+  >
+  <path
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+  />
+  </svg>
+  </div>
+  <div>
+  <p className="font-semibold">Aplicar</p>
+  <p className="text-sm text-white/60">Únete a nuestro equipo</p>
+  </div>
   </Link>
+  </div> 
   </div>
   </div>
-  </div>
-  
   </>
  );
- 
 }
