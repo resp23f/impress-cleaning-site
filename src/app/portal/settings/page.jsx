@@ -99,7 +99,7 @@ export default function SettingsPage() {
         stripeCardRef.current.card.unmount()
       }
     }
-  }, [cardElementMounted])
+}, [cardElementMounted, loading])
 const handleProfileSave = async () => {
   if (!user || !profile) return
   setSavingProfile(true)
@@ -599,10 +599,9 @@ if (loading) {
           <a href="tel:5127382642" className="text-sm text-[#079447] hover:text-emerald-700 font-semibold block mb-1 transition-colors">
             (512) 738-2642
           </a>
-          <a href="mailto:notifications@impressyoucleaning.com" className="text-xs text-gray-600 hover:text-[#079447] font-medium transition-colors">
-            notifications@impressyoucleaning.com
-          </a>
-        </div>
+<a href="mailto:notifications@impressyoucleaning.com" className="text-xs text-gray-600 hover:text-[#079447] font-medium transition-colors break-all">
+  notifications@impressyoucleaning.com
+</a>        </div>
       </div>
     </div>
   </div>
