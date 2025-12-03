@@ -68,17 +68,15 @@ const supabase = createClient()
     key={item.href}
     href={item.href}
 className={`
- group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
- ${isActive
-  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+ group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-colors duration-300
+ ${isActive  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
   : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900 shadow-sm shadow-transparent hover:shadow-gray-200/50'
  }
 `}
 >
 <div className={`
- w-9 h-9 rounded-lg flex items-center justify-center ${styles.smoothTransition}
- ${isActive
-      ? 'bg-white/20'
+ w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
+ ${isActive      ? 'bg-white/20'
       : 'bg-gray-100 group-hover:bg-emerald-50'
      }
 `}>    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
@@ -151,17 +149,18 @@ className={`
               key={item.href}
               href={item.href}
 onClick={closeMenu}
-              className={`
-                group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl ${styles.smoothTransition}
+className={`
+                group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-colors duration-300
                 ${isActive
-                  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
+                                  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-200/50'
                   : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900'
                 }
               `}
             >
-              <div className={`
-                w-9 h-9 rounded-lg flex items-center justify-center ${styles.smoothTransition}
-                ${isActive ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-emerald-50'}
+<div className={`
+                w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
+                ${isActive
+                                ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-emerald-50'}
               `}>
                 <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
               </div>
