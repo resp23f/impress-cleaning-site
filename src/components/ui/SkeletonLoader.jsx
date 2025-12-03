@@ -19,13 +19,12 @@ export function CardSkeleton() {
   return (
     <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
       <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] p-6 space-y-4">
-        <Skeleton height={24} width="40%" />
+        <Skeleton height={24} width={160} />
         <Skeleton count={3} height={16} />
       </div>
     </SkeletonTheme>
   )
 }
-
 export function InvoiceCardSkeleton() {
   return (
     <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
@@ -33,8 +32,8 @@ export function InvoiceCardSkeleton() {
         <div className="flex items-center gap-4">
           <Skeleton circle height={48} width={48} />
           <div className="flex-1">
-            <Skeleton height={20} width="50%" />
-            <Skeleton height={16} width="30%" style={{ marginTop: 8 }} />
+            <Skeleton height={20} width={180} />
+            <Skeleton height={16} width={100} style={{ marginTop: 8 }} />
           </div>
           <Skeleton height={40} width={100} borderRadius={12} />
         </div>
@@ -42,7 +41,6 @@ export function InvoiceCardSkeleton() {
     </SkeletonTheme>
   )
 }
-
 export function AppointmentCardSkeleton() {
   return (
     <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
