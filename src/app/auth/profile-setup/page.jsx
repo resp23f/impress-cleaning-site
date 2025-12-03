@@ -97,29 +97,28 @@ export default function ProfileSetupPage() {
 
       if (profileError) throw profileError
 
-      const { error: addressError } = await supabase
-        .from('service_addresses')
-        .insert({
-          user_id: user.id,
-          street_address: addressData.street_address,
-          unit: addressData.unit || null,
-          city: addressData.city,
-          state: addressData.state,
-          zip_code: addressData.zip_code,
-          place_id: addressData.place_id || null,
-          is_primary: true,
-        })
-
+const { error: addressError } = await supabase
+  .from('service_addresses')
+  .insert({
+    user_id: user.id,
+    street_address: sanitizeText(addressData.street_address)?.slice(0, 200),
+    unit: sanitizeText(addressData.unit)?.slice(0, 50) || null,
+    city: sanitizeText(addressData.city)?.slice(0, 100),
+    state: sanitizeText(addressData.state)?.slice(0, 2),
+    zip_code: sanitizeText(addressData.zip_code)?.slice(0, 10),
+    place_id: addressData.place_id || null,
+    is_primary: true,
+  })
       if (addressError) throw addressError
 
       fetch('/api/email/admin-new-registration', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerName: formData.fullName,
-          customerEmail: user.email,
-          customerId: user.id,
-        }),
+body: JSON.stringify({
+  customerName: sanitizeText(formData.fullName),
+  customerEmail: user.email,
+  customerId: user.id,
+}),
       }).catch(err => console.error('Admin notification failed:', err))
 
       toast.success('Profile setup complete!')

@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   Building2,
   Mail,
@@ -17,26 +17,32 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
+import { sanitizeText, sanitizePhone, sanitizeEmail } from '@/lib/sanitize'
+
 export default function SettingsPage() {
+  const supabase = useMemo(() => createClient(), [])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [activeTab, setActiveTab] = useState('business')
+
   // Business Info
   const [businessInfo, setBusinessInfo] = useState({
-    name: 'Impress Cleaning Services',
-    email: 'support@impresscleaning.com',
-    phone: '(555) 123-4567',
-    address: '123 Main St, Fort Worth, TX 76104',
-    website: 'https://impresscleaning.com',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    website: '',
   })
+
   // Service Pricing
   const [pricing, setPricing] = useState({
-    standard: '150',
-    deep: '250',
-    move_in_out: '350',
-    post_construction: '450',
-    office: '200',
+    standard: '',
+    deep: '',
+    move_in_out: '',
+    post_construction: '',
+    office: '',
   })
+
   // Business Hours
   const [businessHours, setBusinessHours] = useState({
     monday: { open: '08:00', close: '18:00', closed: false },
@@ -47,6 +53,7 @@ export default function SettingsPage() {
     saturday: { open: '09:00', close: '15:00', closed: false },
     sunday: { open: '09:00', close: '15:00', closed: true },
   })
+
   // Notification Settings
   const [notifications, setNotifications] = useState({
     newRegistration: true,
@@ -55,26 +62,73 @@ export default function SettingsPage() {
     appointmentCancelled: true,
     invoiceOverdue: true,
   })
-  const supabase = createClient()
+
+  // Load settings from database
   useEffect(() => {
-    loadSettings()
-  }, [])
-  const loadSettings = async () => {
-    setLoading(true)
-    try {
-      // In a real app, you'd load these from a settings table
-      // For now, we're using default values
-      setLoading(false)
-    } catch (error) {
-      console.error('Error loading settings:', error)
-      setLoading(false)
+    const loadSettings = async () => {
+      setLoading(true)
+      try {
+        const { data, error } = await supabase
+          .from('admin_settings')
+          .select('*')
+          .eq('id', 1)
+          .single()
+
+        if (error) throw error
+
+        if (data) {
+          setBusinessInfo({
+            name: data.business_name || '',
+            email: data.business_email || '',
+            phone: data.business_phone || '',
+            address: data.business_address || '',
+            website: data.business_website || '',
+          })
+
+          setPricing({
+            standard: String(data.price_standard || 150),
+            deep: String(data.price_deep || 250),
+            move_in_out: String(data.price_move_in_out || 350),
+            post_construction: String(data.price_post_construction || 450),
+            office: String(data.price_office || 200),
+          })
+
+          if (data.business_hours) {
+            setBusinessHours(data.business_hours)
+          }
+
+          if (data.notifications) {
+            setNotifications(data.notifications)
+          }
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error)
+        toast.error('Failed to load settings')
+      } finally {
+        setLoading(false)
+      }
     }
-  }
+
+    loadSettings()
+  }, [supabase])
+
+  // Save Business Info
   const handleSaveBusinessInfo = async () => {
     setSaving(true)
     try {
-      // In a real app, save to database
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      const { error } = await supabase
+        .from('admin_settings')
+        .update({
+          business_name: sanitizeText(businessInfo.name)?.slice(0, 100),
+          business_email: sanitizeEmail(businessInfo.email),
+          business_phone: sanitizePhone(businessInfo.phone),
+          business_address: sanitizeText(businessInfo.address)?.slice(0, 300),
+          business_website: sanitizeText(businessInfo.website)?.slice(0, 200),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', 1)
+
+      if (error) throw error
       toast.success('Business information saved!')
     } catch (error) {
       console.error('Error saving business info:', error)
@@ -83,10 +137,24 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
+
+  // Save Pricing
   const handleSavePricing = async () => {
     setSaving(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const { error } = await supabase
+        .from('admin_settings')
+        .update({
+          price_standard: parseInt(pricing.standard) || 0,
+          price_deep: parseInt(pricing.deep) || 0,
+          price_move_in_out: parseInt(pricing.move_in_out) || 0,
+          price_post_construction: parseInt(pricing.post_construction) || 0,
+          price_office: parseInt(pricing.office) || 0,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', 1)
+
+      if (error) throw error
       toast.success('Pricing updated!')
     } catch (error) {
       console.error('Error saving pricing:', error)
@@ -95,10 +163,20 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
+
+  // Save Business Hours
   const handleSaveHours = async () => {
     setSaving(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const { error } = await supabase
+        .from('admin_settings')
+        .update({
+          business_hours: businessHours,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', 1)
+
+      if (error) throw error
       toast.success('Business hours saved!')
     } catch (error) {
       console.error('Error saving hours:', error)
@@ -107,10 +185,20 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
+
+  // Save Notifications
   const handleSaveNotifications = async () => {
     setSaving(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const { error } = await supabase
+        .from('admin_settings')
+        .update({
+          notifications: notifications,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', 1)
+
+      if (error) throw error
       toast.success('Notification preferences saved!')
     } catch (error) {
       console.error('Error saving notifications:', error)
@@ -119,12 +207,14 @@ export default function SettingsPage() {
       setSaving(false)
     }
   }
+
   const tabs = [
     { id: 'business', label: 'Business Info', icon: Building2 },
     { id: 'pricing', label: 'Pricing', icon: DollarSign },
     { id: 'hours', label: 'Business Hours', icon: Clock },
     { id: 'notifications', label: 'Notifications', icon: Bell },
   ]
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -133,6 +223,7 @@ export default function SettingsPage() {
       </div>
     )
   }
+
   return (
     <div className="min-h-screen">
       <AdminNav pendingCount={0} requestsCount={0} />
@@ -147,6 +238,7 @@ export default function SettingsPage() {
               Manage your business settings and preferences
             </p>
           </div>
+
           {/* Tabs */}
           <div className="mb-8 border-b border-gray-200">
             <div className="flex gap-6 overflow-x-auto">
@@ -169,6 +261,7 @@ export default function SettingsPage() {
               })}
             </div>
           </div>
+
           {/* Business Info Tab */}
           {activeTab === 'business' && (
             <Card>
@@ -185,6 +278,7 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
+
               <div className="space-y-4">
                 <Input
                   label="Business Name"
@@ -228,6 +322,7 @@ export default function SettingsPage() {
               </div>
             </Card>
           )}
+
           {/* Pricing Tab */}
           {activeTab === 'pricing' && (
             <Card>
@@ -244,6 +339,7 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
+
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
@@ -300,6 +396,7 @@ export default function SettingsPage() {
               </div>
             </Card>
           )}
+
           {/* Business Hours Tab */}
           {activeTab === 'hours' && (
             <Card>
@@ -316,6 +413,7 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
+
               <div className="space-y-4">
                 {Object.entries(businessHours).map(([day, hours]) => (
                   <div key={day} className="flex flex-col md:flex-row md:items-center gap-4 pb-4 border-b border-gray-200 last:border-0">
@@ -376,6 +474,7 @@ export default function SettingsPage() {
               </div>
             </Card>
           )}
+
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
             <Card>
@@ -392,6 +491,7 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
+
               <div className="space-y-4">
                 {[
                   { key: 'newRegistration', label: 'New Customer Registration', description: 'Get notified when a new customer signs up' },

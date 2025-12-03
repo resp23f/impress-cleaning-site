@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { format, parseISO } from 'date-fns'
 import styles from '../shared-animations.module.css'
+import { sanitizeText } from '@/lib/sanitize'
 import {
  Calendar,
  Clock,
@@ -397,8 +398,9 @@ const handleCancel = async () => {
   .from('appointments')
   .update({
    status: 'cancelled',
-   cancellation_reason: cancelReason === 'Other' ? cancelReasonOther : cancelReason,
-   cancelled_at: new Date().toISOString(),
+cancellation_reason: cancelReason === 'Other' 
+  ? sanitizeText(cancelReasonOther)?.slice(0, 500) 
+  : cancelReason,   cancelled_at: new Date().toISOString(),
   })  .eq('id', selectedAppointment.id)
   .eq('customer_id', userId)
   

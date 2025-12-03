@@ -1,11 +1,10 @@
 'use client';
 import StaggerItem from '@/components/StaggerItem';
 import Link from 'next/link';
-import { useState } from 'react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
-export default function CommercialPage() {
- return (
+export default function CommercialContent()
+ { return (
   <main className="min-h-screen bg-slate-50">
         {/* ADD BREADCRUMBS HERE */}
       <Breadcrumbs 

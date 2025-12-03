@@ -67,20 +67,18 @@ const faqSchema = {
   }
  ]
 };
-export default function FAQPage() {
- // Add this useEffect hook right at the start of the component
- useEffect(() => {
-  // Hide Tawk widget on FAQ page since users are already reading FAQs
-  if (window.Tawk_API && window.Tawk_API.hideWidget) {
-   window.Tawk_API.hideWidget();
+export default function FAQContent() {
+useEffect(() => {
+  if (typeof window !== 'undefined' && window.Tawk_API?.hideWidget) {
+    window.Tawk_API.hideWidget();
   }
   return () => {
-   // Show it again when leaving the page
-   if (window.Tawk_API && window.Tawk_API.showWidget) {
-    window.Tawk_API.showWidget();
-   }
+    if (typeof window !== 'undefined' && window.Tawk_API?.showWidget) {
+      window.Tawk_API.showWidget();
+    }
   };
- }, []);
+}, []);
+
  return (
   <main className="min-h-screen bg-background">
   {/* ADD THIS 👇 */}

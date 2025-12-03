@@ -1,20 +1,28 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
-
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = 'Impress Cleaning Services <notifications@impressyoucleaning.com>'
 
 export async function POST(request) {
-  try {
-    const { 
-      customerEmail, 
-      customerName, 
-      invoiceNumber,
-      amount,
-      paymentDate,
-      paymentMethod // e.g., "Visa ending in 4242"
-    } = await request.json()
+try {
+    const body = await request.json()
 
+    // Sanitize inputs
+    const customerEmail = sanitizeEmail(body.customerEmail)
+    const customerName = sanitizeText(body.customerName)?.slice(0, 100) || 'Customer'
+    const invoiceNumber = sanitizeText(body.invoiceNumber)?.slice(0, 50) || ''
+    const amount = parseFloat(body.amount) || 0
+    const paymentDate = body.paymentDate
+    const paymentMethod = sanitizeText(body.paymentMethod)?.slice(0, 50) || ''
+
+    // Validate required fields
+    if (!customerEmail || !invoiceNumber) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
     const formattedAmount = parseFloat(amount).toFixed(2)
     const formattedDate = paymentDate 
       ? new Date(paymentDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })

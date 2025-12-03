@@ -1,23 +1,33 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = 'Impress Cleaning Services <notifications@impressyoucleaning.com>'
 
 export async function POST(request) {
   try {
-    const { 
-      customerEmail, 
-      customerName, 
-      serviceType,
-      oldDate,
-      oldTimeStart,
-      oldTimeEnd,
-      newDate, 
-      newTimeStart, 
-      newTimeEnd, 
-      address 
-    } = await request.json()
+    const body = await request.json()
+
+    // Sanitize inputs
+    const customerEmail = sanitizeEmail(body.customerEmail)
+    const customerName = sanitizeText(body.customerName)?.slice(0, 100) || 'Customer'
+    const serviceType = body.serviceType
+    const oldDate = body.oldDate
+    const oldTimeStart = body.oldTimeStart
+    const oldTimeEnd = body.oldTimeEnd
+    const newDate = body.newDate
+    const newTimeStart = body.newTimeStart
+    const newTimeEnd = body.newTimeEnd
+    const address = sanitizeText(body.address)?.slice(0, 300) || 'N/A'
+
+    // Validate required fields
+    if (!customerEmail) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
 
     const serviceLabelMap = {
       standard: 'Standard Cleaning',

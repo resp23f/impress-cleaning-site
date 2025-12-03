@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
 import styles from '../shared-animations.module.css'
+import { sanitizeText } from '@/lib/sanitize'
 
 export default function CustomerFeedbackPage() {
   const router = useRouter()
@@ -41,8 +42,7 @@ export default function CustomerFeedbackPage() {
         .insert({
           customer_id: user.id,
           rating,
-          review_text: feedback,
-        })
+review_text: sanitizeText(feedback)?.slice(0, 2000) || null,        })
 
       if (error) throw error
 

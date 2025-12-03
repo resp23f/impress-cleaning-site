@@ -1,11 +1,14 @@
 import Stripe from 'stripe';
 import crypto from 'crypto';
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize';
+
 // Generate a unique gift certificate code
 function generateGiftCode() {
   const timestamp = Date.now().toString(36).toUpperCase();
   const random = crypto.randomBytes(4).toString('hex').toUpperCase();
   return `GIFT-${timestamp}-${random}`;
 }
+
 export async function POST(request) {
   try {
     // Check if Stripe is configured
@@ -16,10 +19,20 @@ export async function POST(request) {
         { status: 500 }
       );
     }
+
     // Initialize Stripe
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
     const body = await request.json();
-    const { recipientName, recipientEmail, senderName, buyerEmail, message, amount } = body;
+
+    // Sanitize inputs
+    const recipientName = sanitizeText(body.recipientName)?.slice(0, 100);
+    const recipientEmail = sanitizeEmail(body.recipientEmail);
+    const senderName = sanitizeText(body.senderName)?.slice(0, 100);
+    const buyerEmail = sanitizeEmail(body.buyerEmail);
+    const message = sanitizeText(body.message)?.slice(0, 500) || '';
+    const amount = body.amount;
+
     // Validate required fields
     if (!recipientName || !recipientEmail || !senderName || !buyerEmail || !amount) {
       return Response.json(
@@ -27,6 +40,7 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
     // Validate amount
     const amountInCents = Math.round(parseFloat(amount) * 100);
     if (isNaN(amountInCents) || amountInCents < 2500 || amountInCents > 50000) {
@@ -35,26 +49,20 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
     // Generate unique gift certificate code
     const giftCode = generateGiftCode();
+
     // Prepare the site URL
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-    // Store gift certificate data to pass through the checkout
-    const giftData = {
-      code: giftCode,
-      recipientName,
-      recipientEmail,
-      senderName,
-      message: message || '',
-      amount
-    };
-    const encodedGiftData = Buffer.from(JSON.stringify(giftData)).toString('base64');
+
     console.log('Creating Stripe checkout session with:', {
       amount: amountInCents,
       recipientEmail,
       buyerEmail,
       hasSecretKey: !!process.env.STRIPE_SECRET_KEY,
     });
+
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -72,19 +80,24 @@ export async function POST(request) {
         },
       ],
       mode: 'payment',
-      success_url: `${siteUrl}/gift-certificate/success?data=${encodeURIComponent(encodedGiftData)}`,
+      // Pass session ID instead of gift data - verify payment on success page
+      success_url: `${siteUrl}/gift-certificate/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/gift-certificate?canceled=true`,
       customer_email: buyerEmail,
       metadata: {
+        type: 'gift_certificate',
         giftCode,
         recipientName,
         recipientEmail,
         senderName,
         buyerEmail,
+        message,
         amount: amount.toString(),
       },
     });
+
     console.log('Stripe checkout session created:', session.id);
+
     return Response.json({
       checkoutUrl: session.url,
       giftCode,
@@ -97,6 +110,7 @@ export async function POST(request) {
       type: error.type,
       statusCode: error.statusCode,
     });
+
     return Response.json(
       {
         error: error.message || 'Failed to create checkout session',

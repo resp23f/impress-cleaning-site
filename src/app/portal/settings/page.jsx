@@ -168,23 +168,32 @@ const handleProfileSave = async () => {
     )
     setAddressModal({ open: true, editing: addr?.id || null })
   }
-  const saveAddress = async () => {
+const saveAddress = async () => {
     if (!user) return
     try {
+      const sanitizedAddress = {
+        street_address: sanitizeText(addressForm.street_address)?.slice(0, 200),
+        unit: sanitizeText(addressForm.unit)?.slice(0, 50) || null,
+        city: sanitizeText(addressForm.city)?.slice(0, 100),
+        state: sanitizeText(addressForm.state)?.slice(0, 2),
+        zip_code: sanitizeText(addressForm.zip_code)?.slice(0, 10),
+        is_primary: addressForm.is_primary,
+      }
+
       if (addressModal.editing) {
         const { error } = await supabase
           .from('service_addresses')
-          .update(addressForm)
+          .update(sanitizedAddress)
           .eq('id', addressModal.editing)
           .eq('user_id', user.id)
         if (error) throw error
       } else {
         const { error } = await supabase
           .from('service_addresses')
-          .insert({ ...addressForm, user_id: user.id })
+          .insert({ ...sanitizedAddress, user_id: user.id })
         if (error) throw error
       }
-      const { data: addressData } = await supabase
+            const { data: addressData } = await supabase
         .from('service_addresses')
         .select('*')
         .eq('user_id', user.id)

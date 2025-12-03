@@ -19,6 +19,7 @@ import Input from '@/components/ui/Input'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import AdminNav from '@/components/admin/AdminNav'
 import toast from 'react-hot-toast'
+import { sanitizeText } from '@/lib/sanitize'
 export default function ServiceRequestsPage() {
  const [loading, setLoading] = useState(true)
  const [requests, setRequests] = useState([])
@@ -114,9 +115,12 @@ service_addresses!address_id(*)
      scheduled_time_start: scheduledTimeStart,
      scheduled_time_end: scheduledTimeEnd,
      status: 'confirmed',
-     team_members: appointmentData.teamMembers ?
-     appointmentData.teamMembers.split(',').map(m => m.trim()).filter(Boolean) : [],
-     special_instructions: selectedRequest.special_requests,
+team_members: appointmentData.teamMembers
+       ? appointmentData.teamMembers
+           .split(',')
+           .map(m => sanitizeText(m.trim())?.slice(0, 50))
+           .filter(Boolean)
+       : [],     special_instructions: selectedRequest.special_requests,
      is_recurring: selectedRequest.is_recurring,
      recurring_frequency: selectedRequest.recurring_frequency,
     }
@@ -151,19 +155,20 @@ service_addresses!address_id(*)
     setProcessing(false)
    }
   }
-  const handleDecline = async () => {
+const handleDecline = async () => {
    if (!selectedRequest) return
    const reason = prompt('Reason for declining (optional):')
+   const sanitizedReason = reason ? sanitizeText(reason)?.slice(0, 500) : null
    setProcessing(true)
    try {
     const { error } = await supabase
     .from('service_requests')
     .update({
      status: 'declined',
-     admin_notes: reason || null,
+     admin_notes: sanitizedReason,
      reviewed_at: new Date().toISOString(),
     })
-    .eq('id', selectedRequest.id)
+        .eq('id', selectedRequest.id)
     if (error) throw error
     // TODO: Send email to customer
     // await fetch('/api/send-email/request-declined', {

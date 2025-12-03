@@ -1,181 +1,212 @@
-"use client";
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
-import { 
-  CheckCircle2, 
-  Upload, 
-  MapPin, 
+'use client'
+import { useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import {
+  CheckCircle2,
+  Upload,
+  MapPin,
   Clock,
   ChevronLeft,
   Briefcase,
   DollarSign,
   Calendar,
   User,
-  Phone,
-  Mail,
-  Home,
   FileText,
   Send,
   Sparkles,
-  ArrowRight
-} from "lucide-react";
+} from 'lucide-react'
+import useRecaptcha from '@/hooks/useRecaptcha'
 
 // Job data
 const jobsData = {
-  "cleaning-technician": {
-    title: "Cleaning Technician",
-    location: "Georgetown, TX",
-    type: "Full-Time",
-    experience: "No experience required",
-    salary: "$15-18/hour",
-    schedule: "Monday - Friday, 8:00 AM - 5:00 PM",
-    description: "We're looking for dedicated and detail-oriented individuals to join our residential and commercial cleaning team. No prior experience needed — we'll train you completely.",
+  'cleaning-technician': {
+    title: 'Cleaning Technician',
+    location: 'Georgetown, TX',
+    type: 'Full-Time',
+    experience: 'No experience required',
+    salary: '$15-18/hour',
+    schedule: 'Monday - Friday, 8:00 AM - 5:00 PM',
+    description:
+      "We're looking for dedicated and detail-oriented individuals to join our residential and commercial cleaning team. No prior experience needed — we'll train you completely.",
     responsibilities: [
-      "Perform cleaning duties in residential and commercial properties",
-      "Follow established cleaning procedures and checklists",
-      "Maintain cleaning equipment and supplies",
-      "Communicate professionally with clients",
-      "Work effectively as part of a team"
+      'Perform cleaning duties in residential and commercial properties',
+      'Follow established cleaning procedures and checklists',
+      'Maintain cleaning equipment and supplies',
+      'Communicate professionally with clients',
+      'Work effectively as part of a team',
     ],
     benefits: [
-      "Competitive starting pay with regular raises",
-      "Full-time Monday-Friday schedule",
-      "Paid training from day one",
-      "Health insurance after 90 days",
-      "Opportunities for advancement"
-    ]
+      'Competitive starting pay with regular raises',
+      'Full-time Monday-Friday schedule',
+      'Paid training from day one',
+      'Health insurance after 90 days',
+      'Opportunities for advancement',
+    ],
   },
-  "team-supervisor": {
-    title: "Team Supervisor",
-    location: "Georgetown, TX",
-    type: "Full-Time",
-    experience: "2+ years experience",
-    salary: "$20-25/hour",
-    schedule: "Monday - Friday, 7:30 AM - 5:30 PM",
-    description: "Lead and motivate cleaning teams while ensuring service quality and customer satisfaction. Prior supervisory experience required.",
+  'team-supervisor': {
+    title: 'Team Supervisor',
+    location: 'Georgetown, TX',
+    type: 'Full-Time',
+    experience: '2+ years experience',
+    salary: '$20-25/hour',
+    schedule: 'Monday - Friday, 7:30 AM - 5:30 PM',
+    description:
+      'Lead and motivate cleaning teams while ensuring service quality and customer satisfaction. Prior supervisory experience required.',
     responsibilities: [
-      "Supervise and train cleaning team members",
-      "Conduct quality inspections and provide feedback",
-      "Manage schedules and assign daily tasks",
-      "Handle customer inquiries and concerns",
-      "Maintain inventory and supply orders"
+      'Supervise and train cleaning team members',
+      'Conduct quality inspections and provide feedback',
+      'Manage schedules and assign daily tasks',
+      'Handle customer inquiries and concerns',
+      'Maintain inventory and supply orders',
     ],
     benefits: [
-      "Higher pay rate for leadership role",
-      "Full benefits package",
-      "Company vehicle provided",
-      "Performance bonuses",
-      "Career growth opportunities"
-    ]
+      'Higher pay rate for leadership role',
+      'Full benefits package',
+      'Company vehicle provided',
+      'Performance bonuses',
+      'Career growth opportunities',
+    ],
   },
-  "operations-assistant": {
-    title: "Operations Assistant",
-    location: "Georgetown, TX",
-    type: "Full-Time",
-    experience: "1+ year experience",
-    salary: "$18-22/hour",
-    schedule: "Monday - Friday, 8:00 AM - 5:00 PM",
-    description: "Support daily operations, coordinate schedules, and help with client communications. Administrative experience preferred.",
+  'operations-assistant': {
+    title: 'Operations Assistant',
+    location: 'Georgetown, TX',
+    type: 'Full-Time',
+    experience: '1+ year experience',
+    salary: '$18-22/hour',
+    schedule: 'Monday - Friday, 8:00 AM - 5:00 PM',
+    description:
+      'Support daily operations, coordinate schedules, and help with client communications. Administrative experience preferred.',
     responsibilities: [
-      "Coordinate cleaning schedules and assignments",
-      "Answer phones and respond to customer inquiries",
-      "Process invoices and maintain records",
-      "Assist with inventory management",
-      "Support the operations manager with daily tasks"
+      'Coordinate cleaning schedules and assignments',
+      'Answer phones and respond to customer inquiries',
+      'Process invoices and maintain records',
+      'Assist with inventory management',
+      'Support the operations manager with daily tasks',
     ],
     benefits: [
-      "Office-based position",
-      "Full benefits package",
-      "Professional development opportunities",
-      "Supportive team environment",
-      "Room for advancement"
-    ]
-  }
-};
+      'Office-based position',
+      'Full benefits package',
+      'Professional development opportunities',
+      'Supportive team environment',
+      'Room for advancement',
+    ],
+  },
+}
 
-const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID"; // Replace with your Formspree endpoint
+const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID' // TODO: Replace with your Formspree endpoint
 
-export default function JobApplicationPage() {
-  const params = useParams();
-  const router = useRouter();
-  const jobSlug = params.slug;
-  const job = jobsData[jobSlug];
+export default function JobApplicationContent() {
+  const params = useParams()
+  const router = useRouter()
+  const jobSlug = params.slug
+  const job = jobsData[jobSlug]
+  const { executeRecaptcha } = useRecaptcha()
 
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
-  const [fileName, setFileName] = useState("");
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+  const [fileName, setFileName] = useState('')
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    city: "",
-    zipCode: "",
-    startDate: "",
-    employmentType: "",
-    hasTransport: "",
-    authorizedToWork: "",
-    experience: "",
-    whyJoin: "",
-    references: "",
-  });
-  const [selectedDays, setSelectedDays] = useState([]);
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    city: '',
+    zipCode: '',
+    startDate: '',
+    employmentType: '',
+    hasTransport: '',
+    authorizedToWork: '',
+    experience: '',
+    whyJoin: '',
+    references: '',
+  })
+  const [selectedDays, setSelectedDays] = useState([])
 
   // If job doesn't exist, redirect to main careers page
   if (!job) {
-    router.push('/apply');
-    return null;
+    router.push('/apply')
+    return null
   }
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    if (error) setError('')
+  }
 
   const handleDayToggle = (day) => {
-    setSelectedDays(prev => 
-      prev.includes(day) 
-        ? prev.filter(d => d !== day)
-        : [...prev, day]
-    );
-  };
+    setSelectedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    )
+    if (error) setError('')
+  }
 
   async function onSubmit(e) {
-    e.preventDefault();
-    setError("");
-    setSending(true);
+    e.preventDefault()
+    setError('')
 
-    // Honeypot check
-    const hp = e.currentTarget.elements.namedItem("company_hidden")?.value || "";
+    // Honeypot check (obscure field name)
+    const hp = e.currentTarget.elements.namedItem('website_url_field')?.value || ''
     if (hp) {
-      setSending(false);
-      return;
+      return
     }
 
+    // Validate at least one day selected
+    if (selectedDays.length === 0) {
+      setError('Please select at least one day you are available to work.')
+      return
+    }
+
+    setSending(true)
+
     try {
-      const form = new FormData(e.currentTarget);
-      form.append("_subject", `New Application - ${job.title} - Impress Cleaning`);
-      form.append("position_applied", job.title);
-      form.append("available_days", selectedDays.join(", "));
+      // Verify reCAPTCHA
+      const recaptchaToken = await executeRecaptcha('job_application')
+      if (!recaptchaToken) {
+        setError('Security verification failed. Please refresh and try again.')
+        setSending(false)
+        return
+      }
+
+      // Verify with backend
+      const verifyRes = await fetch('/api/verify-recaptcha', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: recaptchaToken, action: 'job_application' }),
+      })
+
+      const verifyData = await verifyRes.json()
+      if (!verifyRes.ok || !verifyData.success) {
+        setError('Security verification failed. Please try again.')
+        setSending(false)
+        return
+      }
+
+      // Submit to Formspree
+      const form = new FormData(e.currentTarget)
+      form.append('_subject', `New Application - ${job.title} - Impress Cleaning`)
+      form.append('position_applied', job.title)
+      form.append('available_days', selectedDays.join(', '))
 
       const res = await fetch(FORM_ENDPOINT, {
-        method: "POST",
+        method: 'POST',
         body: form,
-        headers: { Accept: "application/json" },
-      });
+        headers: { Accept: 'application/json' },
+      })
 
       if (res.ok) {
-        setSent(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setSent(true)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
       } else {
-        setError("We couldn't submit your application. Please try again.");
+        setError("We couldn't submit your application. Please try again.")
       }
     } catch (err) {
-      setError("Connection error. Please try again.");
+      console.error('Application submission error:', err)
+      setError('Connection error. Please try again.')
     } finally {
-      setSending(false);
+      setSending(false)
     }
   }
 
@@ -195,8 +226,9 @@ export default function JobApplicationPage() {
                 Application Submitted!
               </h2>
               <p className="text-lg text-gray-600 mb-8 max-w-md mx-auto">
-                We've received your application for <span className="font-semibold text-[#079447]">{job.title}</span>. 
-                We'll contact you within 1-2 business days.
+                We&apos;ve received your application for{' '}
+                <span className="font-semibold text-[#079447]">{job.title}</span>. We&apos;ll
+                contact you within 1-2 business days.
               </p>
 
               <div className="bg-gray-50 rounded-2xl p-6 mb-8 text-left max-w-sm mx-auto">
@@ -204,7 +236,9 @@ export default function JobApplicationPage() {
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600 text-sm">We'll review your application carefully</span>
+                    <span className="text-gray-600 text-sm">
+                      We&apos;ll review your application carefully
+                    </span>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-[#079447] flex-shrink-0 mt-0.5" />
@@ -218,14 +252,14 @@ export default function JobApplicationPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
-                  href="/apply" 
+                <Link
+                  href="/apply"
                   className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#079447] to-[#08A855] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#079447]/30 transition-all duration-300"
                 >
                   View Other Positions
                 </Link>
-                <Link 
-                  href="/" 
+                <Link
+                  href="/"
                   className="inline-flex items-center justify-center px-6 py-3 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300"
                 >
                   Return Home
@@ -234,36 +268,29 @@ export default function JobApplicationPage() {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
-      
       {/* Header banner */}
       <div className="bg-gradient-to-br from-[#001F3F] via-[#0B2859] to-[#001F3F] text-white py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
-            href="/apply" 
+          <Link
+            href="/apply"
             className="inline-flex items-center text-blue-200 hover:text-white transition-colors mb-6 group"
           >
             <ChevronLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
             Back to All Jobs
           </Link>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            Apply for {job.title}
-          </h1>
-          <p className="text-lg text-blue-100/80 max-w-2xl">
-            {job.description}
-          </p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Apply for {job.title}</h1>
+          <p className="text-lg text-blue-100/80 max-w-2xl">{job.description}</p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
-          
           {/* Sidebar - Job Details */}
           <div className="lg:col-span-1 order-2 lg:order-1">
             <div className="lg:sticky lg:top-24 space-y-6">
@@ -323,7 +350,7 @@ export default function JobApplicationPage() {
               <div className="bg-gradient-to-br from-[#079447] to-[#08A855] rounded-2xl shadow-lg p-6 text-white">
                 <div className="flex items-center gap-2 mb-4">
                   <Sparkles className="w-5 h-5" />
-                  <h3 className="font-bold">What You'll Get</h3>
+                  <h3 className="font-bold">What You&apos;ll Get</h3>
                 </div>
                 <ul className="space-y-3">
                   {job.benefits.map((benefit, index) => (
@@ -344,13 +371,20 @@ export default function JobApplicationPage() {
               <div className="border-b border-gray-100 px-6 lg:px-8 py-6">
                 <h2 className="text-2xl font-bold text-gray-900">Application Form</h2>
                 <p className="text-gray-600 mt-1">
-                  Fill out the form below. We'll get back to you within 1-2 business days.
+                  Fill out the form below. We&apos;ll get back to you within 1-2 business days.
                 </p>
               </div>
 
               <form onSubmit={onSubmit} className="p-6 lg:p-8 space-y-8">
-                {/* Honeypot */}
-                <input type="text" name="company_hidden" className="hidden" tabIndex={-1} autoComplete="off" />
+                {/* Honeypot - obscure name that bots won't recognize */}
+                <input
+                  type="text"
+                  name="website_url_field"
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
 
                 {/* Personal Information */}
                 <div>
@@ -369,6 +403,7 @@ export default function JobApplicationPage() {
                         type="text"
                         name="firstName"
                         required
+                        maxLength={50}
                         value={formData.firstName}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
@@ -383,6 +418,7 @@ export default function JobApplicationPage() {
                         type="text"
                         name="lastName"
                         required
+                        maxLength={50}
                         value={formData.lastName}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
@@ -397,6 +433,7 @@ export default function JobApplicationPage() {
                         type="tel"
                         name="phone"
                         required
+                        maxLength={20}
                         value={formData.phone}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
@@ -411,6 +448,7 @@ export default function JobApplicationPage() {
                         type="email"
                         name="email"
                         required
+                        maxLength={254}
                         value={formData.email}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
@@ -425,6 +463,7 @@ export default function JobApplicationPage() {
                         type="text"
                         name="city"
                         required
+                        maxLength={100}
                         value={formData.city}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
@@ -440,6 +479,7 @@ export default function JobApplicationPage() {
                         name="zipCode"
                         required
                         pattern="[0-9]{5}"
+                        maxLength={5}
                         value={formData.zipCode}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
@@ -457,27 +497,32 @@ export default function JobApplicationPage() {
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">Availability</h3>
                   </div>
-                  
+
                   <div className="mb-6">
                     <p className="text-sm font-medium text-gray-700 mb-3">
                       Days Available <span className="text-red-500">*</span>
                     </p>
                     <div className="flex flex-wrap gap-3">
-                      {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => (
-                        <button
-                          key={day}
-                          type="button"
-                          onClick={() => handleDayToggle(day)}
-                          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                            selectedDays.includes(day)
-                              ? 'bg-[#079447] text-white shadow-md shadow-[#079447]/20'
-                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                          }`}
-                        >
-                          {day}
-                        </button>
-                      ))}
+                      {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(
+                        (day) => (
+                          <button
+                            key={day}
+                            type="button"
+                            onClick={() => handleDayToggle(day)}
+                            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                              selectedDays.includes(day)
+                                ? 'bg-[#079447] text-white shadow-md shadow-[#079447]/20'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                          >
+                            {day}
+                          </button>
+                        )
+                      )}
                     </div>
+                    {selectedDays.length === 0 && (
+                      <p className="text-xs text-gray-500 mt-2">Select at least one day</p>
+                    )}
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-5">
@@ -485,8 +530,8 @@ export default function JobApplicationPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         When can you start? <span className="text-red-500">*</span>
                       </label>
-                      <select 
-                        name="startDate" 
+                      <select
+                        name="startDate"
                         required
                         value={formData.startDate}
                         onChange={handleInputChange}
@@ -503,8 +548,8 @@ export default function JobApplicationPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Desired employment type <span className="text-red-500">*</span>
                       </label>
-                      <select 
-                        name="employmentType" 
+                      <select
+                        name="employmentType"
                         required
                         value={formData.employmentType}
                         onChange={handleInputChange}
@@ -531,8 +576,8 @@ export default function JobApplicationPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Do you have reliable transportation? <span className="text-red-500">*</span>
                       </label>
-                      <select 
-                        name="hasTransport" 
+                      <select
+                        name="hasTransport"
                         required
                         value={formData.hasTransport}
                         onChange={handleInputChange}
@@ -547,8 +592,8 @@ export default function JobApplicationPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Authorized to work in the US? <span className="text-red-500">*</span>
                       </label>
-                      <select 
-                        name="authorizedToWork" 
+                      <select
+                        name="authorizedToWork"
                         required
                         value={formData.authorizedToWork}
                         onChange={handleInputChange}
@@ -578,6 +623,7 @@ export default function JobApplicationPage() {
                       <textarea
                         name="experience"
                         rows={4}
+                        maxLength={2000}
                         value={formData.experience}
                         onChange={handleInputChange}
                         placeholder="Describe any experience in cleaning, customer service, or related work..."
@@ -591,6 +637,7 @@ export default function JobApplicationPage() {
                       <textarea
                         name="whyJoin"
                         rows={3}
+                        maxLength={1000}
                         value={formData.whyJoin}
                         onChange={handleInputChange}
                         placeholder="Tell us what motivates you to join our team..."
@@ -604,6 +651,7 @@ export default function JobApplicationPage() {
                       <textarea
                         name="references"
                         rows={3}
+                        maxLength={1000}
                         value={formData.references}
                         onChange={handleInputChange}
                         placeholder="Name, relationship, and phone number for 2-3 references..."
@@ -624,38 +672,39 @@ export default function JobApplicationPage() {
                     </div>
                     <div>
                       <span className="text-gray-700 font-medium">
-                        {fileName || "Choose a file"}
+                        {fileName || 'Choose a file'}
                       </span>
                       <p className="text-xs text-gray-500 mt-0.5">PDF or Word, max 10MB</p>
                     </div>
-                    <input 
-                      name="resume" 
-                      type="file" 
+                    <input
+                      name="resume"
+                      type="file"
                       accept=".pdf,.doc,.docx"
-                      onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
-                      className="hidden" 
+                      onChange={(e) => setFileName(e.target.files?.[0]?.name || '')}
+                      className="hidden"
                     />
                   </label>
                 </div>
 
                 {/* Consent */}
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <input 
-                    id="consent" 
-                    name="consent" 
-                    type="checkbox" 
+                  <input
+                    id="consent"
+                    name="consent"
+                    type="checkbox"
                     required
                     className="mt-1 w-5 h-5 text-[#079447] border-gray-300 rounded focus:ring-[#079447]"
                   />
                   <label htmlFor="consent" className="text-sm text-gray-600">
-                    I agree to be contacted by Impress Cleaning via phone or email about my application, 
-                    and I authorize verification of my employment background. <span className="text-red-500">*</span>
+                    I agree to be contacted by Impress Cleaning via phone or email about my
+                    application, and I authorize verification of my employment background.{' '}
+                    <span className="text-red-500">*</span>
                   </label>
                 </div>
 
                 {/* Error message */}
                 {error && (
-                  <div className="p-4 bg-red-50 border border-red-100 rounded-xl">
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
                     <p className="text-red-700 text-sm">{error}</p>
                   </div>
                 )}
@@ -669,9 +718,25 @@ export default function JobApplicationPage() {
                   >
                     {sending ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Submitting...
                       </>
@@ -682,19 +747,41 @@ export default function JobApplicationPage() {
                       </>
                     )}
                   </button>
-                  <Link 
+                  <Link
                     href="/apply"
                     className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
                   >
                     Cancel
                   </Link>
                 </div>
+
+                {/* reCAPTCHA notice */}
+                <p className="text-xs text-gray-400 text-center">
+                  This site is protected by reCAPTCHA and the Google{' '}
+                  <a
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Privacy Policy
+                  </a>{' '}
+                  and{' '}
+                  <a
+                    href="https://policies.google.com/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Terms of Service
+                  </a>{' '}
+                  apply.
+                </p>
               </form>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-  );
+  )
 }

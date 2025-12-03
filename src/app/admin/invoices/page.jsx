@@ -242,7 +242,7 @@ export default function InvoicesPage() {
    }
   }
   
-  const handleCreateCustomer = async () => {
+const handleCreateCustomer = async () => {
    if (!newCustomer.full_name && !newCustomer.email) {
     toast.error('Name or email is required')
     return
@@ -250,12 +250,17 @@ export default function InvoicesPage() {
    
    setProcessing(true)
    try {
+    const sanitizedCustomer = {
+     full_name: sanitizeText(newCustomer.full_name)?.slice(0, 100),
+     email: newCustomer.email?.trim().toLowerCase().slice(0, 254),
+     phone: newCustomer.phone?.replace(/[^\d+\-() ]/g, '').slice(0, 20),
+    }
+    
     const res = await fetch('/api/admin/customers/create', {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
-     body: JSON.stringify(newCustomer),
-    })
-    
+     body: JSON.stringify(sanitizedCustomer),
+    })    
     if (!res.ok) {
      const data = await res.json().catch(() => ({}))
      throw new Error(data.error || 'Failed to create customer')

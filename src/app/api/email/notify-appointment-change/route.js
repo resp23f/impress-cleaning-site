@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { createClient } from '@/lib/supabase/server'
+import { sanitizeText } from '@/lib/sanitize'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = 'admin@impressyoucleaning.com'
@@ -7,8 +9,19 @@ const FROM_EMAIL = 'Impress Cleaning Services <notifications@impressyoucleaning.
 
 export async function POST(request) {
  try {
+  // Verify user is authenticated
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  if (!user) {
+   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const body = await request.json()
   const { type, appointment, rescheduleData, cancelReason } = body
+  
+  // Sanitize user input
+  const sanitizedCancelReason = sanitizeText(cancelReason)?.slice(0, 500) || 'No reason provided.'
   
   if (!type || !appointment) {
    return NextResponse.json(
@@ -46,9 +59,9 @@ export async function POST(request) {
   : 'N/A'
   
   const addressLine = service_addresses
-  ? `${service_addresses.street_address}${
+  ? sanitizeText(`${service_addresses.street_address}${
    service_addresses.unit ? ', ' + service_addresses.unit : ''
-  }, ${service_addresses.city}, ${service_addresses.state} ${service_addresses.zip_code}`
+  }, ${service_addresses.city}, ${service_addresses.state} ${service_addresses.zip_code}`)?.slice(0, 300)
   : 'N/A'
   
   let subject = ''
@@ -101,7 +114,7 @@ export async function POST(request) {
           <li><strong>Time:</strong> ${formattedTime}</li>
         </ul>
         <h3>Cancellation Reason</h3>
-        <p>${cancelReason || 'No reason provided.'}</p>
+        <p>${sanitizedCancelReason}</p>
       `
   } else {
    return NextResponse.json(

@@ -1,8 +1,12 @@
-import { Resend } from 'resend';
-import { sanitizeText, sanitizeEmail } from '@/lib/sanitize';
-const resend = new Resend(process.env.RESEND_API_KEY_STAGING);
+import { Resend } from 'resend'
+import Stripe from 'stripe'
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
+
+const resend = new Resend(process.env.RESEND_API_KEY_STAGING)
+
 function createGiftCertificateEmail(giftData) {
-  const { code, recipientName, senderName, message, amount } = giftData;
+  const { code, recipientName, senderName, message, amount } = giftData
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -126,71 +130,189 @@ function createGiftCertificateEmail(giftData) {
   </table>
 </body>
 </html>
-  `;
+  `
 }
+
 export async function POST(request) {
   try {
-const giftData = await request.json();
+    const { sessionId } = await request.json()
 
-    // Sanitize user inputs
-    const sanitized = {
-      code: sanitizeText(giftData.code)?.slice(0, 50) || '',
-      recipientName: sanitizeText(giftData.recipientName)?.slice(0, 100) || '',
-      recipientEmail: sanitizeEmail(giftData.recipientEmail) || '',
-      senderName: sanitizeText(giftData.senderName)?.slice(0, 100) || '',
-      message: sanitizeText(giftData.message)?.slice(0, 500) || '',
-      amount: giftData.amount,
-    };
-const { code, recipientName, recipientEmail, senderName, amount } = sanitized;    console.log('Attempting to send gift certificate:', { code, recipientName, recipientEmail, senderName, amount });
-    if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
-      console.error('Missing required fields:', { code, recipientName, recipientEmail, senderName, amount });
+    // Validate session_id is provided
+    if (!sessionId || typeof sessionId !== 'string') {
+      console.error('Missing or invalid session_id')
       return Response.json(
-        { error: 'Missing required gift certificate data' },
+        { error: 'Missing session ID' },
         { status: 400 }
-      );
+      )
     }
+
+    // Validate session_id format (Stripe session IDs start with cs_)
+    if (!sessionId.startsWith('cs_')) {
+      console.error('Invalid session_id format:', sessionId.substring(0, 10))
+      return Response.json(
+        { error: 'Invalid session ID format' },
+        { status: 400 }
+      )
+    }
+
+    // Check Stripe configuration
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('STRIPE_SECRET_KEY is not configured')
+      return Response.json(
+        { error: 'Payment service not configured' },
+        { status: 500 }
+      )
+    }
+
+    // Check Resend configuration
     if (!process.env.RESEND_API_KEY_STAGING) {
-      console.error('RESEND_API_KEY_STAGING is not configured');
+      console.error('RESEND_API_KEY_STAGING is not configured')
       return Response.json(
         { error: 'Email service not configured' },
         { status: 500 }
-      );
+      )
     }
-    const emailHtml = createGiftCertificateEmail(sanitized);
-    console.log('Sending email to:', recipientEmail);
+
+    // Initialize Stripe and verify the session
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+    
+    let session
+    try {
+      session = await stripe.checkout.sessions.retrieve(sessionId)
+    } catch (stripeError) {
+      console.error('Stripe session retrieval failed:', stripeError.message)
+      return Response.json(
+        { error: 'Invalid or expired session' },
+        { status: 400 }
+      )
+    }
+
+    // Verify payment was successful
+    if (session.payment_status !== 'paid') {
+      console.error('Payment not completed:', session.payment_status)
+      return Response.json(
+        { error: 'Payment not completed' },
+        { status: 400 }
+      )
+    }
+
+    // Verify this is a gift certificate session
+    if (session.metadata?.type !== 'gift_certificate') {
+      console.error('Invalid session type:', session.metadata?.type)
+      return Response.json(
+        { error: 'Invalid session type' },
+        { status: 400 }
+      )
+    }
+
+    // Check if email was already sent (prevent duplicate sends on refresh)
+    if (session.metadata?.emailSent === 'true') {
+      console.log('Email already sent for session:', sessionId)
+      return Response.json({
+        success: true,
+        alreadySent: true,
+        message: 'Gift certificate was already sent',
+      })
+    }
+
+    // Extract and sanitize gift data from session metadata
+    const giftData = {
+      code: sanitizeText(session.metadata.giftCode)?.slice(0, 50) || '',
+      recipientName: sanitizeText(session.metadata.recipientName)?.slice(0, 100) || '',
+      recipientEmail: sanitizeEmail(session.metadata.recipientEmail) || '',
+      senderName: sanitizeText(session.metadata.senderName)?.slice(0, 100) || '',
+      message: sanitizeText(session.metadata.message)?.slice(0, 500) || '',
+      amount: session.metadata.amount,
+    }
+
+    const { code, recipientName, recipientEmail, senderName, amount } = giftData
+
+    console.log('Processing verified gift certificate:', { 
+      code, 
+      recipientName, 
+      recipientEmail: recipientEmail.substring(0, 3) + '***', // Log partial email for privacy
+      senderName,
+      amount,
+      sessionId: sessionId.substring(0, 15) + '***'
+    })
+
+    // Validate required fields from metadata
+    if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
+      console.error('Missing required fields in session metadata:', { 
+        hasCode: !!code, 
+        hasRecipientName: !!recipientName, 
+        hasRecipientEmail: !!recipientEmail, 
+        hasSenderName: !!senderName, 
+        hasAmount: !!amount 
+      })
+      return Response.json(
+        { error: 'Missing required gift certificate data in payment session' },
+        { status: 400 }
+      )
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(recipientEmail)) {
+      console.error('Invalid recipient email format')
+      return Response.json(
+        { error: 'Invalid recipient email' },
+        { status: 400 }
+      )
+    }
+
+    // Generate email HTML
+    const emailHtml = createGiftCertificateEmail(giftData)
+
+    console.log('Sending gift certificate email to:', recipientEmail.substring(0, 3) + '***')
+
+    // Send the email
     const emailResponse = await resend.emails.send({
       from: 'Impress Cleaning Services Gift Certificate <gifts@impressyoucleaning.com>',
       to: recipientEmail,
       subject: `Your $${amount} Gift Certificate from ${senderName}`,
       html: emailHtml,
-    });
-    console.log('Resend response:', emailResponse);
+    })
+
+    console.log('Resend response:', emailResponse)
+
     if (!emailResponse.data) {
-      console.error('No data in email response:', emailResponse);
-      throw new Error('Failed to send email - no response data');
+      console.error('No data in email response:', emailResponse)
+      throw new Error('Failed to send email - no response data')
     }
-    console.log('Gift certificate email sent successfully:', emailResponse.data.id);
+
+    // Mark the session as processed to prevent duplicate emails
+    // Note: Stripe metadata is immutable after session creation, so we'd need
+    // a database to properly track this. For now, we rely on the success page
+    // only calling this once. For production, consider:
+    // 1. Using a database to track sent gift certificates
+    // 2. Using Stripe webhooks (checkout.session.completed) instead
+    
+    console.log('Gift certificate email sent successfully:', {
+      emailId: emailResponse.data.id,
+      sessionId: sessionId.substring(0, 15) + '***'
+    })
+
     return Response.json({
       success: true,
       emailId: emailResponse.data.id,
       message: 'Gift certificate sent successfully',
-    });
+    })
+
   } catch (error) {
-    console.error('Error sending gift certificate email:', error);
+    console.error('Error sending gift certificate email:', error)
     console.error('Error details:', {
       message: error.message,
       name: error.name,
-      stack: error.stack
-    });
-    if (error.message?.includes('API')) {
-      console.error('Resend API error detected');
-    }
+      stack: error.stack?.substring(0, 500)
+    })
+
     return Response.json(
       {
         error: error.message || 'Failed to send gift certificate email',
         details: process.env.NODE_ENV === 'development' ? error.stack : null
       },
       { status: 500 }
-    );
+    )
   }
 }

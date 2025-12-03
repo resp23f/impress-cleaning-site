@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Header() {
  return <SiteHeader />;
@@ -20,10 +20,6 @@ function SiteHeader() {
  const desktopButtonRef = useRef(null);
  
  const pathname = usePathname() || "/";
- const active = useMemo(
-  () => (href) => (pathname === href ? "text-green font-semibold" : ""),
-  [pathname]
- );
  
  const lastScrollY = useRef(0);
  const scrollState = useRef({ isScrolled: false, isHidden: false });

@@ -3134,15 +3134,18 @@ export default function CleaningTipsPage() {
      </div>
     );
    })}
-   </div>
-   <button className="mt-10 w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-base font-semibold">
-   <Printer className="w-5 h-5" />
-   Print Schedule
+</div>
+   <button 
+     onClick={() => window.print()}
+     className="mt-10 w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-base font-semibold"
+   >
+     <Printer className="w-5 h-5" />
+     Print Schedule
    </button>
    </div>
   )}
   </div>
-  {/* Shopping List Modal */}
+    {/* Shopping List Modal */}
   <AnimatePresence>
   {showShoppingList && shoppingList.length > 0 && (
    <motion.div

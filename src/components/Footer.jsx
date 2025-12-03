@@ -32,14 +32,14 @@ export default function Footer() {
   className="w-auto h-20 md:h-24"
   />
   </Link>
-  <p className="font-playfair italic text-sm text-slate-600 text-center md:text-left">
+<p className="font-manrope italic text-sm text-slate-600 text-center md:text-left">
   Impress every time.<sup>TM</sup>
   </p>
   </div>
   
   {/* Services Column */}
   <div className="text-center md:text-left">
-  <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-500 uppercase tracking-widest">
+<h4 className="text-xs font-manrope font-semibold mb-4 text-slate-500 uppercase tracking-widest">
   Services
   </h4>
   <ul className="font-manrope space-y-2.5 text-sm text-slate-700">
@@ -64,7 +64,7 @@ export default function Footer() {
   
   {/* Company Column */}
   <div className="text-center md:text-left">
-  <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-500 uppercase tracking-widest">
+<h4 className="text-xs font-manrope font-semibold mb-4 text-slate-500 uppercase tracking-widest">
   Company
   </h4>
   <ul className="font-manrope space-y-2.5 text-sm text-slate-700">
@@ -105,7 +105,7 @@ export default function Footer() {
   
   {/* Resources Column */}
   <div className="text-center md:text-left">
-  <h4 className="text-xs font-oswald font-semibold mb-4 text-slate-500 uppercase tracking-widest">
+<h4 className="text-xs font-manrope font-semibold mb-4 text-slate-500 uppercase tracking-widest">
   Resources
   </h4>
   <ul className="font-manrope space-y-2.5 text-sm text-slate-700">

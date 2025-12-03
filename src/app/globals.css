@@ -183,3 +183,23 @@ select.no-native::-ms-expand {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
+/* Constrain Tawk.to chat widget on mobile */
+@media (max-width: 768px) {
+  /* Target the Tawk.to iframe container */
+  iframe[title="chat widget"],
+  iframe[src*="tawk.to"] {
+    max-height: 65vh !important;
+    height: 65vh !important;
+    bottom: 70px !important;
+    border-radius: 16px 16px 0 0 !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Target Tawk container div */
+  .widget-visible iframe,
+  div[style*="z-index: 1000000"] iframe {
+    max-height: 65vh !important;
+    height: 65vh !important;
+    bottom: 70px !important;
+  }
+}
