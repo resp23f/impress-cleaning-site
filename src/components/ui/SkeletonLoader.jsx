@@ -67,47 +67,24 @@ export function AppointmentCardSkeleton() {
 
 export function DashboardSkeleton() {
   return (
-    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc" duration={2.5}>
+    <SkeletonTheme baseColor="#e5e7eb" highlightColor="#f1f5f9" duration={6}>
       <div className="space-y-8">
-        {/* Header area */}
-        <div className="space-y-3 max-w-xl">
-          <Skeleton height={14} width={90} />      {/* "Dashboard" label */}
-          <Skeleton height={36} width={260} />     {/* Greeting */}
-          <Skeleton height={18} width={200} />     {/* Subtext */}
+        {/* Header bar */}
+        <div className="space-y-3 max-w-md">
+          <Skeleton height={14} width={120} />   {/* small label */}
+          <Skeleton height={32} width={260} />   {/* greeting */}
         </div>
 
-        {/* Row 1: hero (2 cols) + balance (1 col) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="glass-skeleton-tile lg:col-span-2 h-[240px]">
-            <Skeleton />
-          </div>
-          <div className="glass-skeleton-tile h-[240px]">
-            <Skeleton />
-          </div>
+        {/* Row of tiles – similar to Supabase screenshot */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          <Skeleton height={220} />
+          <Skeleton height={220} />
+          <Skeleton height={220} />
+          <Skeleton height={220} />
         </div>
 
-        {/* Row 2: invoices + recent services */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="glass-skeleton-tile h-[220px]">
-            <Skeleton />
-          </div>
-          <div className="glass-skeleton-tile h-[220px]">
-            <Skeleton />
-          </div>
-        </div>
-
-        {/* Row 3: address, account, feedback */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="glass-skeleton-tile h-[190px]">
-            <Skeleton />
-          </div>
-          <div className="glass-skeleton-tile h-[190px]">
-            <Skeleton />
-          </div>
-          <div className="glass-skeleton-tile h-[190px]">
-            <Skeleton />
-          </div>
-        </div>
+        {/* Lower wide tile */}
+        <Skeleton height={220} />
       </div>
     </SkeletonTheme>
   )
