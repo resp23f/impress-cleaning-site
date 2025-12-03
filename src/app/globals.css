@@ -209,21 +209,21 @@ select.no-native::-ms-expand {
    Overrides react-loading-skeleton
    ================================ */
 
-/* Supabase-style rectangular shimmer for react-loading-skeleton */
 .react-loading-skeleton {
-  border-radius: 0.75rem;
-  background-color: #e5e7eb; /* border-default-ish */
+  --base-color: #e5e7eb !important;
+  --highlight-color: #e5e7eb !important;
+  background-color: #e5e7eb !important;
   background-image: linear-gradient(
-    to right,
-    #e5e7eb 4%,   /* border-default */
-    #f1f5f9 25%,  /* background-surface-200 */
+    90deg,
+    #e5e7eb 4%,
+    #f3f4f6 25%,
     #e5e7eb 36%
-  );
-  background-size: 1000px 100%;
-  animation: supa-shimmer 6s linear infinite;
+  ) !important;
+  background-size: 1000px 100% !important;
+  animation: supa-shimmer 2s linear infinite !important;
+  border-radius: 0.5rem;
 }
 
-/* long, slow sweep like your Supabase recording */
 @keyframes supa-shimmer {
   0% {
     background-position: -1000px 0;
