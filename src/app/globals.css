@@ -212,8 +212,8 @@ select.no-native::-ms-expand {
 .react-loading-skeleton {
   position: relative;
   overflow: hidden;
-  border-radius: 0.75rem; /* round corners like Supabase */
-  background: hsl(215 16% 90%); /* similar to border-default */
+  border-radius: 0.75rem;
+  background: hsl(215 16% 90%);
 }
 
 .react-loading-skeleton::after {
@@ -221,21 +221,20 @@ select.no-native::-ms-expand {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-      to right,
-      hsl(215 16% 90%) 4%,
-      hsl(215 28% 96%) 25%,
-      hsl(215 16% 90%) 36%
+    to right,
+    hsl(215 16% 90%) 4%,
+    hsl(215 28% 96%) 25%,
+    hsl(215 16% 90%) 36%
   );
-  background-size: 1000px 100%;
-  animation: shimmer-sb 2s linear infinite;
+  background-size: 3000px 100%;
+animation: shimmer-sb 6s ease-in-out infinite;
 }
 
-/* buttery motion */
 @keyframes shimmer-sb {
   0% {
-    transform: translateX(-1000px);
+    transform: translateX(-3000px);
   }
   100% {
-    transform: translateX(1000px);
+    transform: translateX(3000px);
   }
 }
