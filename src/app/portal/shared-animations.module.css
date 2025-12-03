@@ -186,26 +186,20 @@
 @keyframes gentleReveal {
   0% {
     opacity: 0;
-    filter: blur(12px);
-    transform: translateY(8px);
   }
   100% {
     opacity: 1;
-    filter: blur(0px);
-    transform: translateY(0);
   }
 }
 
 @keyframes gentleCardReveal {
   0% {
     opacity: 0;
-    filter: blur(6px);
-    transform: translateY(12px);
+    transform: scale(0.98);
   }
   100% {
     opacity: 1;
-    filter: blur(0px);
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
