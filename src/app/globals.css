@@ -1,3 +1,4 @@
+@import 'react-loading-skeleton/dist/skeleton.css';
 @import "tailwindcss";
 :root {
   color-scheme: light;
