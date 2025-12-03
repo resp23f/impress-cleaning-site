@@ -30,7 +30,7 @@ export default async function PortalLayout({ children }) {
 <style>{`html, body { background: #f9fafb; }`}</style>  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
   <PortalNav userName={firstName} />
   {/* Main Content */}
-  <div className="lg:pl-64">
+<div className="lg:pl-72">
   <main className="pt-12 lg:pt-0 pb-20 lg:pb-0">
   {children}
   </main>

@@ -194,12 +194,11 @@ function LoginPageContent() {
               </div>
 
               {/* Google Sign In */}
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100/80 hover:border-slate-300 transition-all duration-200 font-medium text-slate-600 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24">
+<button
+  onClick={handleGoogleSignIn}
+  disabled={loading}
+  className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow transition-colors duration-200 text-sm font-medium text-slate-700 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+>                <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
@@ -254,8 +253,7 @@ function LoginPageContent() {
                   fullWidth
                   size="lg"
                   loading={loading}
-                  className="!py-3.5 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
-                >
+className="!py-3.5 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 transition-colors duration-200">
                   Sign In
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -275,7 +273,7 @@ function LoginPageContent() {
 
             {/* Footer */}
             <p className="text-center text-xs text-slate-300 mt-10">
-              © {new Date().getFullYear()} Impress Cleaning Services. All rights reserved.
+              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
             </p>
           </div>
         </div>

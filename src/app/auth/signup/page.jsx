@@ -200,12 +200,11 @@ export default function SignUpPage() {
               </div>
               
               {/* Google Sign In */}
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={googleLoading || loading}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100/80 hover:border-slate-300 transition-all duration-200 font-medium text-slate-600 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {googleLoading ? (
+<button
+  onClick={handleGoogleSignIn}
+  disabled={loading}
+  className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow transition-colors duration-200 text-sm font-medium text-slate-700 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+>                {googleLoading ? (
                   <RefreshCw className="w-5 h-5 animate-spin text-slate-400" />
                 ) : (
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -272,7 +271,7 @@ export default function SignUpPage() {
                 <button
                   type="submit"
                   disabled={loading || googleLoading}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>
@@ -314,7 +313,7 @@ export default function SignUpPage() {
             
             {/* Footer */}
             <p className="text-center text-xs text-slate-300 mt-10">
-              © {new Date().getFullYear()} Impress Cleaning Services. All rights reserved.
+              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
             </p>
           </div>
         </div>

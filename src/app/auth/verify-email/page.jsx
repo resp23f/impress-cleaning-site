@@ -102,7 +102,7 @@ function VerifyEmailPageContent() {
 
             <button
               onClick={() => router.push('/auth/signup')}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
             >
               Back to Sign Up
               <ArrowRight className="w-4 h-4" />
@@ -110,7 +110,7 @@ function VerifyEmailPageContent() {
 
             {/* Footer */}
             <p className="text-center text-xs text-slate-300 mt-10">
-              © {new Date().getFullYear()} Impress Cleaning Services
+              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
             </p>
           </div>
         </div>

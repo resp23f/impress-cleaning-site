@@ -487,7 +487,7 @@ export default function PayInvoicePage() {
                       size="lg"
                       onClick={handleStripePayment}
                       loading={processing}
-                      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
+                      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
                     >
                       <CreditCard className="w-5 h-5" />
                       Pay {formatMoney(invoice?.total ?? invoice?.amount)}
@@ -562,7 +562,7 @@ export default function PayInvoicePage() {
                       fullWidth
                       size="lg"
                       onClick={() => setShowZelleModal(true)}
-                      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
+                      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
                     >
                       <CheckCircle className="w-5 h-5" />
                       I've Sent the Payment

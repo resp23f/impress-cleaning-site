@@ -396,7 +396,7 @@ body: JSON.stringify({
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -414,7 +414,7 @@ body: JSON.stringify({
 
           {/* Footer */}
           <p className="text-center text-xs text-slate-300 mt-8">
-            © {new Date().getFullYear()} Impress Cleaning Services
+            © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
           </p>
         </div>
       </div>
