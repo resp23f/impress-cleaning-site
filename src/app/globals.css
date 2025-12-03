@@ -203,3 +203,39 @@ select.no-native::-ms-expand {
     bottom: 70px !important;
   }
 }
+
+/* ================================
+   SUPABASE-STYLE PREMIUM SHIMMER
+   Overrides react-loading-skeleton
+   ================================ */
+
+.react-loading-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem; /* round corners like Supabase */
+  background: hsl(215 16% 90%); /* similar to border-default */
+}
+
+.react-loading-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      to right,
+      hsl(215 16% 90%) 4%,
+      hsl(215 28% 96%) 25%,
+      hsl(215 16% 90%) 36%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer-sb 2s linear infinite;
+}
+
+/* buttery motion */
+@keyframes shimmer-sb {
+  0% {
+    transform: translateX(-1000px);
+  }
+  100% {
+    transform: translateX(1000px);
+  }
+}
