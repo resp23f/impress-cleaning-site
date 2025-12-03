@@ -71,33 +71,42 @@ export function DashboardSkeleton() {
       <div className="space-y-8">
         {/* Header area */}
         <div className="space-y-3 max-w-xl">
-          {/* small "Dashboard" label */}
-          <Skeleton height={14} width={90} />
-          {/* big greeting heading */}
-          <Skeleton height={36} width={260} />
-          {/* subheading */}
-          <Skeleton height={18} width={200} />
+          <Skeleton height={14} width={90} />      {/* "Dashboard" label */}
+          <Skeleton height={36} width={260} />     {/* Greeting */}
+          <Skeleton height={18} width={200} />     {/* Subtext */}
         </div>
 
-        {/* Row 1: Next appointment (2 cols) + balance (1 col) */}
+        {/* Row 1: hero (2 cols) + balance (1 col) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Large hero-style tile for next appointment */}
-          <Skeleton className="w-full lg:col-span-2" height={240} />
-          {/* Side tile for balance card */}
-          <Skeleton className="w-full" height={240} />
+          <div className="glass-skeleton-tile lg:col-span-2 h-[240px]">
+            <Skeleton />
+          </div>
+          <div className="glass-skeleton-tile h-[240px]">
+            <Skeleton />
+          </div>
         </div>
 
-        {/* Row 2: Invoices & Recent services */}
+        {/* Row 2: invoices + recent services */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Skeleton className="w-full" height={220} />
-          <Skeleton className="w-full" height={220} />
+          <div className="glass-skeleton-tile h-[220px]">
+            <Skeleton />
+          </div>
+          <div className="glass-skeleton-tile h-[220px]">
+            <Skeleton />
+          </div>
         </div>
 
-        {/* Row 3: Service address, account summary, feedback */}
+        {/* Row 3: address, account, feedback */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Skeleton className="w-full" height={190} />
-          <Skeleton className="w-full" height={190} />
-          <Skeleton className="w-full" height={190} />
+          <div className="glass-skeleton-tile h-[190px]">
+            <Skeleton />
+          </div>
+          <div className="glass-skeleton-tile h-[190px]">
+            <Skeleton />
+          </div>
+          <div className="glass-skeleton-tile h-[190px]">
+            <Skeleton />
+          </div>
         </div>
       </div>
     </SkeletonTheme>
