@@ -16,8 +16,7 @@ import {
   Send,
   Sparkles,
 } from 'lucide-react'
-import useRecaptcha from '@/hooks/useRecaptcha'
-
+import { useRecaptcha } from '@/hooks/useRecaptcha'
 // Job data
 const jobsData = {
   'cleaning-technician': {
