@@ -50,7 +50,6 @@ export default function SettingsPage() {
   is_primary: false,
  })
  const [processingCard, setProcessingCard] = useState(false)
- const [cardElementMounted, setCardElementMounted] = useState(false)
  const cardElementRef = useRef(null)
  const stripeCardRef = useRef(null)
  const [pref, setPref] = useState('both')
@@ -84,29 +83,39 @@ export default function SettingsPage() {
  }, [router, supabase])
  
  useEffect(() => {
-  if (loading) return // Don't try to mount while skeleton is showing
+  if (loading) return
   
   const mountCardElement = async () => {
-   if (!cardElementRef.current || cardElementMounted) return
+   if (!cardElementRef.current || stripeCardRef.current) return
    const stripe = await stripePromise
    if (!stripe) return
    const elements = stripe.elements()
-   const card = elements.create('card')
+   const card = elements.create('card', {
+    style: {
+     base: {
+      fontSize: '16px',
+      color: '#1C294E',
+      '::placeholder': { color: '#9ca3af' },
+     },
+    },
+   })
    card.mount(cardElementRef.current)
    stripeCardRef.current = { stripe, card }
-   setCardElementMounted(true)
   }
   
-  // Small delay to ensure DOM is ready after loading completes
-  const timer = setTimeout(mountCardElement, 100)
+  const timer = setTimeout(mountCardElement, 150)
   
+  return () => clearTimeout(timer)
+ }, [loading])
+ 
+ // Separate cleanup on unmount only
+ useEffect(() => {
   return () => {
-   clearTimeout(timer)
    if (stripeCardRef.current?.card) {
     stripeCardRef.current.card.unmount()
    }
   }
- }, [loading, cardElementMounted])
+ }, [])
  
  const handleProfileSave = async () => {
   if (!user || !profile) return
@@ -562,7 +571,8 @@ export default function SettingsPage() {
   </div>
   </Card>
   {/* Support & Help */}
-  <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal5}`}>  <div className="flex items-center gap-3">
+  <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal5}`}>
+  <div className="flex items-center gap-3">
   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 flex items-center justify-center">
   <Phone className="w-5 h-5 text-teal-600" />
   </div>
@@ -571,7 +581,7 @@ export default function SettingsPage() {
   
   <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
   <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
-  <div className="flex items-start gap-3 mb-3">
+  <div className="flex items-start gap-3">
   <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
   <Bell className="w-5 h-5 text-blue-600" />
   </div>
@@ -584,7 +594,7 @@ export default function SettingsPage() {
   </div>
   
   <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100">
-  <div className="flex items-start gap-3 mb-3">
+  <div className="flex items-start gap-3">
   <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
   <Phone className="w-5 h-5 text-emerald-600" />
   </div>
@@ -593,28 +603,29 @@ export default function SettingsPage() {
   <a href="tel:5122775364" className="text-sm text-[#079447] hover:text-emerald-700 font-semibold block transition-colors">
   (512) 277-5364
   </a>
-  <a href="mailto:notifications@impressyoucleaning.com" className="text-xs text-[#079447] hover:text-emerald-700 font-semibold transition-colors">
+  <a href="mailto:admin@impressyoucleaning.com" className="text-xs text-[#079447] hover:text-emerald-700 font-semibold transition-colors">
   Email Us →
   </a>
   </div>
   </div>
   </div>
-  </div>
   
   <div className="p-5 rounded-xl bg-gradient-to-br from-red-50 to-orange-50 border border-red-100">
-  <div className="flex items-start gap-3 mb-3">
+  <div className="flex items-start gap-3">
   <div className="w-10 h-10 bg-gradient-to-br from-red-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
   <Shield className="w-5 h-5 text-red-600" />
   </div>
   <div>
   <p className="text-sm font-bold text-[#1C294E] mb-1">Emergency Contact</p>
-  <a href="tel:5127382642" className="text-sm text-[#079447] hover:text-emerald-700 font-semibold block mb-1 transition-colors">
+  <a href="tel:5127382642" className="text-sm text-[#079447] hover:text-emerald-700 font-semibold block transition-colors">
   (512) 738-2642
   </a>
   </div>
   </div>
   </div>
+  </div>
   </Card>
+  
   {/* Account deletion */}
   <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-2 border-red-100 bg-gradient-to-br from-red-50/30 to-white ${styles.cardReveal6}`}>        <div className="flex items-center gap-3">
   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
@@ -622,7 +633,7 @@ export default function SettingsPage() {
   </div>
   <h2 className="text-xl font-bold text-red-600">Danger Zone</h2>
   </div>
-  <div className="p-4 bg-red-50 rounded-xl border border-red-200">
+  <div className="p-4 bg-red-50 rounded-xl border border-red-200 w-fit">
   <p className="text-sm text-gray-700 font-medium mb-1">
   <span className="font-bold text-red-700">Warning:</span> This action is permanent
   </p>
