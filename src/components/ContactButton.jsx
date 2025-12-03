@@ -1,12 +1,9 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { X, MessageCircle, Phone, Mail, HelpCircle, Send, ChevronDown } from 'lucide-react';
-
 export default function ContactButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-
   // Show tooltip after 3 seconds, only once per session
   useEffect(() => {
     const hasSeenTooltip = sessionStorage.getItem('hasSeenContactTooltip');
@@ -15,21 +12,17 @@ export default function ContactButton() {
         setShowTooltip(true);
         sessionStorage.setItem('hasSeenContactTooltip', 'true');
       }, 3000);
-
       // Hide tooltip after 5 seconds
       const hideTimer = setTimeout(() => {
         setShowTooltip(false);
       }, 8000);
-
       return () => {
         clearTimeout(timer);
         clearTimeout(hideTimer);
       };
     }
   }, []);
-
   // Add this to your ContactButton.jsx file
-
   const contactOptions = [
     {
         name: 'Chat with us',
@@ -72,7 +65,6 @@ export default function ContactButton() {
       }
     }
   ];
-
   return (
     <>
       {/* Backdrop - subtle blur effect */}
@@ -83,7 +75,6 @@ export default function ContactButton() {
           onClick={() => setIsOpen(false)}
         />
       )}
-
       {/* Tooltip */}
       {showTooltip && !isOpen && (
         <div className="fixed bottom-20 right-4 md:bottom-24 md:right-6 z-40 animate-slideIn">
@@ -93,7 +84,6 @@ export default function ContactButton() {
           </div>
         </div>
       )}
-
       {/* Contact Options Menu - Improved responsive design */}
       <div
         data-contact-menu
@@ -131,7 +121,6 @@ export default function ContactButton() {
               </button>
             </div>
           </div>
-
           {/* Contact Options - Responsive sizing */}
           <div className="p-3 sm:p-4 space-y-2">
             {contactOptions.map((option, index) => (
@@ -154,7 +143,6 @@ export default function ContactButton() {
               </button>
             ))}
           </div>
-
           {/* Footer - Optional business hours */}
           <div className="bg-gray-50 px-4 py-3 border-t border-gray-100">
             <p className="text-center text-xs text-gray-500">
@@ -163,7 +151,6 @@ export default function ContactButton() {
           </div>
         </div>
       </div>
-
       {/* Floating Button - Responsive sizing with pulse animation */}
 <button
 data-chat-button  // ← ADD THIS LINE
@@ -187,14 +174,12 @@ aria-label="Contact us"
           <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={2} />
         )}
       </button>
-
       {/* Add these styles to your global CSS */}
       <style jsx>{`
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-
         @keyframes slideIn {
           from {
             transform: translateX(20px);
@@ -205,7 +190,6 @@ aria-label="Contact us"
             opacity: 1;
           }
         }
-
         @keyframes pulse-subtle {
           0%, 100% {
             transform: scale(1);
@@ -216,15 +200,12 @@ aria-label="Contact us"
             box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
           }
         }
-
         .animate-fadeIn {
           animation: fadeIn 0.3s ease-out;
         }
-
         .animate-slideIn {
           animation: slideIn 0.4s ease-out;
         }
-
         .animate-pulse-subtle {
           animation: pulse-subtle 2s infinite;
         }

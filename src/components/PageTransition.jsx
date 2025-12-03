@@ -1,7 +1,5 @@
 'use client';
-
 import { motion } from 'framer-motion';
-
 export default function StaggerItem({ children, className = "" }) {
   const itemVariants = {
     initial: { 
@@ -27,7 +25,6 @@ export default function StaggerItem({ children, className = "" }) {
       }
     }
   };
-
   return (
     <motion.div variants={itemVariants} className={className}>
       {children}

@@ -1,0 +1,769 @@
+/* Shared Portal Animations & Styles */
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(7, 148, 71, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(7, 148, 71, 0.25);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes slideInMenuPanel {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideOutMenuPanel {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%) scale(0.98);
+  }
+}
+
+@keyframes fadeInOverlaySmooth {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes fadeOutOverlaySmooth {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+}
+
+/* ============================================
+   ANIMATION CLASSES
+   ============================================ */
+
+.animateFadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animateFadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animateSlideInRight {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.animateSlideInLeft {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.animateScaleIn {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animateFloat {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animateGlow {
+  animation: glow 2s ease-in-out infinite;
+}
+/* ============================================
+   BUTTER-SMOOTH PAGE REVEAL SYSTEM
+   ============================================ */
+
+@keyframes gentleReveal {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentleCardReveal {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.contentReveal {
+  animation: gentleReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.cardReveal {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.cardReveal1 {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s forwards;
+}
+
+.cardReveal2 {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards;
+}
+
+.cardReveal3 {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s forwards;
+}
+
+.cardReveal4 {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s forwards;
+}
+
+.cardReveal5 {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s forwards;
+}
+
+.cardReveal6 {
+  opacity: 0;
+  animation: gentleCardReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.9s forwards;
+}
+
+.slideInMenuPanel {
+  animation: slideInMenuPanel 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slideOutMenuPanel {
+  animation: slideOutMenuPanel 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.fadeInOverlaySmooth {
+  animation: fadeInOverlaySmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.fadeOutOverlaySmooth {
+  animation: fadeOutOverlaySmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+/* ============================================
+   STAGGER DELAYS FOR SEQUENTIAL ANIMATIONS
+   ============================================ */
+
+.stagger1 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.stagger2 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.stagger3 {
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.stagger4 {
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+.stagger5 {
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+.stagger6 {
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+.stagger7 {
+  animation-delay: 0.7s;
+  opacity: 0;
+}
+
+.stagger8 {
+  animation-delay: 0.8s;
+  opacity: 0;
+}
+
+/* ============================================
+   CARD HOVER EFFECTS - PREMIUM STYLE
+   ============================================ */
+
+.cardHover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cardHover:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 25px 50px -12px rgba(0, 0, 0, 0.12);
+}
+
+.cardInteractive {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.cardInteractive:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.08),
+    0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  border-color: #079447;
+}
+
+.cardInteractive:active {
+  transform: translateY(-1px);
+}
+
+/* Subtle card lift for touch devices */
+@media (hover: none) {
+  .cardHover:hover,
+  .cardInteractive:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ============================================
+   PREMIUM CARD BACKGROUNDS
+   ============================================ */
+
+.heroCard {
+  background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.balanceCardPositive {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
+  border: 1px solid rgba(167, 243, 208, 0.5);
+}
+
+.balanceCardDue {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%);
+  border: 1px solid rgba(252, 211, 77, 0.5);
+}
+
+.successCard {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid rgba(134, 239, 172, 0.5);
+}
+
+.warningCard {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid rgba(252, 211, 77, 0.5);
+}
+
+.infoCard {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 1px solid rgba(147, 197, 253, 0.5);
+}
+
+.premiumCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* ============================================
+   SMOOTH TRANSITIONS
+   ============================================ */
+
+.smoothTransition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smoothTransitionFast {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smoothTransitionSlow {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   LOADING STATES & SKELETONS
+   ============================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 25%,
+    #e2e8f0 50%,
+    #f1f5f9 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 0.5rem;
+}
+
+.skeletonText {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeletonTitle {
+  height: 1.75rem;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeletonCard {
+  height: 10rem;
+  border-radius: 1rem;
+}
+
+.skeletonCircle {
+  border-radius: 50%;
+}
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmerWave {
+  animation: shimmer 1.5s infinite;
+}
+
+/* ============================================
+   BUTTON HOVER EFFECTS
+   ============================================ */
+
+.buttonHover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.buttonHover:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 12px -2px rgba(0, 0, 0, 0.12),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.buttonHover:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Primary button glow effect */
+.buttonPrimaryGlow {
+  position: relative;
+  overflow: hidden;
+}
+
+.buttonPrimaryGlow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.buttonPrimaryGlow:hover::after {
+  transform: translateX(100%);
+}
+
+/* ============================================
+   BADGE ANIMATIONS
+   ============================================ */
+
+.badgePulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.badgeGlow {
+  box-shadow: 0 0 10px rgba(7, 148, 71, 0.3);
+}
+
+/* ============================================
+   LIST ITEM ANIMATIONS
+   ============================================ */
+
+.listItemHover {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.listItemHover:hover {
+  background-color: #f8fafc;
+  transform: translateX(4px);
+}
+
+.listItemActive {
+  background-color: #f0fdf4;
+  border-left: 3px solid #079447;
+}
+
+/* ============================================
+   MODAL/OVERLAY ANIMATIONS
+   ============================================ */
+
+.fadeInOverlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.scaleIn {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slideUpModal {
+  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   STATUS INDICATORS - PREMIUM STYLE
+   ============================================ */
+
+.statusPending {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  color: #92400e;
+  border: 1px solid rgba(252, 211, 77, 0.5);
+}
+
+.statusConfirmed {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  color: #1e40af;
+  border: 1px solid rgba(147, 197, 253, 0.5);
+}
+
+.statusCompleted {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  color: #166534;
+  border: 1px solid rgba(134, 239, 172, 0.5);
+}
+
+.statusCancelled {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  color: #991b1b;
+  border: 1px solid rgba(252, 165, 165, 0.5);
+}
+
+.statusEnRoute {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  color: #15803d;
+  border: 1px solid rgba(134, 239, 172, 0.5);
+}
+
+/* ============================================
+   EMPTY STATE STYLING
+   ============================================ */
+
+.emptyState {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.emptyStateIcon {
+  width: 5rem;
+  height: 5rem;
+  margin: 0 auto 1.5rem;
+  color: #d1d5db;
+  opacity: 0.8;
+}
+
+.emptyStateTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1C294E;
+  margin-bottom: 0.5rem;
+}
+
+.emptyStateText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  max-width: 20rem;
+  margin: 0 auto;
+}
+
+/* ============================================
+   TABLE ROW HOVER
+   ============================================ */
+
+.tableRowHover {
+  transition: background-color 0.2s ease;
+}
+
+.tableRowHover:hover {
+  background-color: #f8fafc;
+}
+
+/* ============================================
+   FOCUS STATES - ACCESSIBLE
+   ============================================ */
+
+.focusRing:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(7, 148, 71, 0.3);
+}
+
+.focusRing:focus-visible {
+  outline: 2px solid #079447;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   GLASS MORPHISM EFFECTS
+   ============================================ */
+
+.glassCard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glassCardDark {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   GRADIENT ACCENTS
+   ============================================ */
+
+.gradientAccentTop {
+  position: relative;
+}
+
+.gradientAccentTop::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #079447 0%, #10b981 50%, #14b8a6 100%);
+  border-radius: 4px 4px 0 0;
+}
+
+.gradientAccentLeft {
+  position: relative;
+}
+
+.gradientAccentLeft::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #079447 0%, #10b981 50%, #14b8a6 100%);
+  border-radius: 4px 0 0 4px;
+}
+
+/* ============================================
+   ICON CONTAINERS
+   ============================================ */
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.iconContainerPrimary {
+  background: linear-gradient(135deg, rgba(7, 148, 71, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+}
+
+.iconContainerPrimary:hover {
+  background: linear-gradient(135deg, rgba(7, 148, 71, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+}
+
+.iconContainerNeutral {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.iconContainerNeutral:hover {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+/* ============================================
+   DIVIDERS
+   ============================================ */
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%);
+  margin: 1.5rem 0;
+}
+
+.dividerSolid {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 1rem 0;
+}
+
+/* ============================================
+   RESPONSIVE & REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animateFadeInUp,
+  .animateFadeIn,
+  .animateSlideInRight,
+  .animateSlideInLeft,
+  .animateScaleIn,
+  .animateFloat,
+  .animateGlow,
+  .cardHover,
+  .cardInteractive,
+  .buttonHover,
+  .smoothTransition,
+  .smoothTransitionFast,
+  .smoothTransitionSlow {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }  
+  .cardHover:hover,
+  .cardInteractive:hover,
+  .buttonHover:hover,
+  .listItemHover:hover {
+    transform: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .cardHover:hover {
+    transform: translateY(-4px);
+  }
+  
+  .animateFadeInUp {
+    animation-duration: 0.4s;
+  }
+}

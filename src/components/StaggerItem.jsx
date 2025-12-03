@@ -1,9 +1,7 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-
 export default function StaggerItem({ 
   children, 
   className = "",
@@ -19,7 +17,6 @@ export default function StaggerItem({
     amount: threshold,
     margin: rootMargin
   });
-
   const itemVariants = {
     hidden: { 
       opacity: 0, 
@@ -37,7 +34,6 @@ export default function StaggerItem({
       }
     }
   };
-
   return (
     <motion.div 
       ref={ref}

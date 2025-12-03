@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import crypto from 'crypto';
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize';
 
 // Generate a unique gift certificate code
 function generateGiftCode() {
@@ -23,7 +24,14 @@ export async function POST(request) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     const body = await request.json();
-    const { recipientName, recipientEmail, senderName, buyerEmail, message, amount } = body;
+
+    // Sanitize inputs
+    const recipientName = sanitizeText(body.recipientName)?.slice(0, 100);
+    const recipientEmail = sanitizeEmail(body.recipientEmail);
+    const senderName = sanitizeText(body.senderName)?.slice(0, 100);
+    const buyerEmail = sanitizeEmail(body.buyerEmail);
+    const message = sanitizeText(body.message)?.slice(0, 500) || '';
+    const amount = body.amount;
 
     // Validate required fields
     if (!recipientName || !recipientEmail || !senderName || !buyerEmail || !amount) {
@@ -47,18 +55,6 @@ export async function POST(request) {
 
     // Prepare the site URL
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
-    // Store gift certificate data to pass through the checkout
-    const giftData = {
-      code: giftCode,
-      recipientName,
-      recipientEmail,
-      senderName,
-      message: message || '',
-      amount
-    };
-
-    const encodedGiftData = Buffer.from(JSON.stringify(giftData)).toString('base64');
 
     console.log('Creating Stripe checkout session with:', {
       amount: amountInCents,
@@ -84,15 +80,18 @@ export async function POST(request) {
         },
       ],
       mode: 'payment',
-      success_url: `${siteUrl}/gift-certificate/success?data=${encodeURIComponent(encodedGiftData)}`,
+      // Pass session ID instead of gift data - verify payment on success page
+      success_url: `${siteUrl}/gift-certificate/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/gift-certificate?canceled=true`,
       customer_email: buyerEmail,
       metadata: {
+        type: 'gift_certificate',
         giftCode,
         recipientName,
         recipientEmail,
         senderName,
         buyerEmail,
+        message,
         amount: amount.toString(),
       },
     });
@@ -103,7 +102,6 @@ export async function POST(request) {
       checkoutUrl: session.url,
       giftCode,
     });
-
   } catch (error) {
     console.error('Error creating checkout:', error);
     console.error('Error details:', {

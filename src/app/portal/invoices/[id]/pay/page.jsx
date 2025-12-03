@@ -1,0 +1,635 @@
+'use client'
+import { useState, useEffect } from 'react'
+import { useRouter, useParams } from 'next/navigation'
+import { format } from 'date-fns'
+import { loadStripe } from '@stripe/stripe-js'
+import {
+  CreditCard,
+  CheckCircle,
+  FileText,
+  Calendar,
+  QrCode,
+  Shield,
+  ChevronLeft,
+  Sparkles
+} from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
+import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
+import toast from 'react-hot-toast'
+import confetti from 'canvas-confetti'
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+
+const formatMoney = (value) =>
+  typeof value === 'number' ? `$${value.toFixed(2)}` : value || '$0.00'
+
+export default function PayInvoicePage() {
+  const router = useRouter()
+  const params = useParams()
+  const invoiceId = params.id
+
+  const [loading, setLoading] = useState(true)
+  const [processing, setProcessing] = useState(false)
+  const [invoice, setInvoice] = useState(null)
+  const [paymentMethod, setPaymentMethod] = useState('stripe')
+  const [showZelleModal, setShowZelleModal] = useState(false)
+  const [savedCards, setSavedCards] = useState([])
+  const [selectedCard, setSelectedCard] = useState(null)
+  const [useNewCard, setUseNewCard] = useState(false)
+
+  const supabase = createClient()
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          router.push('/auth/login')
+          return
+        }
+
+        const { data: invoiceData, error: invoiceError } = await supabase
+          .from('invoices')
+          .select('*')
+          .eq('id', invoiceId)
+          .eq('customer_id', user.id)
+          .single()
+
+        if (invoiceError) throw invoiceError
+        if (!invoiceData) {
+          toast.error('Invoice not found')
+          router.push('/portal/invoices')
+          return
+        }
+
+        if (invoiceData.status === 'paid') {
+          toast.error('This invoice has already been paid')
+          router.push('/portal/invoices')
+          return
+        }
+
+        setInvoice(invoiceData)
+
+        const { data: cards } = await supabase
+          .from('payment_methods')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('is_default', { ascending: false })
+
+        setSavedCards(cards || [])
+        if (cards && cards.length > 0) {
+          setSelectedCard(cards.find(c => c.is_default)?.id || cards[0].id)
+        } else {
+          setUseNewCard(true)
+        }
+      } catch (error) {
+        console.error('Error loading data:', error)
+        toast.error('Failed to load invoice')
+        router.push('/portal/invoices')
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadData()
+  }, [invoiceId, supabase, router])
+
+  const triggerConfetti = () => {
+    const duration = 3 * 1000
+    const end = Date.now() + duration
+    const colors = ['#10b981', '#14b8a6', '#1C294E']
+    ;(function frame() {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors,
+      })
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors,
+      })
+      if (Date.now() < end) {
+        requestAnimationFrame(frame)
+      }
+    })()
+  }
+
+  const handleStripePayment = async () => {
+    setProcessing(true)
+    try {
+      const response = await fetch('/api/stripe/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceId: invoice.id,
+          amount: parseFloat(invoice.total ?? invoice.amount),
+          paymentMethodId: useNewCard ? null : selectedCard,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Payment failed')
+      }
+
+      if (data.success) {
+        triggerConfetti()
+        toast.success('Payment successful!')
+
+        const { data: updatedInvoice } = await supabase
+          .from('invoices')
+          .select('*')
+          .eq('id', invoiceId)
+          .single()
+
+        if (updatedInvoice?.status === 'paid') {
+          setTimeout(() => {
+            router.push('/portal/invoices')
+          }, 2000)
+        }
+      } else if (data.requiresAction) {
+        const stripe = await stripePromise
+        const { error } = await stripe.confirmCardPayment(data.clientSecret)
+
+        if (error) {
+          throw new Error(error.message)
+        }
+
+        triggerConfetti()
+        toast.success('Payment successful!')
+        setTimeout(() => {
+          router.push('/portal/invoices')
+        }, 2000)
+      }
+    } catch (error) {
+      console.error('Payment error:', error)
+      toast.error(error.message || 'Payment failed')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
+  const handleZelleConfirmation = async () => {
+    setProcessing(true)
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .update({
+          payment_method: 'zelle',
+          notes: 'Payment pending - customer marked as sent via Zelle',
+        })
+        .eq('id', invoice.id)
+
+      if (error) throw error
+
+      toast.success('Thank you! We\'ll confirm your payment within 24 hours.')
+      setShowZelleModal(false)
+      setTimeout(() => {
+        router.push('/portal/invoices')
+      }, 2000)
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('Failed to update invoice')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+        <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+          {/* Skeleton */}
+          <div className="animate-pulse">
+            {/* Back button */}
+            <div className="h-5 w-32 bg-slate-200 rounded mb-8" />
+            
+            {/* Header */}
+            <div className="text-center mb-10">
+              <div className="h-8 w-48 bg-slate-200 rounded mx-auto mb-3" />
+              <div className="h-5 w-32 bg-slate-100 rounded mx-auto" />
+            </div>
+
+            {/* Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              <div className="lg:col-span-2">
+                <div className="h-80 bg-white rounded-2xl border border-slate-100" />
+              </div>
+              <div className="lg:col-span-3">
+                <div className="h-96 bg-white rounded-2xl border border-slate-100" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!invoice) {
+    return null
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        
+        {/* Back Button */}
+        <button
+          onClick={() => router.back()}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors mb-8 group"
+        >
+          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          Back to Invoices
+        </button>
+
+        {/* Header */}
+        <div className="text-center mb-10 animate-fadeIn">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <div className="h-0.5 w-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" />
+            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-widest">
+              Secure Payment
+            </span>
+            <div className="h-0.5 w-8 bg-gradient-to-r from-teal-400 to-emerald-400 rounded-full" />
+          </div>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">
+            Complete Your Payment
+          </h1>
+          <p className="text-slate-500">
+            Invoice {invoice.invoice_number}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          
+          {/* Invoice Summary */}
+          <div className="lg:col-span-2 animate-fadeIn" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-white">Invoice Summary</h2>
+                    <p className="text-sm text-slate-300">{invoice.invoice_number}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6">
+                {/* Details */}
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-slate-500">
+                      <Calendar className="w-4 h-4" />
+                      <span>Date</span>
+                    </div>
+                    <span className="font-medium text-slate-800">
+                      {format(new Date(invoice.created_at), 'MMM d, yyyy')}
+                    </span>
+                  </div>
+                  {invoice.due_date && (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-slate-500">
+                        <Calendar className="w-4 h-4" />
+                        <span>Due Date</span>
+                      </div>
+                      <span className="font-medium text-slate-800">
+                        {format(new Date(invoice.due_date), 'MMM d, yyyy')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Line Items */}
+                {invoice.line_items && (
+                  <div className="mb-6 pb-6 border-b border-slate-100">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+                      Services
+                    </h3>
+                    <div className="space-y-2">
+                      {invoice.line_items.map((item, index) => (
+                        <div key={index} className="flex justify-between text-sm">
+                          <span className="text-slate-600">{item.description}</span>
+                          <span className="font-medium text-slate-800">
+                            {formatMoney(item.amount)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Totals */}
+                {invoice?.tax_rate > 0 && (
+                  <div className="space-y-2 mb-4 pb-4 border-b border-slate-100">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-500">Subtotal</span>
+                      <span className="font-medium text-slate-700">{formatMoney(invoice.amount)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-500">Tax ({invoice.tax_rate}%)</span>
+                      <span className="font-medium text-slate-700">{formatMoney(invoice.tax_amount)}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Total */}
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-semibold text-slate-800">Total Due</span>
+                  <span className="text-3xl font-bold text-emerald-600">
+                    {formatMoney(invoice?.total ?? invoice?.amount)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Method */}
+          <div className="lg:col-span-3 animate-fadeIn" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-slate-100">
+                <h2 className="text-lg font-bold text-slate-800 mb-1">
+                  Select Payment Method
+                </h2>
+                <p className="text-sm text-slate-400">Choose how you'd like to pay</p>
+              </div>
+
+              <div className="p-6">
+                {/* Payment Method Tabs */}
+                <div className="flex gap-4 mb-6">
+                  <button
+                    onClick={() => setPaymentMethod('stripe')}
+                    className={`
+                      flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl border-2 transition-all duration-200
+                      ${paymentMethod === 'stripe'
+                        ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 text-emerald-700'
+                        : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
+                      }
+                    `}
+                  >
+                    <CreditCard className="w-5 h-5" />
+                    <span className="font-semibold">Credit Card</span>
+                  </button>
+                  <button
+                    onClick={() => setPaymentMethod('zelle')}
+                    className={`
+                      flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl border-2 transition-all duration-200
+                      ${paymentMethod === 'zelle'
+                        ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 text-emerald-700'
+                        : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
+                      }
+                    `}
+                  >
+                    <QrCode className="w-5 h-5" />
+                    <span className="font-semibold">Zelle</span>
+                  </button>
+                </div>
+
+                {/* Stripe Payment */}
+                {paymentMethod === 'stripe' && (
+                  <div className="animate-fadeIn">
+                    {savedCards.length > 0 && !useNewCard && (
+                      <div className="mb-6">
+                        <h3 className="text-sm font-semibold text-slate-700 mb-3">
+                          Saved Cards
+                        </h3>
+                        <div className="space-y-3">
+                          {savedCards.map((card) => (
+                            <label
+                              key={card.id}
+                              className={`
+                                flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200
+                                ${selectedCard === card.id
+                                  ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/50 to-teal-50/30'
+                                  : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                                }
+                              `}
+                            >
+                              <input
+                                type="radio"
+                                name="card"
+                                checked={selectedCard === card.id}
+                                onChange={() => setSelectedCard(card.id)}
+                                className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300"
+                              />
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-semibold text-slate-800">
+                                    {card.card_brand} •••• {card.card_last4}
+                                  </span>
+                                  {card.is_default && (
+                                    <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+                                      Default
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-slate-500">
+                                  Expires {card.card_exp_month}/{card.card_exp_year}
+                                </p>
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                        <button
+                          onClick={() => setUseNewCard(true)}
+                          className="mt-4 text-sm text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
+                        >
+                          + Use a different card
+                        </button>
+                      </div>
+                    )}
+
+                    {(useNewCard || savedCards.length === 0) && (
+                      <div className="mb-6">
+                        <div className="bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100 rounded-xl p-4 mb-4">
+                          <p className="text-sm text-sky-800">
+                            <strong>Note:</strong> This is a demo. In production, Stripe Elements would be loaded here for secure card input.
+                          </p>
+                        </div>
+
+                        {savedCards.length > 0 && (
+                          <button
+                            onClick={() => setUseNewCard(false)}
+                            className="mb-4 text-sm text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
+                          >
+                            ← Back to saved cards
+                          </button>
+                        )}
+
+                        <div className="space-y-4">
+                          <div className="p-4 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+                            <p className="text-sm text-slate-500 text-center">
+                              Stripe Elements Card Input
+                            </p>
+                          </div>
+                          <label className="flex items-center gap-2">
+                            <input 
+                              type="checkbox" 
+                              className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded" 
+                            />
+                            <span className="text-sm text-slate-600">Save this card for future payments</span>
+                          </label>
+                        </div>
+                      </div>
+                    )}
+
+                    <Button
+                      variant="primary"
+                      fullWidth
+                      size="lg"
+                      onClick={handleStripePayment}
+                      loading={processing}
+                      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
+                    >
+                      <CreditCard className="w-5 h-5" />
+                      Pay {formatMoney(invoice?.total ?? invoice?.amount)}
+                    </Button>
+
+                    <div className="flex items-center justify-center gap-2 mt-4 text-xs text-slate-400">
+                      <Shield className="w-3.5 h-3.5" />
+                      <span>Secured by Stripe • 256-bit encryption</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Zelle Payment */}
+                {paymentMethod === 'zelle' && (
+                  <div className="animate-fadeIn">
+                    <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200 rounded-xl p-6 mb-6">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                          <QrCode className="w-5 h-5 text-purple-600" />
+                        </div>
+                        <h3 className="font-semibold text-slate-800">
+                          Pay with Zelle
+                        </h3>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="p-4 bg-white rounded-xl border border-slate-100">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                            Send payment to
+                          </p>
+                          <p className="text-lg font-bold text-emerald-600">
+                            payments@impresscleaning.com
+                          </p>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-4 bg-white rounded-xl border border-slate-100">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                              Amount
+                            </p>
+                            <p className="text-xl font-bold text-slate-800">
+                              {formatMoney(invoice?.total ?? invoice?.amount)}
+                            </p>
+                          </div>
+                          <div className="p-4 bg-white rounded-xl border border-slate-100">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                              Reference
+                            </p>
+                            <p className="text-lg font-mono font-bold text-slate-800">
+                              {invoice.invoice_number}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 p-4 bg-white rounded-xl border border-slate-100">
+                        <p className="text-sm font-semibold text-slate-700 mb-2">
+                          Instructions
+                        </p>
+                        <ol className="text-sm text-slate-600 space-y-1.5 list-decimal list-inside">
+                          <li>Open your Zelle app or banking app</li>
+                          <li>Send to <strong className="text-slate-800">payments@impresscleaning.com</strong></li>
+                          <li>Enter amount: <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong></li>
+                          <li>Include reference: <strong className="text-slate-800">{invoice.invoice_number}</strong></li>
+                          <li>Click the button below after sending</li>
+                        </ol>
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="primary"
+                      fullWidth
+                      size="lg"
+                      onClick={() => setShowZelleModal(true)}
+                      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
+                    >
+                      <CheckCircle className="w-5 h-5" />
+                      I've Sent the Payment
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Zelle Confirmation Modal */}
+        <Modal
+          isOpen={showZelleModal}
+          onClose={() => setShowZelleModal(false)}
+          title="Confirm Zelle Payment"
+        >
+          <div className="space-y-4">
+            <p className="text-slate-600">
+              Please confirm that you have sent <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong> via Zelle to <strong className="text-slate-800">payments@impresscleaning.com</strong> with reference <strong className="text-slate-800">{invoice.invoice_number}</strong>.
+            </p>
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-xl p-4">
+              <p className="text-sm text-amber-800">
+                <strong>Note:</strong> We'll verify your payment and update the invoice status within 24 hours.
+              </p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <Button
+                variant="secondary"
+                fullWidth
+                onClick={() => setShowZelleModal(false)}
+                className="!border-slate-200 hover:!bg-slate-50"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                fullWidth
+                onClick={handleZelleConfirmation}
+                loading={processing}
+                className="!bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600"
+              >
+                Confirm Payment Sent
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      {/* Animation Styles */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.4s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
+    </div>
+  )
+}
