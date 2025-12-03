@@ -23,7 +23,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
-import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
+import { SettingsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
@@ -339,13 +339,13 @@ const saveAddress = async () => {
 if (loading) {
   return (
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-     <DashboardSkeleton />
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+     <SettingsSkeleton />
     </div>
    </div>
   )
  }
-return (
+ return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
       <div className={styles.cardReveal}>

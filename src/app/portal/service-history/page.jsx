@@ -17,7 +17,7 @@ import {
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
-import { CardSkeleton } from '@/components/ui/SkeletonLoader'
+import { ServiceHistorySkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 const serviceTypeLabel = (type) => {
  const labels = {
@@ -294,25 +294,16 @@ className={`
    </div>
   )
  }
- if (loading) {
+if (loading) {
   return (
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-   <div className="mb-10">
-   <div className="h-8 w-48 bg-gray-200 rounded-lg mb-3 animate-pulse" />
-   <div className="h-5 w-64 bg-gray-200 rounded-lg animate-pulse" />
-   </div>
-   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-   <CardSkeleton />
-   <CardSkeleton />
-   <CardSkeleton />
-   <CardSkeleton />
-   </div>
+   <ServiceHistorySkeleton />
    </div>
    </div>
   )
  }
-return (
+ return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header */}

@@ -7,7 +7,7 @@ import { FileText, DollarSign, AlertCircle, Calendar } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
-import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
+import { InvoicesSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from './InvoiceSidePanel'
 function CancellationTooltip() {
  const [open, setOpen] = useState(false)
@@ -154,13 +154,13 @@ function CancellationTooltip() {
 if (loading) {
   return (
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-     <DashboardSkeleton />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+     <InvoicesSkeleton />
     </div>
    </div>
   )
  }
-  return (
+   return (
    <>
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">   <div className={`mb-8 ${styles.animateFadeIn}`}>
