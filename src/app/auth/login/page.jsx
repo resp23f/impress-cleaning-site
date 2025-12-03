@@ -247,14 +247,13 @@ function LoginPageContent() {
                   </div>
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  fullWidth
-                  size="lg"
-                  loading={loading}
-className="!py-3.5 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 transition-colors duration-200">
-                  Sign In
+<Button
+  type="submit"
+  variant="primary"
+  fullWidth
+  size="lg"
+  loading={loading}
+  className="!py-3.5 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600">                  Sign In
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </form>
@@ -286,15 +285,23 @@ export default function LoginPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex bg-white">
-        {/* Left panel placeholder */}
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
-        {/* Right panel with centered loader */}
+        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-100 via-slate-50 to-white items-start p-16">
+          <img
+            src="/ImpressLogoNoBackgroundBlue.png"
+            alt="Loading..."
+            className="h-20 w-auto"
+          />
+        </div>
         <div className="w-full lg:w-1/2 flex items-center justify-center">
           <img
             src="/ImpressLogoNoBackgroundBlue.png"
             alt="Loading..."
-            className="h-20 w-auto animate-pulse"
+            className="h-14 w-auto lg:hidden animate-pulse"
           />
+          <div className="hidden lg:block animate-pulse">
+            <div className="w-80 h-10 bg-slate-100 rounded-lg mb-4" />
+            <div className="w-64 h-6 bg-slate-100 rounded-lg" />
+          </div>
         </div>
       </div>
     }>

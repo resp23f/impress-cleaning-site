@@ -336,8 +336,7 @@ function SiteHeader() {
   {desktopMenuOpen && (
    <div
    ref={desktopMenuRef}
-   className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200/80 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-   >
+className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200/80 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200"   >
    {/* Phone */}
    <a
    href="tel:+15122775364"
