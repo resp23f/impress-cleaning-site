@@ -136,15 +136,15 @@ function LoginPageContent() {
 
             {/* Logo */}
             <div className="mb-40">
-              <Image
-                src="/ImpressLogoNoBackgroundBlue.png"
-                alt="Impress Cleaning Services"
-                width={200}
-                height={70}
-                className="h-25 w-auto"
-                priority
-              />
-            </div>
+<Image
+  src="/ImpressLogoNoBackgroundBlue.png"
+  alt="Impress Cleaning Services"
+  width={200}
+  height={80}
+  className="h-20 w-auto"
+  style={{ minHeight: '80px' }}
+  priority
+/>            </div>
 
             {/* Middle content */}
             <div className="max-w-sm">
