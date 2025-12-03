@@ -393,8 +393,7 @@ className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl bo
    href="mailto:admin@impressyoucleaning.com"
    className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
    >
-   <div className="w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center">
-   <svg
+<div className="w-9 h-9 shrink-0 rounded-full bg-purple-50 flex items-center justify-center">   <svg
    className="w-4 h-4 text-purple-600"
    fill="none"
    stroke="currentColor"

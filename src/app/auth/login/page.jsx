@@ -248,15 +248,16 @@ function LoginPageContent() {
                 </div>
 
 <Button
-  type="submit"
-  variant="primary"
-  fullWidth
-  size="lg"
-  loading={loading}
-  className="!py-3.5 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600">                  Sign In
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </form>
+                  type="submit"
+                  variant="primary"
+                  fullWidth
+                  size="lg"
+                  loading={loading}
+                  className="!py-3.5"
+                >
+                  Sign In
+                  <ArrowRight className="w-4 h-4" />
+                </Button>              </form>
 
               {/* Sign up link */}
               <p className="mt-8 text-center text-slate-400">
@@ -284,26 +285,74 @@ function LoginPageContent() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex bg-white">
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-100 via-slate-50 to-white items-start p-16">
-          <img
-            src="/ImpressLogoNoBackgroundBlue.png"
-            alt="Loading..."
-            className="h-20 w-auto"
-          />
-        </div>
-        <div className="w-full lg:w-1/2 flex items-center justify-center">
-          <img
-            src="/ImpressLogoNoBackgroundBlue.png"
-            alt="Loading..."
-            className="h-14 w-auto lg:hidden animate-pulse"
-          />
-          <div className="hidden lg:block animate-pulse">
-            <div className="w-80 h-10 bg-slate-100 rounded-lg mb-4" />
-            <div className="w-64 h-6 bg-slate-100 rounded-lg" />
+      <>
+        <style>{`html, body { background: #ffffff; }`}</style>
+        <div className="min-h-screen flex bg-white">
+          {/* Left panel - exact match */}
+          <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
+            <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-300/50 to-teal-300/40 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-200/60 to-indigo-200/50 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-200/60 to-green-200/50 rounded-full blur-3xl" />
+            <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
+            <div className="relative z-10 flex flex-col justify-start p-16 w-full h-full">
+              <div className="mb-40">
+                <img
+                  src="/ImpressLogoNoBackgroundBlue.png"
+                  alt="Impress Cleaning Services"
+                  className="h-[88px] w-auto"
+                  style={{ minHeight: '88px' }}
+                />
+              </div>
+              <div className="max-w-sm">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="h-0.5 w-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" />
+                  <span className="text-xs font-semibold text-emerald-600/80 uppercase tracking-widest">
+                    Customer Portal
+                  </span>
+                </div>
+                <h1 className="text-3xl font-bold text-slate-800 mb-4 leading-snug">
+                  Your Home, <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
+                    Sparkling Clean
+                  </span>
+                </h1>
+                <p className="text-slate-500 leading-relaxed">
+                  Access your personalized dashboard to manage appointments, view invoices, and keep your space looking its best.
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* Right panel - exact match with skeleton */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center bg-white p-6 sm:p-12">
+            <div className="w-full max-w-md">
+              <div className="lg:hidden flex justify-center mb-8">
+                <img
+                  src="/ImpressLogoNoBackgroundBlue.png"
+                  alt="Impress Cleaning Services"
+                  className="h-14 w-auto"
+                  style={{ minHeight: '56px' }}
+                />
+              </div>
+              <div className="lg:px-4">
+                <div className="text-center mb-8">
+                  <div className="h-8 w-40 bg-slate-100 rounded-lg mx-auto mb-2 animate-pulse" />
+                  <div className="h-5 w-52 bg-slate-50 rounded-lg mx-auto animate-pulse" />
+                </div>
+                <div className="h-12 w-full bg-slate-100 rounded-lg mb-6 animate-pulse" />
+                <div className="space-y-5">
+                  <div className="h-[72px] bg-slate-50 rounded-lg animate-pulse" />
+                  <div className="h-[72px] bg-slate-50 rounded-lg animate-pulse" />
+                  <div className="h-14 bg-emerald-100 rounded-lg animate-pulse" />
+                </div>
+              </div>
+              <p className="text-center text-xs text-slate-300 mt-10">
+                © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     }>
       <LoginPageContent />
     </Suspense>
