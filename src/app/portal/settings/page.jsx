@@ -82,7 +82,10 @@ export default function SettingsPage() {
     }
     load()
   }, [router, supabase])
-  useEffect(() => {
+
+useEffect(() => {
+    if (loading) return // Don't try to mount while skeleton is showing
+    
     const mountCardElement = async () => {
       if (!cardElementRef.current || cardElementMounted) return
       const stripe = await stripePromise
@@ -93,14 +96,19 @@ export default function SettingsPage() {
       stripeCardRef.current = { stripe, card }
       setCardElementMounted(true)
     }
-    mountCardElement()
+    
+    // Small delay to ensure DOM is ready after loading completes
+    const timer = setTimeout(mountCardElement, 100)
+    
     return () => {
+      clearTimeout(timer)
       if (stripeCardRef.current?.card) {
         stripeCardRef.current.card.unmount()
       }
     }
-}, [cardElementMounted, loading])
-const handleProfileSave = async () => {
+  }, [loading, cardElementMounted])
+  
+  const handleProfileSave = async () => {
   if (!user || !profile) return
   setSavingProfile(true)
   try {
