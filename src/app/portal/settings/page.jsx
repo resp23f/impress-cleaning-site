@@ -516,12 +516,18 @@ export default function SettingsPage() {
   <h2 className="text-xl font-bold text-[#1C294E]">Payment Methods</h2>
   </div>
   </div>
-  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-  <div className="lg:col-span-2 space-y-3">
-  {payments.length === 0 && (
-   <p className="text-sm text-gray-600">No saved cards yet.</p>
-  )}
-  {payments.map((pm) => (
+<div className={`grid grid-cols-1 ${payments.length > 0 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-4`}>
+  <div className={payments.length > 0 ? 'lg:col-span-2 space-y-3' : ''}>
+  {payments.length === 0 ? (
+   <div className="flex items-center justify-center p-8 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl border-2 border-dashed border-slate-200 h-full min-h-[180px]">
+   <div className="text-center">
+   <CreditCard className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+   <p className="text-slate-600 font-semibold mb-1">No saved cards yet</p>
+   <p className="text-sm text-slate-400">Add a card for faster checkout</p>
+   </div>
+   </div>
+  ) : (
+   payments.map((pm) => (
    <div key={pm.id} className="border border-gray-200 rounded-xl p-5 flex items-center justify-between bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md transition-all duration-200">
    <div className="space-y-1.5">
    <p className="font-bold text-[#1C294E] text-base">
@@ -547,7 +553,8 @@ export default function SettingsPage() {
    </Button>
    </div>
    </div>
-  ))}
+   ))
+  )}
   </div>
   <div className="border-2 border-dashed border-gray-300 rounded-xl p-5 space-y-4 bg-gradient-to-br from-gray-50 to-slate-50">
   <p className="text-sm font-bold text-[#1C294E] flex items-center gap-2">
