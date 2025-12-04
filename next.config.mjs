@@ -52,10 +52,6 @@ const nextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains',
           },
-          {
-  key: 'Content-Security-Policy',
-  value: "frame-src 'self' https://challenges.cloudflare.com https://js.stripe.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://js.stripe.com https://maps.googleapis.com; connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://maps.googleapis.com https://api.stripe.com;",
-},
         ],
       },
     ]
