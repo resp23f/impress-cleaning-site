@@ -331,267 +331,268 @@ export default function PayInvoicePage() {
   className={`
 flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl border-2 transition-all duration-200
    ${paymentMethod === 'stripe'
-    ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 text-emerald-700'
-    : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
-   }
+   ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 text-emerald-700'
+   : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
+  }
 `}
-   >
-   <CreditCard className="w-5 h-5" />
-   <span className="font-semibold">Credit Card</span>
-   </button>
-   <button
-   onClick={() => setPaymentMethod('zelle')}
-   className={`
+  
+  >
+  <CreditCard className="w-5 h-5" />
+  <span className="font-semibold">Credit Card</span>
+  </button>
+  <button
+  onClick={() => setPaymentMethod('zelle')}
+  className={`
 flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl border-2 transition-all duration-200
     ${paymentMethod === 'zelle'
-     ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 text-emerald-700'
-     : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
-    }
+   ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 text-emerald-700'
+   : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
+  }
 `}
-    >
-    <QrCode className="w-5 h-5" />
-    <span className="font-semibold">Zelle</span>
-    </button>
-    </div>
-    {/* Stripe Payment */}
-    {paymentMethod === 'stripe' && (
-     <div className="animate-fadeIn">
-     {savedCards.length > 0 && !useNewCard && (
-      <div className="mb-6">
-      <h3 className="text-sm font-semibold text-slate-700 mb-3">
-      Saved Cards
-      </h3>
-      <div className="space-y-3">
-      {savedCards.map((card) => (
-       <label
-       key={card.id}
-       className={`
+  >
+  <QrCode className="w-5 h-5" />
+  <span className="font-semibold">Zelle</span>
+  </button>
+  </div>
+  {/* Stripe Payment */}
+  {paymentMethod === 'stripe' && (
+   <div className="animate-fadeIn">
+   {savedCards.length > 0 && !useNewCard && (
+    <div className="mb-6">
+    <h3 className="text-sm font-semibold text-slate-700 mb-3">
+    Saved Cards
+    </h3>
+    <div className="space-y-3">
+    {savedCards.map((card) => (
+     <label
+     key={card.id}
+     className={`
 flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200
         ${selectedCard === card.id
-         ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/50 to-teal-50/30'
-         : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-        }
+      ? 'border-emerald-500 bg-gradient-to-br from-emerald-50/50 to-teal-50/30'
+      : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+     }
 `}
-        >
-        <input
-        type="radio"
-        name="card"
-        checked={selectedCard === card.id}
-        onChange={() => setSelectedCard(card.id)}
-        className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300"
-        />
-        <div className="flex-1">
-        <div className="flex items-center gap-2">
-        <span className="font-semibold text-slate-800">
-        {card.card_brand} •••• {card.card_last4}
-        </span>
-        {card.is_default && (
-         <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
-         Default
-         </span>
-        )}
-        </div>
-        <p className="text-sm text-slate-500">
-        Expires {card.card_exp_month}/{card.card_exp_year}
-        </p>
-        </div>
-        </label>
-       ))}
-       </div>
-       <button
-       onClick={() => setUseNewCard(true)}
-       className="mt-4 text-sm text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
-       >
-       + Use a different card
-       </button>
-       </div>
-      )}
-      {(useNewCard || savedCards.length === 0) && (
-       <div className="mb-6">
-       <div className="bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100 rounded-xl p-4 mb-4">
-       <p className="text-sm text-sky-800">
-       <strong>Note:</strong> This is a demo. In production, Stripe Elements would be loaded here for secure card input.
-       </p>
-       </div>
-       {savedCards.length > 0 && (
-        <button
-        onClick={() => setUseNewCard(false)}
-        className="mb-4 text-sm text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
-        >
-        ← Back to saved cards
-        </button>
-       )}
-       <div className="space-y-4">
-       <div className="p-4 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">
-       <p className="text-sm text-slate-500 text-center">
-       Stripe Elements Card Input
-       </p>
-       </div>
-       <label className="flex items-center gap-2">
-       <input 
-       type="checkbox" 
-       className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded" 
-       />
-       <span className="text-sm text-slate-600">Save this card for future payments</span>
-       </label>
-       </div>
-       </div>
-      )}
-      <Button
-      variant="primary"
-      fullWidth
-      size="lg"
-      onClick={handleStripePayment}
-      loading={processing}
-      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
-      >
-      <CreditCard className="w-5 h-5" />
-      Pay {formatMoney(invoice?.total ?? invoice?.amount)}
-      </Button>
-      {/* Security Trust Badge */}
-      <div className="mt-6 pt-5 border-t border-slate-100">
-      <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-      <div className="flex items-center gap-2">
-      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
-      <Shield className="w-3.5 h-3.5 text-emerald-600" />
-      </div>
-      <div className="text-left">
-      <p className="text-[11px] font-semibold text-slate-700">256-bit SSL</p>
-      <p className="text-[9px] text-slate-400">Encryption</p>
-      </div>
-      </div>
-      <div className="flex items-center gap-2">
-      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-      <svg className="w-3.5 h-3.5 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
-      </svg>
-      </div>
-      <div className="text-left">
-      <p className="text-[11px] font-semibold text-slate-700">Stripe Secure</p>
-      <p className="text-[9px] text-slate-400">PCI Compliant</p>
-      </div>
-      </div>
-      <div className="flex items-center gap-2">
-      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
-      <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-      </div>
-      <div className="text-left">
-      <p className="text-[11px] font-semibold text-slate-700">Bank-Level</p>
-      <p className="text-[9px] text-slate-400">Security</p>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-     )}
-     {/* Zelle Payment */}
-     {paymentMethod === 'zelle' && (
-      <div className="animate-fadeIn">
-      <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200 rounded-xl p-6 mb-6">
-      <div className="flex items-center gap-3 mb-5">
-      <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-      <QrCode className="w-5 h-5 text-purple-600" />
-      </div>
-      <h3 className="font-semibold text-slate-800">
-      Pay with Zelle
-      </h3>
-      </div>
-      <div className="space-y-4">
-      <div className="p-4 bg-white rounded-xl border border-slate-100">
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
-      Send payment to
-      </p>
-      <p className="text-lg font-bold text-emerald-600">
-      payments@impresscleaning.com
-      </p>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-      <div className="p-4 bg-white rounded-xl border border-slate-100">
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
-      Amount
-      </p>
-      <p className="text-xl font-bold text-slate-800">
-      {formatMoney(invoice?.total ?? invoice?.amount)}
-      </p>
-      </div>
-      <div className="p-4 bg-white rounded-xl border border-slate-100">
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
-      Reference
-      </p>
-      <p className="text-lg font-mono font-bold text-slate-800">
-      {invoice.invoice_number}
-      </p>
-      </div>
-      </div>
-      </div>
-      <div className="mt-5 p-4 bg-white rounded-xl border border-slate-100">
-      <p className="text-sm font-semibold text-slate-700 mb-2">
-      Instructions
-      </p>
-      <ol className="text-sm text-slate-600 space-y-1.5 list-decimal list-inside">
-      <li>Open your Zelle app or banking app</li>
-      <li>Send to <strong className="text-slate-800">payments@impresscleaning.com</strong></li>
-      <li>Enter amount: <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong></li>
-      <li>Include reference: <strong className="text-slate-800">{invoice.invoice_number}</strong></li>
-      <li>Click the button below after sending</li>
-      </ol>
-      </div>
-      </div>
-      <Button
-      variant="primary"
-      fullWidth
-      size="lg"
-      onClick={() => setShowZelleModal(true)}
-      className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
-      >
-      <CheckCircle className="w-5 h-5" />
-      I've Sent the Payment
-      </Button>
-      </div>
+     >
+     <input
+     type="radio"
+     name="card"
+     checked={selectedCard === card.id}
+     onChange={() => setSelectedCard(card.id)}
+     className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300"
+     />
+     <div className="flex-1">
+     <div className="flex items-center gap-2">
+     <span className="font-semibold text-slate-800">
+     {card.card_brand} •••• {card.card_last4}
+     </span>
+     {card.is_default && (
+      <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+      Default
+      </span>
      )}
      </div>
-     </div>
-     </div>
-     </div>
-     {/* Zelle Confirmation Modal */}
-     <Modal
-     isOpen={showZelleModal}
-     onClose={() => setShowZelleModal(false)}
-     title="Confirm Zelle Payment"
-     >
-     <div className="space-y-4">
-     <p className="text-slate-600">
-     Please confirm that you have sent <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong> via Zelle to <strong className="text-slate-800">payments@impresscleaning.com</strong> with reference <strong className="text-slate-800">{invoice.invoice_number}</strong>.
-     </p>
-     <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-xl p-4">
-     <p className="text-sm text-amber-800">
-     <strong>Note:</strong> We'll verify your payment and update the invoice status within 24 hours.
+     <p className="text-sm text-slate-500">
+     Expires {card.card_exp_month}/{card.card_exp_year}
      </p>
      </div>
-     <div className="flex gap-3 pt-2">
-     <Button
-     variant="secondary"
-     fullWidth
-     onClick={() => setShowZelleModal(false)}
-     className="!border-slate-200 hover:!bg-slate-50"
+     </label>
+    ))}
+    </div>
+    <button
+    onClick={() => setUseNewCard(true)}
+    className="mt-4 text-sm text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
+    >
+    + Use a different card
+    </button>
+    </div>
+   )}
+   {(useNewCard || savedCards.length === 0) && (
+    <div className="mb-6">
+    <div className="bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100 rounded-xl p-4 mb-4">
+    <p className="text-sm text-sky-800">
+    <strong>Note:</strong> This is a demo. In production, Stripe Elements would be loaded here for secure card input.
+    </p>
+    </div>
+    {savedCards.length > 0 && (
+     <button
+     onClick={() => setUseNewCard(false)}
+     className="mb-4 text-sm text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
      >
-     Cancel
-     </Button>
-     <Button
-     variant="primary"
-     fullWidth
-     onClick={handleZelleConfirmation}
-     loading={processing}
-     className="!bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600"
-     >
-     Confirm Payment Sent
-     </Button>
-     </div>
-     </div>
-     </Modal>
-     </div>
-     {/* Animation Styles */}
-     <style jsx global>{`
+     ← Back to saved cards
+     </button>
+    )}
+    <div className="space-y-4">
+    <div className="p-4 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+    <p className="text-sm text-slate-500 text-center">
+    Stripe Elements Card Input
+    </p>
+    </div>
+    <label className="flex items-center gap-2">
+    <input 
+    type="checkbox" 
+    className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded" 
+    />
+    <span className="text-sm text-slate-600">Save this card for future payments</span>
+    </label>
+    </div>
+    </div>
+   )}
+   <Button
+   variant="primary"
+   fullWidth
+   size="lg"
+   onClick={handleStripePayment}
+   loading={processing}
+   className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
+   >
+   <CreditCard className="w-5 h-5" />
+   Pay {formatMoney(invoice?.total ?? invoice?.amount)}
+   </Button>
+   {/* Security Trust Badge */}
+   <div className="mt-6 pt-5 border-t border-slate-100">
+   <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+   <div className="flex items-center gap-2">
+   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
+   <Shield className="w-3.5 h-3.5 text-emerald-600" />
+   </div>
+   <div className="text-left">
+   <p className="text-[11px] font-semibold text-slate-700">256-bit SSL</p>
+   <p className="text-[9px] text-slate-400">Encryption</p>
+   </div>
+   </div>
+   <div className="flex items-center gap-2">
+   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+   <svg className="w-3.5 h-3.5 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
+   <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
+   </svg>
+   </div>
+   <div className="text-left">
+   <p className="text-[11px] font-semibold text-slate-700">Stripe Secure</p>
+   <p className="text-[9px] text-slate-400">PCI Compliant</p>
+   </div>
+   </div>
+   <div className="flex items-center gap-2">
+   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
+   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+   </div>
+   <div className="text-left">
+   <p className="text-[11px] font-semibold text-slate-700">Bank-Level</p>
+   <p className="text-[9px] text-slate-400">Security</p>
+   </div>
+   </div>
+   </div>
+   </div>
+   </div>
+  )}
+  {/* Zelle Payment */}
+  {paymentMethod === 'zelle' && (
+   <div className="animate-fadeIn">
+   <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200 rounded-xl p-6 mb-6">
+   <div className="flex items-center gap-3 mb-5">
+   <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+   <QrCode className="w-5 h-5 text-purple-600" />
+   </div>
+   <h3 className="font-semibold text-slate-800">
+   Pay with Zelle
+   </h3>
+   </div>
+   <div className="space-y-4">
+   <div className="p-4 bg-white rounded-xl border border-slate-100">
+   <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+   Send payment to
+   </p>
+   <p className="text-lg font-bold text-emerald-600">
+   payments@impresscleaning.com
+   </p>
+   </div>
+   <div className="grid grid-cols-2 gap-4">
+   <div className="p-4 bg-white rounded-xl border border-slate-100">
+   <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+   Amount
+   </p>
+   <p className="text-xl font-bold text-slate-800">
+   {formatMoney(invoice?.total ?? invoice?.amount)}
+   </p>
+   </div>
+   <div className="p-4 bg-white rounded-xl border border-slate-100">
+   <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+   Reference
+   </p>
+   <p className="text-lg font-mono font-bold text-slate-800">
+   {invoice.invoice_number}
+   </p>
+   </div>
+   </div>
+   </div>
+   <div className="mt-5 p-4 bg-white rounded-xl border border-slate-100">
+   <p className="text-sm font-semibold text-slate-700 mb-2">
+   Instructions
+   </p>
+   <ol className="text-sm text-slate-600 space-y-1.5 list-decimal list-inside">
+   <li>Open your Zelle app or banking app</li>
+   <li>Send to <strong className="text-slate-800">payments@impresscleaning.com</strong></li>
+   <li>Enter amount: <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong></li>
+   <li>Include reference: <strong className="text-slate-800">{invoice.invoice_number}</strong></li>
+   <li>Click the button below after sending</li>
+   </ol>
+   </div>
+   </div>
+   <Button
+   variant="primary"
+   fullWidth
+   size="lg"
+   onClick={() => setShowZelleModal(true)}
+   className="!py-4 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200"
+   >
+   <CheckCircle className="w-5 h-5" />
+   I've Sent the Payment
+   </Button>
+   </div>
+  )}
+  </div>
+  </div>
+  </div>
+  </div>
+  {/* Zelle Confirmation Modal */}
+  <Modal
+  isOpen={showZelleModal}
+  onClose={() => setShowZelleModal(false)}
+  title="Confirm Zelle Payment"
+  >
+  <div className="space-y-4">
+  <p className="text-slate-600">
+  Please confirm that you have sent <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong> via Zelle to <strong className="text-slate-800">payments@impresscleaning.com</strong> with reference <strong className="text-slate-800">{invoice.invoice_number}</strong>.
+  </p>
+  <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-xl p-4">
+  <p className="text-sm text-amber-800">
+  <strong>Note:</strong> We'll verify your payment and update the invoice status within 24 hours.
+  </p>
+  </div>
+  <div className="flex gap-3 pt-2">
+  <Button
+  variant="secondary"
+  fullWidth
+  onClick={() => setShowZelleModal(false)}
+  className="!border-slate-200 hover:!bg-slate-50"
+  >
+  Cancel
+  </Button>
+  <Button
+  variant="primary"
+  fullWidth
+  onClick={handleZelleConfirmation}
+  loading={processing}
+  className="!bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600"
+  >
+  Confirm Payment Sent
+  </Button>
+  </div>
+  </div>
+  </Modal>
+  </div>
+  {/* Animation Styles */}
+  <style jsx global>{`
 @keyframes fadeIn {
 from {
 opacity: 0;
@@ -607,6 +608,6 @@ animation: fadeIn 0.4s ease-out forwards;
 opacity: 0;
 }
 `}</style>
-      </div>
-     )
-    }
+   </div>
+  )
+ }
