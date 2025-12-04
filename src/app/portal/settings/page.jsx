@@ -29,7 +29,6 @@ const stripePromise = loadStripe(
  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
 )
 import { sanitizeText, sanitizePhone, sanitizeEmail } from '@/lib/sanitize'
-
 export default function SettingsPage() {
  const router = useRouter()
  const supabase = useMemo(() => createClient(), [])
@@ -81,10 +80,8 @@ export default function SettingsPage() {
   }
   load()
  }, [router, supabase])
- 
  useEffect(() => {
   if (loading) return
-  
   const mountCardElement = async () => {
    if (!cardElementRef.current || stripeCardRef.current) return
    const stripe = await stripePromise
@@ -95,19 +92,16 @@ export default function SettingsPage() {
      base: {
       fontSize: '16px',
       color: '#1C294E',
-      '::placeholder': { color: '#9ca3af' },
+'::placeholder': { color: '#9ca3af' },
      },
     },
    })
    card.mount(cardElementRef.current)
    stripeCardRef.current = { stripe, card }
   }
-  
   const timer = setTimeout(mountCardElement, 150)
-  
   return () => clearTimeout(timer)
  }, [loading])
- 
  // Separate cleanup on unmount only
  useEffect(() => {
   return () => {
@@ -116,7 +110,6 @@ export default function SettingsPage() {
    }
   }
  }, [])
- 
  const handleProfileSave = async () => {
   if (!user || !profile) return
   setSavingProfile(true)
@@ -129,7 +122,6 @@ export default function SettingsPage() {
     communication_preference: pref,
    })
    .eq('id', user.id)
-   
    if (error) throw error
    toast.success('Profile updated')
   } catch (err) {
@@ -196,7 +188,6 @@ export default function SettingsPage() {
     zip_code: sanitizeText(addressForm.zip_code)?.slice(0, 10),
     is_primary: addressForm.is_primary,
    }
-   
    if (addressModal.editing) {
     const { error } = await supabase
     .from('service_addresses')
@@ -331,19 +322,15 @@ export default function SettingsPage() {
  }
  const handleDeleteAccount = async () => {
   if (!window.confirm('This will permanently delete your account. Continue?')) return
-  
   try {
    const res = await fetch('/api/customer-portal/delete-account', {
     method: 'DELETE',
    })
-   
    const data = await res.json()
    if (!res.ok || data.error) {
     throw new Error(data.error || 'Failed to delete account')
    }
-   
    toast.success('Your account has been deleted')
-   
    // sign out and send them away
    await supabase.auth.signOut()
    router.push('/auth/login')
@@ -352,7 +339,6 @@ export default function SettingsPage() {
    toast.error(err.message || 'Could not delete account')
   }
  }
- 
  if (loading) {
   return (
    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
@@ -516,7 +502,7 @@ export default function SettingsPage() {
   <h2 className="text-xl font-bold text-[#1C294E]">Payment Methods</h2>
   </div>
   </div>
-<div className={`grid grid-cols-1 ${payments.length > 0 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-4`}>
+  <div className={`grid grid-cols-1 ${payments.length > 0 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-4`}>
   <div className={payments.length > 0 ? 'lg:col-span-2 space-y-3' : ''}>
   {payments.length === 0 ? (
    <div className="flex items-center justify-center p-8 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl border-2 border-dashed border-slate-200 h-full min-h-[180px]">
@@ -528,31 +514,31 @@ export default function SettingsPage() {
    </div>
   ) : (
    payments.map((pm) => (
-   <div key={pm.id} className="border border-gray-200 rounded-xl p-5 flex items-center justify-between bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md transition-all duration-200">
-   <div className="space-y-1.5">
-   <p className="font-bold text-[#1C294E] text-base">
-   {pm.card_brand?.toUpperCase()} •••• {pm.card_last4}
-   </p>
-   <p className="text-sm text-gray-600">
-   Expires {pm.card_exp_month}/{pm.card_exp_year}
-   </p>
-   {pm.is_default && (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
-    <Star className="w-3.5 h-3.5 fill-amber-600" /> Default Card
-    </span>
-   )}
-   </div>
-   <div className="flex gap-2">
-   {!pm.is_default && (
-    <Button size="sm" variant="ghost" onClick={() => makeDefaultCard(pm.stripe_payment_method_id)}>
-    Make default
+    <div key={pm.id} className="border border-gray-200 rounded-xl p-5 flex items-center justify-between bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md transition-all duration-200">
+    <div className="space-y-1.5">
+    <p className="font-bold text-[#1C294E] text-base">
+    {pm.card_brand?.toUpperCase()} •••• {pm.card_last4}
+    </p>
+    <p className="text-sm text-gray-600">
+    Expires {pm.card_exp_month}/{pm.card_exp_year}
+    </p>
+    {pm.is_default && (
+     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
+     <Star className="w-3.5 h-3.5 fill-amber-600" /> Default Card
+     </span>
+    )}
+    </div>
+    <div className="flex gap-2">
+    {!pm.is_default && (
+     <Button size="sm" variant="ghost" onClick={() => makeDefaultCard(pm.stripe_payment_method_id)}>
+     Make default
+     </Button>
+    )}
+    <Button size="sm" variant="danger" onClick={() => deletePaymentMethod(pm.id)}>
+    <Trash2 className="w-4 h-4" />
     </Button>
-   )}
-   <Button size="sm" variant="danger" onClick={() => deletePaymentMethod(pm.id)}>
-   <Trash2 className="w-4 h-4" />
-   </Button>
-   </div>
-   </div>
+    </div>
+    </div>
    ))
   )}
   </div>
@@ -576,7 +562,43 @@ export default function SettingsPage() {
   </div>
   </div>
   </div>
+  
+  {/* Security Trust Badge */}
+  <div className="mt-6 pt-5 border-t border-gray-100">
+  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+  <div className="flex items-center gap-2">
+  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
+  <Shield className="w-4 h-4 text-emerald-600" />
+  </div>
+  <div className="text-left">
+  <p className="text-xs font-semibold text-[#1C294E]">256-bit SSL</p>
+  <p className="text-[10px] text-gray-500">Encryption</p>
+  </div>
+  </div>
+  <div className="flex items-center gap-2">
+  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+  <svg className="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
+  </svg>
+  </div>
+  <div className="text-left">
+  <p className="text-xs font-semibold text-[#1C294E]">Stripe Secure</p>
+  <p className="text-[10px] text-gray-500">PCI Compliant</p>
+  </div>
+  </div>
+  <div className="flex items-center gap-2">
+  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
+  <KeyRound className="w-4 h-4 text-amber-600" />
+  </div>
+  <div className="text-left">
+  <p className="text-xs font-semibold text-[#1C294E]">Bank-Level</p>
+  <p className="text-[10px] text-gray-500">Security</p>
+  </div>
+  </div>
+  </div>
+  </div>
   </Card>
+  
   {/* Support & Help */}
   <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal5}`}>
   <div className="flex items-center gap-3">
@@ -585,7 +607,6 @@ export default function SettingsPage() {
   </div>
   <h2 className="text-xl font-bold text-[#1C294E]">Support & Help</h2>
   </div>
-  
   <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
   <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
   <div className="flex items-start gap-3">
@@ -599,7 +620,6 @@ export default function SettingsPage() {
   </div>
   </div>
   </div>
-  
   <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100">
   <div className="flex items-start gap-3">
   <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -616,7 +636,6 @@ export default function SettingsPage() {
   </div>
   </div>
   </div>
-  
   <div className="p-5 rounded-xl bg-gradient-to-br from-red-50 to-orange-50 border border-red-100">
   <div className="flex items-start gap-3">
   <div className="w-10 h-10 bg-gradient-to-br from-red-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -632,7 +651,6 @@ export default function SettingsPage() {
   </div>
   </div>
   </Card>
-  
   {/* Account deletion */}
   <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-2 border-red-100 bg-gradient-to-br from-red-50/30 to-white ${styles.cardReveal6}`}>        <div className="flex items-center gap-3">
   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
