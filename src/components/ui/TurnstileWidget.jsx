@@ -30,7 +30,6 @@ export default function TurnstileWidget({ onVerify, onError, onExpire, className
   }, [onVerify, onError, onExpire])
 
   useEffect(() => {
-    // Load script if not present
     if (!document.getElementById('turnstile-script')) {
       const script = document.createElement('script')
       script.id = 'turnstile-script'
@@ -39,24 +38,19 @@ export default function TurnstileWidget({ onVerify, onError, onExpire, className
       document.head.appendChild(script)
     }
 
-    // Define global callback for when Turnstile is ready
     window.onTurnstileLoad = () => {
       renderWidget()
     }
 
-    // If Turnstile already loaded, render immediately
     if (window.turnstile) {
       renderWidget()
     }
 
-    // Cleanup on unmount
     return () => {
       if (widgetIdRef.current !== null && window.turnstile) {
         try {
           window.turnstile.remove(widgetIdRef.current)
-        } catch (e) {
-          // Widget might already be removed
-        }
+        } catch (e) {}
         widgetIdRef.current = null
       }
     }
@@ -64,9 +58,22 @@ export default function TurnstileWidget({ onVerify, onError, onExpire, className
 
   return (
     <div 
-      ref={containerRef} 
       className={className}
-      style={{ minHeight: '65px', minWidth: '300px' }}
-    />
+      style={{
+        width: '100%',
+        minHeight: '65px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div 
+        ref={containerRef}
+        style={{ 
+          minHeight: '65px',
+          minWidth: '300px',
+        }}
+      />
+    </div>
   )
 }
