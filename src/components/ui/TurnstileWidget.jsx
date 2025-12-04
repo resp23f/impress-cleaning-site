@@ -63,6 +63,7 @@ return (
 <div 
 ref={containerRef} 
 className={`turnstile-container ${className}`}
+style={{ minHeight: '65px' }}
 />
 )
 }
