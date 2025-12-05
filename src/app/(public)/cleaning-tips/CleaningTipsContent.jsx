@@ -3034,7 +3034,7 @@ export default function CleaningTipsPage() {
       Transform Your Home Without Lifting a Finger
       </h3>
       <p className="text-white/90 text-lg max-w-2xl mx-auto mb-5">
-      You've explored <span className="text-[#079447] font-bold">15+ comprehensive cleaning guides</span> covering every room and situation. That's thousands of individual tasks, dozens of hours, and extensive expertise required.
+      You've explored <span className="text-[#079447] font-bold">25+ comprehensive cleaning guides</span> covering every room and situation. That's thousands of individual tasks, dozens of hours, and extensive expertise required.
       </p>
       <p className="text-white/80 text-base max-w-xl mx-auto mb-6">
       Or... you could simply call Impress Cleaning Services. We know these checklists by heart because we live them every day. Let us handle the complexity while you enjoy the results.
@@ -3206,8 +3206,6 @@ export default function CleaningTipsPage() {
   <footer className="border-t border-gray-200 dark:border-gray-800 mt-20 bg-white dark:bg-gray-950">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
   <div className="text-center text-gray-600 dark:text-gray-400">
-  <p className="mb-2 text-sm">Professional cleaning solutions for modern homes</p>
-  <p className="text-sm">© 2024 Cleaning Tips. All rights reserved.</p>
   </div>
   </div>
   </footer>
