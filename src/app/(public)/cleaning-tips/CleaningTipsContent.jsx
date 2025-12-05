@@ -3041,7 +3041,6 @@ export default function CleaningTipsPage() {
       Leave it to Impress Cleaning. We know these checklists by heart because we live them every day. Let us handle the complexity while you enjoy the results.
       </p>
       <div className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#079447]/90 text-white rounded-xl font-semibold transition-colors cursor-pointer">
-      <Shield className="w-5 h-5" />
 <Link href="/residential-section">
   <div className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#079447]/90 text-white rounded-xl font-semibold transition-colors cursor-pointer">
     <Shield className="w-5 h-5" />
