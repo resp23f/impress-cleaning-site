@@ -1,4 +1,5 @@
 'use client';
+import Link from "next/link";
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -3037,11 +3038,16 @@ export default function CleaningTipsPage() {
       You've explored <span className="text-[#079447] font-bold">25+ comprehensive cleaning guides</span> covering every room and situation. That's thousands of individual tasks, dozens of hours, and extensive expertise required.
       </p>
       <p className="text-white/80 text-base max-w-xl mx-auto mb-6">
-      Or... you could simply call Impress Cleaning Services. We know these checklists by heart because we live them every day. Let us handle the complexity while you enjoy the results.
+      Leave it to Impress Cleaning. We know these checklists by heart because we live them every day. Let us handle the complexity while you enjoy the results.
       </p>
       <div className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#079447]/90 text-white rounded-xl font-semibold transition-colors cursor-pointer">
       <Shield className="w-5 h-5" />
-      Experience the Impress Difference
+<Link href="/residential-section">
+  <div className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] hover:bg-[#079447]/90 text-white rounded-xl font-semibold transition-colors cursor-pointer">
+    <Shield className="w-5 h-5" />
+    Experience the Impress Difference
+  </div>
+</Link>
       </div>
       </motion.div>
      )}
