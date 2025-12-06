@@ -117,40 +117,27 @@ export async function POST(request) {
       }
     }
 
-    // 4. Create Stripe Invoice
-    const stripeInvoice = await stripe.invoices.create({
-      customer: stripeCustomerId,
-      collection_method: 'send_invoice',
-      days_until_due: invoice.due_date
-        ? Math.max(1, Math.ceil((new Date(invoice.due_date) - new Date()) / (1000 * 60 * 60 * 24)))
-        : 7,
-      metadata: {
-        supabase_invoice_id: invoice.id,
-        invoice_number: invoice.invoice_number
-      }
-    })
-
-    // 5. Add line items to Stripe Invoice
+    // 4. Create invoice items FIRST (as pending items for the customer)
     const lineItems = invoice.line_items || []
 
     if (lineItems.length > 0) {
       for (const item of lineItems) {
         await stripe.invoiceItems.create({
           customer: stripeCustomerId,
-          invoice: stripeInvoice.id,
           description: sanitizeText(item.description)?.slice(0, 200) || 'Service',
           quantity: item.quantity || 1,
-          unit_amount: Math.round(parseFloat(item.rate) * 100)
+          unit_amount: Math.round(parseFloat(item.rate) * 100),
+          currency: 'usd'
         })
       }
     } else {
       // Fallback: create single line item from invoice amount
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
-        invoice: stripeInvoice.id,
         description: `Invoice ${invoice.invoice_number}`,
         quantity: 1,
-        unit_amount: Math.round(parseFloat(invoice.amount) * 100)
+        unit_amount: Math.round(parseFloat(invoice.amount) * 100),
+        currency: 'usd'
       })
     }
 
@@ -158,17 +145,29 @@ export async function POST(request) {
     if (invoice.tax_amount && parseFloat(invoice.tax_amount) > 0) {
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
-        invoice: stripeInvoice.id,
         description: `Tax (${invoice.tax_rate || 0}%)`,
         quantity: 1,
-        unit_amount: Math.round(parseFloat(invoice.tax_amount) * 100)
+        unit_amount: Math.round(parseFloat(invoice.tax_amount) * 100),
+        currency: 'usd'
       })
     }
 
-    // 6. Finalize and send the Stripe Invoice
-    const finalizedInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
+    // 5. Create Stripe Invoice (includes pending invoice items automatically)
+    const stripeInvoice = await stripe.invoices.create({
+      customer: stripeCustomerId,
+      collection_method: 'send_invoice',
+      days_until_due: invoice.due_date
+        ? Math.max(1, Math.ceil((new Date(invoice.due_date) - new Date()) / (1000 * 60 * 60 * 24)))
+        : 7,
+      pending_invoice_items_behavior: 'include',
+      metadata: {
+        supabase_invoice_id: invoice.id,
+        invoice_number: invoice.invoice_number
+      }
+    })
 
-    // Send the invoice via Stripe
+    // 6. Finalize and send the Stripe Invoice
+    await stripe.invoices.finalizeInvoice(stripeInvoice.id)
     const sentInvoice = await stripe.invoices.sendInvoice(stripeInvoice.id)
 
     // 7. Update Supabase invoice with Stripe details
