@@ -31,6 +31,9 @@ export async function POST(request) {
    return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
   }
 
+  // Get Supabase invoice ID from metadata if not provided
+  const supabaseInvoiceId = invoiceId || stripeInvoice.metadata?.supabase_invoice_id
+
   // Attach payment method to customer if not already attached
   try {
    await stripe.paymentMethods.attach(paymentMethodId, {
@@ -73,7 +76,7 @@ export async function POST(request) {
   }
 
   // Update our invoice record
-  if (invoiceId) {
+  if (supabaseInvoiceId) {
    await supabaseAdmin
     .from('invoices')
     .update({
@@ -83,7 +86,7 @@ export async function POST(request) {
      stripe_payment_intent_id: paidInvoice.payment_intent,
      updated_at: new Date().toISOString(),
     })
-    .eq('id', invoiceId)
+    .eq('id', supabaseInvoiceId)
   }
 
   return NextResponse.json({
