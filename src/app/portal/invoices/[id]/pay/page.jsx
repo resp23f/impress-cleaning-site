@@ -416,15 +416,40 @@ router.push('/portal/invoices')
 const handleZelleConfirmation = async () => {
 setProcessing(true)
 try {
+// Update invoice with Zelle payment claim
 const { error } = await supabase
 .from('invoices')
 .update({
 payment_method: 'zelle',
-notes: 'Payment pending - customer marked as sent via Zelle',
+notes: `Payment pending - customer marked as sent via Zelle on ${new Date().toLocaleDateString()}`,
 })
 .eq('id', invoice.id)
 if (error) throw error
-toast.success('Thank you! We\'ll confirm your payment within 24 hours.')
+
+// Send alert to admin via Zelle notification endpoint
+try {
+const { data: { user } } = await supabase.auth.getUser()
+const { data: profile } = await supabase
+.from('profiles')
+.select('full_name')
+.eq('id', user.id)
+.single()
+
+await fetch('/api/notifications/zelle-alert', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+invoiceId: invoice.id,
+customerName: profile?.full_name || 'Customer',
+amount: invoice.total || invoice.amount,
+}),
+})
+} catch (alertError) {
+console.error('Error sending Zelle alert:', alertError)
+// Non-fatal - continue anyway
+}
+
+toast.success('Thank you! We\'ll verify your payment and confirm within 24 hours.')
 setShowZelleModal(false)
 setTimeout(() => {
 router.push('/portal/invoices')

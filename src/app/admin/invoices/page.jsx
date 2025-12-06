@@ -10,7 +10,10 @@ import {
  Plus,
  Eye,
  Download,
- Search
+ Search,
+ RefreshCw,
+ CreditCard,
+ AlertCircle
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Card from '@/components/ui/Card'
@@ -56,7 +59,20 @@ export default function InvoicesPage() {
   email: '',
   phone: '',
  })
- 
+
+ // Refund modal state
+ const [showRefundModal, setShowRefundModal] = useState(false)
+ const [refundAmount, setRefundAmount] = useState('')
+ const [refundReason, setRefundReason] = useState('')
+
+ // Apply credit modal state
+ const [showCreditModal, setShowCreditModal] = useState(false)
+ const [creditAmount, setCreditAmount] = useState('')
+
+ // Mark paid modal state
+ const [showMarkPaidModal, setShowMarkPaidModal] = useState(false)
+ const [paymentMethod, setPaymentMethod] = useState('zelle')
+
  const supabase = createClient()
  
  useEffect(() => {
@@ -241,7 +257,201 @@ export default function InvoicesPage() {
     setProcessing(false)
    }
   }
-  
+
+  // Cancel invoice via API
+  const handleCancelInvoice = async () => {
+   if (!selectedInvoice) return
+
+   setProcessing(true)
+   try {
+    const response = await fetch('/api/admin/invoices/cancel', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ invoiceId: selectedInvoice.id })
+    })
+
+    if (!response.ok) {
+     const data = await response.json()
+     throw new Error(data.error || 'Failed to cancel invoice')
+    }
+
+    toast.success('Invoice cancelled successfully!')
+    setShowModal(false)
+    loadInvoices()
+   } catch (error) {
+    console.error('Error cancelling invoice:', error)
+    toast.error(error.message || 'Failed to cancel invoice')
+   } finally {
+    setProcessing(false)
+   }
+  }
+
+  // Mark paid via API (for Zelle, cash, check)
+  const handleMarkPaid = async () => {
+   if (!selectedInvoice) return
+
+   setProcessing(true)
+   try {
+    const response = await fetch('/api/admin/invoices/mark-paid', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+      invoiceId: selectedInvoice.id,
+      paymentMethod: paymentMethod
+     })
+    })
+
+    if (!response.ok) {
+     const data = await response.json()
+     throw new Error(data.error || 'Failed to mark invoice as paid')
+    }
+
+    toast.success('Invoice marked as paid!')
+    setShowMarkPaidModal(false)
+    setShowModal(false)
+    loadInvoices()
+   } catch (error) {
+    console.error('Error marking invoice as paid:', error)
+    toast.error(error.message || 'Failed to mark invoice as paid')
+   } finally {
+    setProcessing(false)
+   }
+  }
+
+  // Process refund via API
+  const handleRefund = async () => {
+   if (!selectedInvoice || !refundAmount) return
+
+   const amount = parseFloat(refundAmount)
+   if (isNaN(amount) || amount <= 0) {
+    toast.error('Please enter a valid refund amount')
+    return
+   }
+
+   setProcessing(true)
+   try {
+    const response = await fetch('/api/admin/invoices/refund', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+      invoiceId: selectedInvoice.id,
+      amount: amount,
+      reason: refundReason || 'Refund processed by admin'
+     })
+    })
+
+    if (!response.ok) {
+     const data = await response.json()
+     throw new Error(data.error || 'Failed to process refund')
+    }
+
+    toast.success('Refund processed successfully!')
+    setShowRefundModal(false)
+    setRefundAmount('')
+    setRefundReason('')
+    setShowModal(false)
+    loadInvoices()
+   } catch (error) {
+    console.error('Error processing refund:', error)
+    toast.error(error.message || 'Failed to process refund')
+   } finally {
+    setProcessing(false)
+   }
+  }
+
+  // Apply credit via API
+  const handleApplyCredit = async () => {
+   if (!selectedInvoice || !creditAmount) return
+
+   const amount = parseFloat(creditAmount)
+   if (isNaN(amount) || amount <= 0) {
+    toast.error('Please enter a valid credit amount')
+    return
+   }
+
+   setProcessing(true)
+   try {
+    const response = await fetch('/api/admin/invoices/apply-credit', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+      invoiceId: selectedInvoice.id,
+      creditAmount: amount
+     })
+    })
+
+    if (!response.ok) {
+     const data = await response.json()
+     throw new Error(data.error || 'Failed to apply credit')
+    }
+
+    const result = await response.json()
+    toast.success(result.isFullyPaid
+     ? 'Credit applied - Invoice is now paid!'
+     : `Credit applied - Remaining balance: $${result.remainingBalance.toFixed(2)}`
+    )
+    setShowCreditModal(false)
+    setCreditAmount('')
+    setShowModal(false)
+    loadInvoices()
+   } catch (error) {
+    console.error('Error applying credit:', error)
+    toast.error(error.message || 'Failed to apply credit')
+   } finally {
+    setProcessing(false)
+   }
+  }
+
+  // Verify Zelle payment (marks as paid)
+  const handleVerifyZelle = async () => {
+   setPaymentMethod('zelle')
+   await handleMarkPaid()
+  }
+
+  // Reject Zelle claim
+  const handleRejectZelle = async () => {
+   if (!selectedInvoice) return
+
+   setProcessing(true)
+   try {
+    // Update invoice to remove Zelle claim
+    const { error } = await supabase
+     .from('invoices')
+     .update({
+      payment_method: null,
+      notes: (selectedInvoice.notes || '') + `\nZelle payment claim rejected on ${new Date().toLocaleDateString()}`,
+      updated_at: new Date().toISOString()
+     })
+     .eq('id', selectedInvoice.id)
+
+    if (error) throw error
+
+    // Create rejection notification for customer
+    if (selectedInvoice.customer_id) {
+     await supabase
+      .from('customer_notifications')
+      .insert({
+       user_id: selectedInvoice.customer_id,
+       type: 'zelle_rejected',
+       title: 'Zelle Payment Not Found',
+       message: `We could not verify your Zelle payment for Invoice ${selectedInvoice.invoice_number}. Please contact us.`,
+       link: '/portal/invoices',
+       reference_id: selectedInvoice.id,
+       reference_type: 'invoice'
+      })
+    }
+
+    toast.success('Zelle claim rejected - customer notified')
+    setShowModal(false)
+    loadInvoices()
+   } catch (error) {
+    console.error('Error rejecting Zelle:', error)
+    toast.error('Failed to reject Zelle claim')
+   } finally {
+    setProcessing(false)
+   }
+  }
+
 const handleCreateCustomer = async () => {
    if (!newCustomer.full_name && !newCustomer.email) {
     toast.error('Name or email is required')
@@ -683,6 +893,66 @@ const handleCreateCustomer = async () => {
       </div>
      )}
      
+     {/* Zelle Verification Section */}
+     {selectedInvoice.payment_method === 'zelle' && selectedInvoice.status !== 'paid' && (
+      <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+       <div className="flex items-center gap-2 mb-3">
+        <AlertCircle className="w-5 h-5 text-purple-600" />
+        <h3 className="font-semibold text-purple-800">Zelle Payment Claimed</h3>
+       </div>
+       <p className="text-sm text-purple-700 mb-4">
+        Customer claims to have sent payment via Zelle. Please verify in your Zelle account.
+       </p>
+       <div className="flex gap-3">
+        <Button
+         variant="success"
+         fullWidth
+         onClick={handleVerifyZelle}
+         loading={processing}
+        >
+         <CheckCircle className="w-4 h-4" />
+         Verify Payment
+        </Button>
+        <Button
+         variant="danger"
+         fullWidth
+         onClick={handleRejectZelle}
+         loading={processing}
+        >
+         <XCircle className="w-4 h-4" />
+         Reject Claim
+        </Button>
+       </div>
+      </div>
+     )}
+
+     {/* Refund Info */}
+     {selectedInvoice.refund_amount > 0 && (
+      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+       <div className="flex items-center gap-2 mb-2">
+        <RefreshCw className="w-5 h-5 text-blue-600" />
+        <h3 className="font-semibold text-blue-800">Refund Issued</h3>
+       </div>
+       <p className="text-sm text-blue-700">
+        Amount: ${parseFloat(selectedInvoice.refund_amount).toFixed(2)}
+        {selectedInvoice.refund_reason && ` - ${selectedInvoice.refund_reason}`}
+       </p>
+      </div>
+     )}
+
+     {/* Dispute Warning */}
+     {selectedInvoice.disputed && (
+      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+       <div className="flex items-center gap-2 mb-2">
+        <AlertCircle className="w-5 h-5 text-red-600" />
+        <h3 className="font-semibold text-red-800">DISPUTE ACTIVE</h3>
+       </div>
+       <p className="text-sm text-red-700">
+        This invoice has an active payment dispute. Check your Stripe Dashboard for details.
+       </p>
+      </div>
+     )}
+
      {/* Actions */}
      <div className="space-y-3 pt-4 border-t border-gray-200">
      {selectedInvoice.status === 'draft' && (
@@ -693,34 +963,59 @@ const handleCreateCustomer = async () => {
       loading={processing}
       >
       <Send className="w-5 h-5" />
-      Mark as Sent
+      Send Invoice
       </Button>
      )}
-     
+
      {(selectedInvoice.status === 'sent' || selectedInvoice.status === 'overdue') && (
+      <>
+       <Button
+        variant="success"
+        fullWidth
+        onClick={() => setShowMarkPaidModal(true)}
+        loading={processing}
+       >
+        <CheckCircle className="w-5 h-5" />
+        Mark as Paid
+       </Button>
+
+       <Button
+        variant="outline"
+        fullWidth
+        onClick={() => setShowCreditModal(true)}
+       >
+        <CreditCard className="w-5 h-5" />
+        Apply Credit
+       </Button>
+      </>
+     )}
+
+     {selectedInvoice.status === 'paid' && !selectedInvoice.disputed && (
       <Button
-      variant="success"
-      fullWidth
-      onClick={() => handleUpdateStatus('paid')}
-      loading={processing}
+       variant="outline"
+       fullWidth
+       onClick={() => {
+        setRefundAmount((selectedInvoice.total || selectedInvoice.amount || 0).toString())
+        setShowRefundModal(true)
+       }}
       >
-      <CheckCircle className="w-5 h-5" />
-      Mark as Paid
+       <RefreshCw className="w-5 h-5" />
+       Issue Refund
       </Button>
      )}
-     
+
      {selectedInvoice.status !== 'cancelled' && selectedInvoice.status !== 'paid' && (
       <Button
       variant="danger"
       fullWidth
-      onClick={() => handleUpdateStatus('cancelled')}
+      onClick={handleCancelInvoice}
       loading={processing}
       >
       <XCircle className="w-5 h-5" />
       Cancel Invoice
       </Button>
      )}
-     
+
      {!selectedInvoice.archived && (
       <Button
       variant="outline"
@@ -1024,6 +1319,175 @@ const handleCreateCustomer = async () => {
     </Button>
     </div>
     </div>
+    </Modal>
+
+    {/* Mark Paid Modal */}
+    <Modal
+     isOpen={showMarkPaidModal}
+     onClose={() => setShowMarkPaidModal(false)}
+     title="Mark Invoice as Paid"
+     maxWidth="sm"
+    >
+     <div className="space-y-4">
+      <p className="text-gray-600">
+       Select the payment method used:
+      </p>
+      <div className="space-y-2">
+       {['zelle', 'cash', 'check'].map((method) => (
+        <label key={method} className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+         <input
+          type="radio"
+          name="paymentMethod"
+          value={method}
+          checked={paymentMethod === method}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+          className="w-4 h-4 text-[#079447] focus:ring-[#079447]"
+         />
+         <span className="font-medium capitalize">{method}</span>
+        </label>
+       ))}
+      </div>
+      <div className="flex gap-3 pt-4 border-t border-gray-200">
+       <Button
+        variant="outline"
+        fullWidth
+        onClick={() => setShowMarkPaidModal(false)}
+       >
+        Cancel
+       </Button>
+       <Button
+        variant="primary"
+        fullWidth
+        onClick={handleMarkPaid}
+        loading={processing}
+       >
+        Confirm Payment
+       </Button>
+      </div>
+     </div>
+    </Modal>
+
+    {/* Refund Modal */}
+    <Modal
+     isOpen={showRefundModal}
+     onClose={() => {
+      setShowRefundModal(false)
+      setRefundAmount('')
+      setRefundReason('')
+     }}
+     title="Issue Refund"
+     maxWidth="sm"
+    >
+     <div className="space-y-4">
+      {selectedInvoice && (
+       <p className="text-gray-600">
+        Maximum refundable: ${parseFloat(
+         (selectedInvoice.total || selectedInvoice.amount || 0) -
+         (selectedInvoice.refund_amount || 0)
+        ).toFixed(2)}
+       </p>
+      )}
+      <Input
+       label="Refund Amount"
+       type="number"
+       step="0.01"
+       min="0"
+       value={refundAmount}
+       onChange={(e) => setRefundAmount(e.target.value)}
+       placeholder="0.00"
+      />
+      <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-2">
+        Reason (Optional)
+       </label>
+       <textarea
+        value={refundReason}
+        onChange={(e) => setRefundReason(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
+        rows="2"
+        placeholder="Reason for refund..."
+       />
+      </div>
+      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+       <p className="text-sm text-yellow-800">
+        <strong>Note:</strong> If paid via Stripe, the refund will be processed automatically.
+       </p>
+      </div>
+      <div className="flex gap-3 pt-4 border-t border-gray-200">
+       <Button
+        variant="outline"
+        fullWidth
+        onClick={() => {
+         setShowRefundModal(false)
+         setRefundAmount('')
+         setRefundReason('')
+        }}
+       >
+        Cancel
+       </Button>
+       <Button
+        variant="danger"
+        fullWidth
+        onClick={handleRefund}
+        loading={processing}
+       >
+        Process Refund
+       </Button>
+      </div>
+     </div>
+    </Modal>
+
+    {/* Apply Credit Modal */}
+    <Modal
+     isOpen={showCreditModal}
+     onClose={() => {
+      setShowCreditModal(false)
+      setCreditAmount('')
+     }}
+     title="Apply Credit"
+     maxWidth="sm"
+    >
+     <div className="space-y-4">
+      {selectedInvoice && (
+       <p className="text-gray-600">
+        Invoice balance: ${parseFloat(selectedInvoice.total || selectedInvoice.amount || 0).toFixed(2)}
+       </p>
+      )}
+      <Input
+       label="Credit Amount"
+       type="number"
+       step="0.01"
+       min="0"
+       value={creditAmount}
+       onChange={(e) => setCreditAmount(e.target.value)}
+       placeholder="0.00"
+      />
+      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+       <p className="text-sm text-blue-800">
+        Credit will be deducted from the customer's account and applied to this invoice.
+       </p>
+      </div>
+      <div className="flex gap-3 pt-4 border-t border-gray-200">
+       <Button
+        variant="outline"
+        fullWidth
+        onClick={() => {
+         setShowCreditModal(false)
+         setCreditAmount('')
+        }}
+       >
+        Cancel
+       </Button>
+       <Button
+        variant="primary"
+        fullWidth
+        onClick={handleApplyCredit}
+        loading={processing}
+       >
+        Apply Credit
+       </Button>
+      </div>
+     </div>
     </Modal>
     </div>
    )

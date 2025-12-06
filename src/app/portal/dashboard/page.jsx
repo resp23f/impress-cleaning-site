@@ -22,6 +22,7 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from '../invoices/InvoiceSidePanel'
+import RecentNotificationsCard from '@/components/portal/RecentNotificationsCard'
 import styles from '../shared-animations.module.css'
 export default function DashboardPage() {
  const router = useRouter()
@@ -675,7 +676,12 @@ ${styles.smoothTransition}
          </div>
         </div>
        </div>
-       {/* Row 3: Service Address, Account Summary, Feedback */}
+       {/* Row 3: Notifications */}
+       <div className={`mb-8 ${styles.cardReveal5}`}>
+        <RecentNotificationsCard />
+       </div>
+
+       {/* Row 4: Service Address, Account Summary, Feedback */}
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Service Address Card */}
         <div className={styles.cardReveal5}>

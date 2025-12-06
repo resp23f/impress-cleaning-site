@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import styles from '../shared-animations.module.css'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { FileText, DollarSign, AlertCircle, Calendar } from 'lucide-react'
+import { FileText, DollarSign, AlertCircle, Calendar, RefreshCw } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
@@ -123,7 +123,9 @@ export default function InvoicesPage() {
  const filteredInvoices = invoices.filter((invoice) => {
   // Hide drafts from customers completely
   if (invoice.status === 'draft') return false
-  
+  // Hide archived invoices
+  if (invoice.archived) return false
+
   if (filter === 'unpaid')
    return invoice.status === 'sent' || invoice.status === 'pending'
   if (filter === 'paid') return invoice.status === 'paid'
@@ -273,6 +275,12 @@ export default function InvoicesPage() {
     )}
     </div>
     {invoice.status !== 'overdue' && getStatusBadge(invoice.status)}
+    {invoice.refund_amount > 0 && (
+     <Badge variant="info" className="flex items-center gap-1">
+      <RefreshCw className="w-3 h-3" />
+      Refunded ${parseFloat(invoice.refund_amount).toFixed(2)}
+     </Badge>
+    )}
     </div>
     <p className="text-sm text-gray-600">
     Issued:{' '}

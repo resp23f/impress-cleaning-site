@@ -2,6 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 import { sanitizeText, sanitizeEmail, sanitizePhone } from '@/lib/sanitize'
+import Stripe from 'stripe'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export async function POST(request) {
   try {
@@ -78,26 +81,50 @@ export async function POST(request) {
       return NextResponse.json({ error: createError.message }, { status: 500 })
     }
 
-    // 6. Update profile with phone (trigger only sets name from metadata)
+    // 6. Create Stripe customer
+    let stripeCustomerId = null
+    try {
+      const stripeCustomer = await stripe.customers.create({
+        email: sanitizedEmail || undefined,
+        name: sanitizedName || undefined,
+        phone: sanitizedPhone || undefined,
+        metadata: {
+          supabase_user_id: newUser.user.id
+        }
+      })
+      stripeCustomerId = stripeCustomer.id
+    } catch (stripeError) {
+      console.error('Error creating Stripe customer:', stripeError)
+      // Non-fatal - customer was created in Supabase, Stripe can be added later
+    }
+
+    // 7. Update profile with phone and stripe_customer_id
+    const profileUpdate = {
+      updated_at: new Date().toISOString()
+    }
     if (sanitizedPhone) {
+      profileUpdate.phone = sanitizedPhone
+    }
+    if (stripeCustomerId) {
+      profileUpdate.stripe_customer_id = stripeCustomerId
+    }
+
+    if (Object.keys(profileUpdate).length > 1) {
       const { error: updateError } = await adminClient
         .from('profiles')
-        .update({ 
-          phone: sanitizedPhone,
-          updated_at: new Date().toISOString()
-        })
+        .update(profileUpdate)
         .eq('id', newUser.user.id)
 
       if (updateError) {
         console.error('Error updating profile:', updateError)
-        // Non-fatal - customer was created, just phone wasn't saved
+        // Non-fatal - customer was created, just additional fields weren't saved
       }
     }
 
-    // 7. Fetch the complete customer profile
+    // 8. Fetch the complete customer profile
     const { data: customer, error: fetchError } = await adminClient
       .from('profiles')
-      .select('id, full_name, email, phone, account_status, created_at')
+      .select('id, full_name, email, phone, account_status, stripe_customer_id, created_at')
       .eq('id', newUser.user.id)
       .single()
 
@@ -106,9 +133,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Customer created but failed to fetch details' }, { status: 500 })
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      customer 
+    return NextResponse.json({
+      success: true,
+      customer,
+      stripeCustomerId: stripeCustomerId
     })
 
   } catch (error) {

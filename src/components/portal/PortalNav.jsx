@@ -11,8 +11,10 @@ import {
  LogOut,
  Menu,
  X,
+ Bell,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import NotificationBell from './NotificationBell'
 import styles from '../../app/portal/shared-animations.module.css'
 
 const navItems = [
@@ -86,7 +88,20 @@ className={`
     )
    })}
    </nav>
-   
+
+   {/* Notifications */}
+   <div className="px-4 py-3 border-t border-gray-100">
+   <Link
+   href="/portal/notifications"
+   className="group flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-emerald-50/80 hover:text-emerald-900 transition-all duration-200"
+   >
+   <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-emerald-50 flex items-center justify-center transition-all">
+   <Bell className="w-5 h-5 text-gray-500 group-hover:text-emerald-600" />
+   </div>
+   <span className="flex-1">Notifications</span>
+   </Link>
+   </div>
+
    {/* Logout */}
    <div className="p-4 mt-auto border-t border-gray-100">
    <button
@@ -111,6 +126,8 @@ className={`
    className="h-10 w-auto"
    />
    </div>
+   <div className="flex items-center gap-2">
+   <NotificationBell />
 <button
    onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
    className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
@@ -121,6 +138,7 @@ className={`
     <Menu className="w-6 h-6 text-gray-700" />
    )}
    </button>
+   </div>
    </div>
    
 {/* Mobile Menu */}
@@ -168,6 +186,18 @@ className={`
             </Link>
           )
         })}
+
+        {/* Notifications Link in Mobile Menu */}
+        <Link
+          href="/portal/notifications"
+          onClick={closeMenu}
+          className="group flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-emerald-50/80 hover:text-emerald-900 transition-colors duration-300"
+        >
+          <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-emerald-50 flex items-center justify-center transition-colors duration-300">
+            <Bell className="w-5 h-5 text-gray-500 group-hover:text-emerald-600" />
+          </div>
+          <span className="flex-1">Notifications</span>
+        </Link>
       </nav>
 
 {/* Logout - pinned to bottom */}

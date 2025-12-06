@@ -517,7 +517,7 @@ case 'payment_intent.succeeded': {
 case 'payment_intent.payment_failed': {
     const paymentIntent = event.data.object
     console.log('Payment failed:', paymentIntent.id)
-    
+
     // Handle failed payment for portal invoices
     if (paymentIntent.metadata?.invoice_id) {
      const { data: invoice } = await supabaseAdmin
@@ -525,11 +525,11 @@ case 'payment_intent.payment_failed': {
       .select('id, status, due_date, invoice_number, customer_id')
       .eq('id', paymentIntent.metadata.invoice_id)
       .single()
-     
+
      if (invoice && invoice.status !== 'paid') {
       // Check if invoice is now overdue
       const isOverdue = invoice.due_date && new Date(invoice.due_date) < new Date()
-      
+
       if (isOverdue && invoice.status !== 'overdue') {
        await supabaseAdmin
         .from('invoices')
@@ -538,10 +538,10 @@ case 'payment_intent.payment_failed': {
          updated_at: new Date().toISOString(),
         })
         .eq('id', invoice.id)
-       
+
        console.log(`Invoice ${invoice.invoice_number} marked as overdue after failed payment`)
       }
-      
+
       // Notify admin of failed payment
       await supabaseAdmin
        .from('admin_notifications')
@@ -551,13 +551,326 @@ case 'payment_intent.payment_failed': {
         message: `Payment failed for invoice ${invoice.invoice_number}`,
         link: `/admin/invoices`,
        })
-      
+
+      // Create customer notification with failure reason
+      if (invoice.customer_id) {
+       const failureMessage = paymentIntent.last_payment_error?.message || 'Payment could not be processed'
+       await supabaseAdmin
+        .from('customer_notifications')
+        .insert({
+         user_id: invoice.customer_id,
+         type: 'payment_failed',
+         title: 'Payment Failed',
+         message: `Your payment for Invoice ${invoice.invoice_number} failed: ${failureMessage}`,
+         link: `/portal/invoices/${invoice.id}/pay`,
+         reference_id: invoice.id,
+         reference_type: 'invoice'
+        })
+      }
+
+      // Update invoice notes with failure reason
+      const failureReason = paymentIntent.last_payment_error?.message || 'Payment failed'
+      await supabaseAdmin
+       .from('invoices')
+       .update({
+        notes: `Payment attempt failed on ${new Date().toLocaleDateString()}: ${failureReason}`,
+        updated_at: new Date().toISOString(),
+       })
+       .eq('id', invoice.id)
+
       console.log(`Payment failed for invoice ${invoice.invoice_number}`)
      }
     }
     break
    }
-      
+
+  // ==========================================
+  // REFUND EVENTS
+  // ==========================================
+  case 'charge.refunded': {
+    const charge = event.data.object
+    console.log('Processing refund:', charge.id)
+
+    // Find invoice by payment intent
+    const paymentIntentId = charge.payment_intent
+    if (!paymentIntentId) {
+     console.log('Refund has no payment intent, skipping')
+     break
+    }
+
+    const { data: invoice } = await supabaseAdmin
+     .from('invoices')
+     .select('id, invoice_number, customer_id, total, amount, refund_amount, profiles:customer_id(email, full_name)')
+     .eq('stripe_payment_intent_id', paymentIntentId)
+     .single()
+
+    if (!invoice) {
+     console.log('No invoice found for refunded payment intent:', paymentIntentId)
+     break
+    }
+
+    // Calculate refund amount from Stripe
+    const refundedAmount = charge.amount_refunded / 100
+    const invoiceTotal = parseFloat(invoice.total || invoice.amount)
+    const isFullRefund = refundedAmount >= invoiceTotal
+
+    // Update invoice with refund info
+    const updateData = {
+     refund_amount: refundedAmount,
+     refund_reason: 'Refund processed via Stripe',
+     updated_at: new Date().toISOString()
+    }
+
+    if (isFullRefund) {
+     updateData.status = 'cancelled'
+    }
+
+    await supabaseAdmin
+     .from('invoices')
+     .update(updateData)
+     .eq('id', invoice.id)
+
+    const formattedRefund = new Intl.NumberFormat('en-US', {
+     style: 'currency',
+     currency: 'USD'
+    }).format(refundedAmount)
+
+    // Create customer notification
+    if (invoice.customer_id) {
+     await supabaseAdmin
+      .from('customer_notifications')
+      .insert({
+       user_id: invoice.customer_id,
+       type: 'refund_processed',
+       title: 'Refund Processed',
+       message: `A refund of ${formattedRefund} has been issued for Invoice ${invoice.invoice_number}`,
+       link: '/portal/invoices',
+       reference_id: invoice.id,
+       reference_type: 'invoice'
+      })
+    }
+
+    // Create admin notification
+    await supabaseAdmin
+     .from('admin_notifications')
+     .insert({
+      type: 'refund_processed',
+      title: 'Refund Issued',
+      message: `Refund of ${formattedRefund} issued for Invoice ${invoice.invoice_number}`,
+      link: '/admin/invoices'
+     })
+
+    // Send refund email
+    const customerEmail = invoice.profiles?.email
+    const customerName = invoice.profiles?.full_name || 'Customer'
+
+    if (customerEmail) {
+     try {
+      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-refunded`, {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({
+        customerEmail,
+        customerName,
+        invoiceNumber: invoice.invoice_number,
+        refundAmount: refundedAmount,
+        refundReason: 'Refund processed'
+       })
+      })
+     } catch (emailError) {
+      console.error('Error sending refund email:', emailError)
+     }
+    }
+
+    console.log(`Refund of ${formattedRefund} processed for invoice ${invoice.invoice_number}`)
+    break
+   }
+
+  // ==========================================
+  // DISPUTE EVENTS
+  // ==========================================
+  case 'charge.dispute.created': {
+    const dispute = event.data.object
+    console.log('Processing dispute created:', dispute.id)
+
+    // Find invoice by charge's payment intent
+    const chargeId = dispute.charge
+    let paymentIntentId = null
+
+    try {
+     const charge = await stripe.charges.retrieve(chargeId)
+     paymentIntentId = charge.payment_intent
+    } catch (err) {
+     console.error('Error retrieving charge for dispute:', err)
+    }
+
+    if (!paymentIntentId) {
+     console.log('Could not find payment intent for dispute')
+     break
+    }
+
+    const { data: invoice } = await supabaseAdmin
+     .from('invoices')
+     .select('id, invoice_number, customer_id, profiles:customer_id(full_name)')
+     .eq('stripe_payment_intent_id', paymentIntentId)
+     .single()
+
+    if (!invoice) {
+     console.log('No invoice found for disputed payment intent:', paymentIntentId)
+     break
+    }
+
+    // Update invoice to mark as disputed
+    await supabaseAdmin
+     .from('invoices')
+     .update({
+      disputed: true,
+      notes: `DISPUTE OPENED on ${new Date().toLocaleDateString()}: ${dispute.reason || 'No reason provided'}`,
+      updated_at: new Date().toISOString()
+     })
+     .eq('id', invoice.id)
+
+    const customerName = invoice.profiles?.full_name || 'Customer'
+
+    // Create urgent admin notification
+    await supabaseAdmin
+     .from('admin_notifications')
+     .insert({
+      type: 'dispute_opened',
+      title: 'URGENT: Payment Dispute',
+      message: `A dispute has been opened for Invoice ${invoice.invoice_number} (${customerName})`,
+      link: '/admin/invoices'
+     })
+
+    // Send SMS via email gateway for urgent dispute alert
+    const smsGatewayEmail = '5129989658@tmomail.net'
+    try {
+     await resend.emails.send({
+      from: 'Impress <notifications@impresscleaning.com>',
+      to: smsGatewayEmail,
+      subject: 'DISPUTE',
+      text: `${invoice.invoice_number} - ${customerName.substring(0, 12)}. Respond in 7 days.`
+     })
+    } catch (smsError) {
+     console.error('Error sending dispute SMS:', smsError)
+    }
+
+    console.log(`Dispute opened for invoice ${invoice.invoice_number}`)
+    break
+   }
+
+  case 'charge.dispute.closed': {
+    const dispute = event.data.object
+    console.log('Processing dispute closed:', dispute.id, 'Status:', dispute.status)
+
+    // Find invoice by charge's payment intent
+    const chargeId = dispute.charge
+    let paymentIntentId = null
+
+    try {
+     const charge = await stripe.charges.retrieve(chargeId)
+     paymentIntentId = charge.payment_intent
+    } catch (err) {
+     console.error('Error retrieving charge for dispute:', err)
+    }
+
+    if (!paymentIntentId) {
+     console.log('Could not find payment intent for dispute')
+     break
+    }
+
+    const { data: invoice } = await supabaseAdmin
+     .from('invoices')
+     .select('id, invoice_number, customer_id, profiles:customer_id(full_name)')
+     .eq('stripe_payment_intent_id', paymentIntentId)
+     .single()
+
+    if (!invoice) {
+     console.log('No invoice found for disputed payment intent:', paymentIntentId)
+     break
+    }
+
+    const customerName = invoice.profiles?.full_name || 'Customer'
+    const disputeWon = dispute.status === 'won'
+
+    if (disputeWon) {
+     // Dispute won - clear disputed flag
+     await supabaseAdmin
+      .from('invoices')
+      .update({
+       disputed: false,
+       notes: `Dispute resolved in our favor on ${new Date().toLocaleDateString()}`,
+       updated_at: new Date().toISOString()
+      })
+      .eq('id', invoice.id)
+
+     // Admin notification - won
+     await supabaseAdmin
+      .from('admin_notifications')
+      .insert({
+       type: 'dispute_won',
+       title: 'Dispute Resolved - Won',
+       message: `Dispute for Invoice ${invoice.invoice_number} resolved in your favor`,
+       link: '/admin/invoices'
+      })
+
+     // Customer notification - won
+     if (invoice.customer_id) {
+      await supabaseAdmin
+       .from('customer_notifications')
+       .insert({
+        user_id: invoice.customer_id,
+        type: 'dispute_resolved',
+        title: 'Dispute Resolved',
+        message: `The dispute for Invoice ${invoice.invoice_number} has been resolved`,
+        link: '/portal/invoices',
+        reference_id: invoice.id,
+        reference_type: 'invoice'
+       })
+     }
+    } else {
+     // Dispute lost - update status and refund info
+     await supabaseAdmin
+      .from('invoices')
+      .update({
+       disputed: false,
+       status: 'cancelled',
+       refund_reason: 'Dispute lost - funds returned to customer',
+       notes: `Dispute lost on ${new Date().toLocaleDateString()}. Funds returned to customer.`,
+       updated_at: new Date().toISOString()
+      })
+      .eq('id', invoice.id)
+
+     // Admin notification - lost
+     await supabaseAdmin
+      .from('admin_notifications')
+      .insert({
+       type: 'dispute_lost',
+       title: 'Dispute Resolved - Lost',
+       message: `Dispute for Invoice ${invoice.invoice_number} resolved against. Funds returned to ${customerName}.`,
+       link: '/admin/invoices'
+      })
+
+     // Customer notification - lost
+     if (invoice.customer_id) {
+      await supabaseAdmin
+       .from('customer_notifications')
+       .insert({
+        user_id: invoice.customer_id,
+        type: 'refund_processed',
+        title: 'Dispute Resolved - Refund Issued',
+        message: `The dispute for Invoice ${invoice.invoice_number} has been resolved and a refund has been issued`,
+        link: '/portal/invoices',
+        reference_id: invoice.id,
+        reference_type: 'invoice'
+       })
+     }
+    }
+
+    console.log(`Dispute for invoice ${invoice.invoice_number} closed - ${disputeWon ? 'WON' : 'LOST'}`)
+    break
+   }
+
    default:
    console.log(`Unhandled event type: ${event.type}`)
   }

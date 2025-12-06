@@ -17,9 +17,7 @@ export async function POST(request) {
       )
     }
 
-    const supabase = await createClient()
-
-    // Get invoice details using admin client to bypass RLS
+    // 1. Get invoice details
     const { data: invoice, error: invoiceError } = await supabaseAdmin
       .from('invoices')
       .select('*')
@@ -34,76 +32,152 @@ export async function POST(request) {
       )
     }
 
-    // Get customer profile separately
-    const { data: customer, error: customerError } = await supabaseAdmin
-      .from('profiles')
-      .select('id, email, full_name')
-      .eq('id', invoice.customer_id)
-      .single()
-
-    if (customerError || !customer) {
-      console.error('Customer error:', customerError)
+    // Check if invoice is in draft status
+    if (invoice.status !== 'draft') {
       return NextResponse.json(
-        { error: 'Customer not found' },
-        { status: 404 }
+        { error: 'Only draft invoices can be sent' },
+        { status: 400 }
       )
     }
 
-    // Sanitize customer data before using
-    const sanitizedEmail = sanitizeEmail(customer.email)
-    const sanitizedName = sanitizeText(customer.full_name)?.slice(0, 100) || customer.email.split('@')[0]
+    // 2. Get customer info - either from profiles or customer_email
+    let customerEmail = null
+    let customerName = null
+    let customerId = null
+    let stripeCustomerId = null
 
-    if (!sanitizedEmail) {
+    if (invoice.customer_id) {
+      const { data: customer, error: customerError } = await supabaseAdmin
+        .from('profiles')
+        .select('id, email, full_name, stripe_customer_id')
+        .eq('id', invoice.customer_id)
+        .single()
+
+      if (customerError || !customer) {
+        console.error('Customer error:', customerError)
+        return NextResponse.json(
+          { error: 'Customer not found' },
+          { status: 404 }
+        )
+      }
+
+      customerEmail = sanitizeEmail(customer.email)
+      customerName = sanitizeText(customer.full_name)?.slice(0, 100) || customer.email.split('@')[0]
+      customerId = customer.id
+      stripeCustomerId = customer.stripe_customer_id
+    } else if (invoice.customer_email) {
+      customerEmail = sanitizeEmail(invoice.customer_email)
+      customerName = 'Customer'
+    } else {
+      return NextResponse.json(
+        { error: 'No customer email associated with invoice' },
+        { status: 400 }
+      )
+    }
+
+    if (!customerEmail) {
       return NextResponse.json(
         { error: 'Invalid customer email' },
         { status: 400 }
       )
     }
 
-    // Sanitize line item descriptions
-    const sanitizedLineItems = invoice.line_items?.map(item => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: sanitizeText(item.description)?.slice(0, 200) || 'Service',
-        },
-        unit_amount: Math.round(parseFloat(item.rate) * 100),
-      },
-      quantity: item.quantity,
-    })) || [{
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: `Invoice ${invoice.invoice_number}`,
-        },
-        unit_amount: Math.round(parseFloat(invoice.amount) * 100),
-      },
-      quantity: 1,
-    }]
+    // 3. Create or retrieve Stripe customer
+    if (!stripeCustomerId) {
+      // Check if a Stripe customer already exists with this email
+      const existingCustomers = await stripe.customers.list({
+        email: customerEmail,
+        limit: 1
+      })
 
-    // Create Stripe Checkout Session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: sanitizedLineItems,
-      mode: 'payment',
-      customer_email: sanitizedEmail,
-      client_reference_id: invoice.id,
+      if (existingCustomers.data.length > 0) {
+        stripeCustomerId = existingCustomers.data[0].id
+      } else {
+        // Create new Stripe customer
+        const stripeCustomer = await stripe.customers.create({
+          email: customerEmail,
+          name: customerName,
+          metadata: {
+            supabase_user_id: customerId || 'email_only',
+            invoice_id: invoiceId
+          }
+        })
+        stripeCustomerId = stripeCustomer.id
+      }
+
+      // Save stripe_customer_id to profile if we have a customer_id
+      if (customerId) {
+        await supabaseAdmin
+          .from('profiles')
+          .update({
+            stripe_customer_id: stripeCustomerId,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', customerId)
+      }
+    }
+
+    // 4. Create Stripe Invoice
+    const stripeInvoice = await stripe.invoices.create({
+      customer: stripeCustomerId,
+      collection_method: 'send_invoice',
+      days_until_due: invoice.due_date
+        ? Math.max(1, Math.ceil((new Date(invoice.due_date) - new Date()) / (1000 * 60 * 60 * 24)))
+        : 7,
       metadata: {
-        invoice_id: invoice.id,
-        invoice_number: invoice.invoice_number,
-        customer_id: invoice.customer_id,
-      },
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/invoices?payment=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/invoices?payment=cancelled`,
+        supabase_invoice_id: invoice.id,
+        invoice_number: invoice.invoice_number
+      }
     })
 
-    // Update invoice status to sent
+    // 5. Add line items to Stripe Invoice
+    const lineItems = invoice.line_items || []
+
+    if (lineItems.length > 0) {
+      for (const item of lineItems) {
+        await stripe.invoiceItems.create({
+          customer: stripeCustomerId,
+          invoice: stripeInvoice.id,
+          description: sanitizeText(item.description)?.slice(0, 200) || 'Service',
+          quantity: item.quantity || 1,
+          unit_amount: Math.round(parseFloat(item.rate) * 100)
+        })
+      }
+    } else {
+      // Fallback: create single line item from invoice amount
+      await stripe.invoiceItems.create({
+        customer: stripeCustomerId,
+        invoice: stripeInvoice.id,
+        description: `Invoice ${invoice.invoice_number}`,
+        quantity: 1,
+        unit_amount: Math.round(parseFloat(invoice.amount) * 100)
+      })
+    }
+
+    // Add tax if present
+    if (invoice.tax_amount && parseFloat(invoice.tax_amount) > 0) {
+      await stripe.invoiceItems.create({
+        customer: stripeCustomerId,
+        invoice: stripeInvoice.id,
+        description: `Tax (${invoice.tax_rate || 0}%)`,
+        quantity: 1,
+        unit_amount: Math.round(parseFloat(invoice.tax_amount) * 100)
+      })
+    }
+
+    // 6. Finalize and send the Stripe Invoice
+    const finalizedInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
+
+    // Send the invoice via Stripe
+    const sentInvoice = await stripe.invoices.sendInvoice(stripeInvoice.id)
+
+    // 7. Update Supabase invoice with Stripe details
     const { error: updateError } = await supabaseAdmin
       .from('invoices')
       .update({
-        stripe_payment_intent_id: session.id,
+        stripe_invoice_id: sentInvoice.id,
         status: 'sent',
-        updated_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       })
       .eq('id', invoice.id)
 
@@ -115,24 +189,44 @@ export async function POST(request) {
       )
     }
 
-    // Send email with payment link (using sanitized data)
+    // 8. Create customer notification
+    if (customerId) {
+      const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(invoice.total || invoice.amount)
+
+      await supabaseAdmin
+        .from('customer_notifications')
+        .insert({
+          user_id: customerId,
+          type: 'invoice_sent',
+          title: 'New Invoice Ready',
+          message: `Invoice ${invoice.invoice_number} for ${formattedAmount} is ready for payment`,
+          link: '/portal/invoices',
+          reference_id: invoice.id,
+          reference_type: 'invoice'
+        })
+    }
+
+    // 9. Send email with payment link
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: sanitizedEmail,
-        name: sanitizedName,
+        email: customerEmail,
+        name: customerName,
         invoiceNumber: invoice.invoice_number,
-        amount: invoice.amount,
+        amount: invoice.total || invoice.amount,
         dueDate: invoice.due_date,
-        checkoutUrl: session.url,
-      }),
+        paymentUrl: sentInvoice.hosted_invoice_url
+      })
     })
 
     return NextResponse.json({
       success: true,
-      checkoutUrl: session.url,
-      sessionId: session.id,
+      stripeInvoiceId: sentInvoice.id,
+      hostedInvoiceUrl: sentInvoice.hosted_invoice_url
     })
   } catch (error) {
     console.error('Error sending invoice:', error)

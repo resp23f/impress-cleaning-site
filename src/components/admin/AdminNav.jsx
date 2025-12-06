@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Badge from '@/components/ui/Badge'
+import AdminNotificationBell from './AdminNotificationBell'
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
   { icon: ClipboardList, label: 'Service Requests', href: '/admin/requests', badge: true },
@@ -85,6 +86,13 @@ const getBadgeCount = (item) => {
               )
             })}
           </nav>
+          {/* Notifications */}
+          <div className="px-3 py-2 border-t border-white/10">
+            <div className="flex items-center justify-between px-3 py-2">
+              <span className="text-sm font-medium text-gray-300">Notifications</span>
+              <AdminNotificationBell />
+            </div>
+          </div>
           {/* Logout */}
           <div className="p-3 border-t border-white/10">
             <button
@@ -107,16 +115,21 @@ const getBadgeCount = (item) => {
             <span className="text-lg font-bold text-white">Admin</span>
           </div>
         </div>
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 rounded-lg text-white hover:bg-white/10"
-        >
-          {mobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="[&_button]:text-white [&_button]:hover:bg-white/10">
+            <AdminNotificationBell />
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg text-white hover:bg-white/10"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
       {/* Mobile Menu */}
       {mobileMenuOpen && (
