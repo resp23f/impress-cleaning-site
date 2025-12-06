@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 export async function POST(request) {
   try {
@@ -57,52 +58,60 @@ export async function POST(request) {
         },
       })
       stripeCustomerId = customer.id
-      // Update invoice with Stripe customer ID
-      await supabase
+
+// Update invoice with Stripe customer ID (use admin to bypass RLS)
+      await supabaseAdmin
         .from('invoices')
         .update({ stripe_customer_id: stripeCustomerId })
-        .eq('id', invoiceId)
-    }
-    // Create payment intent
+        .eq('id', invoiceId)}
+
+// Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
       currency: 'usd',
       customer: stripeCustomerId,
       payment_method: paymentMethodId || undefined,
+      payment_method_types: ['card'],
       confirm: paymentMethodId ? true : false,
-      metadata: {
-        invoice_id: invoiceId,
+      metadata: {        invoice_id: invoiceId,
         invoice_number: invoice.invoice_number,
       },
       description: `Payment for Invoice ${invoice.invoice_number}`,
     })
     // If payment succeeded immediately
     if (paymentIntent.status === 'succeeded') {
-      // Update invoice status
-      await supabase
+
+// Update invoice status (use admin to bypass RLS)
+      await supabaseAdmin
         .from('invoices')
         .update({
           status: 'paid',
           paid_date: new Date().toISOString().split('T')[0],
           payment_method: 'stripe',
           stripe_payment_intent_id: paymentIntent.id,
+          updated_at: new Date().toISOString(),
         })
         .eq('id', invoiceId)
-      return NextResponse.json({
+
+return NextResponse.json({
         success: true,
         paymentIntent,
       })
     }
     // If requires additional action (like 3D Secure)
     if (paymentIntent.status === 'requires_action') {
-      // Update invoice with payment intent ID
-      await supabase
+
+     
+// Update invoice with payment intent ID (use admin to bypass RLS)
+      await supabaseAdmin
         .from('invoices')
         .update({
           stripe_payment_intent_id: paymentIntent.id,
+          updated_at: new Date().toISOString(),
         })
         .eq('id', invoiceId)
-      return NextResponse.json({
+        
+              return NextResponse.json({
         requiresAction: true,
         clientSecret: paymentIntent.client_secret,
         paymentIntent,

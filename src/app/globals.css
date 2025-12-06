@@ -206,29 +206,29 @@ select.no-native::-ms-expand {
 
 /* ================================
    SUPABASE-STYLE PREMIUM SHIMMER
-   Overrides react-loading-skeleton
    ================================ */
 
 .react-loading-skeleton {
-  --base-color: #e5e7eb !important;
-  --highlight-color: #e5e7eb !important;
-  background-color: #e5e7eb !important;
-  background-image: linear-gradient(
+  --base-color: #f1f5f9 !important;
+  --highlight-color: #f8fafc !important;
+  background: linear-gradient(
     90deg,
-    #e5e7eb 4%,
-    #f3f4f6 25%,
-    #e5e7eb 36%
+    #f1f5f9 0%,
+    #f8fafc 20%,
+    #ffffff 40%,
+    #f8fafc 60%,
+    #f1f5f9 100%
   ) !important;
-  background-size: 1000px 100% !important;
-  animation: supa-shimmer 2s linear infinite !important;
+  background-size: 200% 100% !important;
+  animation: supabase-shimmer 2.5s ease-in-out infinite !important;
   border-radius: 0.5rem;
 }
 
-@keyframes supa-shimmer {
+@keyframes supabase-shimmer {
   0% {
-    background-position: -1000px 0;
+    background-position: 200% 0;
   }
   100% {
-    background-position: 1000px 0;
+    background-position: -200% 0;
   }
 }

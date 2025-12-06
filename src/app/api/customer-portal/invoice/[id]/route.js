@@ -4,8 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET(request, { params }) {
  try {
   const supabase = await createClient()
-  const invoiceId = params.id
-  
+const { id: invoiceId } = await params  
   // Get authenticated user
   const {
    data: { user },
@@ -46,6 +45,7 @@ export async function GET(request, { params }) {
    // Format response
    const invoice = {
     id: invoiceRow.id,
+    stripe_invoice_id: invoiceRow.stripe_invoice_id || null,
     invoice_number: invoiceRow.invoice_number,
     status: invoiceRow.status || 'draft',
     

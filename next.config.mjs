@@ -6,11 +6,6 @@ const nextConfig = {
     'http://localhost:3000'
   ],
   
-  // Skip ESLint during builds
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-
   // Image optimization for production
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -34,11 +29,10 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
+{
+  key: 'X-Frame-Options',
+  value: 'SAMEORIGIN',
+},          {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },

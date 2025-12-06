@@ -2,7 +2,7 @@
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/react';
 import { Manrope, Onest } from "next/font/google";
-
+import { SpeedInsights } from '@vercel/speed-insights/next'
 const manrope = Manrope({
  subsets: ["latin"],
  weight: ["400", "500", "600"],
@@ -336,6 +336,7 @@ export default function RootLayout({ children }) {
    <body className="font-sans antialiased bg-background text-slate-900">
     {children}
     <Analytics />
+    <SpeedInsights />
    </body>
   </html>
  );

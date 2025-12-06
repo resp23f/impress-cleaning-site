@@ -47,22 +47,44 @@ export default function ProfileSetupPage() {
     libraries,
   })
 
-  useEffect(() => {
+useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         router.push('/auth/login')
         return
       }
+
+      // Check if profile is already complete
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, phone, account_status')
+        .eq('id', user.id)
+        .single()
+
+      const { data: addresses } = await supabase
+        .from('service_addresses')
+        .select('id')
+        .eq('user_id', user.id)
+        .limit(1)
+
+      // If profile has name, phone, and at least one address → go to dashboard
+      if (profile?.full_name && profile?.phone && addresses?.length > 0) {
+        router.push('/portal/dashboard')
+        return
+      }
+
       setUser(user)
-      if (user.user_metadata?.full_name) {
+      // Pre-fill name if available
+      if (profile?.full_name) {
+        setFormData(prev => ({ ...prev, fullName: profile.full_name }))
+      } else if (user.user_metadata?.full_name) {
         setFormData(prev => ({ ...prev, fullName: user.user_metadata.full_name }))
       }
     }
     getUser()
   }, [supabase, router])
-
-  const formatPhoneNumber = (value) => {
+    const formatPhoneNumber = (value) => {
     const phoneNumber = value.replace(/\D/g, '')
     if (phoneNumber.length <= 3) return phoneNumber
     if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`

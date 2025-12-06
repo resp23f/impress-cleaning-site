@@ -26,7 +26,7 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
-import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
+import { AppointmentsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 
 const statusBadges = {
@@ -446,13 +446,12 @@ closeModal()
 if (loading) {
  return (
   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-  <DashboardSkeleton />
+  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+  <AppointmentsSkeleton />
   </div>
   </div>
  )
 }
-
 return (
  <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
  <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10"> 
