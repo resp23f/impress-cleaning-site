@@ -453,18 +453,111 @@ export async function POST(request) {
     break
    }
    
-   case 'payment_intent.succeeded': {
+case 'payment_intent.succeeded': {
     const paymentIntent = event.data.object
     console.log('Payment succeeded:', paymentIntent.id)
+    
+    // Update invoice if this payment was for a portal invoice
+    if (paymentIntent.metadata?.invoice_id) {
+     const { data: existingInvoice } = await supabaseAdmin
+      .from('invoices')
+      .select('id, status')
+      .eq('id', paymentIntent.metadata.invoice_id)
+      .single()
+     
+     // Only update if not already paid (avoid duplicate updates)
+     if (existingInvoice && existingInvoice.status !== 'paid') {
+      const { error } = await supabaseAdmin
+       .from('invoices')
+       .update({
+        status: 'paid',
+        paid_date: new Date().toISOString().split('T')[0],
+        payment_method: 'stripe',
+        stripe_payment_intent_id: paymentIntent.id,
+        updated_at: new Date().toISOString(),
+       })
+       .eq('id', paymentIntent.metadata.invoice_id)
+      
+      if (error) {
+       console.error('Failed to update invoice from webhook:', error)
+      } else {
+       console.log(`Invoice ${paymentIntent.metadata.invoice_number} marked as paid via webhook`)
+       
+       // Send payment confirmation email
+       try {
+        const { data: invoice } = await supabaseAdmin
+         .from('invoices')
+         .select('*, profiles!customer_id(email, full_name)')
+         .eq('id', paymentIntent.metadata.invoice_id)
+         .single()
+        
+        if (invoice?.profiles) {
+         await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/payment-received`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+           customerEmail: invoice.profiles.email,
+           customerName: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
+           invoiceNumber: invoice.invoice_number,
+           amount: invoice.total || invoice.amount,
+           paymentDate: new Date().toISOString(),
+           paymentMethod: 'Card',
+          }),
+         })
+        }
+       } catch (emailError) {
+        console.error('Failed to send payment email from webhook:', emailError)
+       }
+      }
+     }
+    }
     break
    }
-   
-   case 'payment_intent.payment_failed': {
+
+case 'payment_intent.payment_failed': {
     const paymentIntent = event.data.object
     console.log('Payment failed:', paymentIntent.id)
+    
+    // Handle failed payment for portal invoices
+    if (paymentIntent.metadata?.invoice_id) {
+     const { data: invoice } = await supabaseAdmin
+      .from('invoices')
+      .select('id, status, due_date, invoice_number, customer_id')
+      .eq('id', paymentIntent.metadata.invoice_id)
+      .single()
+     
+     if (invoice && invoice.status !== 'paid') {
+      // Check if invoice is now overdue
+      const isOverdue = invoice.due_date && new Date(invoice.due_date) < new Date()
+      
+      if (isOverdue && invoice.status !== 'overdue') {
+       await supabaseAdmin
+        .from('invoices')
+        .update({
+         status: 'overdue',
+         updated_at: new Date().toISOString(),
+        })
+        .eq('id', invoice.id)
+       
+       console.log(`Invoice ${invoice.invoice_number} marked as overdue after failed payment`)
+      }
+      
+      // Notify admin of failed payment
+      await supabaseAdmin
+       .from('admin_notifications')
+       .insert({
+        type: 'payment_failed',
+        title: 'Payment Failed',
+        message: `Payment failed for invoice ${invoice.invoice_number}`,
+        link: `/admin/invoices`,
+       })
+      
+      console.log(`Payment failed for invoice ${invoice.invoice_number}`)
+     }
+    }
     break
    }
-   
+      
    default:
    console.log(`Unhandled event type: ${event.type}`)
   }
