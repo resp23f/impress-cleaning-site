@@ -9,9 +9,8 @@ const resend = new Resend(process.env.RESEND_API_KEY_STAGING)
 
 // Gift certificate email template
 function createGiftCertificateEmail(giftData) {
-  const { code, recipientName, senderName, message, amount } = giftData
-
-  return `
+ const { code, recipientName, senderName, message, amount } = giftData
+ return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -133,192 +132,342 @@ function createGiftCertificateEmail(giftData) {
   </table>
 </body>
 </html>
-  `
+`
 }
 
 // Handle gift certificate email sending
 async function handleGiftCertificate(session) {
-  const metadata = session.metadata
-
-  // Sanitize data from metadata
-  const giftData = {
-    code: sanitizeText(metadata.giftCode)?.slice(0, 50) || '',
-    recipientName: sanitizeText(metadata.recipientName)?.slice(0, 100) || '',
-    recipientEmail: sanitizeEmail(metadata.recipientEmail) || '',
-    senderName: sanitizeText(metadata.senderName)?.slice(0, 100) || '',
-    message: sanitizeText(metadata.message)?.slice(0, 500) || '',
-    amount: metadata.amount,
+ const metadata = session.metadata
+ 
+ const giftData = {
+  code: sanitizeText(metadata.giftCode)?.slice(0, 50) || '',
+  recipientName: sanitizeText(metadata.recipientName)?.slice(0, 100) || '',
+  recipientEmail: sanitizeEmail(metadata.recipientEmail) || '',
+  senderName: sanitizeText(metadata.senderName)?.slice(0, 100) || '',
+  message: sanitizeText(metadata.message)?.slice(0, 500) || '',
+  amount: metadata.amount,
+ }
+ 
+ const { code, recipientName, recipientEmail, senderName, amount } = giftData
+ 
+ if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
+  console.error('Gift certificate missing required fields:', {
+   hasCode: !!code,
+   hasRecipientName: !!recipientName,
+   hasRecipientEmail: !!recipientEmail,
+   hasSenderName: !!senderName,
+   hasAmount: !!amount,
+  })
+  return { success: false, error: 'Missing required fields' }
+ }
+ 
+ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+ if (!emailRegex.test(recipientEmail)) {
+  console.error('Invalid recipient email format:', recipientEmail.substring(0, 5) + '***')
+  return { success: false, error: 'Invalid email format' }
+ }
+ 
+ if (!process.env.RESEND_API_KEY_STAGING) {
+  console.error('RESEND_API_KEY_STAGING not configured')
+  return { success: false, error: 'Email service not configured' }
+ }
+ 
+ const emailHtml = createGiftCertificateEmail(giftData)
+ 
+ try {
+  const emailResponse = await resend.emails.send({
+   from: 'Impress Cleaning Services Gift Certificate <gifts@impressyoucleaning.com>',
+   to: recipientEmail,
+   subject: `Your $${amount} Gift Certificate from ${senderName}`,
+   html: emailHtml,
+  })
+  
+  if (!emailResponse.data) {
+   console.error('No data in Resend response:', emailResponse)
+   return { success: false, error: 'Email send failed' }
   }
+  
+  console.log('Gift certificate email sent successfully:', {
+   emailId: emailResponse.data.id,
+   code: code,
+   recipient: recipientEmail.substring(0, 3) + '***',
+  })
+  
+  return { success: true, emailId: emailResponse.data.id }
+ } catch (emailError) {
+  console.error('Failed to send gift certificate email:', emailError)
+  return { success: false, error: emailError.message }
+ }
+}
 
-  const { code, recipientName, recipientEmail, senderName, amount } = giftData
-
-  // Validate required fields
-  if (!code || !recipientName || !recipientEmail || !senderName || !amount) {
-    console.error('Gift certificate missing required fields:', {
-      hasCode: !!code,
-      hasRecipientName: !!recipientName,
-      hasRecipientEmail: !!recipientEmail,
-      hasSenderName: !!senderName,
-      hasAmount: !!amount,
-    })
-    return { success: false, error: 'Missing required fields' }
-  }
-
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(recipientEmail)) {
-    console.error('Invalid recipient email format:', recipientEmail.substring(0, 5) + '***')
-    return { success: false, error: 'Invalid email format' }
-  }
-
-  // Check if Resend is configured
-  if (!process.env.RESEND_API_KEY_STAGING) {
-    console.error('RESEND_API_KEY_STAGING not configured')
-    return { success: false, error: 'Email service not configured' }
-  }
-
-  // Generate and send email
-  const emailHtml = createGiftCertificateEmail(giftData)
-
-  try {
-    const emailResponse = await resend.emails.send({
-      from: 'Impress Cleaning Services Gift Certificate <gifts@impressyoucleaning.com>',
-      to: recipientEmail,
-      subject: `Your $${amount} Gift Certificate from ${senderName}`,
-      html: emailHtml,
-    })
-
-    if (!emailResponse.data) {
-      console.error('No data in Resend response:', emailResponse)
-      return { success: false, error: 'Email send failed' }
+// Handle Stripe Dashboard invoice - creates/updates invoice in portal
+async function handleStripeInvoice(stripeInvoice, eventType) {
+ const customerEmail = stripeInvoice.customer_email?.toLowerCase()
+ 
+ if (!customerEmail) {
+  console.log('Stripe invoice has no customer email, skipping portal sync')
+  return { success: false, error: 'No customer email' }
+ }
+ 
+ // Check if invoice already exists in our system
+ const { data: existingInvoice } = await supabaseAdmin
+ .from('invoices')
+ .select('id, status')
+ .eq('stripe_invoice_id', stripeInvoice.id)
+ .single()
+ 
+ // Look up customer by email
+ const { data: customer } = await supabaseAdmin
+ .from('profiles')
+ .select('id, full_name, email')
+ .ilike('email', customerEmail)
+ .single()
+ 
+ // Build line items from Stripe invoice
+ const lineItems = (stripeInvoice.lines?.data || []).map(line => ({
+  description: line.description || 'Service',
+  quantity: line.quantity || 1,
+  rate: (line.unit_amount || line.amount) / 100,
+  amount: line.amount / 100,
+ }))
+ 
+ // Calculate totals
+ const subtotal = stripeInvoice.subtotal / 100
+ const taxAmount = (stripeInvoice.tax || 0) / 100
+ const total = stripeInvoice.total / 100
+ const taxRate = subtotal > 0 ? ((taxAmount / subtotal) * 100).toFixed(2) : 0
+ 
+ // Determine status
+ let status = 'sent'
+ if (stripeInvoice.status === 'paid') {
+  status = 'paid'
+ } else if (stripeInvoice.status === 'void' || stripeInvoice.status === 'uncollectible') {
+  status = 'cancelled'
+ } else if (stripeInvoice.due_date && stripeInvoice.due_date * 1000 < Date.now()) {
+  status = 'overdue'
+ }
+ 
+ const invoiceData = {
+  invoice_number: stripeInvoice.number || `STRIPE-${stripeInvoice.id.slice(-8).toUpperCase()}`,
+  customer_id: customer?.id || null,
+  customer_email: customerEmail,
+  stripe_invoice_id: stripeInvoice.id,
+  amount: subtotal,
+  tax_rate: parseFloat(taxRate),
+  tax_amount: taxAmount,
+  total: total,
+  status: status,
+  due_date: stripeInvoice.due_date 
+  ? new Date(stripeInvoice.due_date * 1000).toISOString().split('T')[0] 
+  : null,
+  paid_date: stripeInvoice.status === 'paid' && stripeInvoice.status_transitions?.paid_at
+  ? new Date(stripeInvoice.status_transitions.paid_at * 1000).toISOString().split('T')[0]
+  : null,
+  payment_method: stripeInvoice.status === 'paid' ? 'stripe' : null,
+  line_items: lineItems,
+  notes: stripeInvoice.description || null,
+  updated_at: new Date().toISOString(),
+ }
+ 
+ try {
+  if (existingInvoice) {
+   // Update existing invoice
+   const { error } = await supabaseAdmin
+   .from('invoices')
+   .update(invoiceData)
+   .eq('id', existingInvoice.id)
+   
+   if (error) throw error
+   
+   console.log(`Updated invoice ${invoiceData.invoice_number} (${eventType})`)
+   return { success: true, action: 'updated', invoiceNumber: invoiceData.invoice_number }
+  } else {
+   // Create new invoice
+   const { error } = await supabaseAdmin
+   .from('invoices')
+   .insert([{
+    ...invoiceData,
+    created_at: new Date().toISOString(),
+   }])
+   
+   if (error) throw error
+   
+   console.log(`Created invoice ${invoiceData.invoice_number} from Stripe Dashboard`)
+   
+   // Send notification if customer exists
+   if (customer) {
+    try {
+     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+       customerEmail: customer.email,
+       customerName: customer.full_name || customer.email.split('@')[0],
+       invoiceNumber: invoiceData.invoice_number,
+       amount: total,
+       dueDate: invoiceData.due_date,
+      }),
+     })
+    } catch (emailError) {
+     console.error('Failed to send invoice email:', emailError)
     }
-
-    console.log('Gift certificate email sent successfully:', {
-      emailId: emailResponse.data.id,
-      code: code,
-      recipient: recipientEmail.substring(0, 3) + '***',
-    })
-
-    return { success: true, emailId: emailResponse.data.id }
-  } catch (emailError) {
-    console.error('Failed to send gift certificate email:', emailError)
-    return { success: false, error: emailError.message }
+   }
+   
+   return { success: true, action: 'created', invoiceNumber: invoiceData.invoice_number }
   }
+ } catch (error) {
+  console.error('Error syncing Stripe invoice:', error)
+  return { success: false, error: error.message }
+ }
 }
 
 export async function POST(request) {
-  const body = await request.text()
-  const signature = request.headers.get('stripe-signature')
-  let event
-
-  try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET
-    )
-  } catch (err) {
-    console.error('Webhook signature verification failed:', err.message)
-    return NextResponse.json(
-      { error: 'Webhook signature verification failed' },
-      { status: 400 }
-    )
+ const body = await request.text()
+ const signature = request.headers.get('stripe-signature')
+ 
+ let event
+ 
+ try {
+  event = stripe.webhooks.constructEvent(
+   body,
+   signature,
+   process.env.STRIPE_WEBHOOK_SECRET
+  )
+ } catch (err) {
+  console.error('Webhook signature verification failed:', err.message)
+  return NextResponse.json(
+   { error: 'Webhook signature verification failed' },
+   { status: 400 }
+  )
+ }
+ 
+ // Handle the event
+ switch (event.type) {
+  // ==========================================
+  // STRIPE DASHBOARD INVOICE EVENTS
+  // ==========================================
+  case 'invoice.finalized': {
+   const invoice = event.data.object
+   console.log('Processing finalized invoice:', invoice.id)
+   await handleStripeInvoice(invoice, 'finalized')
+   break
   }
-
-  // Handle the event
-  switch (event.type) {
-    case 'checkout.session.completed': {
-      const session = event.data.object
-
-      // Handle gift certificate payments
-      if (session.metadata?.type === 'gift_certificate') {
-        console.log('Processing gift certificate payment:', session.id)
-
-        const result = await handleGiftCertificate(session)
-
-        if (result.success) {
-          console.log(`Gift certificate ${session.metadata.giftCode} processed successfully`)
-        } else {
-          console.error(`Gift certificate processing failed:`, result.error)
-          // Note: We don't return an error here because:
-          // 1. The payment was successful
-          // 2. Returning error would cause Stripe to retry the webhook
-          // 3. Manual intervention may be needed - log and alert instead
-        }
-        break
-      }
-
-      // Handle invoice payments (existing logic)
-      if (session.metadata?.invoice_id) {
-        const { error } = await supabaseAdmin
-          .from('invoices')
-          .update({
-            status: 'paid',
-            paid_date: new Date().toISOString().split('T')[0],
-            payment_method: 'stripe',
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', session.metadata.invoice_id)
-
-        if (error) {
-          console.error('Error updating invoice:', error)
-        } else {
-          console.log(`Invoice ${session.metadata.invoice_number} marked as paid`)
-
-          // Get invoice and customer details for email
-          const { data: invoice } = await supabaseAdmin
-            .from('invoices')
-            .select(`
+  
+  case 'invoice.paid': {
+   const invoice = event.data.object
+   console.log('Processing paid invoice:', invoice.id)
+   await handleStripeInvoice(invoice, 'paid')
+   break
+  }
+  
+  case 'invoice.payment_failed': {
+   const invoice = event.data.object
+   console.log('Processing failed invoice payment:', invoice.id)
+   await handleStripeInvoice(invoice, 'payment_failed')
+   break
+  }
+  
+  case 'invoice.voided': {
+   const invoice = event.data.object
+   console.log('Processing voided invoice:', invoice.id)
+   await handleStripeInvoice(invoice, 'voided')
+   break
+  }
+  
+  case 'invoice.marked_uncollectible': {
+   const invoice = event.data.object
+   console.log('Processing uncollectible invoice:', invoice.id)
+   await handleStripeInvoice(invoice, 'uncollectible')
+   break
+  }
+  
+  // ==========================================
+  // CHECKOUT SESSION EVENTS (existing)
+  // ==========================================
+  case 'checkout.session.completed': {
+   const session = event.data.object
+   
+   // Handle gift certificate payments
+   if (session.metadata?.type === 'gift_certificate') {
+    console.log('Processing gift certificate payment:', session.id)
+    const result = await handleGiftCertificate(session)
+    if (result.success) {
+     console.log(`Gift certificate ${session.metadata.giftCode} processed successfully`)
+    } else {
+     console.error(`Gift certificate processing failed:`, result.error)
+    }
+    break
+   }
+   
+   // Handle invoice payments (portal payments)
+   if (session.metadata?.invoice_id) {
+    const { error } = await supabaseAdmin
+    .from('invoices')
+    .update({
+     status: 'paid',
+     paid_date: new Date().toISOString().split('T')[0],
+     payment_method: 'stripe',
+     updated_at: new Date().toISOString(),
+    })
+    .eq('id', session.metadata.invoice_id)
+    
+    if (error) {
+     console.error('Error updating invoice:', error)
+    } else {
+     console.log(`Invoice ${session.metadata.invoice_number} marked as paid`)
+     
+     const { data: invoice } = await supabaseAdmin
+     .from('invoices')
+     .select(`
               *,
               profiles (email, full_name)
             `)
-            .eq('id', session.metadata.invoice_id)
-            .single()
-
-          // Send payment received email
-          if (invoice && invoice.profiles) {
-            try {
-              let paymentMethod = 'Card'
-              if (session.payment_method_types?.[0]) {
-                paymentMethod = session.payment_method_types[0] === 'card' ? 'Card' : session.payment_method_types[0]
-              }
-
-              await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/payment-received`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  customerEmail: invoice.profiles.email,
-                  customerName: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
-                  invoiceNumber: invoice.invoice_number,
-                  amount: invoice.amount,
-                  paymentDate: new Date().toISOString(),
-                  paymentMethod: paymentMethod,
-                }),
-              })
-            } catch (emailError) {
-              console.error('Failed to send payment received email', emailError)
-            }
-          }
+      .eq('id', session.metadata.invoice_id)
+      .single()
+      
+      if (invoice && invoice.profiles) {
+       try {
+        let paymentMethod = 'Card'
+        if (session.payment_method_types?.[0]) {
+         paymentMethod = session.payment_method_types[0] === 'card' ? 'Card' : session.payment_method_types[0]
         }
+        
+        await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/payment-received`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+          customerEmail: invoice.profiles.email,
+          customerName: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
+          invoiceNumber: invoice.invoice_number,
+          amount: invoice.amount,
+          paymentDate: new Date().toISOString(),
+          paymentMethod: paymentMethod,
+         }),
+        })
+       } catch (emailError) {
+        console.error('Failed to send payment received email', emailError)
+       }
       }
-      break
+     }
     }
-
-    case 'payment_intent.succeeded': {
-      const paymentIntent = event.data.object
-      console.log('Payment succeeded:', paymentIntent.id)
-      break
-    }
-
-    case 'payment_intent.payment_failed': {
-      const paymentIntent = event.data.object
-      console.log('Payment failed:', paymentIntent.id)
-      break
-    }
-
-    default:
-      console.log(`Unhandled event type: ${event.type}`)
+    break
+   }
+   
+   case 'payment_intent.succeeded': {
+    const paymentIntent = event.data.object
+    console.log('Payment succeeded:', paymentIntent.id)
+    break
+   }
+   
+   case 'payment_intent.payment_failed': {
+    const paymentIntent = event.data.object
+    console.log('Payment failed:', paymentIntent.id)
+    break
+   }
+   
+   default:
+   console.log(`Unhandled event type: ${event.type}`)
   }
-
+  
   return NextResponse.json({ received: true })
-}
+ }
