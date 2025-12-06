@@ -63,15 +63,15 @@ export async function POST(request) {
         .update({ stripe_customer_id: stripeCustomerId })
         .eq('id', invoiceId)
     }
-    // Create payment intent
+// Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
       currency: 'usd',
       customer: stripeCustomerId,
       payment_method: paymentMethodId || undefined,
+      payment_method_types: ['card'],
       confirm: paymentMethodId ? true : false,
-      metadata: {
-        invoice_id: invoiceId,
+      metadata: {        invoice_id: invoiceId,
         invoice_number: invoice.invoice_number,
       },
       description: `Payment for Invoice ${invoice.invoice_number}`,
