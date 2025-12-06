@@ -125,8 +125,7 @@ export async function POST(request) {
         await stripe.invoiceItems.create({
           customer: stripeCustomerId,
           description: sanitizeText(item.description)?.slice(0, 200) || 'Service',
-          quantity: item.quantity || 1,
-          unit_amount: Math.round(parseFloat(item.rate) * 100),
+          amount: Math.round(parseFloat(item.rate) * (item.quantity || 1) * 100),
           currency: 'usd'
         })
       }
@@ -135,8 +134,7 @@ export async function POST(request) {
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
         description: `Invoice ${invoice.invoice_number}`,
-        quantity: 1,
-        unit_amount: Math.round(parseFloat(invoice.amount) * 100),
+        amount: Math.round(parseFloat(invoice.amount) * 100),
         currency: 'usd'
       })
     }
@@ -146,8 +144,7 @@ export async function POST(request) {
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
         description: `Tax (${invoice.tax_rate || 0}%)`,
-        quantity: 1,
-        unit_amount: Math.round(parseFloat(invoice.tax_amount) * 100),
+        amount: Math.round(parseFloat(invoice.tax_amount) * 100),
         currency: 'usd'
       })
     }
