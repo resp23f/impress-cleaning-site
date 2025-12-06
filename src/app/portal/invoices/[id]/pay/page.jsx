@@ -105,10 +105,24 @@ export default function PayInvoicePage() {
    }
   })()
  }
- const handleStripePayment = async () => {
+ 
+const handleStripePayment = async () => {
   setProcessing(true)
   try {
-   const response = await fetch('/api/stripe/create-payment-intent', {
+    // If this invoice came from Stripe Dashboard, redirect to Stripe's hosted page
+    if (invoice.stripe_invoice_id) {
+      const response = await fetch('/api/stripe/get-invoice-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stripeInvoiceId: invoice.stripe_invoice_id }),
+      })
+      const data = await response.json()
+      if (data.url) {
+        window.location.href = data.url
+        return
+      }
+    }
+       const response = await fetch('/api/stripe/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

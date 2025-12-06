@@ -45,6 +45,7 @@ const { id: invoiceId } = await params
    // Format response
    const invoice = {
     id: invoiceRow.id,
+    stripe_invoice_id: invoiceRow.stripe_invoice_id || null,
     invoice_number: invoiceRow.invoice_number,
     status: invoiceRow.status || 'draft',
     
