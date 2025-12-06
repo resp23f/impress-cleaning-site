@@ -4,8 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET(request, { params }) {
  try {
   const supabase = await createClient()
-  const invoiceId = params.id
-  
+const { id: invoiceId } = await params  
   // Get authenticated user
   const {
    data: { user },
