@@ -80,6 +80,7 @@ export async function POST(request) {
      status: 'paid',
      paid_date: new Date().toISOString().split('T')[0],
      payment_method: 'stripe',
+     stripe_payment_intent_id: paidInvoice.payment_intent,
      updated_at: new Date().toISOString(),
     })
     .eq('id', invoiceId)

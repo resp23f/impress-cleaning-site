@@ -252,13 +252,14 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
   customer_id: customer?.id || null,
   customer_email: customerEmail,
   stripe_invoice_id: stripeInvoice.id,
+  stripe_payment_intent_id: stripeInvoice.payment_intent || null,
   amount: subtotal,
   tax_rate: parseFloat(taxRate),
   tax_amount: taxAmount,
   total: total,
   status: status,
-  due_date: stripeInvoice.due_date 
-  ? new Date(stripeInvoice.due_date * 1000).toISOString().split('T')[0] 
+  due_date: stripeInvoice.due_date
+  ? new Date(stripeInvoice.due_date * 1000).toISOString().split('T')[0]
   : null,
   paid_date: stripeInvoice.status === 'paid' && stripeInvoice.status_transitions?.paid_at
   ? new Date(stripeInvoice.status_transitions.paid_at * 1000).toISOString().split('T')[0]
