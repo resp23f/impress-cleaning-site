@@ -281,6 +281,36 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
    if (error) throw error
    
    console.log(`Updated invoice ${invoiceData.invoice_number} (${eventType})`)
+
+   // Create customer notifications based on event type
+   if (customer?.id) {
+    if (eventType === 'finalized') {
+     await supabaseAdmin
+      .from('customer_notifications')
+      .insert({
+       user_id: customer.id,
+       type: 'invoice_sent',
+       title: 'New Invoice Ready',
+       message: `Invoice ${invoiceData.invoice_number} for $${total.toFixed(2)} is ready for payment`,
+       link: '/portal/invoices',
+       reference_id: existingInvoice.id,
+       reference_type: 'invoice'
+      })
+    } else if (eventType === 'paid') {
+     await supabaseAdmin
+      .from('customer_notifications')
+      .insert({
+       user_id: customer.id,
+       type: 'payment_received',
+       title: 'Payment Confirmed',
+       message: `Your payment for Invoice ${invoiceData.invoice_number} has been received`,
+       link: '/portal/invoices',
+       reference_id: existingInvoice.id,
+       reference_type: 'invoice'
+      })
+    }
+   }
+
    return { success: true, action: 'updated', invoiceNumber: invoiceData.invoice_number }
   } else {
    // Create new invoice
@@ -295,23 +325,39 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
    
    console.log(`Created invoice ${invoiceData.invoice_number} from Stripe Dashboard`)
 
-   // Only send email notification for 'paid' events, not 'finalized'
-   // The invoice.finalized event is just for syncing data - Stripe handles sending the invoice email
-   if (eventType === 'paid' && customer) {
-    try {
-     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-       customerEmail: customer.email,
-       customerName: customer.full_name || customer.email.split('@')[0],
-       invoiceNumber: invoiceData.invoice_number,
-       amount: total,
-       dueDate: invoiceData.due_date,
-      }),
-     })
-    } catch (emailError) {
-     console.error('Failed to send invoice email:', emailError)
+   // Get the newly created invoice ID for notifications
+   const { data: newInvoice } = await supabaseAdmin
+    .from('invoices')
+    .select('id')
+    .eq('stripe_invoice_id', stripeInvoice.id)
+    .single()
+
+   // Create customer notifications based on event type
+   if (customer?.id && newInvoice?.id) {
+    if (eventType === 'finalized') {
+     await supabaseAdmin
+      .from('customer_notifications')
+      .insert({
+       user_id: customer.id,
+       type: 'invoice_sent',
+       title: 'New Invoice Ready',
+       message: `Invoice ${invoiceData.invoice_number} for $${total.toFixed(2)} is ready for payment`,
+       link: '/portal/invoices',
+       reference_id: newInvoice.id,
+       reference_type: 'invoice'
+      })
+    } else if (eventType === 'paid') {
+     await supabaseAdmin
+      .from('customer_notifications')
+      .insert({
+       user_id: customer.id,
+       type: 'payment_received',
+       title: 'Payment Confirmed',
+       message: `Your payment for Invoice ${invoiceData.invoice_number} has been received`,
+       link: '/portal/invoices',
+       reference_id: newInvoice.id,
+       reference_type: 'invoice'
+      })
     }
    }
 
