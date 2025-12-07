@@ -75,9 +75,12 @@ export async function POST(request) {
    }
   }
 
-  // Update our invoice record
+// Update our invoice record
+  console.log('Payment successful. payment_intent:', paidInvoice.payment_intent)
+  console.log('supabaseInvoiceId:', supabaseInvoiceId, '| invoiceId from request:', invoiceId, '| metadata:', stripeInvoice.metadata)
+
   if (supabaseInvoiceId) {
-   await supabaseAdmin
+   const { error: updateError } = await supabaseAdmin
     .from('invoices')
     .update({
      status: 'paid',
@@ -87,8 +90,33 @@ export async function POST(request) {
      updated_at: new Date().toISOString(),
     })
     .eq('id', supabaseInvoiceId)
+   
+   if (updateError) {
+    console.error('Failed to update invoice by ID:', updateError)
+   } else {
+    console.log('Updated invoice by supabaseInvoiceId:', supabaseInvoiceId)
+   }
+  } else {
+   // FALLBACK: Update by stripe_invoice_id since we definitely have that
+   console.log('No supabaseInvoiceId, updating by stripe_invoice_id:', stripeInvoiceId)
+   const { error: fallbackError } = await supabaseAdmin
+    .from('invoices')
+    .update({
+     status: 'paid',
+     paid_date: new Date().toISOString().split('T')[0],
+     payment_method: 'stripe',
+     stripe_payment_intent_id: paidInvoice.payment_intent,
+     updated_at: new Date().toISOString(),
+    })
+    .eq('stripe_invoice_id', stripeInvoiceId)
+   
+   if (fallbackError) {
+    console.error('Failed to update invoice by stripe_invoice_id:', fallbackError)
+   } else {
+    console.log('Updated invoice by stripe_invoice_id:', stripeInvoiceId)
+   }
   }
-
+  
   return NextResponse.json({
    success: true,
    invoiceStatus: paidInvoice.status,

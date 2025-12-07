@@ -635,20 +635,20 @@ case 'payment_intent.payment_failed': {
 // ==========================================
   // CHARGE EVENTS
   // ==========================================
-  case 'charge.succeeded': {
+case 'charge.succeeded': {
     const charge = event.data.object
     console.log('Charge succeeded:', charge.id, 'payment_intent:', charge.payment_intent, 'invoice:', charge.invoice)
     
-    // If this charge is for a Stripe invoice, save the payment_intent_id
+    // If this charge has a Stripe invoice ID, link them
     if (charge.invoice && charge.payment_intent) {
-      const { data: invoice, error: findError } = await supabaseAdmin
+      const { data: invoice } = await supabaseAdmin
         .from('invoices')
         .select('id, invoice_number, stripe_payment_intent_id')
         .eq('stripe_invoice_id', charge.invoice)
         .single()
       
       if (invoice && !invoice.stripe_payment_intent_id) {
-        const { error } = await supabaseAdmin
+        await supabaseAdmin
           .from('invoices')
           .update({ 
             stripe_payment_intent_id: charge.payment_intent,
@@ -656,18 +656,36 @@ case 'payment_intent.payment_failed': {
           })
           .eq('id', invoice.id)
         
-        if (error) {
-          console.error('Failed to save payment_intent from charge:', error)
-        } else {
-          console.log(`Saved payment_intent ${charge.payment_intent} to invoice ${invoice.invoice_number}`)
-        }
-      } else if (findError) {
-        console.log('No matching invoice found for charge.invoice:', charge.invoice)
+        console.log(`Saved payment_intent ${charge.payment_intent} to invoice ${invoice.invoice_number}`)
+      }
+    }
+    
+    // FALLBACK: If no invoice field, try to find by customer's most recent unpaid invoice
+    if (!charge.invoice && charge.payment_intent && charge.customer) {
+      const { data: recentInvoice } = await supabaseAdmin
+        .from('invoices')
+        .select('id, invoice_number, stripe_payment_intent_id, stripe_invoice_id')
+        .eq('status', 'paid')
+        .is('stripe_payment_intent_id', null)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .single()
+      
+      if (recentInvoice) {
+        await supabaseAdmin
+          .from('invoices')
+          .update({ 
+            stripe_payment_intent_id: charge.payment_intent,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', recentInvoice.id)
+        
+        console.log(`Saved payment_intent ${charge.payment_intent} to recent invoice ${recentInvoice.invoice_number} (fallback)`)
       }
     }
     break
   }
-  // ==========================================
+    // ==========================================
   // REFUND EVENTS
   // ==========================================
   case 'charge.refunded': {
