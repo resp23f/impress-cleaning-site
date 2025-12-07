@@ -487,12 +487,12 @@ hover:text-emerald-600 ${styles.smoothTransition}
             <ChevronRight className="w-4 h-4" />
            </Link>
           </div>
-          {invoices && invoices.length > 0 ? (
-           <div className="space-y-3">
-            {invoices
-             .filter((invoice) => invoice.status !== 'draft')
-             .map((invoice) => {
-              const statusProps = getInvoiceStatusProps(
+{invoices && invoices.filter((inv) => inv.status !== 'draft').length > 0 ? (
+  <div className="space-y-3">
+    {invoices
+      .filter((invoice) => invoice.status !== 'draft')
+      .map((invoice) => {
+                     const statusProps = getInvoiceStatusProps(
                invoice.status,
               )
               return (
