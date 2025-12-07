@@ -71,7 +71,7 @@ export default function NotificationBell() {
         .from('customer_notifications')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id)
-        .eq('read', false)
+        .eq('is_read', false)
 
       if (!countError) {
         setUnreadCount(count || 0)
@@ -90,13 +90,16 @@ export default function NotificationBell() {
 
       const { error } = await supabase
         .from('customer_notifications')
-        .update({ read: true })
+        .update({
+          is_read: true,
+          read_at: new Date().toISOString()
+        })
         .eq('user_id', user.id)
-        .eq('read', false)
+        .eq('is_read', false)
 
       if (!error) {
         setUnreadCount(0)
-        setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+        setNotifications(prev => prev.map(n => ({ ...n, is_read: true, read_at: new Date().toISOString() })))
       }
     } catch (error) {
       console.error('Error marking notifications as read:', error)
@@ -107,12 +110,15 @@ export default function NotificationBell() {
     try {
       const { error } = await supabase
         .from('customer_notifications')
-        .update({ read: true })
+        .update({
+          is_read: true,
+          read_at: new Date().toISOString()
+        })
         .eq('id', notificationId)
 
       if (!error) {
         setNotifications(prev =>
-          prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
+          prev.map(n => n.id === notificationId ? { ...n, is_read: true, read_at: new Date().toISOString() } : n)
         )
         setUnreadCount(prev => Math.max(0, prev - 1))
       }

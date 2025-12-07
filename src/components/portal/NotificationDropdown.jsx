@@ -66,7 +66,7 @@ export default function NotificationDropdown({
   onMarkAsRead,
   onClose
 }) {
-  const hasUnread = notifications.some(n => !n.read)
+  const hasUnread = notifications.some(n => !n.is_read)
 
   return (
     <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50 overflow-hidden">
@@ -101,20 +101,20 @@ export default function NotificationDropdown({
                 <Link
                   href={notification.link || '/portal'}
                   onClick={() => {
-                    if (!notification.read) {
+                    if (!notification.is_read) {
                       onMarkAsRead(notification.id)
                     }
                     onClose()
                   }}
                   className={`flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors ${
-                    !notification.read ? 'bg-emerald-50/50' : ''
+                    !notification.is_read ? 'bg-emerald-50/50' : ''
                   }`}
                 >
                   <div className="flex-shrink-0 mt-0.5">
                     {getNotificationIcon(notification.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${!notification.read ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
+                    <p className={`text-sm ${!notification.is_read ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
                       {notification.title}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">
@@ -124,7 +124,7 @@ export default function NotificationDropdown({
                       {formatTimeAgo(notification.created_at)}
                     </p>
                   </div>
-                  {!notification.read && (
+                  {!notification.is_read && (
                     <div className="flex-shrink-0">
                       <span className="h-2 w-2 bg-emerald-500 rounded-full block"></span>
                     </div>
