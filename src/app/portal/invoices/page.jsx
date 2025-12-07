@@ -128,7 +128,8 @@ export default function InvoicesPage() {
 
   if (filter === 'unpaid')
    return invoice.status === 'sent' || invoice.status === 'pending'
-  if (filter === 'paid') return invoice.status === 'paid'
+  if (filter === 'paid') return invoice.status === 'paid' && !invoice.refund_amount
+  if (filter === 'refunded') return invoice.status === 'paid' && invoice.refund_amount > 0
   if (filter === 'overdue') return invoice.status === 'overdue'
   if (filter === 'cancelled') return invoice.status === 'cancelled'
   return false
@@ -202,7 +203,7 @@ export default function InvoicesPage() {
   
   {/* Filters */}
   <div className={`overflow-hidden ${styles.animateFadeInUp} ${styles.stagger2}`}>
-  <div className="flex gap-2 mb-6 overflow-x-auto pb-2">   {['unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
+  <div className="flex gap-2 mb-6 overflow-x-auto pb-2">   {['unpaid', 'paid', 'refunded', 'overdue', 'cancelled'].map((filterOption) => (
    <button
    key={filterOption}
    onClick={() => {

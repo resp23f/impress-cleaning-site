@@ -51,6 +51,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Can only refund paid invoices' }, { status: 400 })
     }
 
+    // Must have stripe_payment_intent_id to refund
+    if (!invoice.stripe_payment_intent_id) {
+      return NextResponse.json({ error: 'Cannot refund - no payment intent found' }, { status: 400 })
+    }
+
     const invoiceTotal = parseFloat(invoice.total || invoice.amount)
     const existingRefund = parseFloat(invoice.refund_amount || 0)
     const maxRefundable = invoiceTotal - existingRefund
@@ -63,24 +68,21 @@ export async function POST(request) {
 
     let stripeRefundId = null
 
-    // 3. Process Stripe refund if payment was via Stripe
-    if (invoice.stripe_payment_intent_id) {
-      try {
-        const refund = await stripe.refunds.create({
-          payment_intent: invoice.stripe_payment_intent_id,
-          amount: Math.round(amount * 100), // Convert to cents
-          reason: 'requested_by_customer'
-        })
-        stripeRefundId = refund.id
-      } catch (stripeError) {
-        console.error('Stripe refund error:', stripeError)
-        return NextResponse.json({
-          error: `Stripe refund failed: ${stripeError.message}`
-        }, { status: 500 })
-      }
+    // 3. Process Stripe refund
+    try {
+      const refund = await stripe.refunds.create({
+        payment_intent: invoice.stripe_payment_intent_id,
+        amount: Math.round(amount * 100) // Convert to cents
+      })
+      stripeRefundId = refund.id
+    } catch (stripeError) {
+      console.error('Stripe refund error:', stripeError)
+      return NextResponse.json({
+        error: `Stripe refund failed: ${stripeError.message}`
+      }, { status: 500 })
     }
 
-    // 4. Update invoice with refund info
+    // 4. Update invoice with refund info (keep status as 'paid')
     const newRefundTotal = existingRefund + amount
     const isFullRefund = newRefundTotal >= invoiceTotal
 
@@ -88,11 +90,7 @@ export async function POST(request) {
       refund_amount: newRefundTotal,
       refund_reason: reason || 'Refund processed by admin',
       updated_at: new Date().toISOString()
-    }
-
-    // If full refund, update status
-    if (isFullRefund) {
-      updateData.status = 'cancelled'
+      // Status stays 'paid' - refunded invoices are still considered paid
     }
 
     const { error: updateError } = await supabaseAdmin

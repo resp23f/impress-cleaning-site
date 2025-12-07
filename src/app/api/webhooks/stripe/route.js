@@ -662,15 +662,11 @@ case 'payment_intent.payment_failed': {
     const invoiceTotal = parseFloat(invoice.total || invoice.amount)
     const isFullRefund = refundedAmount >= invoiceTotal
 
-    // Update invoice with refund info
+    // Update invoice with refund info (keep status as 'paid')
     const updateData = {
      refund_amount: refundedAmount,
-     refund_reason: 'Refund processed via Stripe',
+     refund_reason: 'Refunded via Stripe',
      updated_at: new Date().toISOString()
-    }
-
-    if (isFullRefund) {
-     updateData.status = 'cancelled'
     }
 
     await supabaseAdmin
