@@ -42,7 +42,7 @@ export async function POST(request) {
     if (adminEmail) {
       try {
         await resend.emails.send({
-          from: 'Impress Cleaning <notifications@impresscleaning.com>',
+          from: 'Impress Cleaning <notifications@impressyoucleaning.com>',
           to: adminEmail,
           subject: `Zelle Payment Claimed - ${invoiceNumber || invoiceId}`,
           html: `
@@ -125,7 +125,7 @@ export async function POST(request) {
       const shortInvoice = invoiceNumber || invoiceId.substring(0, 8)
 
       await resend.emails.send({
-        from: 'Impress <notifications@impresscleaning.com>',
+        from: 'Impress <notifications@impressyoucleaning.com>',
         to: smsGatewayEmail,
         subject: 'Zelle Claimed',
         text: `${shortName} - ${formattedAmount} - ${shortInvoice}. Verify payment.`
