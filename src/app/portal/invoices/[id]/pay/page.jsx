@@ -702,7 +702,7 @@ Instructions
 </p>
 <ol className="text-sm text-slate-600 space-y-1.5 list-decimal list-inside">
 <li>Open your Zelle app or banking app</li>
-<li>Send to <strong className="text-slate-800">payments@impresscleaning.com</strong></li>
+<li>Send to <strong className="text-slate-800">notifications@impressyoucleaning.com</strong></li>
 <li>Enter amount: <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong></li>
 <li>Include reference: <strong className="text-slate-800">{invoice.invoice_number}</strong></li>
 <li>Click the button below after sending</li>
@@ -733,7 +733,7 @@ title="Confirm Zelle Payment"
 >
 <div className="space-y-4">
 <p className="text-slate-600">
-Please confirm that you have sent <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong> via Zelle to <strong className="text-slate-800">payments@impresscleaning.com</strong> with reference <strong className="text-slate-800">{invoice.invoice_number}</strong>.
+Please confirm that you have sent <strong className="text-slate-800">{formatMoney(invoice?.total ?? invoice?.amount)}</strong> via Zelle to <strong className="text-slate-800">notifications@impressyoucleaning.com</strong> with reference <strong className="text-slate-800">{invoice.invoice_number}</strong>.
 </p>
 <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-xl p-4">
 <p className="text-sm text-amber-800">

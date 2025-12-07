@@ -49,7 +49,7 @@ export default function PortalNav({ userName }) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col bg-white border-r border-gray-100 shadow-[4px_0_24px_-8px_rgba(0,0,0,0.08)]">
+<aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col bg-white border-r border-gray-100 shadow-[4px_0_24px_-8px_rgba(0,0,0,0.08)] relative">
         <div className="flex flex-col flex-grow pt-8 overflow-y-auto">
 
           {/* Logo */}
@@ -61,14 +61,10 @@ export default function PortalNav({ userName }) {
             />
           </div>
 
-          {/* Notification Bell - Desktop */}
-          <div className="px-6 mb-6">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-slate-50 to-gray-50 border border-gray-100">
-              <span className="text-sm font-medium text-gray-600">Notifications</span>
-              <NotificationBell />
-            </div>
+{/* Notification Bell - Desktop */}
+          <div className="absolute top-8 right-6">
+            <NotificationBell />
           </div>
-
           {/* Navigation */}
           <nav className="flex-1 px-4 pt-2 pb-4 space-y-1.5 overflow-y-auto">
             {navItems.map((item) => {
