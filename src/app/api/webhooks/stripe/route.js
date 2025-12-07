@@ -294,9 +294,10 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
    if (error) throw error
    
    console.log(`Created invoice ${invoiceData.invoice_number} from Stripe Dashboard`)
-   
-   // Send notification if customer exists
-   if (customer) {
+
+   // Only send email notification for 'paid' events, not 'finalized'
+   // The invoice.finalized event is just for syncing data - Stripe handles sending the invoice email
+   if (eventType === 'paid' && customer) {
     try {
      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
       method: 'POST',
@@ -313,7 +314,7 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
      console.error('Failed to send invoice email:', emailError)
     }
    }
-   
+
    return { success: true, action: 'created', invoiceNumber: invoiceData.invoice_number }
   }
  } catch (error) {
