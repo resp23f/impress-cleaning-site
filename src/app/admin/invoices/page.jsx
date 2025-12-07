@@ -60,11 +60,6 @@ export default function InvoicesPage() {
   phone: '',
  })
 
- // Refund modal state
- const [showRefundModal, setShowRefundModal] = useState(false)
- const [refundAmount, setRefundAmount] = useState('')
- const [refundReason, setRefundReason] = useState('')
-
  // Apply credit modal state
  const [showCreditModal, setShowCreditModal] = useState(false)
  const [creditAmount, setCreditAmount] = useState('')
@@ -125,9 +120,6 @@ export default function InvoicesPage() {
    if (statusFilter === 'archived') {
     // Only archived invoices
     filtered = filtered.filter(inv => inv.archived)
-   } else if (statusFilter === 'refunded') {
-    // Refunded invoices (paid with refund_amount > 0)
-    filtered = filtered.filter(inv => !inv.archived && inv.status === 'paid' && inv.refund_amount > 0)
    } else {
     // For all other views, hide archived
     filtered = filtered.filter(inv => !inv.archived)
@@ -316,47 +308,6 @@ export default function InvoicesPage() {
    } catch (error) {
     console.error('Error marking invoice as paid:', error)
     toast.error(error.message || 'Failed to mark invoice as paid')
-   } finally {
-    setProcessing(false)
-   }
-  }
-
-  // Process refund via API
-  const handleRefund = async () => {
-   if (!selectedInvoice || !refundAmount) return
-
-   const amount = parseFloat(refundAmount)
-   if (isNaN(amount) || amount <= 0) {
-    toast.error('Please enter a valid refund amount')
-    return
-   }
-
-   setProcessing(true)
-   try {
-    const response = await fetch('/api/admin/invoices/refund', {
-     method: 'POST',
-     headers: { 'Content-Type': 'application/json' },
-     body: JSON.stringify({
-      invoiceId: selectedInvoice.id,
-      amount: amount,
-      reason: refundReason || 'Refund processed by admin'
-     })
-    })
-
-    if (!response.ok) {
-     const data = await response.json()
-     throw new Error(data.error || 'Failed to process refund')
-    }
-
-    toast.success('Refund processed successfully!')
-    setShowRefundModal(false)
-    setRefundAmount('')
-    setRefundReason('')
-    setShowModal(false)
-    loadInvoices()
-   } catch (error) {
-    console.error('Error processing refund:', error)
-    toast.error(error.message || 'Failed to process refund')
    } finally {
     setProcessing(false)
    }
@@ -704,9 +655,6 @@ const handleCreateCustomer = async () => {
    <option value="draft">Draft</option>
    <option value="sent">Sent</option>
    <option value="paid">Paid</option>
-   {invoices.some(inv => inv.status === 'paid' && inv.refund_amount > 0) && (
-    <option value="refunded">Refunded</option>
-   )}
    <option value="overdue">Overdue</option>
    <option value="cancelled">Cancelled</option>
    <option value="archived">Archived</option>
@@ -994,20 +942,6 @@ const handleCreateCustomer = async () => {
         Apply Credit
        </Button>
       </>
-     )}
-
-     {selectedInvoice.status === 'paid' && !selectedInvoice.disputed && (
-      <Button
-       variant="outline"
-       fullWidth
-       onClick={() => {
-        setRefundAmount((selectedInvoice.total || selectedInvoice.amount || 0).toString())
-        setShowRefundModal(true)
-       }}
-      >
-       <RefreshCw className="w-5 h-5" />
-       Issue Refund
-      </Button>
      )}
 
      {selectedInvoice.status !== 'cancelled' && selectedInvoice.status !== 'paid' && (
@@ -1368,76 +1302,6 @@ const handleCreateCustomer = async () => {
         loading={processing}
        >
         Confirm Payment
-       </Button>
-      </div>
-     </div>
-    </Modal>
-
-    {/* Refund Modal */}
-    <Modal
-     isOpen={showRefundModal}
-     onClose={() => {
-      setShowRefundModal(false)
-      setRefundAmount('')
-      setRefundReason('')
-     }}
-     title="Issue Refund"
-     maxWidth="sm"
-    >
-     <div className="space-y-4">
-      {selectedInvoice && (
-       <p className="text-gray-600">
-        Maximum refundable: ${parseFloat(
-         (selectedInvoice.total || selectedInvoice.amount || 0) -
-         (selectedInvoice.refund_amount || 0)
-        ).toFixed(2)}
-       </p>
-      )}
-      <Input
-       label="Refund Amount"
-       type="number"
-       step="0.01"
-       min="0"
-       value={refundAmount}
-       onChange={(e) => setRefundAmount(e.target.value)}
-       placeholder="0.00"
-      />
-      <div>
-       <label className="block text-sm font-semibold text-gray-700 mb-2">
-        Reason (Optional)
-       </label>
-       <textarea
-        value={refundReason}
-        onChange={(e) => setRefundReason(e.target.value)}
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
-        rows="2"
-        placeholder="Reason for refund..."
-       />
-      </div>
-      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-       <p className="text-sm text-yellow-800">
-        <strong>Note:</strong> If paid via Stripe, the refund will be processed automatically.
-       </p>
-      </div>
-      <div className="flex gap-3 pt-4 border-t border-gray-200">
-       <Button
-        variant="outline"
-        fullWidth
-        onClick={() => {
-         setShowRefundModal(false)
-         setRefundAmount('')
-         setRefundReason('')
-        }}
-       >
-        Cancel
-       </Button>
-       <Button
-        variant="danger"
-        fullWidth
-        onClick={handleRefund}
-        loading={processing}
-       >
-        Process Refund
        </Button>
       </div>
      </div>
