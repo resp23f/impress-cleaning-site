@@ -51,9 +51,33 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Can only refund paid invoices' }, { status: 400 })
     }
 
-    // Must have stripe_payment_intent_id to refund
-    if (!invoice.stripe_payment_intent_id) {
-      return NextResponse.json({ error: 'Cannot refund - no payment intent found' }, { status: 400 })
+    // Get payment intent ID - try local first, then fetch from Stripe invoice
+    let paymentIntentId = invoice.stripe_payment_intent_id
+
+    // Fallback: get payment_intent from Stripe invoice if missing locally
+    if (!paymentIntentId && invoice.stripe_invoice_id) {
+      try {
+        const stripeInvoice = await stripe.invoices.retrieve(invoice.stripe_invoice_id)
+        paymentIntentId = stripeInvoice.payment_intent
+
+        // Save it for future use
+        if (paymentIntentId) {
+          await supabaseAdmin
+            .from('invoices')
+            .update({
+              stripe_payment_intent_id: paymentIntentId,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', invoice.id)
+          console.log(`Saved payment_intent_id ${paymentIntentId} to invoice ${invoice.invoice_number}`)
+        }
+      } catch (err) {
+        console.error('Error retrieving Stripe invoice:', err)
+      }
+    }
+
+    if (!paymentIntentId) {
+      return NextResponse.json({ error: 'Cannot refund - no payment found' }, { status: 400 })
     }
 
     const invoiceTotal = parseFloat(invoice.total || invoice.amount)
@@ -71,7 +95,7 @@ export async function POST(request) {
     // 3. Process Stripe refund
     try {
       const refund = await stripe.refunds.create({
-        payment_intent: invoice.stripe_payment_intent_id,
+        payment_intent: paymentIntentId,
         amount: Math.round(amount * 100) // Convert to cents
       })
       stripeRefundId = refund.id

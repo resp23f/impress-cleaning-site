@@ -252,7 +252,8 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
   customer_id: customer?.id || null,
   customer_email: customerEmail,
   stripe_invoice_id: stripeInvoice.id,
-  stripe_payment_intent_id: stripeInvoice.payment_intent || null,
+  // Only set payment_intent_id if present (avoid overwriting with null)
+  ...(stripeInvoice.payment_intent && { stripe_payment_intent_id: stripeInvoice.payment_intent }),
   amount: subtotal,
   tax_rate: parseFloat(taxRate),
   tax_amount: taxAmount,
@@ -637,7 +638,15 @@ case 'payment_intent.payment_failed': {
   // ==========================================
   case 'charge.refunded': {
     const charge = event.data.object
-    console.log('Processing refund:', charge.id)
+
+    // Debug logging for refund
+    console.log('Processing refund - charge data:', {
+     chargeId: charge.id,
+     paymentIntent: charge.payment_intent,
+     stripeInvoice: charge.invoice,
+     amountRefunded: charge.amount_refunded,
+     currency: charge.currency
+    })
 
     // Try to find invoice by payment intent first
     const paymentIntentId = charge.payment_intent
@@ -647,21 +656,23 @@ case 'payment_intent.payment_failed': {
 
     // First try by payment intent
     if (paymentIntentId) {
-     const { data } = await supabaseAdmin
+     const { data, error } = await supabaseAdmin
       .from('invoices')
-      .select('id, invoice_number, customer_id, total, amount, refund_amount, profiles:customer_id(email, full_name)')
+      .select('id, invoice_number, customer_id, total, amount, refund_amount, stripe_payment_intent_id, profiles:customer_id(email, full_name)')
       .eq('stripe_payment_intent_id', paymentIntentId)
       .single()
+     if (error) console.log('Lookup by payment_intent failed:', error.message)
      invoice = data
     }
 
     // Fallback: try by Stripe invoice ID
     if (!invoice && stripeInvoiceId) {
-     const { data } = await supabaseAdmin
+     const { data, error } = await supabaseAdmin
       .from('invoices')
-      .select('id, invoice_number, customer_id, total, amount, refund_amount, profiles:customer_id(email, full_name)')
+      .select('id, invoice_number, customer_id, total, amount, refund_amount, stripe_payment_intent_id, profiles:customer_id(email, full_name)')
       .eq('stripe_invoice_id', stripeInvoiceId)
       .single()
+     if (error) console.log('Lookup by stripe_invoice_id failed:', error.message)
      invoice = data
     }
 
@@ -670,16 +681,21 @@ case 'payment_intent.payment_failed': {
      break
     }
 
+    console.log('Found invoice for refund:', invoice.invoice_number)
+
     // Calculate refund amount from Stripe
     const refundedAmount = charge.amount_refunded / 100
     const invoiceTotal = parseFloat(invoice.total || invoice.amount)
     const isFullRefund = refundedAmount >= invoiceTotal
 
     // Update invoice with refund info (keep status as 'paid')
+    // Also save payment_intent_id if it was missing (for future refunds)
     const updateData = {
      refund_amount: refundedAmount,
      refund_reason: 'Refunded via Stripe',
-     updated_at: new Date().toISOString()
+     updated_at: new Date().toISOString(),
+     // Save payment_intent_id if missing so future refunds can find this invoice
+     ...(paymentIntentId && !invoice.stripe_payment_intent_id && { stripe_payment_intent_id: paymentIntentId })
     }
 
     await supabaseAdmin
