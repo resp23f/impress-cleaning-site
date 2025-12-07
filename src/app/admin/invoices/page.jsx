@@ -704,7 +704,9 @@ const handleCreateCustomer = async () => {
    <option value="draft">Draft</option>
    <option value="sent">Sent</option>
    <option value="paid">Paid</option>
-   <option value="refunded">Refunded</option>
+   {invoices.some(inv => inv.status === 'paid' && inv.refund_amount > 0) && (
+    <option value="refunded">Refunded</option>
+   )}
    <option value="overdue">Overdue</option>
    <option value="cancelled">Cancelled</option>
    <option value="archived">Archived</option>

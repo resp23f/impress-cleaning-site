@@ -203,7 +203,12 @@ export default function InvoicesPage() {
   
   {/* Filters */}
   <div className={`overflow-hidden ${styles.animateFadeInUp} ${styles.stagger2}`}>
-  <div className="flex gap-2 mb-6 overflow-x-auto pb-2">   {['unpaid', 'paid', 'refunded', 'overdue', 'cancelled'].map((filterOption) => (
+  <div className="flex gap-2 mb-6 overflow-x-auto pb-2">   {(() => {
+   const hasRefunded = invoices.some(inv => inv.status === 'paid' && inv.refund_amount > 0)
+   const filterOptions = hasRefunded
+    ? ['unpaid', 'paid', 'refunded', 'overdue', 'cancelled']
+    : ['unpaid', 'paid', 'overdue', 'cancelled']
+   return filterOptions.map((filterOption) => (
    <button
    key={filterOption}
    onClick={() => {
@@ -217,7 +222,7 @@ export default function InvoicesPage() {
    >
    {filterOption.charAt(0).toUpperCase() + filterOption.slice(1)}
    </button>
-  ))}
+  ))})()}
   </div>
   </div>
   

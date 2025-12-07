@@ -639,21 +639,34 @@ case 'payment_intent.payment_failed': {
     const charge = event.data.object
     console.log('Processing refund:', charge.id)
 
-    // Find invoice by payment intent
+    // Try to find invoice by payment intent first
     const paymentIntentId = charge.payment_intent
-    if (!paymentIntentId) {
-     console.log('Refund has no payment intent, skipping')
-     break
+    const stripeInvoiceId = charge.invoice // Stripe invoice ID if charge was from an invoice
+
+    let invoice = null
+
+    // First try by payment intent
+    if (paymentIntentId) {
+     const { data } = await supabaseAdmin
+      .from('invoices')
+      .select('id, invoice_number, customer_id, total, amount, refund_amount, profiles:customer_id(email, full_name)')
+      .eq('stripe_payment_intent_id', paymentIntentId)
+      .single()
+     invoice = data
     }
 
-    const { data: invoice } = await supabaseAdmin
-     .from('invoices')
-     .select('id, invoice_number, customer_id, total, amount, refund_amount, profiles:customer_id(email, full_name)')
-     .eq('stripe_payment_intent_id', paymentIntentId)
-     .single()
+    // Fallback: try by Stripe invoice ID
+    if (!invoice && stripeInvoiceId) {
+     const { data } = await supabaseAdmin
+      .from('invoices')
+      .select('id, invoice_number, customer_id, total, amount, refund_amount, profiles:customer_id(email, full_name)')
+      .eq('stripe_invoice_id', stripeInvoiceId)
+      .single()
+     invoice = data
+    }
 
     if (!invoice) {
-     console.log('No invoice found for refunded payment intent:', paymentIntentId)
+     console.log('No invoice found for refund. payment_intent:', paymentIntentId, 'stripe_invoice:', stripeInvoiceId)
      break
     }
 

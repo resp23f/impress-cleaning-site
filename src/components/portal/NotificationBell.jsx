@@ -97,10 +97,17 @@ export default function NotificationBell() {
         .eq('user_id', user.id)
         .eq('is_read', false)
 
-      if (!error) {
-        setUnreadCount(0)
-        setNotifications(prev => prev.map(n => ({ ...n, is_read: true, read_at: new Date().toISOString() })))
+      if (error) {
+        console.error('Error updating notifications:', error)
+        return
       }
+
+      // Update local state immediately for responsiveness
+      setUnreadCount(0)
+      setNotifications(prev => prev.map(n => ({ ...n, is_read: true, read_at: new Date().toISOString() })))
+
+      // Refetch to ensure sync with database
+      await fetchNotifications()
     } catch (error) {
       console.error('Error marking notifications as read:', error)
     }
