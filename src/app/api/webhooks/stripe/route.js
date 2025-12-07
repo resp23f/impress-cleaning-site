@@ -632,7 +632,41 @@ case 'payment_intent.payment_failed': {
     }
     break
    }
-
+// ==========================================
+  // CHARGE EVENTS
+  // ==========================================
+  case 'charge.succeeded': {
+    const charge = event.data.object
+    console.log('Charge succeeded:', charge.id, 'payment_intent:', charge.payment_intent, 'invoice:', charge.invoice)
+    
+    // If this charge is for a Stripe invoice, save the payment_intent_id
+    if (charge.invoice && charge.payment_intent) {
+      const { data: invoice, error: findError } = await supabaseAdmin
+        .from('invoices')
+        .select('id, invoice_number, stripe_payment_intent_id')
+        .eq('stripe_invoice_id', charge.invoice)
+        .single()
+      
+      if (invoice && !invoice.stripe_payment_intent_id) {
+        const { error } = await supabaseAdmin
+          .from('invoices')
+          .update({ 
+            stripe_payment_intent_id: charge.payment_intent,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', invoice.id)
+        
+        if (error) {
+          console.error('Failed to save payment_intent from charge:', error)
+        } else {
+          console.log(`Saved payment_intent ${charge.payment_intent} to invoice ${invoice.invoice_number}`)
+        }
+      } else if (findError) {
+        console.log('No matching invoice found for charge.invoice:', charge.invoice)
+      }
+    }
+    break
+  }
   // ==========================================
   // REFUND EVENTS
   // ==========================================
