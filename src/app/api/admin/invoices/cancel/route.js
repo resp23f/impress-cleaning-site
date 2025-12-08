@@ -4,6 +4,12 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+// Validated internal API base URL
+const INTERNAL_API_URL = (() => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
+  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
+})()
 
 export async function POST(request) {
   try {
@@ -98,8 +104,7 @@ export async function POST(request) {
     // 7. Send cancellation email
     if (customerEmail) {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-cancelled`, {
-          method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/invoice-cancelled`, {          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             customerEmail,
