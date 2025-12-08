@@ -1,6 +1,5 @@
 // XSS Protection Utilities
 // Use these when displaying user-generated content
-
 /**
  * Sanitize text input by removing dangerous characters
  * Use for: names, addresses, notes, descriptions
@@ -8,11 +7,21 @@
 export function sanitizeText(input) {
   if (!input) return ''
   
-  return String(input)
-    .replace(/[<>]/g, '') // Remove angle brackets (prevents HTML injection)
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/on\w+=/gi, '') // Remove event handlers (onclick=, onload=, etc.)
-    .trim()
+  let result = String(input)
+  
+  // Loop until no more dangerous patterns (handles nested cases like <<script>>)
+  let previous = ''
+  while (previous !== result) {
+    previous = result
+    result = result
+      .replace(/[<>]/g, '') // Remove angle brackets
+      .replace(/javascript:/gi, '') // Remove javascript: protocol
+      .replace(/data:/gi, '') // Remove data: protocol
+      .replace(/vbscript:/gi, '') // Remove vbscript: protocol
+      .replace(/on\w+\s*=/gi, '') // Remove event handlers
+  }
+  
+  return result.trim()
 }
 
 /**
@@ -46,19 +55,30 @@ export function sanitizeUrl(url) {
   
   const sanitized = String(url).trim()
   
-  // Must start with http:// or https://
+  // Must start with http:// or https:// (case insensitive, strict check)
   if (!/^https?:\/\//i.test(sanitized)) {
     return ''
   }
   
-  // Block javascript: and data: protocols
-  if (/^(javascript|data):/i.test(sanitized)) {
+  // Block dangerous protocols anywhere in the URL
+  const dangerous = /(?:javascript|data|vbscript|file|about|blob):/i
+  if (dangerous.test(sanitized)) {
+    return ''
+  }
+  
+  // Block encoded versions
+  try {
+    const decoded = decodeURIComponent(sanitized).toLowerCase()
+    if (dangerous.test(decoded)) {
+      return ''
+    }
+  } catch (e) {
+    // If decoding fails, reject the URL
     return ''
   }
   
   return sanitized
 }
-
 /**
  * Escape HTML entities for safe display
  * Use when you MUST display user content that might contain HTML

@@ -1,6 +1,12 @@
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+// Validated internal API base URL
+const INTERNAL_API_URL = (() => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
+  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
+})()
 
 export async function POST(request) {
   try {
@@ -67,8 +73,8 @@ export async function POST(request) {
           ? `${appointment.service_addresses.street_address}${appointment.service_addresses.unit ? ', ' + appointment.service_addresses.unit : ''}, ${appointment.service_addresses.city}, ${appointment.service_addresses.state} ${appointment.service_addresses.zip_code}`
           : 'N/A'
 
-        await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/appointment-cancelled`, {
-          method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/appointment-cancelled`, {
+           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             customerEmail: customer.email,

@@ -10,9 +10,12 @@ export async function GET(request) {
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
 
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    // Get base URL from request
+    const baseUrl = new URL(request.url).origin
 
     // 2. Get invoices that are 7+ days overdue
     const sevenDaysAgo = new Date()
@@ -63,8 +66,7 @@ export async function GET(request) {
         // 4. Send overdue email
         if (customerEmail) {
           try {
-            await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-overdue`, {
-              method: 'POST',
+await fetch(`${baseUrl}/api/email/invoice-overdue`, {              method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 invoiceId: invoice.id,

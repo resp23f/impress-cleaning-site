@@ -4,7 +4,12 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { sanitizeText } from '@/lib/sanitize'
 const resend = new Resend(process.env.RESEND_API_KEY)
-
+// Validated internal API base URL
+const INTERNAL_API_URL = (() => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
+  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
+})()
 export async function POST(request) {
  try {
   const supabase = await createClient()
@@ -163,8 +168,8 @@ special_requests: special_requests ? sanitizeText(special_requests).slice(0, 200
    ? `${address.street_address}${address.unit ? ', ' + address.unit : ''}, ${address.city}, ${address.state} ${address.zip_code}`
    : 'N/A'
    
-   await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/service-request-received`, {
-    method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/service-request-received`, {
+     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
      customerEmail: profile?.email || user.email,

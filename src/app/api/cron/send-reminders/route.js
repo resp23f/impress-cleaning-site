@@ -30,19 +30,20 @@ export async function GET(request) {
       }
 
       // Process fallback results
-      return await processReminders(fallbackInvoices || [])
+return await processReminders(fallbackInvoices || [], request)
     }
 
-    return await processReminders(invoices || [])
+return await processReminders(invoices || [], request)
   } catch (error) {
     console.error('Error in send-reminders cron:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
 
-async function processReminders(invoices) {
+async function processReminders(invoices, request) {
+  const baseUrl = new URL(request.url).origin
   let sentCount = 0
-  const errors = []
+    const errors = []
 
   for (const invoice of invoices) {
     try {
@@ -60,8 +61,7 @@ async function processReminders(invoices) {
 
       // Send reminder email
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-reminder`, {
-          method: 'POST',
+await fetch(`${baseUrl}/api/email/invoice-reminder`, {          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             invoiceId: invoice.id || invoice.invoice_id,

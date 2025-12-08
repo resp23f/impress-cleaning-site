@@ -5,7 +5,12 @@ import Stripe from 'stripe'
 import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-
+// Validated internal API base URL
+const INTERNAL_API_URL = (() => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
+  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
+})()
 export async function POST(request) {
   try {
     const { invoiceId } = await request.json()
@@ -206,8 +211,8 @@ export async function POST(request) {
     }
 
     // 9. Send email with payment link
-    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-payment-link`, {
-      method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/invoice-payment-link`, {
+       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: customerEmail,

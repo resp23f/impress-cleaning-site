@@ -7,6 +7,17 @@ import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const resend = new Resend(process.env.RESEND_API_KEY_STAGING)
 
+// Validated internal API base URL
+const INTERNAL_API_URL = (() => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+  // Only allow our known domains
+  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
+  if (allowed.some(domain => url.startsWith(domain))) {
+    return url
+  }
+  return 'https://impressyoucleaning.com' // Fallback to production
+})()
+
 // Gift certificate email template
 function createGiftCertificateEmail(giftData) {
  const { code, recipientName, senderName, message, amount } = giftData
@@ -481,8 +492,8 @@ export async function POST(request) {
          paymentMethod = session.payment_method_types[0] === 'card' ? 'Card' : session.payment_method_types[0]
         }
         
-        await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/payment-received`, {
-         method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({
           customerEmail: invoice.profiles.email,
@@ -541,8 +552,7 @@ case 'payment_intent.succeeded': {
          .single()
         
         if (invoice?.profiles) {
-         await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/payment-received`, {
-          method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
            customerEmail: invoice.profiles.email,
@@ -791,8 +801,8 @@ case 'charge.succeeded': {
 
     if (customerEmail) {
      try {
-      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/invoice-refunded`, {
-       method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({
         customerEmail,

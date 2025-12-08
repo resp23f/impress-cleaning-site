@@ -2,6 +2,12 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sanitizeText } from '@/lib/sanitize'
+// Validated internal API base URL
+const INTERNAL_API_URL = (() => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
+  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
+})()
 
 // Whitelist of columns admins can update
 const ALLOWED_UPDATE_FIELDS = [
@@ -119,8 +125,8 @@ export async function POST(request) {
           ? `${newAppointment.service_addresses.street_address}${newAppointment.service_addresses.unit ? ', ' + newAppointment.service_addresses.unit : ''}, ${newAppointment.service_addresses.city}, ${newAppointment.service_addresses.state} ${newAppointment.service_addresses.zip_code}`
           : 'N/A'
 
-        await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/appointment-rescheduled`, {
-          method: 'POST',
+await fetch(`${INTERNAL_API_URL}/api/email/appointment-rescheduled`, {
+           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             customerEmail: customer.email,
