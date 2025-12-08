@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -14,7 +14,6 @@ import {
   Bell,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import NotificationBell from './NotificationBell'
 import styles from '../../app/portal/shared-animations.module.css'
 
 const navItems = [
@@ -25,8 +24,58 @@ const navItems = [
   { icon: Settings, label: 'Settings', href: '/portal/settings' },
 ]
 
+// Simple notification bell with unread count
+function NavNotificationBell() {
+  const [unreadCount, setUnreadCount] = useState(0)
+  const supabase = createClient()
+
+  const fetchUnreadCount = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    const { count } = await supabase
+      .from('customer_notifications')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('is_read', false)
+
+    setUnreadCount(count || 0)
+  }, [supabase])
+
+  useEffect(() => {
+    fetchUnreadCount()
+
+    // Real-time subscription
+    const channel = supabase
+      .channel('nav_notifications')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'customer_notifications'
+      }, () => fetchUnreadCount())
+      .subscribe()
+
+    return () => supabase.removeChannel(channel)
+  }, [supabase, fetchUnreadCount])
+
+  return (
+    <Link
+      href="/portal/notifications"
+      className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors"
+    >
+      <Bell className="w-5 h-5 text-gray-600" />
+      {unreadCount > 0 && (
+        <span className="absolute -top-0.5 -right-0.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 ring-2 ring-white">
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </span>
+      )}
+    </Link>
+  )
+}
+
 export default function PortalNav({ userName }) {
-  const pathname = usePathname()
+ 
+   const pathname = usePathname()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
@@ -63,9 +112,8 @@ export default function PortalNav({ userName }) {
 
 {/* Notification Bell - Desktop */}
           <div className="absolute top-8 right-6">
-            <NotificationBell />
-          </div>
-          {/* Navigation */}
+            <NavNotificationBell />
+          </div>          {/* Navigation */}
           <nav className="flex-1 px-4 pt-2 pb-4 space-y-1.5 overflow-y-auto">
             {navItems.map((item) => {
               const Icon = item.icon
@@ -122,7 +170,7 @@ export default function PortalNav({ userName }) {
           />
         </div>
         <div className="flex items-center gap-2">
-          <NotificationBell />
+<NavNotificationBell />
           <button
             onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
             className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
