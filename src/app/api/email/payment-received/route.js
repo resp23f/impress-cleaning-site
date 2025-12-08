@@ -33,92 +33,138 @@ try {
       to: customerEmail,
       subject: `Payment Received - Invoice ${invoiceNumber}`,
       html: `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          </head>
-          <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #1C294E; margin: 0;">Impress Cleaning Services</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Received - Impress Cleaning Services</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <div style="width:100%;padding:32px 16px;">
+    <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,0.06);">
+
+      <!-- LOGO HEADER -->
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" style="padding:0;">
+            <div style="background:linear-gradient(135deg,#059669 0%,#10b981 100%);padding:32px 0;">
+              <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png" alt="Impress Cleaning Services" style="height:56px;width:auto;" />
             </div>
-            
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 10px; padding: 30px; margin-bottom: 30px; text-align: center;">
-              <div style="font-size: 48px; margin-bottom: 10px;">✓</div>
-              <h2 style="color: white; margin: 0; font-size: 28px;">Payment Received!</h2>
-            </div>
+          </td>
+        </tr>
+      </table>
 
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 30px; margin-bottom: 30px;">
-              <p style="font-size: 16px; margin-top: 0;">Hi ${customerName},</p>
-              <p style="font-size: 16px;">Thank you! We've received your payment and your invoice has been marked as paid.</p>
-              
-              <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <h3 style="color: #1C294E; margin-top: 0; font-size: 18px;">Payment Details</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                      <strong>Invoice Number:</strong>
-                    </td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
-                      ${invoiceNumber}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                      <strong>Amount Paid:</strong>
-                    </td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right; color: #059669; font-weight: 600; font-size: 18px;">
-                      $${formattedAmount}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                      <strong>Payment Date:</strong>
-                    </td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
-                      ${formattedDate}
-                    </td>
-                  </tr>
-                  ${paymentMethod ? `
-                    <tr>
-                      <td style="padding: 10px 0;">
-                        <strong>Payment Method:</strong>
-                      </td>
-                      <td style="padding: 10px 0; text-align: right;">
-                        ${paymentMethod}
-                      </td>
-                    </tr>
-                  ` : ''}
-                </table>
-              </div>
+      <!-- SUCCESS ICON -->
+      <div style="padding:32px 40px 0;text-align:center;">
+        <div style="display:inline-block;width:72px;height:72px;background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border-radius:50%;line-height:72px;">
+          <span style="font-size:36px;">✓</span>
+        </div>
+      </div>
 
-              <div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 15px; border-radius: 4px; margin: 20px 0;">
-                <p style="margin: 0; color: #065f46; font-size: 14px;">
-                  <strong>Receipt confirmation:</strong> This email serves as your receipt. You can also view and download your invoice anytime from your customer portal.
-                </p>
-              </div>
+      <!-- THANK YOU MESSAGE -->
+      <div style="padding:24px 40px 0;text-align:center;">
+        <h1 style="font-size:28px;font-weight:700;color:#0f172a;margin:0 0 8px;">Payment Received!</h1>
+        <p style="font-size:15px;color:#64748b;margin:0;line-height:1.6;">Thank you, {{customerName}}. Your payment has been confirmed.</p>
+      </div>
 
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="${process.env.NEXT_PUBLIC_SITE_URL}/portal/invoices" style="display: inline-block; background: #079447; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
-                  View Invoice
-                </a>
-              </div>
+      <!-- AMOUNT DISPLAY -->
+      <div style="padding:28px 40px;text-align:center;">
+        <div style="display:inline-block;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:2px solid #86efac;border-radius:16px;padding:24px 48px;">
+          <p style="font-size:11px;color:#16a34a;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">Amount Paid</p>
+          <p style="font-size:42px;font-weight:700;color:#15803d;margin:0;">${{amount}}</p>
+        </div>
+      </div>
 
-              <p style="color: #6b7280; font-size: 14px; margin-bottom: 0;">
-                Questions about this payment? Reply to this email or contact us.
-              </p>
-            </div>
+      <!-- RECEIPT DETAILS -->
+      <div style="padding:0 40px 28px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+          
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Invoice Number</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{invoiceNumber}}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Payment Date</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{paymentDate}}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Payment Method</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{paymentMethod}}</p>
+              </td>
+            </tr>
+          </table>
 
-            <div style="text-align: center; color: #6b7280; font-size: 14px;">
-              <p>Thank you for your business!</p>
-              <p style="margin: 10px 0;">Impress Cleaning Services</p>
-              <p style="margin: 10px 0;">
-                Questions? Reply to this email or contact us at support@impressyoucleaning.com
-              </p>
-            </div>
-          </body>
-        </html>
+        </div>
+      </div>
+
+      <!-- SERVICE INFO (if available) -->
+      {{#if serviceType}}
+      <div style="padding:0 40px 28px;">
+        <div style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;border-radius:12px;padding:20px 24px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+                <p style="font-size:11px;color:#a16207;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">Your Next Cleaning</p>
+                <p style="font-size:15px;font-weight:600;color:#854d0e;margin:0;">{{serviceType}} • {{appointmentDate}}</p>
+              </td>
+              <td align="right" style="vertical-align:middle;">
+                <a href="https://impressyoucleaning.com/portal/appointments" style="display:inline-block;background:#ffffff;color:#854d0e;text-decoration:none;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:600;border:1px solid #fde047;">View</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      {{/if}}
+
+      <!-- VIEW RECEIPT BUTTON -->
+      <div style="padding:0 40px 32px;text-align:center;">
+        <a href="https://impressyoucleaning.com/portal/invoices" style="display:inline-block;background:#1e293b;color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:100px;font-size:14px;font-weight:600;letter-spacing:0.02em;">View Receipt in Portal</a>
+      </div>
+
+      <!-- DIVIDER -->
+      <div style="padding:0 40px;">
+        <div style="height:1px;background:linear-gradient(90deg,transparent,#e2e8f0,transparent);"></div>
+      </div>
+
+      <!-- THANK YOU NOTE -->
+      <div style="padding:28px 40px;text-align:center;">
+        <p style="font-size:15px;color:#475569;margin:0;line-height:1.7;">We truly appreciate your business and trust in us.<br/>Looking forward to making your space shine! ✨</p>
+      </div>
+
+      <!-- HELP BOX -->
+      <div style="padding:0 40px 32px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;text-align:center;">
+          <p style="font-size:13px;font-weight:600;color:#475569;margin:0 0 4px;">Need help with anything?</p>
+          <p style="font-size:13px;color:#64748b;margin:0;">Reply to this email or call <a href="tel:5129989658" style="color:#059669;text-decoration:none;font-weight:500;">(512) 998-9658</a></p>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="padding:24px 40px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+        <p style="font-size:12px;font-weight:600;color:#64748b;margin:0 0 4px;">Impress Cleaning Services, LLC</p>
+        <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">1530 Sun City Blvd, Suite 120-403, Georgetown, TX 78633</p>
+        <p style="font-size:11px;color:#94a3b8;margin:0;">© 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
+      </div>
+
+    </div>
+
+    <!-- FOOTER LINKS -->
+    <div style="text-align:center;padding:24px 0;">
+      <a href="https://impressyoucleaning.com/portal/dashboard" style="font-size:12px;color:#64748b;text-decoration:none;">Go to Dashboard</a>
+      <span style="color:#cbd5e1;margin:0 12px;">•</span>
+      <a href="https://impressyoucleaning.com/portal/settings" style="font-size:12px;color:#64748b;text-decoration:none;">Manage Preferences</a>
+    </div>
+
+  </div>
+</body>
+</html>
       `,
     })
 
