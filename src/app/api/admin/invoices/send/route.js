@@ -87,7 +87,24 @@ export async function POST(request) {
       )
     }
 
-    // 3. Create or retrieve Stripe customer
+// 3. Create or retrieve Stripe customer
+    // First, verify existing stripe_customer_id is still valid
+    if (stripeCustomerId) {
+      try {
+        await stripe.customers.retrieve(stripeCustomerId)
+      } catch (err) {
+        console.log(`Stripe customer ${stripeCustomerId} not found, will create new one`)
+        stripeCustomerId = null
+        // Clear invalid ID from profile
+        if (customerId) {
+          await supabaseAdmin
+            .from('profiles')
+            .update({ stripe_customer_id: null })
+            .eq('id', customerId)
+        }
+      }
+    }
+
     if (!stripeCustomerId) {
       // Check if a Stripe customer already exists with this email
       const existingCustomers = await stripe.customers.list({
@@ -121,7 +138,7 @@ export async function POST(request) {
           .eq('id', customerId)
       }
     }
-
+    
     // 4. Create invoice items FIRST (as pending items for the customer)
     const lineItems = invoice.line_items || []
 

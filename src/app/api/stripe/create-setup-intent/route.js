@@ -17,11 +17,23 @@ export async function POST() {
       .eq('user_id', user.id)
       .limit(1)
       .single()
-    if (existingPaymentMethod?.stripe_payment_method_id) {
-      const pm = await stripe.paymentMethods.retrieve(existingPaymentMethod.stripe_payment_method_id)
-      stripeCustomerId = pm?.customer
+if (existingPaymentMethod?.stripe_payment_method_id) {
+      try {
+        const pm = await stripe.paymentMethods.retrieve(existingPaymentMethod.stripe_payment_method_id)
+        if (pm?.customer) {
+          // Validate customer still exists
+          try {
+            await stripe.customers.retrieve(pm.customer)
+            stripeCustomerId = pm.customer
+          } catch (custErr) {
+            console.log(`Stripe customer ${pm.customer} not found`)
+          }
+        }
+      } catch (pmErr) {
+        console.log('Payment method not found in Stripe, will create new customer')
+      }
     }
-    if (!stripeCustomerId) {
+        if (!stripeCustomerId) {
       const { data: profile } = await supabase
         .from('profiles')
         .select('full_name, email')

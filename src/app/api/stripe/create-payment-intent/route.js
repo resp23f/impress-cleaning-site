@@ -45,12 +45,21 @@ export async function POST(request) {
       )
     }
 
-    // Determine the Stripe customer to use
+// Determine the Stripe customer to use
     let stripeCustomerId = invoice.stripe_customer_id
 
-    // If a payment method is provided, check if it's already attached to a customer
-    if (paymentMethodId) {
+    // Validate existing stripe_customer_id is still valid
+    if (stripeCustomerId) {
       try {
+        await stripe.customers.retrieve(stripeCustomerId)
+      } catch (err) {
+        console.log(`Stripe customer ${stripeCustomerId} not found, will find/create new one`)
+        stripeCustomerId = null
+      }
+    }
+
+    // If a payment method is provided, check if it's already attached to a customer
+    if (paymentMethodId) {      try {
         const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId)
         if (paymentMethod.customer) {
           // Use the payment method's existing customer

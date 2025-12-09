@@ -17,8 +17,19 @@ export async function POST(request) {
     if (!pm) {
       return NextResponse.json({ error: 'Payment method not found' }, { status: 404 })
     }
-    // Ensure a customer exists and the payment method is attached
+// Ensure a customer exists and the payment method is attached
     let customerId = pm.customer
+    
+    // Validate existing customer still exists in Stripe
+    if (customerId) {
+      try {
+        await stripe.customers.retrieve(customerId)
+      } catch (err) {
+        console.log(`Stripe customer ${customerId} not found, will create new one`)
+        customerId = null
+      }
+    }
+    
     if (!customerId) {
       const { data: profile } = await supabase
         .from('profiles')
@@ -33,7 +44,7 @@ export async function POST(request) {
       customerId = customer.id
       await stripe.paymentMethods.attach(paymentMethodId, { customer: customerId })
     }
-    if (makeDefault) {
+        if (makeDefault) {
       await stripe.customers.update(customerId, {
         invoice_settings: { default_payment_method: paymentMethodId },
       })
