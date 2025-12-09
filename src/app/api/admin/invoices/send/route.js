@@ -185,10 +185,9 @@ export async function POST(request) {
       }
     })
 
-    // 6. Finalize and send the Stripe Invoice
-    await stripe.invoices.finalizeInvoice(stripeInvoice.id)
-    const sentInvoice = await stripe.invoices.sendInvoice(stripeInvoice.id)
-
+// 6. Finalize the Stripe Invoice (don't call sendInvoice - we send our own email)
+    const sentInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
+    
 // 7. Update Supabase invoice with Stripe details
     // Check if webhook already updated it (race condition)
     const { data: currentInvoice } = await supabaseAdmin
