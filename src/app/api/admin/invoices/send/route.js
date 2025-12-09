@@ -171,9 +171,10 @@ export async function POST(request) {
       })
     }
 
-    // 5. Create Stripe Invoice (includes pending invoice items automatically)
+// 5. Create Stripe Invoice (includes pending invoice items automatically)
     const stripeInvoice = await stripe.invoices.create({
       customer: stripeCustomerId,
+      number: invoice.invoice_number,
       collection_method: 'send_invoice',
       days_until_due: invoice.due_date
         ? Math.max(1, Math.ceil((new Date(invoice.due_date) - new Date()) / (1000 * 60 * 60 * 24)))
@@ -184,7 +185,7 @@ export async function POST(request) {
         invoice_number: invoice.invoice_number
       }
     })
-
+    
 // 6. Finalize the Stripe Invoice (don't call sendInvoice - we send our own email)
     const sentInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
     
