@@ -189,24 +189,33 @@ export async function POST(request) {
     await stripe.invoices.finalizeInvoice(stripeInvoice.id)
     const sentInvoice = await stripe.invoices.sendInvoice(stripeInvoice.id)
 
-    // 7. Update Supabase invoice with Stripe details
-    const { error: updateError } = await supabaseAdmin
+// 7. Update Supabase invoice with Stripe details
+    // Check if webhook already updated it (race condition)
+    const { data: currentInvoice } = await supabaseAdmin
       .from('invoices')
-      .update({
-        stripe_invoice_id: sentInvoice.id,
-        status: 'sent',
-        updated_at: new Date().toISOString()
-      })
+      .select('stripe_invoice_id, status')
       .eq('id', invoice.id)
+      .single()
 
-    if (updateError) {
-      console.error('Update error:', updateError)
-      return NextResponse.json(
-        { error: 'Failed to update invoice status' },
-        { status: 500 }
-      )
+    // Only update if webhook hasn't already done it
+    if (!currentInvoice?.stripe_invoice_id) {
+      const { error: updateError } = await supabaseAdmin
+        .from('invoices')
+        .update({
+          stripe_invoice_id: sentInvoice.id,
+          status: 'sent',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', invoice.id)
+
+      if (updateError) {
+        console.error('Update error:', updateError)
+        // Don't fail - invoice was sent successfully
+      }
+    } else {
+      console.log('Webhook already updated invoice, skipping duplicate update')
     }
-
+    
     // 8. Create customer notification
     if (customerId) {
       const formattedAmount = new Intl.NumberFormat('en-US', {
