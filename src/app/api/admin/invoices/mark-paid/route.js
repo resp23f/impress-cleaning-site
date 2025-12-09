@@ -117,33 +117,6 @@ export async function POST(request) {
         link: '/admin/invoices'
       })
 
-    // 7. Send payment confirmation email
-    if (customerEmail) {
-      try {
-        const emailResponse = await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            customerEmail: customerEmail,
-            customerName: customerName,
-            invoiceNumber: invoice.invoice_number,
-            amount: invoice.total || invoice.amount,
-            paymentMethod
-          })
-        })
-
-        if (!emailResponse.ok) {
-          const emailError = await emailResponse.json().catch(() => ({ error: 'Unknown error' }))
-          console.error('Failed to send payment email:', emailError)
-          // Non-fatal
-        } else {
-          console.log(`Payment confirmation email sent successfully to ${customerEmail}`)
-        }
-      } catch (emailError) {
-        console.error('Error sending payment email:', emailError)
-        // Non-fatal
-      }
-    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
