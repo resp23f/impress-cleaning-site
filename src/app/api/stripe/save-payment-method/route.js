@@ -17,34 +17,61 @@ export async function POST(request) {
     if (!pm) {
       return NextResponse.json({ error: 'Payment method not found' }, { status: 404 })
     }
-// Ensure a customer exists and the payment method is attached
-    let customerId = pm.customer
+// FIRST: Check profiles table for existing Stripe customer (single source of truth)
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('full_name, email, stripe_customer_id')
+      .eq('id', user.id)
+      .single()
     
-    // Validate existing customer still exists in Stripe
-    if (customerId) {
+    let customerId = null
+    
+    // Try profile's stripe_customer_id first
+    if (profile?.stripe_customer_id) {
       try {
-        await stripe.customers.retrieve(customerId)
+        await stripe.customers.retrieve(profile.stripe_customer_id)
+        customerId = profile.stripe_customer_id
       } catch (err) {
-        console.log(`Stripe customer ${customerId} not found, will create new one`)
-        customerId = null
+        console.log(`Stripe customer ${profile.stripe_customer_id} not found`)
       }
     }
     
+    // Fallback: check if PM is already attached to a customer
+    if (!customerId && pm.customer) {
+      try {
+        await stripe.customers.retrieve(pm.customer)
+        customerId = pm.customer
+        // Save this customer to profile for future use
+        await supabase
+          .from('profiles')
+          .update({ stripe_customer_id: customerId })
+          .eq('id', user.id)
+      } catch (err) {
+        console.log(`Stripe customer ${pm.customer} not found`)
+      }
+    }
+    
+    // Create new customer if none found
     if (!customerId) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name, email')
-        .eq('id', user.id)
-        .single()
       const customer = await stripe.customers.create({
         email: profile?.email || undefined,
         name: profile?.full_name || undefined,
         metadata: { supabase_user_id: user.id },
       })
       customerId = customer.id
+      
+      // Save to profiles (single source of truth)
+      await supabase
+        .from('profiles')
+        .update({ stripe_customer_id: customerId })
+        .eq('id', user.id)
+      
+      await stripe.paymentMethods.attach(paymentMethodId, { customer: customerId })
+    } else if (!pm.customer) {
+      // Attach payment method if not already attached
       await stripe.paymentMethods.attach(paymentMethodId, { customer: customerId })
     }
-        if (makeDefault) {
+            if (makeDefault) {
       await stripe.customers.update(customerId, {
         invoice_settings: { default_payment_method: paymentMethodId },
       })

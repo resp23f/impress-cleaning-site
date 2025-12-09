@@ -45,8 +45,14 @@ export async function POST(request) {
       )
     }
 
-// Determine the Stripe customer to use
-    let stripeCustomerId = invoice.stripe_customer_id
+// FIRST: Check profiles table for Stripe customer (single source of truth)
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('full_name, email, stripe_customer_id')
+      .eq('id', user.id)
+      .single()
+    
+    let stripeCustomerId = profile?.stripe_customer_id || invoice.stripe_customer_id
 
     // Validate existing stripe_customer_id is still valid
     if (stripeCustomerId) {
@@ -59,7 +65,8 @@ export async function POST(request) {
     }
 
     // If a payment method is provided, check if it's already attached to a customer
-    if (paymentMethodId) {      try {
+    if (!stripeCustomerId && paymentMethodId) {
+      try {
         const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId)
         if (paymentMethod.customer) {
           // Use the payment method's existing customer
@@ -71,17 +78,11 @@ export async function POST(request) {
       }
     }
 
-    // If still no customer, create a new one
+// If still no customer, create a new one
     if (!stripeCustomerId) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name, email')
-        .eq('id', user.id)
-        .single()
-
       const customer = await stripe.customers.create({
-        email: profile.email,
-        name: profile.full_name,
+        email: profile?.email,
+        name: profile?.full_name,
         metadata: {
           supabase_user_id: user.id,
         },
@@ -90,14 +91,22 @@ export async function POST(request) {
       console.log(`Created new Stripe customer: ${stripeCustomerId}`)
     }
 
-    // Update invoice with Stripe customer ID if different
+    // Save to profiles (single source of truth)
+    if (stripeCustomerId !== profile?.stripe_customer_id) {
+      await supabaseAdmin
+        .from('profiles')
+        .update({ stripe_customer_id: stripeCustomerId })
+        .eq('id', user.id)
+    }
+
+    // Also update invoice with Stripe customer ID if different
     if (stripeCustomerId !== invoice.stripe_customer_id) {
       await supabaseAdmin
         .from('invoices')
         .update({ stripe_customer_id: stripeCustomerId })
         .eq('id', invoiceId)
     }
-
+    
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
