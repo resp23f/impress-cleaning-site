@@ -47,8 +47,7 @@ export async function POST(request) {
         <tr>
           <td align="center" style="padding:0;">
             <div style="background:linear-gradient(135deg,#1e293b 0%,#334155 100%);padding:32px 0;">
-              <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png" alt="Impress Cleaning Services" style="height:56px;width:auto;" />
-            </div>
+<img src="https://impressyoucleaning.com/logo_impress_white.png" alt="Impress Cleaning Services" style="height:56px;width:auto;" />            </div>
           </td>
         </tr>
       </table>
