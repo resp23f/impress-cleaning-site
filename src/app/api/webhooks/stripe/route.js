@@ -418,8 +418,9 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
       if (eventType === 'paid' && emailRecipient) {
         try {
           console.log(`Attempting to send payment email to ${emailRecipient}`)
-          const formattedDate = new Date().toLocaleDateString('en-US', { 
-            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
+const formattedDate = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+            timeZone: 'America/Chicago'
           })
 
           const { error: emailError } = await resend.emails.send({
@@ -499,10 +500,10 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
       if (eventType === 'paid' && emailRecipient) {
         try {
           console.log(`Attempting to send payment email to ${emailRecipient}`)
-          const formattedDate = new Date().toLocaleDateString('en-US', { 
-            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
+const formattedDate = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+            timeZone: 'America/Chicago'
           })
-
           const { error: emailError } = await resend.emails.send({
             from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
             to: emailRecipient,
