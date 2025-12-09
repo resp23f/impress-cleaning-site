@@ -389,14 +389,34 @@ Price   </th>
    <div className="space-y-3 pb-4 border-b border-slate-700 print:space-y-2 print:pb-3">
    <div className="flex justify-between text-sm print:text-xs">
    <span className="text-slate-400">Subtotal</span>
-   <span className="font-medium">{formatMoney(invoice?.subtotal ?? invoice?.amount)}</span>
+<span className="font-medium">
+  {formatMoney(
+    lineItems
+      ?.filter(item => !item.description?.toLowerCase().includes('tax'))
+      .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice?.amount
+  )}
+</span>
    </div>
-   {invoice?.tax_rate > 0 && (
-    <div className="flex justify-between text-sm print:text-xs">
-    <span className="text-slate-400">Tax ({invoice.tax_rate}%)</span>
-    <span className="font-medium">{formatMoney(invoice.tax_amount)}</span>
-    </div>
-   )}
+{(() => {
+  const taxItem = lineItems.find(item => item.description?.toLowerCase().includes('tax'))
+  if (taxItem) {
+    return (
+      <div className="flex justify-between text-sm print:text-xs">
+        <span className="text-slate-400">{taxItem.description}</span>
+        <span className="font-medium">{formatMoney(taxItem.amount)}</span>
+      </div>
+    )
+  }
+  if (invoice?.tax_rate > 0) {
+    return (
+      <div className="flex justify-between text-sm print:text-xs">
+        <span className="text-slate-400">Tax ({invoice.tax_rate}%)</span>
+        <span className="font-medium">{formatMoney(invoice.tax_amount)}</span>
+      </div>
+    )
+  }
+  return null
+})()}
    </div>
    <div className="flex justify-between items-baseline pt-4 print:pt-3">
    <span className="text-sm font-medium text-slate-300 print:text-xs">Amount Due</span>
