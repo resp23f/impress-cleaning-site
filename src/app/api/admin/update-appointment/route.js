@@ -2,12 +2,9 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sanitizeText } from '@/lib/sanitize'
-// Validated internal API base URL
-const INTERNAL_API_URL = (() => {
-  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
-  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
-  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
-})()
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 // Whitelist of columns admins can update
 const ALLOWED_UPDATE_FIELDS = [
@@ -119,27 +116,109 @@ export async function POST(request) {
     const timeChanged = oldAppointment?.scheduled_time_start !== newAppointment?.scheduled_time_start ||
       oldAppointment?.scheduled_time_end !== newAppointment?.scheduled_time_end
 
-    if (customer && newAppointment && (dateChanged || timeChanged)) {
+    if (customer?.email && newAppointment && (dateChanged || timeChanged)) {
       try {
         const addressLine = newAppointment.service_addresses
           ? `${newAppointment.service_addresses.street_address}${newAppointment.service_addresses.unit ? ', ' + newAppointment.service_addresses.unit : ''}, ${newAppointment.service_addresses.city}, ${newAppointment.service_addresses.state} ${newAppointment.service_addresses.zip_code}`
           : 'N/A'
 
-await fetch(`${INTERNAL_API_URL}/api/email/appointment-rescheduled`, {
-           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            customerEmail: customer.email,
-            customerName: customer.full_name || customer.email.split('@')[0],
-            serviceType: newAppointment.service_type,
-            oldDate: oldAppointment.scheduled_date,
-            oldTimeStart: oldAppointment.scheduled_time_start,
-            oldTimeEnd: oldAppointment.scheduled_time_end,
-            newDate: newAppointment.scheduled_date,
-            newTimeStart: newAppointment.scheduled_time_start,
-            newTimeEnd: newAppointment.scheduled_time_end,
-            address: addressLine,
-          }),
+        const serviceLabelMap = {
+          standard: 'Standard Cleaning',
+          deep: 'Deep Cleaning',
+          move_in_out: 'Move In/Out Cleaning',
+          post_construction: 'Post-Construction Cleaning',
+          office: 'Office Cleaning',
+        }
+
+        const serviceLabel = serviceLabelMap[newAppointment.service_type] || newAppointment.service_type || 'Cleaning Service'
+        const customerName = customer.full_name || customer.email.split('@')[0]
+        
+        const formatDate = (date) => date 
+          ? new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+          : 'TBD'
+        
+        const formatTime = (start, end) => start && end ? `${start} - ${end}` : 'TBD'
+
+        const oldDateTime = `${formatDate(oldAppointment.scheduled_date)} at ${formatTime(oldAppointment.scheduled_time_start, oldAppointment.scheduled_time_end)}`
+        const newDateTime = `${formatDate(newAppointment.scheduled_date)} at ${formatTime(newAppointment.scheduled_time_start, newAppointment.scheduled_time_end)}`
+
+        await resend.emails.send({
+          from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+          to: customer.email,
+          subject: `Your ${serviceLabel} Has Been Rescheduled`,
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              </head>
+              <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                  <h1 style="color: #1C294E; margin: 0;">Impress Cleaning Services</h1>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 10px; padding: 30px; margin-bottom: 30px; text-align: center;">
+                  <h2 style="color: white; margin: 0; font-size: 28px;">📅 Appointment Rescheduled</h2>
+                </div>
+
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 30px; margin-bottom: 30px;">
+                  <p style="font-size: 16px; margin-top: 0;">Hi ${customerName},</p>
+                  <p style="font-size: 16px;">Your cleaning appointment has been rescheduled. Here are the updated details:</p>
+                  
+                  <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                    <p style="margin: 0 0 5px 0; color: #92400e; font-size: 14px;"><strong>Previous:</strong></p>
+                    <p style="margin: 0; color: #92400e; font-size: 14px; text-decoration: line-through;">${oldDateTime}</p>
+                  </div>
+
+                  <div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                    <p style="margin: 0 0 5px 0; color: #065f46; font-size: 14px;"><strong>New Date & Time:</strong></p>
+                    <p style="margin: 0; color: #065f46; font-size: 16px; font-weight: 600;">${newDateTime}</p>
+                  </div>
+                  
+                  <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                    <h3 style="color: #1C294E; margin-top: 0; font-size: 18px;">Appointment Details</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                      <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                          <strong>Service:</strong>
+                        </td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
+                          ${serviceLabel}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 10px 0;">
+                          <strong>Location:</strong>
+                        </td>
+                        <td style="padding: 10px 0; text-align: right;">
+                          ${addressLine}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div style="text-align: center; margin: 30px 0;">
+                    <a href="https://impressyoucleaning.com/portal/appointments" style="display: inline-block; background: #079447; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                      View in Portal
+                    </a>
+                  </div>
+
+                  <p style="color: #6b7280; font-size: 14px; margin-bottom: 0;">
+                    If this new time doesn't work for you, please contact us to reschedule.
+                  </p>
+                </div>
+
+                <div style="text-align: center; color: #6b7280; font-size: 14px;">
+                  <p>Thank you for your flexibility!</p>
+                  <p style="margin: 10px 0;">Impress Cleaning Services</p>
+                  <p style="margin: 10px 0;">
+                    Questions? Reply to this email or contact us at notifications@impressyoucleaning.com
+                  </p>
+                </div>
+              </body>
+            </html>
+          `,
         })
       } catch (emailError) {
         console.error('Failed to send reschedule email', emailError)
