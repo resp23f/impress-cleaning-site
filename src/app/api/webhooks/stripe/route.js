@@ -5,7 +5,7 @@ import { Resend } from 'resend'
 import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-const resend = new Resend(process.env.RESEND_API_KEY_STAGING)
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 // Validated internal API base URL
 const INTERNAL_API_URL = (() => {
@@ -178,8 +178,8 @@ async function handleGiftCertificate(session) {
   return { success: false, error: 'Invalid email format' }
  }
  
- if (!process.env.RESEND_API_KEY_STAGING) {
-  console.error('RESEND_API_KEY_STAGING not configured')
+ if (!process.env.RESEND_API_KEY) {
+  console.error('RESEND_API_KEY not configured')
   return { success: false, error: 'Email service not configured' }
  }
  
@@ -492,18 +492,19 @@ export async function POST(request) {
          paymentMethod = session.payment_method_types[0] === 'card' ? 'Card' : session.payment_method_types[0]
         }
         
-await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+        await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
           method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({
           customerEmail: invoice.profiles.email,
           customerName: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
           invoiceNumber: invoice.invoice_number,
-          amount: invoice.amount,
+          amount: invoice.total || invoice.amount,
           paymentDate: new Date().toISOString(),
           paymentMethod: paymentMethod,
          }),
         })
+        console.log(`Payment confirmation email sent for ${invoice.invoice_number}`)
        } catch (emailError) {
         console.error('Failed to send payment received email', emailError)
        }
@@ -513,67 +514,97 @@ await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
     break
    }
    
-case 'payment_intent.succeeded': {
+  case 'payment_intent.succeeded': {
     const paymentIntent = event.data.object
     console.log('Payment succeeded:', paymentIntent.id)
     
-    // Update invoice if this payment was for a portal invoice
+    // Check if this payment was for a portal invoice
     if (paymentIntent.metadata?.invoice_id) {
-     const { data: existingInvoice } = await supabaseAdmin
-      .from('invoices')
-      .select('id, status')
-      .eq('id', paymentIntent.metadata.invoice_id)
-      .single()
-     
-     // Only update if not already paid (avoid duplicate updates)
-     if (existingInvoice && existingInvoice.status !== 'paid') {
-      const { error } = await supabaseAdmin
-       .from('invoices')
-       .update({
-        status: 'paid',
-        paid_date: new Date().toISOString().split('T')[0],
-        payment_method: 'stripe',
-        stripe_payment_intent_id: paymentIntent.id,
-        updated_at: new Date().toISOString(),
-       })
-       .eq('id', paymentIntent.metadata.invoice_id)
+      const { data: existingInvoice } = await supabaseAdmin
+        .from('invoices')
+        .select('id, status, invoice_number, total, amount, customer_id')
+        .eq('id', paymentIntent.metadata.invoice_id)
+        .single()
       
-      if (error) {
-       console.error('Failed to update invoice from webhook:', error)
-      } else {
-       console.log(`Invoice ${paymentIntent.metadata.invoice_number} marked as paid via webhook`)
-       
-       // Send payment confirmation email
-       try {
-        const { data: invoice } = await supabaseAdmin
-         .from('invoices')
-         .select('*, profiles!customer_id(email, full_name)')
-         .eq('id', paymentIntent.metadata.invoice_id)
-         .single()
-        
-        if (invoice?.profiles) {
-await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-           customerEmail: invoice.profiles.email,
-           customerName: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
-           invoiceNumber: invoice.invoice_number,
-           amount: invoice.total || invoice.amount,
-           paymentDate: new Date().toISOString(),
-           paymentMethod: 'Card',
-          }),
-         })
-        }
-       } catch (emailError) {
-        console.error('Failed to send payment email from webhook:', emailError)
-       }
+      if (!existingInvoice) {
+        console.log('Invoice not found:', paymentIntent.metadata.invoice_id)
+        break
       }
-     }
+
+      // Update invoice if not already paid
+      if (existingInvoice.status !== 'paid') {
+        const { error } = await supabaseAdmin
+          .from('invoices')
+          .update({
+            status: 'paid',
+            paid_date: new Date().toISOString().split('T')[0],
+            payment_method: 'stripe',
+            stripe_payment_intent_id: paymentIntent.id,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', paymentIntent.metadata.invoice_id)
+        
+        if (error) {
+          console.error('Failed to update invoice from webhook:', error)
+        } else {
+          console.log(`Invoice ${existingInvoice.invoice_number} marked as paid via webhook`)
+        }
+      }
+
+      // ============================================
+      // ALWAYS SEND EMAIL (regardless of status update)
+      // ============================================
+      try {
+        const { data: invoice } = await supabaseAdmin
+          .from('invoices')
+          .select('*, profiles!customer_id(email, full_name)')
+          .eq('id', paymentIntent.metadata.invoice_id)
+          .single()
+        
+        if (invoice?.profiles?.email) {
+          await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              customerEmail: invoice.profiles.email,
+              customerName: invoice.profiles.full_name || invoice.profiles.email.split('@')[0],
+              invoiceNumber: invoice.invoice_number,
+              amount: invoice.total || invoice.amount,
+              paymentDate: new Date().toISOString(),
+              paymentMethod: 'Card',
+            }),
+          })
+          console.log(`Payment confirmation email sent for ${invoice.invoice_number}`)
+        } else {
+          console.log('No email found for invoice:', invoice?.invoice_number)
+        }
+      } catch (emailError) {
+        console.error('Failed to send payment email from webhook:', emailError)
+      }
+
+      // Create customer notification
+      if (existingInvoice.customer_id) {
+        try {
+          await supabaseAdmin
+            .from('customer_notifications')
+            .insert({
+              user_id: existingInvoice.customer_id,
+              type: 'payment_received',
+              title: 'Payment Confirmed',
+              message: `Your payment for Invoice ${existingInvoice.invoice_number} has been received`,
+              link: '/portal/invoices',
+              reference_id: existingInvoice.id,
+              reference_type: 'invoice'
+            })
+        } catch (notifError) {
+          console.error('Failed to create notification:', notifError)
+        }
+      }
     }
     break
-   }
+  }
 
-case 'payment_intent.payment_failed': {
+  case 'payment_intent.payment_failed': {
     const paymentIntent = event.data.object
     console.log('Payment failed:', paymentIntent.id)
 
@@ -642,10 +673,11 @@ case 'payment_intent.payment_failed': {
     }
     break
    }
-// ==========================================
+
+  // ==========================================
   // CHARGE EVENTS
   // ==========================================
-case 'charge.succeeded': {
+  case 'charge.succeeded': {
     const charge = event.data.object
     console.log('Charge succeeded:', charge.id, 'payment_intent:', charge.payment_intent, 'invoice:', charge.invoice)
     
@@ -695,7 +727,8 @@ case 'charge.succeeded': {
     }
     break
   }
-    // ==========================================
+
+  // ==========================================
   // REFUND EVENTS
   // ==========================================
   case 'charge.refunded': {
@@ -801,7 +834,7 @@ case 'charge.succeeded': {
 
     if (customerEmail) {
      try {
-await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+      await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
         method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({
@@ -881,7 +914,7 @@ await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
     const smsGatewayEmail = '5129989658@tmomail.net'
     try {
      await resend.emails.send({
-      from: 'Impress <notifications@impresscleaning.com>',
+      from: 'Impress <notifications@impressyoucleaning.com>',
       to: smsGatewayEmail,
       subject: 'DISPUTE',
       text: `${invoice.invoice_number} - ${customerName.substring(0, 12)}. Respond in 7 days.`
