@@ -236,18 +236,31 @@ export async function POST(request) {
     }
 
     // 9. Send email with payment link
-await fetch(`${INTERNAL_API_URL}/api/email/invoice-payment-link`, {
-       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: customerEmail,
-        name: customerName,
-        invoiceNumber: invoice.invoice_number,
-        amount: invoice.total || invoice.amount,
-        dueDate: invoice.due_date,
-        paymentUrl: sentInvoice.hosted_invoice_url
+    try {
+      const emailResponse = await fetch(`${INTERNAL_API_URL}/api/email/invoice-payment-link`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: customerEmail,
+          name: customerName,
+          invoiceNumber: invoice.invoice_number,
+          amount: invoice.total || invoice.amount,
+          dueDate: invoice.due_date,
+          paymentUrl: sentInvoice.hosted_invoice_url
+        })
       })
-    })
+
+      if (!emailResponse.ok) {
+        const emailError = await emailResponse.json().catch(() => ({ error: 'Unknown error' }))
+        console.error('Failed to send invoice email:', emailError)
+        // Non-fatal - invoice was already sent successfully
+      } else {
+        console.log(`Invoice email sent successfully to ${customerEmail}`)
+      }
+    } catch (emailError) {
+      console.error('Error sending invoice email:', emailError)
+      // Non-fatal - invoice was already sent successfully
+    }
 
     return NextResponse.json({
       success: true,

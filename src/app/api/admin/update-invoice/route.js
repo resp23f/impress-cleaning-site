@@ -45,10 +45,10 @@ export async function POST(request) {
         `)
     .eq('id', invoiceId)
     .single()
-    
+
     if (invoice && invoice.profiles) {
      try {
-await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+      const emailResponse = await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
         method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({
@@ -60,8 +60,17 @@ await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
         paymentMethod: invoice.payment_method || 'Manual Payment',
        }),
       })
+
+      if (!emailResponse.ok) {
+        const emailError = await emailResponse.json().catch(() => ({ error: 'Unknown error' }))
+        console.error('Failed to send payment received email:', emailError)
+        // Non-fatal
+      } else {
+        console.log(`Payment confirmation email sent successfully to ${invoice.profiles.email}`)
+      }
      } catch (emailError) {
       console.error('Failed to send payment received email', emailError)
+      // Non-fatal
      }
     }
    }

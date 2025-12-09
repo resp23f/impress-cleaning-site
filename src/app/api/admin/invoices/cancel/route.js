@@ -104,7 +104,8 @@ export async function POST(request) {
     // 7. Send cancellation email
     if (customerEmail) {
       try {
-await fetch(`${INTERNAL_API_URL}/api/email/invoice-cancelled`, {          method: 'POST',
+        const emailResponse = await fetch(`${INTERNAL_API_URL}/api/email/invoice-cancelled`, {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             customerEmail,
@@ -112,6 +113,14 @@ await fetch(`${INTERNAL_API_URL}/api/email/invoice-cancelled`, {          method
             invoiceNumber: invoice.invoice_number
           })
         })
+
+        if (!emailResponse.ok) {
+          const emailError = await emailResponse.json().catch(() => ({ error: 'Unknown error' }))
+          console.error('Failed to send cancellation email:', emailError)
+          // Non-fatal
+        } else {
+          console.log(`Invoice cancellation email sent successfully to ${customerEmail}`)
+        }
       } catch (emailError) {
         console.error('Error sending cancellation email:', emailError)
         // Non-fatal

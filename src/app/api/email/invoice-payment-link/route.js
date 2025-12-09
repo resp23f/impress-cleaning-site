@@ -14,7 +14,7 @@ export async function POST(request) {
     const invoiceNumber = sanitizeText(body.invoiceNumber)?.slice(0, 50) || ''
     const amount = parseFloat(body.amount) || 0
     const dueDate = body.dueDate
-    const checkoutUrl = body.checkoutUrl || 'https://impressyoucleaning.com/portal/invoices'
+    const paymentUrl = body.paymentUrl || body.checkoutUrl || 'https://impressyoucleaning.com/portal/invoices'
     
     // Validate required fields
     if (!email || !invoiceNumber) {
@@ -104,7 +104,7 @@ export async function POST(request) {
 
       <!-- PAY BUTTON -->
       <div style="padding:0 40px 32px;text-align:center;">
-        <a href="${checkoutUrl}" style="display:inline-block;background:linear-gradient(135deg,#059669 0%,#10b981 100%);color:#ffffff;text-decoration:none;padding:16px 48px;border-radius:100px;font-size:15px;font-weight:600;letter-spacing:0.03em;box-shadow:0 8px 24px rgba(5,150,105,0.3);">Pay Now</a>
+        <a href="${paymentUrl}" style="display:inline-block;background:linear-gradient(135deg,#059669 0%,#10b981 100%);color:#ffffff;text-decoration:none;padding:16px 48px;border-radius:100px;font-size:15px;font-weight:600;letter-spacing:0.03em;box-shadow:0 8px 24px rgba(5,150,105,0.3);">Pay Now</a>
         <p style="margin-top:16px;font-size:13px;color:#94a3b8;">Secure payment powered by Stripe</p>
       </div>
 
