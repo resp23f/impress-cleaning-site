@@ -7,16 +7,6 @@ import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-// Validated internal API base URL
-const INTERNAL_API_URL = (() => {
-  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
-  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
-  if (allowed.some(domain => url.startsWith(domain))) {
-    return url
-  }
-  return 'https://impressyoucleaning.com'
-})()
-
 // Gift certificate email template
 function createGiftCertificateEmail(giftData) {
   const { code, recipientName, senderName, message, amount } = giftData
@@ -201,6 +191,81 @@ async function handleGiftCertificate(session) {
     return { success: false, error: emailError.message }
   }
 }
+// Refund email template
+function createRefundEmail({ customerName, invoiceNumber, refundAmount, refundDate }) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body style="margin:0;padding:0;background-color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <div style="width:100%;padding:32px 16px;">
+    <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center">
+            <div style="background:linear-gradient(135deg,#1e293b 0%,#334155 100%);padding:32px 0;">
+              <img src="https://impressyoucleaning.com/logo_impress_white.png" alt="Impress Cleaning Services" style="height:56px;width:auto;" />
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div style="padding:32px 40px 0;text-align:center;">
+        <div style="display:inline-block;width:72px;height:72px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:50%;line-height:72px;">
+          <span style="font-size:36px;">↩</span>
+        </div>
+      </div>
+      <div style="padding:24px 40px 0;text-align:center;">
+        <h1 style="font-size:28px;font-weight:700;color:#0f172a;margin:0 0 8px;">Refund Processed</h1>
+        <p style="font-size:15px;color:#64748b;margin:0;">Hi ${customerName}, your refund has been processed.</p>
+      </div>
+      <div style="padding:28px 40px;text-align:center;">
+        <div style="display:inline-block;background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:2px solid #fde047;border-radius:16px;padding:24px 48px;">
+          <p style="font-size:11px;color:#ca8a04;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">Refund Amount</p>
+          <p style="font-size:42px;font-weight:700;color:#a16207;margin:0;">$${refundAmount}</p>
+        </div>
+      </div>
+      <div style="padding:0 40px 28px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;">Invoice Number</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${invoiceNumber}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;">Refund Date</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${refundDate}</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div style="padding:0 40px 32px;">
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px;text-align:center;">
+          <p style="font-size:13px;color:#92400e;margin:0;line-height:1.6;">
+            Please allow 5-10 business days for the refund to appear on your statement.
+          </p>
+        </div>
+      </div>
+      <div style="padding:0 40px 32px;text-align:center;">
+        <a href="https://impressyoucleaning.com/portal/invoices" style="display:inline-block;background:#1e293b;color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:100px;font-size:14px;font-weight:600;">View in Portal</a>
+      </div>
+      <div style="padding:24px 40px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+        <p style="font-size:12px;font-weight:600;color:#64748b;margin:0 0 4px;">Impress Cleaning Services, LLC</p>
+        <p style="font-size:11px;color:#94a3b8;margin:0;">© 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `
+}
+
 // Payment received email template
 function createPaymentReceivedEmail({ customerName, invoiceNumber, amount, paymentDate, paymentMethod }) {
   return `
@@ -648,22 +713,26 @@ export async function POST(request) {
                   paymentMethod = session.payment_method_types[0] === 'card' ? 'Card' : session.payment_method_types[0]
                 }
 
-                const emailRes = await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    customerEmail: emailRecipient,
-                    customerName: emailName,
-                    invoiceNumber: invoice.invoice_number,
-                    amount: invoice.total || invoice.amount,
-                    paymentDate: new Date().toISOString(),
-                    paymentMethod: paymentMethod,
-                  }),
+                const formattedDate = new Date().toLocaleDateString('en-US', {
+                  weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+                  timeZone: 'America/Chicago'
                 })
 
-                if (!emailRes.ok) {
-                  const errText = await emailRes.text()
-                  console.error(`Payment email API failed (${emailRes.status}):`, errText)
+                const { error: emailError } = await resend.emails.send({
+                  from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+                  to: emailRecipient,
+                  subject: `Payment Received - Invoice ${invoice.invoice_number}`,
+                  html: createPaymentReceivedEmail({
+                    customerName: emailName,
+                    invoiceNumber: invoice.invoice_number,
+                    amount: (invoice.total || invoice.amount).toFixed(2),
+                    paymentDate: formattedDate,
+                    paymentMethod: paymentMethod
+                  })
+                })
+
+                if (emailError) {
+                  console.error('Payment email error:', emailError)
                 } else {
                   console.log(`Payment confirmation email sent for ${invoice.invoice_number}`)
                 }
@@ -727,22 +796,27 @@ export async function POST(request) {
 
           if (emailRecipient) {
             console.log(`Attempting to send payment email to ${emailRecipient}`)
-            const emailRes = await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                customerEmail: emailRecipient,
-                customerName: emailName,
-                invoiceNumber: invoice.invoice_number,
-                amount: invoice.total || invoice.amount,
-                paymentDate: new Date().toISOString(),
-                paymentMethod: 'Card',
-              }),
+
+            const formattedDate = new Date().toLocaleDateString('en-US', {
+              weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+              timeZone: 'America/Chicago'
             })
 
-            if (!emailRes.ok) {
-              const errText = await emailRes.text()
-              console.error(`Payment email API failed (${emailRes.status}):`, errText)
+            const { error: emailError } = await resend.emails.send({
+              from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+              to: emailRecipient,
+              subject: `Payment Received - Invoice ${invoice.invoice_number}`,
+              html: createPaymentReceivedEmail({
+                customerName: emailName,
+                invoiceNumber: invoice.invoice_number,
+                amount: (invoice.total || invoice.amount).toFixed(2),
+                paymentDate: formattedDate,
+                paymentMethod: 'Card'
+              })
+            })
+
+            if (emailError) {
+              console.error('Payment email error:', emailError)
             } else {
               console.log(`Payment confirmation email sent for ${invoice.invoice_number}`)
             }
@@ -996,17 +1070,28 @@ export async function POST(request) {
 
       if (customerEmail) {
         try {
-          await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              customerEmail,
-              customerName,
+          const formattedDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+            timeZone: 'America/Chicago'
+          })
+
+          const { error: emailError } = await resend.emails.send({
+            from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+            to: customerEmail,
+            subject: `Refund Processed - Invoice ${invoice.invoice_number}`,
+            html: createRefundEmail({
+              customerName: customerName,
               invoiceNumber: invoice.invoice_number,
-              refundAmount: refundedAmount,
-              refundReason: 'Refund processed'
+              refundAmount: refundedAmount.toFixed(2),
+              refundDate: formattedDate
             })
           })
+
+          if (emailError) {
+            console.error('Refund email error:', emailError)
+          } else {
+            console.log(`Refund email sent for ${invoice.invoice_number} to ${customerEmail}`)
+          }
         } catch (emailError) {
           console.error('Error sending refund email:', emailError)
         }
