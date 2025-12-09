@@ -308,7 +308,7 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
        reference_id: existingInvoice.id,
        reference_type: 'invoice'
       })
-    } else if (eventType === 'paid') {
+} else if (eventType === 'paid') {
      await supabaseAdmin
       .from('customer_notifications')
       .insert({
@@ -323,7 +323,29 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
     }
    }
 
+   // Send payment confirmation email for paid invoices
+   if (eventType === 'paid' && customer?.email) {
+    try {
+     await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+       customerEmail: customer.email,
+       customerName: customer.full_name || customer.email.split('@')[0],
+       invoiceNumber: invoiceData.invoice_number,
+       amount: total,
+       paymentDate: new Date().toISOString(),
+       paymentMethod: 'Card',
+      }),
+     })
+     console.log(`Payment confirmation email sent for ${invoiceData.invoice_number}`)
+    } catch (emailError) {
+     console.error('Failed to send payment email:', emailError)
+    }
+   }
+
    return { success: true, action: 'updated', invoiceNumber: invoiceData.invoice_number }
+
   } else {
    // Create new invoice
    const { error } = await supabaseAdmin
@@ -358,7 +380,7 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
        reference_id: newInvoice.id,
        reference_type: 'invoice'
       })
-    } else if (eventType === 'paid') {
+} else if (eventType === 'paid') {
      await supabaseAdmin
       .from('customer_notifications')
       .insert({
@@ -373,8 +395,29 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
     }
    }
 
+   // Send payment confirmation email for paid invoices
+   if (eventType === 'paid' && customer?.email) {
+    try {
+     await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+       customerEmail: customer.email,
+       customerName: customer.full_name || customer.email.split('@')[0],
+       invoiceNumber: invoiceData.invoice_number,
+       amount: total,
+       paymentDate: new Date().toISOString(),
+       paymentMethod: 'Card',
+      }),
+     })
+     console.log(`Payment confirmation email sent for ${invoiceData.invoice_number}`)
+    } catch (emailError) {
+     console.error('Failed to send payment email:', emailError)
+    }
+   }
+
    return { success: true, action: 'created', invoiceNumber: invoiceData.invoice_number }
-  }
+     }
  } catch (error) {
   console.error('Error syncing Stripe invoice:', error)
   return { success: false, error: error.message }
