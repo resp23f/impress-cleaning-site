@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
+
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = 'Impress Cleaning Services <notifications@impressyoucleaning.com>'
 
 export async function POST(request) {
-try {
+  try {
     const body = await request.json()
 
     // Sanitize inputs
@@ -14,7 +15,7 @@ try {
     const invoiceNumber = sanitizeText(body.invoiceNumber)?.slice(0, 50) || ''
     const amount = parseFloat(body.amount) || 0
     const paymentDate = body.paymentDate
-    const paymentMethod = sanitizeText(body.paymentMethod)?.slice(0, 50) || ''
+    const paymentMethod = sanitizeText(body.paymentMethod)?.slice(0, 50) || 'Card'
 
     // Validate required fields
     if (!customerEmail || !invoiceNumber) {
@@ -23,6 +24,7 @@ try {
         { status: 400 }
       )
     }
+
     const formattedAmount = parseFloat(amount).toFixed(2)
     const formattedDate = paymentDate 
       ? new Date(paymentDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
@@ -65,14 +67,14 @@ try {
       <!-- THANK YOU MESSAGE -->
       <div style="padding:24px 40px 0;text-align:center;">
         <h1 style="font-size:28px;font-weight:700;color:#0f172a;margin:0 0 8px;">Payment Received!</h1>
-        <p style="font-size:15px;color:#64748b;margin:0;line-height:1.6;">Thank you, {{customerName}}. Your payment has been confirmed.</p>
+        <p style="font-size:15px;color:#64748b;margin:0;line-height:1.6;">Thank you, ${customerName}. Your payment has been confirmed.</p>
       </div>
 
       <!-- AMOUNT DISPLAY -->
       <div style="padding:28px 40px;text-align:center;">
         <div style="display:inline-block;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:2px solid #86efac;border-radius:16px;padding:24px 48px;">
           <p style="font-size:11px;color:#16a34a;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">Amount Paid</p>
-          <p style="font-size:42px;font-weight:700;color:#15803d;margin:0;">${{amount}}</p>
+          <p style="font-size:42px;font-weight:700;color:#15803d;margin:0;">$${formattedAmount}</p>
         </div>
       </div>
 
@@ -84,44 +86,25 @@ try {
             <tr>
               <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
                 <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Invoice Number</p>
-                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{invoiceNumber}}</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${invoiceNumber}</p>
               </td>
             </tr>
             <tr>
               <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
                 <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Payment Date</p>
-                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{paymentDate}}</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${formattedDate}</p>
               </td>
             </tr>
             <tr>
               <td style="padding:16px 24px;">
                 <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Payment Method</p>
-                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{paymentMethod}}</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${paymentMethod}</p>
               </td>
             </tr>
           </table>
 
         </div>
       </div>
-
-      <!-- SERVICE INFO (if available) -->
-      {{#if serviceType}}
-      <div style="padding:0 40px 28px;">
-        <div style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;border-radius:12px;padding:20px 24px;">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-              <td>
-                <p style="font-size:11px;color:#a16207;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">Your Next Cleaning</p>
-                <p style="font-size:15px;font-weight:600;color:#854d0e;margin:0;">{{serviceType}} • {{appointmentDate}}</p>
-              </td>
-              <td align="right" style="vertical-align:middle;">
-                <a href="https://impressyoucleaning.com/portal/appointments" style="display:inline-block;background:#ffffff;color:#854d0e;text-decoration:none;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:600;border:1px solid #fde047;">View</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      {{/if}}
 
       <!-- VIEW RECEIPT BUTTON -->
       <div style="padding:0 40px 32px;text-align:center;">

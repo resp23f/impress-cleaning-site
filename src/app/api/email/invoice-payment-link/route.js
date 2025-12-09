@@ -1,14 +1,36 @@
 import { Resend } from 'resend'
 import { NextResponse } from 'next/server'
+import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
+
 const resend = new Resend(process.env.RESEND_API_KEY)
+
 export async function POST(request) {
- try {
-  const { email, name, invoiceNumber, amount, dueDate, checkoutUrl } = await request.json()
-  const { data, error } = await resend.emails.send({
-   from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
-   to: email,
-   subject: `Invoice ${invoiceNumber} - Payment Required`,
-   html: `
+  try {
+    const body = await request.json()
+    
+    // Sanitize inputs
+    const email = sanitizeEmail(body.email)
+    const name = sanitizeText(body.name)?.slice(0, 100) || 'Customer'
+    const invoiceNumber = sanitizeText(body.invoiceNumber)?.slice(0, 50) || ''
+    const amount = parseFloat(body.amount) || 0
+    const dueDate = body.dueDate
+    const checkoutUrl = body.checkoutUrl || 'https://impressyoucleaning.com/portal/invoices'
+    
+    // Validate required fields
+    if (!email || !invoiceNumber) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+    
+    const formattedAmount = amount.toFixed(2)
+    const formattedDueDate = dueDate 
+      ? new Date(dueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+      : 'Upon Receipt'
+
+    const { data, error } = await resend.emails.send({
+      from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+      to: email,
+      subject: `Invoice ${invoiceNumber} - Payment Required`,
+      html: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +62,7 @@ export async function POST(request) {
 
       <!-- GREETING -->
       <div style="padding:24px 40px 0;text-align:center;">
-        <h1 style="font-size:26px;font-weight:700;color:#0f172a;margin:0 0 8px;">Hi {{customerName}},</h1>
+        <h1 style="font-size:26px;font-weight:700;color:#0f172a;margin:0 0 8px;">Hi ${name},</h1>
         <p style="font-size:15px;color:#64748b;margin:0;line-height:1.6;">Here's your invoice from Impress Cleaning Services.</p>
       </div>
 
@@ -54,30 +76,14 @@ export async function POST(request) {
               <tr>
                 <td>
                   <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Invoice Number</p>
-                  <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{invoiceNumber}}</p>
+                  <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${invoiceNumber}</p>
                 </td>
                 <td align="right">
                   <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.08em;">Due Date</p>
-                  <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">{{dueDate}}</p>
+                  <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${formattedDueDate}</p>
                 </td>
               </tr>
             </table>
-          </div>
-
-          <!-- Line Items -->
-          <div style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
-            {{#each lineItems}}
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom:8px;">
-              <tr>
-                <td style="padding:6px 0;">
-                  <p style="font-size:14px;color:#475569;margin:0;">{{description}}</p>
-                </td>
-                <td align="right" style="padding:6px 0;">
-                  <p style="font-size:14px;font-weight:500;color:#334155;margin:0;">${{amount}}</p>
-                </td>
-              </tr>
-            </table>
-            {{/each}}
           </div>
 
           <!-- Total -->
@@ -88,7 +94,7 @@ export async function POST(request) {
                   <p style="font-size:14px;font-weight:600;color:#475569;margin:0;">Amount Due</p>
                 </td>
                 <td align="right">
-                  <p style="font-size:28px;font-weight:700;color:#0f172a;margin:0;">${{total}}</p>
+                  <p style="font-size:28px;font-weight:700;color:#0f172a;margin:0;">$${formattedAmount}</p>
                 </td>
               </tr>
             </table>
@@ -98,7 +104,7 @@ export async function POST(request) {
 
       <!-- PAY BUTTON -->
       <div style="padding:0 40px 32px;text-align:center;">
-        <a href="{{paymentLink}}" style="display:inline-block;background:linear-gradient(135deg,#059669 0%,#10b981 100%);color:#ffffff;text-decoration:none;padding:16px 48px;border-radius:100px;font-size:15px;font-weight:600;letter-spacing:0.03em;box-shadow:0 8px 24px rgba(5,150,105,0.3);">Pay Now</a>
+        <a href="${checkoutUrl}" style="display:inline-block;background:linear-gradient(135deg,#059669 0%,#10b981 100%);color:#ffffff;text-decoration:none;padding:16px 48px;border-radius:100px;font-size:15px;font-weight:600;letter-spacing:0.03em;box-shadow:0 8px 24px rgba(5,150,105,0.3);">Pay Now</a>
         <p style="margin-top:16px;font-size:13px;color:#94a3b8;">Secure payment powered by Stripe</p>
       </div>
 
@@ -120,14 +126,14 @@ export async function POST(request) {
             </td>
           </tr>
         </table>
-        <p style="font-size:11px;color:#94a3b8;margin:12px 0 0;">Include invoice number {{invoiceNumber}} in your payment memo</p>
+        <p style="font-size:11px;color:#94a3b8;margin:12px 0 0;">Include invoice number ${invoiceNumber} in your payment memo</p>
       </div>
 
       <!-- HELP BOX -->
       <div style="padding:0 40px 32px;">
         <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;text-align:center;">
           <p style="font-size:13px;font-weight:600;color:#475569;margin:0 0 4px;">Questions about this invoice?</p>
-          <p style="font-size:13px;color:#64748b;margin:0;">Reply to this email or call <a href="tel:5126436072" style="color:#059669;text-decoration:none;font-weight:500;">(512) 643-6072</a></p>
+          <p style="font-size:13px;color:#64748b;margin:0;">Reply to this email or call <a href="tel:5129989658" style="color:#059669;text-decoration:none;font-weight:500;">(512) 998-9658</a></p>
         </div>
       </div>
 
@@ -151,14 +157,16 @@ export async function POST(request) {
 </body>
 </html>
       `,
-  })
-  if (error) {
-   console.error('Resend error:', error)
-   return NextResponse.json({ error: error.message }, { status: 500 })
+    })
+
+    if (error) {
+      console.error('Resend error:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true, data })
+  } catch (error) {
+    console.error('Error sending invoice email:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
-  return NextResponse.json({ success: true, data })
- } catch (error) {
-  console.error('Error sending invoice email:', error)
-  return NextResponse.json({ error: error.message }, { status: 500 })
- }
 }
