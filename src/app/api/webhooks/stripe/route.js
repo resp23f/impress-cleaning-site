@@ -201,6 +201,79 @@ async function handleGiftCertificate(session) {
     return { success: false, error: emailError.message }
   }
 }
+// Payment received email template
+function createPaymentReceivedEmail({ customerName, invoiceNumber, amount, paymentDate, paymentMethod }) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body style="margin:0;padding:0;background-color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <div style="width:100%;padding:32px 16px;">
+    <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center">
+            <div style="background:linear-gradient(135deg,#059669 0%,#10b981 100%);padding:32px 0;">
+              <img src="https://impressyoucleaning.com/logo_impress_white.png" alt="Impress Cleaning Services" style="height:56px;width:auto;" />
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div style="padding:32px 40px 0;text-align:center;">
+        <div style="display:inline-block;width:72px;height:72px;background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border-radius:50%;line-height:72px;">
+          <span style="font-size:36px;">✓</span>
+        </div>
+      </div>
+      <div style="padding:24px 40px 0;text-align:center;">
+        <h1 style="font-size:28px;font-weight:700;color:#0f172a;margin:0 0 8px;">Payment Received!</h1>
+        <p style="font-size:15px;color:#64748b;margin:0;">Thank you, ${customerName}. Your payment has been confirmed.</p>
+      </div>
+      <div style="padding:28px 40px;text-align:center;">
+        <div style="display:inline-block;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:2px solid #86efac;border-radius:16px;padding:24px 48px;">
+          <p style="font-size:11px;color:#16a34a;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">Amount Paid</p>
+          <p style="font-size:42px;font-weight:700;color:#15803d;margin:0;">$${amount}</p>
+        </div>
+      </div>
+      <div style="padding:0 40px 28px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;">Invoice Number</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${invoiceNumber}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px;border-bottom:1px solid #e2e8f0;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;">Payment Date</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${paymentDate}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px;">
+                <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;text-transform:uppercase;">Payment Method</p>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin:0;">${paymentMethod}</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div style="padding:0 40px 32px;text-align:center;">
+        <a href="https://impressyoucleaning.com/portal/invoices" style="display:inline-block;background:#1e293b;color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:100px;font-size:14px;font-weight:600;">View Receipt in Portal</a>
+      </div>
+      <div style="padding:24px 40px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+        <p style="font-size:12px;font-weight:600;color:#64748b;margin:0 0 4px;">Impress Cleaning Services, LLC</p>
+        <p style="font-size:11px;color:#94a3b8;margin:0;">© 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `
+}
 
 // Handle Stripe Dashboard invoice - creates/updates invoice in portal
 async function handleStripeInvoice(stripeInvoice, eventType) {
@@ -341,35 +414,36 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
         }
       }
 
-      // Send payment confirmation email for paid invoices
+// Send payment confirmation email for paid invoices
       if (eventType === 'paid' && emailRecipient) {
         try {
           console.log(`Attempting to send payment email to ${emailRecipient}`)
-          const emailRes = await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              customerEmail: emailRecipient,
-              customerName: emailName,
-              invoiceNumber: invoiceData.invoice_number,
-              amount: total,
-              paymentDate: new Date().toISOString(),
-              paymentMethod: 'Card',
-            }),
+          const formattedDate = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
           })
 
-          if (!emailRes.ok) {
-            const errText = await emailRes.text()
-            console.error(`Payment email API failed (${emailRes.status}):`, errText)
+          const { error: emailError } = await resend.emails.send({
+            from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+            to: emailRecipient,
+            subject: `Payment Received - Invoice ${invoiceData.invoice_number}`,
+            html: createPaymentReceivedEmail({
+              customerName: emailName,
+              invoiceNumber: invoiceData.invoice_number,
+              amount: total.toFixed(2),
+              paymentDate: formattedDate,
+              paymentMethod: 'Card'
+            })
+          })
+
+          if (emailError) {
+            console.error('Resend error:', emailError)
           } else {
-            const result = await emailRes.json()
-            console.log(`Payment confirmation email sent for ${invoiceData.invoice_number} to ${emailRecipient}`, result)
+            console.log(`Payment confirmation email sent for ${invoiceData.invoice_number} to ${emailRecipient}`)
           }
-        } catch (emailError) {
-          console.error('Failed to send payment email:', emailError.message)
+        } catch (err) {
+          console.error('Failed to send payment email:', err.message)
         }
       }
-
       return { success: true, action: 'updated', invoiceNumber: invoiceData.invoice_number }
 
     } else {
@@ -421,45 +495,48 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
         }
       }
 
-      // Send payment confirmation email for paid invoices
+// Send payment confirmation email for paid invoices
       if (eventType === 'paid' && emailRecipient) {
         try {
           console.log(`Attempting to send payment email to ${emailRecipient}`)
-          const emailRes = await fetch(`${INTERNAL_API_URL}/api/email/payment-received`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              customerEmail: emailRecipient,
-              customerName: emailName,
-              invoiceNumber: invoiceData.invoice_number,
-              amount: total,
-              paymentDate: new Date().toISOString(),
-              paymentMethod: 'Card',
-            }),
+          const formattedDate = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
           })
 
-          if (!emailRes.ok) {
-            const errText = await emailRes.text()
-            console.error(`Payment email API failed (${emailRes.status}):`, errText)
+          const { error: emailError } = await resend.emails.send({
+            from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
+            to: emailRecipient,
+            subject: `Payment Received - Invoice ${invoiceData.invoice_number}`,
+            html: createPaymentReceivedEmail({
+              customerName: emailName,
+              invoiceNumber: invoiceData.invoice_number,
+              amount: total.toFixed(2),
+              paymentDate: formattedDate,
+              paymentMethod: 'Card'
+            })
+          })
+
+          if (emailError) {
+            console.error('Resend error:', emailError)
           } else {
-            const result = await emailRes.json()
-            console.log(`Payment confirmation email sent for ${invoiceData.invoice_number} to ${emailRecipient}`, result)
+            console.log(`Payment confirmation email sent for ${invoiceData.invoice_number} to ${emailRecipient}`)
           }
-        } catch (emailError) {
-          console.error('Failed to send payment email:', emailError.message)
+        } catch (err) {
+          console.error('Failed to send payment email:', err.message)
         }
       }
 
       return { success: true, action: 'created', invoiceNumber: invoiceData.invoice_number }
     }
   } catch (error) {
-    console.error('Error syncing Stripe invoice:', error)
+    console.error('Error handling Stripe invoice:', error)
     return { success: false, error: error.message }
   }
 }
 
 export async function POST(request) {
-  const body = await request.text()
+ 
+   const body = await request.text()
   const signature = request.headers.get('stripe-signature')
 
   let event
@@ -1118,3 +1195,4 @@ export async function POST(request) {
 
   return NextResponse.json({ received: true })
 }
+   
