@@ -352,16 +352,14 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
    Qty
    </th>
    <th className="text-right py-4 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 w-28 print:py-2 print:text-[10px]">
-   Rate
-   </th>
+Price   </th>
    <th className="text-right py-4 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500 w-32 print:py-2 print:px-3 print:text-[10px]">
    Amount
    </th>
    </tr>
    </thead>
    <tbody>
-   {lineItems.map((item, idx) => (
-    <tr
+{lineItems.filter(item => !item.description?.toLowerCase().includes('tax')).map((item, idx) => (    <tr
     key={idx}
     className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors duration-150 print:border-slate-200"
     >

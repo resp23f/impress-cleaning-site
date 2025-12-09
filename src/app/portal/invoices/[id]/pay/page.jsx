@@ -618,8 +618,8 @@ Invoice {invoice.invoice_number}
 Services
 </h3>
 <div className="space-y-2">
-{invoice.line_items.map((item, index) => (
-<div key={index} className="flex justify-between text-sm">
+{invoice.line_items.filter(item => !item.description?.toLowerCase().includes('tax')).map((item, index) => (
+ <div key={index} className="flex justify-between text-sm">
 <span className="text-slate-600">{item.description}</span>
 <span className="font-medium text-slate-800">
 {formatMoney(item.amount)}
