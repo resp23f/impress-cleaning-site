@@ -11,7 +11,6 @@ import {
   LogOut,
   Menu,
   X,
-  Bell,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import styles from '../../app/portal/shared-animations.module.css'
@@ -24,54 +23,6 @@ const navItems = [
   { icon: Settings, label: 'Settings', href: '/portal/settings' },
 ]
 
-// Simple notification bell with unread count
-function NavNotificationBell() {
-  const [unreadCount, setUnreadCount] = useState(0)
-  const supabase = createClient()
-
-  const fetchUnreadCount = useCallback(async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
-    const { count } = await supabase
-      .from('customer_notifications')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id)
-      .eq('is_read', false)
-
-    setUnreadCount(count || 0)
-  }, [supabase])
-
-  useEffect(() => {
-    fetchUnreadCount()
-
-    // Real-time subscription
-    const channel = supabase
-      .channel('nav_notifications')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'customer_notifications'
-      }, () => fetchUnreadCount())
-      .subscribe()
-
-    return () => supabase.removeChannel(channel)
-  }, [supabase, fetchUnreadCount])
-
-  return (
-    <Link
-      href="/portal/notifications"
-      className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors"
-    >
-      <Bell className="w-5 h-5 text-gray-600" />
-      {unreadCount > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 ring-2 ring-white">
-          {unreadCount > 99 ? '99+' : unreadCount}
-        </span>
-      )}
-    </Link>
-  )
-}
 
 export default function PortalNav({ userName }) {
  
@@ -110,10 +61,7 @@ export default function PortalNav({ userName }) {
             />
           </div>
 
-{/* Notification Bell - Desktop */}
-          <div className="absolute top-8 right-6">
-            <NavNotificationBell />
-          </div>          {/* Navigation */}
+{/* Navigation */}
           <nav className="flex-1 px-4 pt-2 pb-4 space-y-1.5 overflow-y-auto">
             {navItems.map((item) => {
               const Icon = item.icon
@@ -169,10 +117,9 @@ export default function PortalNav({ userName }) {
             className="h-10 w-auto"
           />
         </div>
-        <div className="flex items-center gap-2">
-<NavNotificationBell />
-          <button
-            onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
+<div className="flex items-center gap-2">
+          <button   
+                   onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
             className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
           >
             {mobileMenuOpen ? (
@@ -232,17 +179,6 @@ export default function PortalNav({ userName }) {
                 )
               })}
 
-              {/* Notifications Link in Mobile Menu */}
-              <Link
-                href="/portal/notifications"
-                onClick={closeMenu}
-                className="group flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-emerald-50/80 hover:text-emerald-900 transition-colors duration-300"
-              >
-                <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-emerald-50 flex items-center justify-center transition-colors duration-300">
-                  <Bell className="w-5 h-5 text-gray-500 group-hover:text-emerald-600" />
-                </div>
-                <span className="flex-1">Notifications</span>
-              </Link>
             </nav>
 
             {/* Logout - pinned to bottom */}
