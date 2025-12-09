@@ -63,26 +63,6 @@ if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
           continue
         }
 
-        // 4. Send overdue email
-        if (customerEmail) {
-          try {
-await fetch(`${baseUrl}/api/email/invoice-overdue`, {              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                invoiceId: invoice.id,
-                customerEmail,
-                customerName,
-                invoiceNumber: invoice.invoice_number,
-                amount,
-                daysOverdue
-              })
-            })
-          } catch (emailError) {
-            console.error(`Error sending overdue email for ${invoice.invoice_number}:`, emailError)
-            errors.push({ invoice: invoice.invoice_number, error: 'email failed' })
-          }
-        }
-
         const formattedAmount = new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD'
@@ -112,22 +92,6 @@ await fetch(`${baseUrl}/api/email/invoice-overdue`, {              method: 'POST
             message: `Invoice ${invoice.invoice_number} for ${customerName} is now overdue (${daysOverdue} days)`,
             link: '/admin/invoices'
           })
-
-        // 7. Send SMS via email gateway for overdue alert
-        const smsGatewayEmail = '5129989658@tmomail.net'
-        try {
-          const shortName = customerName.length > 12
-            ? customerName.substring(0, 12) + '...'
-            : customerName
-          await resend.emails.send({
-            from: 'Impress <notifications@impresscleaning.com>',
-            to: smsGatewayEmail,
-            subject: 'Overdue',
-            text: `${invoice.invoice_number} - ${shortName} - ${formattedAmount} - ${daysOverdue}d overdue`
-          })
-        } catch (smsError) {
-          console.error('Error sending overdue SMS:', smsError)
-        }
 
         processedCount++
       } catch (invoiceError) {
