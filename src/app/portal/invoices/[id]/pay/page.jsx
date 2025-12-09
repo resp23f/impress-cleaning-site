@@ -72,18 +72,44 @@ if (!useNewCard && selectedCard) {
 // Find the Stripe payment method ID
 const card = savedCards.find(c => c.id === selectedCard)
 if (invoice.stripe_invoice_id) {
-// Pay Stripe Dashboard invoice with saved card
-const response = await fetch('/api/stripe/pay-stripe-invoice', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-stripeInvoiceId: invoice.stripe_invoice_id,
-paymentMethodId: card.stripe_payment_method_id,
-}),
-})
-const data = await response.json()
-if (!response.ok) throw new Error(data.error || 'Payment failed')
-if (data.success) {
+  // Pay Stripe Dashboard invoice with saved card
+  const response = await fetch('/api/stripe/pay-stripe-invoice', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      stripeInvoiceId: invoice.stripe_invoice_id,
+      paymentMethodId: card.stripe_payment_method_id,
+    }),
+  })
+
+  const data = await response.json()
+  
+  // If Stripe invoice doesn't exist, fall back to PaymentIntent flow
+  if (data.usePaymentIntent) {
+    const fallbackResponse = await fetch('/api/stripe/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        invoiceId: invoice.id,
+        amount: parseFloat(invoice.total ?? invoice.amount),
+        paymentMethodId: card.stripe_payment_method_id,
+      }),
+    })
+    const fallbackData = await fallbackResponse.json()
+    if (!fallbackResponse.ok) throw new Error(fallbackData.error || 'Payment failed')
+    if (fallbackData.success) {
+      onSuccess()
+      return
+    } else if (fallbackData.requiresAction) {
+      const { error } = await stripe.confirmCardPayment(fallbackData.clientSecret)
+      if (error) throw new Error(error.message)
+      onSuccess()
+      return
+    }
+  }
+  
+  if (!response.ok) throw new Error(data.error || 'Payment failed')
+  if (data.success) {
 onSuccess()
 return
 } else if (data.requiresAction) {
@@ -133,20 +159,47 @@ if (pmError) {
 throw new Error(pmError.message)
 }
 if (invoice.stripe_invoice_id) {
-// Pay Stripe Dashboard invoice with new card
-const response = await fetch('/api/stripe/pay-stripe-invoice', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-stripeInvoiceId: invoice.stripe_invoice_id,
-paymentMethodId: paymentMethod.id,
-saveCard: saveCard,
-invoiceId: invoice.id,
-}),
-})
-const data = await response.json()
-if (!response.ok) throw new Error(data.error || 'Payment failed')
-if (data.success) {
+  // Pay Stripe Dashboard invoice with new card
+  const response = await fetch('/api/stripe/pay-stripe-invoice', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      stripeInvoiceId: invoice.stripe_invoice_id,
+      paymentMethodId: paymentMethod.id,
+      saveCard: saveCard,
+      invoiceId: invoice.id,
+    }),
+  })
+
+  const data = await response.json()
+  
+  // If Stripe invoice doesn't exist, fall back to PaymentIntent flow
+  if (data.usePaymentIntent) {
+    const fallbackResponse = await fetch('/api/stripe/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        invoiceId: invoice.id,
+        amount: parseFloat(invoice.total ?? invoice.amount),
+        paymentMethodId: paymentMethod.id,
+        saveCard: saveCard,
+      }),
+    })
+    const fallbackData = await fallbackResponse.json()
+    if (!fallbackResponse.ok) throw new Error(fallbackData.error || 'Payment failed')
+    if (fallbackData.success) {
+      onSuccess()
+      return
+    } else if (fallbackData.requiresAction) {
+      const { error } = await stripe.confirmCardPayment(fallbackData.clientSecret)
+      if (error) throw new Error(error.message)
+      onSuccess()
+      return
+    }
+  }
+  
+  if (!response.ok) throw new Error(data.error || 'Payment failed')
+  if (data.success) {
 onSuccess()
 return
 } else if (data.requiresAction) {

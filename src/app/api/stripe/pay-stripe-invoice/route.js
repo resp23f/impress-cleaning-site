@@ -24,13 +24,20 @@ export async function POST(request) {
    )
   }
 
-  // Get the Stripe invoice to find/create customer
-  const stripeInvoice = await stripe.invoices.retrieve(stripeInvoiceId)
-  
-  if (!stripeInvoice) {
-   return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
+// Get the Stripe invoice to find/create customer
+  let stripeInvoice
+  try {
+    stripeInvoice = await stripe.invoices.retrieve(stripeInvoiceId)
+  } catch (retrieveError) {
+    if (retrieveError.code === 'resource_missing' || retrieveError.message?.includes('No such invoice')) {
+      // Invoice doesn't exist in Stripe - tell frontend to use PaymentIntent flow
+      return NextResponse.json(
+        { error: 'Stripe invoice not found', usePaymentIntent: true },
+        { status: 404 }
+      )
+    }
+    throw retrieveError
   }
-
   // Get Supabase invoice ID from metadata if not provided
   const supabaseInvoiceId = invoiceId || stripeInvoice.metadata?.supabase_invoice_id
 
