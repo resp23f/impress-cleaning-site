@@ -38,13 +38,12 @@ const statusBadges = {
 }
 
 const statusLabels = {
- pending: 'Pending',
+ pending: 'Pending Approval',
  confirmed: 'Confirmed',
  en_route: 'En Route',
  completed: 'Completed',
  cancelled: 'Cancelled',
 }
-
 const serviceTypeLabel = (type) => {
  const labels = {
   standard: 'Standard Cleaning',
@@ -311,7 +310,15 @@ export default function AppointmentsPage() {
  const handleReschedule = async () => {
   if (!selectedAppointment) return
   
-  // Optional: protect against missing inputs
+  // 48-hour protection - same as cancel
+  if (isWithin48Hours(selectedAppointment)) {
+   toast.error(
+    'Appointments within 48 hours cannot be rescheduled online. Please contact our office.'
+   )
+   return
+  }
+  
+  // Protect against missing inputs
   if (!rescheduleData.date || !rescheduleData.timeStart || !rescheduleData.timeEnd) {
    toast.error('Please select a date and time window')
    return
@@ -320,57 +327,56 @@ export default function AppointmentsPage() {
   setProcessing(true)
   try {
    const { error } = await supabase
-   .from('appointments')
-   .update({
-    scheduled_date: rescheduleData.date,
-    scheduled_time_start: rescheduleData.timeStart,
-    scheduled_time_end: rescheduleData.timeEnd,
-    status: 'confirmed',
-   })
-   .eq('id', selectedAppointment.id)
-   .eq('customer_id', userId)
+    .from('appointments')
+    .update({
+     scheduled_date: rescheduleData.date,
+     scheduled_time_start: rescheduleData.timeStart,
+     scheduled_time_end: rescheduleData.timeEnd,
+     status: 'pending',
+    })
+    .eq('id', selectedAppointment.id)
+    .eq('customer_id', userId)
    
    if (error) throw error
    
    setAppointments((prev) =>
     prev.map((apt) =>
      apt.id === selectedAppointment.id
-   ? {
-    ...apt,
-    scheduled_date: rescheduleData.date,
-    scheduled_time_start: rescheduleData.timeStart,
-    scheduled_time_end: rescheduleData.timeEnd,
-    status: 'confirmed',
+      ? {
+         ...apt,
+         scheduled_date: rescheduleData.date,
+         scheduled_time_start: rescheduleData.timeStart,
+         scheduled_time_end: rescheduleData.timeEnd,
+         status: 'pending',
+        }
+      : apt
+    )
+   )
+   
+   // Notify admin by email
+   try {
+    await fetch('/api/email/notify-appointment-change', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+      type: 'reschedule',
+      appointment: selectedAppointment,
+      rescheduleData,
+     }),
+    })
+   } catch (e) {
+    console.error('Failed to send reschedule notification email', e)
    }
-   : apt
-  )
- )
- 
- // Notify admin by email
- try {
-  await fetch('/api/email/notify-appointment-change', {
-   method: 'POST',
-   headers: { 'Content-Type': 'application/json' },
-   body: JSON.stringify({
-    type: 'reschedule',
-    appointment: selectedAppointment,
-    rescheduleData,
-   }),
-  })
- } catch (e) {
-  console.error('Failed to send reschedule notification email', e)
+   
+   toast.success('Reschedule request submitted - pending admin approval')
+   closeModal()
+  } catch (err) {
+   console.error('Reschedule error', err)
+   toast.error(err.message || 'Could not reschedule')
+  } finally {
+   setProcessing(false)
+  }
  }
- 
- toast.success('Appointment rescheduled')
- closeModal()
-} catch (err) {
- console.error('Reschedule error', err)
- toast.error(err.message || 'Could not reschedule')
-} finally {
- setProcessing(false)
-}
-}
-
 const handleCancel = async () => {
  if (!selectedAppointment) return
  
@@ -532,16 +538,15 @@ return (
     </div>
     
     <div className="flex flex-wrap gap-3">
-    <Button
-    variant="secondary"
-    size="sm"
-    onClick={() => openReschedule(apt)}
-    disabled={apt.status === 'cancelled'}
-    >
-    <RefreshCw className="w-4 h-4" />
-    Reschedule
-    </Button>
-    <Button
+<Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => openReschedule(apt)}
+                    disabled={apt.status === 'cancelled' || isWithin48Hours(apt)}
+                    >
+                    <RefreshCw className="w-4 h-4" />
+                    Reschedule
+                    </Button>    <Button
     variant="ghost"
     size="sm"
     onClick={() => openCancel(apt)}
