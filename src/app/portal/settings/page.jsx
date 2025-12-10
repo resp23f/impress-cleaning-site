@@ -53,12 +53,11 @@ export default function SettingsPage() {
   const [savingProfile, setSavingProfile] = useState(false)
 
   // Password form (with current password verification)
-  const [passwordForm, setPasswordForm] = useState({
-    currentPassword: '',
+const [passwordForm, setPasswordForm] = useState({
     newPassword: '',
     confirmPassword: '',
   })
-  const [savingPassword, setSavingPassword] = useState(false)
+    const [savingPassword, setSavingPassword] = useState(false)
 
   // Email change (separate from profile)
   const [newEmail, setNewEmail] = useState('')
@@ -173,17 +172,13 @@ export default function SettingsPage() {
     }
   }
 
-  // ============================================
-  // PASSWORD CHANGE (with current password verification)
+// ============================================
+  // PASSWORD CHANGE
   // ============================================
   const handlePasswordChange = async () => {
-    const { currentPassword, newPassword, confirmPassword } = passwordForm
+    const { newPassword, confirmPassword } = passwordForm
 
     // Validation
-    if (!currentPassword) {
-      toast.error('Please enter your current password')
-      return
-    }
     if (newPassword.length < 8) {
       toast.error('New password must be at least 8 characters')
       return
@@ -195,19 +190,6 @@ export default function SettingsPage() {
 
     setSavingPassword(true)
     try {
-      // Step 1: Verify current password by attempting to sign in
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: user.email,
-        password: currentPassword,
-      })
-
-      if (signInError) {
-        toast.error('Current password is incorrect')
-        setSavingPassword(false)
-        return
-      }
-
-      // Step 2: Update to new password
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       })
@@ -215,7 +197,7 @@ export default function SettingsPage() {
       if (updateError) throw updateError
 
       toast.success('Password updated successfully. Please log in again.')
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
+      setPasswordForm({ newPassword: '', confirmPassword: '' })
 
       // Sign out and redirect to login
       await supabase.auth.signOut()
@@ -227,7 +209,6 @@ export default function SettingsPage() {
       setSavingPassword(false)
     }
   }
-
   // ============================================
   // EMAIL CHANGE (sends confirmation link)
   // ============================================
@@ -553,21 +534,14 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Input
-              type="password"
-              label="Current Password"
-              value={passwordForm.currentPassword}
-              onChange={(e) => setPasswordForm((p) => ({ ...p, currentPassword: e.target.value }))}
-              placeholder="Enter current password"
-              icon={<Lock className="w-4 h-4" />}
-            />
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               type="password"
               label="New Password"
               value={passwordForm.newPassword}
               onChange={(e) => setPasswordForm((p) => ({ ...p, newPassword: e.target.value }))}
               placeholder="Min 8 characters"
+              icon={<Lock className="w-4 h-4" />}
             />
             <Input
               type="password"
@@ -577,7 +551,6 @@ export default function SettingsPage() {
               placeholder="Confirm new password"
             />
           </div>
-
           <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-amber-50 to-orange-50/50 rounded-xl border border-amber-200">
             <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
             <p className="text-sm text-gray-700">
