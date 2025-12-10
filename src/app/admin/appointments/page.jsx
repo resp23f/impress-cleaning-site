@@ -111,10 +111,9 @@ export default function AppointmentsPage() {
       if (!res.ok) throw new Error('Failed to load appointments')
       const { data } = await res.json()
       setAppointments(data || [])
-    } catch (error) {
-      console.error('Error loading appointments:', error)
+} catch (error) {
       toast.error('Failed to load appointments')
-    } finally {
+          } finally {
       setLoading(false)
     }
   }
@@ -125,10 +124,9 @@ export default function AppointmentsPage() {
       if (!res.ok) throw new Error('Failed to load customers')
       const { data } = await res.json()
       setCustomers(data || [])
-    } catch (error) {
-      console.error('Error loading customers:', error)
-    }
-  }
+} catch (error) {
+      // Silent fail - customers list is supplementary
+    }  }
 
   // Load addresses when customer is selected
   useEffect(() => {
@@ -150,9 +148,9 @@ export default function AppointmentsPage() {
   const filteredAppointments = useMemo(() => {
     let filtered = [...appointments]
 
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase()
-      filtered = filtered.filter(apt =>
+if (searchQuery) {
+      const q = sanitizeText(searchQuery)?.toLowerCase() || ''
+            filtered = filtered.filter(apt =>
         apt.profiles?.full_name?.toLowerCase().includes(q) ||
         apt.profiles?.email?.toLowerCase().includes(q) ||
         apt.profiles?.phone?.toLowerCase().includes(q)
@@ -296,7 +294,7 @@ export default function AppointmentsPage() {
           scheduled_date,
           scheduled_time_start: timeConfig.start,
           scheduled_time_end: timeConfig.end,
-          special_instructions: special_instructions || null,
+          special_instructions: special_instructions ? sanitizeText(special_instructions.trim()) : null,
           status: 'confirmed',
         }),
       })
@@ -307,10 +305,9 @@ export default function AppointmentsPage() {
       toast.success('Appointment created successfully!')
       setShowCreateModal(false)
       loadAppointments()
-    } catch (error) {
-      console.error('Error creating appointment:', error)
+} catch (error) {
       toast.error(error.message || 'Failed to create appointment')
-    } finally {
+          } finally {
       setProcessing(false)
     }
   }
@@ -348,18 +345,15 @@ export default function AppointmentsPage() {
               scheduledTime: formatTime(selectedAppointment.scheduled_time_start),
             }),
           })
-        } catch (e) {
-          console.error('Failed to send cancellation email:', e)
-        }
-      }
+} catch (e) {
+          // Email send failed silently - appointment still updated
+        }      }
 
       toast.success(`Appointment ${status.replace('_', ' ')}!`)
       setShowManageModal(false)
       loadAppointments()
-    } catch (error) {
-      console.error('Error updating status:', error)
-      toast.error('Failed to update appointment')
-    } finally {
+} catch (error) {
+      toast.error('Failed to update appointment')    } finally {
       setProcessing(false)
     }
   }
@@ -408,16 +402,14 @@ export default function AppointmentsPage() {
               newTime: formatTime(timeStart),
             }),
           })
-        } catch (e) {
-          console.error('Failed to send reschedule email:', e)
-        }
-      }
+} catch (e) {
+          // Email send failed silently - reschedule still saved
+        }      }
 
       toast.success('Appointment rescheduled!')
       setShowManageModal(false)
       loadAppointments()
     } catch (error) {
-      console.error('Error rescheduling:', error)
       toast.error('Failed to reschedule')
     } finally {
       setProcessing(false)
@@ -444,10 +436,8 @@ export default function AppointmentsPage() {
       toast.success('Team updated!')
       setSelectedAppointment(prev => ({ ...prev, team_members: teamMembers }))
       loadAppointments()
-    } catch (error) {
-      console.error('Error updating team:', error)
-      toast.error('Failed to update team')
-    } finally {
+} catch (error) {
+      toast.error('Failed to update team')    } finally {
       setProcessing(false)
     }
   }
@@ -468,10 +458,8 @@ export default function AppointmentsPage() {
       toast.success('Appointment deleted')
       setShowManageModal(false)
       loadAppointments()
-    } catch (error) {
-      console.error('Error deleting:', error)
-      toast.error('Failed to delete')
-    } finally {
+} catch (error) {
+      toast.error('Failed to delete')    } finally {
       setProcessing(false)
     }
   }
