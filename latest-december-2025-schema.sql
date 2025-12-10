@@ -13,13 +13,49 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 
-CREATE SCHEMA IF NOT EXISTS "public";
+CREATE EXTENSION IF NOT EXISTS "pg_cron" WITH SCHEMA "pg_catalog";
 
 
-ALTER SCHEMA "public" OWNER TO "pg_database_owner";
+
+
 
 
 COMMENT ON SCHEMA "public" IS 'standard public schema';
+
+
+
+CREATE EXTENSION IF NOT EXISTS "pg_graphql" WITH SCHEMA "graphql";
+
+
+
+
+
+
+CREATE EXTENSION IF NOT EXISTS "pg_stat_statements" WITH SCHEMA "extensions";
+
+
+
+
+
+
+CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "extensions";
+
+
+
+
+
+
+CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
+
+
+
+
+
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
+
+
+
 
 
 
@@ -111,6 +147,65 @@ CREATE TYPE "public"."user_role" AS ENUM (
 ALTER TYPE "public"."user_role" OWNER TO "postgres";
 
 
+CREATE OR REPLACE FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_credit_amount" numeric) RETURNS "void"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+BEGIN
+  UPDATE public.invoices
+  SET 
+    amount = amount - p_credit_amount,
+    updated_at = now()
+  WHERE id = (
+    SELECT id FROM public.invoices
+    WHERE customer_id = p_customer_id
+      AND status IN ('sent', 'overdue')
+    ORDER BY created_at ASC
+    LIMIT 1
+  );
+END;
+$$;
+
+
+ALTER FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_credit_amount" numeric) OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_amount" numeric, "p_description" "text", "p_invoice_id" "uuid" DEFAULT NULL::"uuid", "p_created_by" "uuid" DEFAULT NULL::"uuid") RETURNS "uuid"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO 'public', 'pg_temp'
+    AS $$
+DECLARE
+  v_credit_id UUID;
+BEGIN
+  INSERT INTO public.customer_credits (customer_id, amount, description, invoice_id, created_by)
+  VALUES (p_customer_id, p_amount, p_description, p_invoice_id, p_created_by)
+  RETURNING id INTO v_credit_id;
+  
+  RETURN v_credit_id;
+END;
+$$;
+
+
+ALTER FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_amount" numeric, "p_description" "text", "p_invoice_id" "uuid", "p_created_by" "uuid") OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."auto_archive_old_invoices"() RETURNS "void"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+BEGIN
+  UPDATE public.invoices
+  SET archived = true
+  WHERE status IN ('paid', 'cancelled')
+    AND updated_at < now() - interval '1 year'
+    AND archived = false;
+END;
+$$;
+
+
+ALTER FUNCTION "public"."auto_archive_old_invoices"() OWNER TO "postgres";
+
+
 CREATE OR REPLACE FUNCTION "public"."auto_complete_appointments"() RETURNS "void"
     LANGUAGE "plpgsql" SECURITY DEFINER
     SET "search_path" TO ''
@@ -161,28 +256,95 @@ CREATE OR REPLACE FUNCTION "public"."generate_invoice_number"() RETURNS "text"
     SET "search_path" TO 'public', 'pg_temp'
     AS $$
 DECLARE
-  year_month TEXT;
-  next_number INTEGER;
-  invoice_num TEXT;
+  chars TEXT := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  result TEXT := 'IMP-';
+  i INTEGER;
 BEGIN
-  -- Get current year and month as YYMM (e.g., 2412 for Dec 2024)
-  year_month := TO_CHAR(NOW(), 'YYMM');
+  -- Generate 7 random characters
+  FOR i IN 1..7 LOOP
+    result := result || substr(chars, floor(random() * length(chars) + 1)::int, 1);
+  END LOOP;
   
-  -- Get next sequence number for this month, starting at 1001
-  SELECT COALESCE(MAX(
-    CAST(SPLIT_PART(invoice_number, '-', 3) AS INTEGER)
-  ), 1000) + 1
-  INTO next_number
-  FROM invoices
-  WHERE invoice_number LIKE 'IMP-' || year_month || '-%';
-
-  invoice_num := 'IMP-' || year_month || '-' || next_number::TEXT;
-  RETURN invoice_num;
+  -- Check for collision (extremely rare but safe)
+  WHILE EXISTS (SELECT 1 FROM invoices WHERE invoice_number = result) LOOP
+    result := 'IMP-';
+    FOR i IN 1..7 LOOP
+      result := result || substr(chars, floor(random() * length(chars) + 1)::int, 1);
+    END LOOP;
+  END LOOP;
+  
+  RETURN result;
 END;
 $$;
 
 
 ALTER FUNCTION "public"."generate_invoice_number"() OWNER TO "postgres";
+
+SET default_tablespace = '';
+
+SET default_table_access_method = "heap";
+
+
+CREATE TABLE IF NOT EXISTS "public"."invoices" (
+    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "invoice_number" "text" NOT NULL,
+    "customer_id" "uuid",
+    "appointment_id" "uuid",
+    "amount" numeric(10,2) NOT NULL,
+    "status" "public"."invoice_status" DEFAULT 'draft'::"public"."invoice_status" NOT NULL,
+    "due_date" "date",
+    "paid_date" "date",
+    "payment_method" "public"."payment_method",
+    "stripe_payment_intent_id" "text",
+    "notes" "text",
+    "line_items" "jsonb",
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "tax_rate" numeric,
+    "tax_amount" numeric,
+    "total" numeric,
+    "archived" boolean DEFAULT false,
+    "customer_email" "text",
+    "stripe_invoice_id" "text",
+    "disputed" boolean DEFAULT false,
+    "refund_amount" numeric(10,2) DEFAULT 0,
+    "refund_reason" "text"
+);
+
+
+ALTER TABLE "public"."invoices" OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."get_invoices_due_today"() RETURNS SETOF "public"."invoices"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+BEGIN
+  RETURN QUERY
+  SELECT * FROM public.invoices
+  WHERE status = 'sent'
+    AND due_date = CURRENT_DATE;
+END;
+$$;
+
+
+ALTER FUNCTION "public"."get_invoices_due_today"() OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."get_invoices_overdue_5_days"() RETURNS SETOF "public"."invoices"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+BEGIN
+  RETURN QUERY
+  SELECT * FROM public.invoices
+  WHERE status = 'overdue'
+    AND due_date = CURRENT_DATE - interval '5 days';
+END;
+$$;
+
+
+ALTER FUNCTION "public"."get_invoices_overdue_5_days"() OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."handle_new_user"() RETURNS "trigger"
@@ -256,12 +418,12 @@ CREATE OR REPLACE FUNCTION "public"."mark_overdue_invoices"() RETURNS "void"
     LANGUAGE "plpgsql" SECURITY DEFINER
     SET "search_path" TO ''
     AS $$
-begin
-  update public.invoices
-  set status = 'overdue'
-  where status in ('sent', 'pending')
-    and due_date < (now() - interval '7 days');
-end;
+BEGIN
+  UPDATE public.invoices
+  SET status = 'overdue'
+  WHERE status IN ('sent', 'pending')
+    AND due_date < (now() - interval '7 days');
+END;
 $$;
 
 
@@ -379,10 +541,6 @@ $$;
 
 ALTER FUNCTION "public"."update_updated_at_column"() OWNER TO "postgres";
 
-SET default_tablespace = '';
-
-SET default_table_access_method = "heap";
-
 
 CREATE TABLE IF NOT EXISTS "public"."admin_notifications" (
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
@@ -466,6 +624,20 @@ CREATE TABLE IF NOT EXISTS "public"."booking_requests" (
 ALTER TABLE "public"."booking_requests" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."customer_credits" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "customer_id" "uuid" NOT NULL,
+    "amount" numeric(10,2) NOT NULL,
+    "description" "text",
+    "invoice_id" "uuid",
+    "created_by" "uuid",
+    "created_at" timestamp with time zone DEFAULT "now"()
+);
+
+
+ALTER TABLE "public"."customer_credits" OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."customer_notifications" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "user_id" "uuid" NOT NULL,
@@ -498,33 +670,6 @@ CREATE TABLE IF NOT EXISTS "public"."customer_reviews" (
 ALTER TABLE "public"."customer_reviews" OWNER TO "postgres";
 
 
-CREATE TABLE IF NOT EXISTS "public"."invoices" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
-    "invoice_number" "text" NOT NULL,
-    "customer_id" "uuid",
-    "appointment_id" "uuid",
-    "amount" numeric(10,2) NOT NULL,
-    "status" "public"."invoice_status" DEFAULT 'draft'::"public"."invoice_status" NOT NULL,
-    "due_date" "date",
-    "paid_date" "date",
-    "payment_method" "public"."payment_method",
-    "stripe_payment_intent_id" "text",
-    "notes" "text",
-    "line_items" "jsonb",
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "tax_rate" numeric,
-    "tax_amount" numeric,
-    "total" numeric,
-    "archived" boolean DEFAULT false,
-    "customer_email" "text",
-    "stripe_invoice_id" "text"
-);
-
-
-ALTER TABLE "public"."invoices" OWNER TO "postgres";
-
-
 CREATE TABLE IF NOT EXISTS "public"."payment_methods" (
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
     "user_id" "uuid" NOT NULL,
@@ -551,7 +696,8 @@ CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "communication_preference" "public"."communication_preference" DEFAULT 'both'::"public"."communication_preference",
     "avatar_url" "text",
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL
+    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "stripe_customer_id" "text"
 );
 
 
@@ -648,6 +794,11 @@ ALTER TABLE ONLY "public"."appointments"
 
 ALTER TABLE ONLY "public"."booking_requests"
     ADD CONSTRAINT "booking_requests_pkey" PRIMARY KEY ("id");
+
+
+
+ALTER TABLE ONLY "public"."customer_credits"
+    ADD CONSTRAINT "customer_credits_pkey" PRIMARY KEY ("id");
 
 
 
@@ -883,6 +1034,21 @@ ALTER TABLE ONLY "public"."appointments"
 
 
 
+ALTER TABLE ONLY "public"."customer_credits"
+    ADD CONSTRAINT "customer_credits_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "public"."profiles"("id") ON DELETE SET NULL;
+
+
+
+ALTER TABLE ONLY "public"."customer_credits"
+    ADD CONSTRAINT "customer_credits_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "public"."profiles"("id") ON DELETE CASCADE;
+
+
+
+ALTER TABLE ONLY "public"."customer_credits"
+    ADD CONSTRAINT "customer_credits_invoice_id_fkey" FOREIGN KEY ("invoice_id") REFERENCES "public"."invoices"("id") ON DELETE SET NULL;
+
+
+
 ALTER TABLE ONLY "public"."customer_notifications"
     ADD CONSTRAINT "customer_notifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
 
@@ -949,6 +1115,12 @@ CREATE POLICY "Admins can delete bookings" ON "public"."booking_requests" FOR DE
 
 
 
+CREATE POLICY "Admins can delete credits" ON "public"."customer_credits" FOR DELETE TO "authenticated" USING ((EXISTS ( SELECT 1
+   FROM "public"."profiles"
+  WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))));
+
+
+
 CREATE POLICY "Admins can delete invoices" ON "public"."invoices" FOR DELETE USING ((EXISTS ( SELECT 1
    FROM "public"."profiles"
   WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))));
@@ -956,6 +1128,12 @@ CREATE POLICY "Admins can delete invoices" ON "public"."invoices" FOR DELETE USI
 
 
 CREATE POLICY "Admins can insert appointments" ON "public"."appointments" FOR INSERT WITH CHECK ((EXISTS ( SELECT 1
+   FROM "public"."profiles"
+  WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))));
+
+
+
+CREATE POLICY "Admins can insert credits" ON "public"."customer_credits" FOR INSERT TO "authenticated" WITH CHECK ((EXISTS ( SELECT 1
    FROM "public"."profiles"
   WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))));
 
@@ -980,6 +1158,14 @@ CREATE POLICY "Admins can read settings" ON "public"."admin_settings" FOR SELECT
 
 
 CREATE POLICY "Admins can update bookings" ON "public"."booking_requests" FOR UPDATE USING ((EXISTS ( SELECT 1
+   FROM "public"."profiles"
+  WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))));
+
+
+
+CREATE POLICY "Admins can update credits" ON "public"."customer_credits" FOR UPDATE TO "authenticated" USING ((EXISTS ( SELECT 1
+   FROM "public"."profiles"
+  WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role"))))) WITH CHECK ((EXISTS ( SELECT 1
    FROM "public"."profiles"
   WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))));
 
@@ -1071,9 +1257,9 @@ CREATE POLICY "Customers can submit reviews" ON "public"."customer_reviews" FOR 
 
 CREATE POLICY "Invoices select" ON "public"."invoices" FOR SELECT USING (((EXISTS ( SELECT 1
    FROM "public"."profiles"
-  WHERE (("profiles"."id" = "auth"."uid"()) AND ("profiles"."role" = 'admin'::"public"."user_role")))) OR ("customer_id" = "auth"."uid"()) OR (("customer_id" IS NULL) AND ("customer_email" IS NOT NULL) AND ("lower"("customer_email") = "lower"(( SELECT "profiles"."email"
+  WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role")))) OR ("customer_id" = ( SELECT "auth"."uid"() AS "uid")) OR (("customer_id" IS NULL) AND ("customer_email" IS NOT NULL) AND ("lower"("customer_email") = "lower"(( SELECT "profiles"."email"
    FROM "public"."profiles"
-  WHERE ("profiles"."id" = "auth"."uid"())))))));
+  WHERE ("profiles"."id" = ( SELECT "auth"."uid"() AS "uid"))))))));
 
 
 
@@ -1127,6 +1313,12 @@ CREATE POLICY "Users can update own addresses" ON "public"."service_addresses" F
 
 
 
+CREATE POLICY "Users can view own credits or admin all" ON "public"."customer_credits" FOR SELECT TO "authenticated" USING ((("customer_id" = ( SELECT "auth"."uid"() AS "uid")) OR (EXISTS ( SELECT 1
+   FROM "public"."profiles"
+  WHERE (("profiles"."id" = ( SELECT "auth"."uid"() AS "uid")) AND ("profiles"."role" = 'admin'::"public"."user_role"))))));
+
+
+
 CREATE POLICY "Users can view own payment methods" ON "public"."payment_methods" FOR SELECT USING ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
 
 
@@ -1145,6 +1337,9 @@ ALTER TABLE "public"."appointments" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."booking_requests" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."customer_credits" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."customer_notifications" ENABLE ROW LEVEL SECURITY;
@@ -1186,10 +1381,211 @@ ALTER TABLE "public"."service_history" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."service_requests" ENABLE ROW LEVEL SECURITY;
 
 
+
+
+ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
+
+
+
+
+
+
+
+
+
 GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GRANT ALL ON FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_credit_amount" numeric) TO "anon";
+GRANT ALL ON FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_credit_amount" numeric) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_credit_amount" numeric) TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_amount" numeric, "p_description" "text", "p_invoice_id" "uuid", "p_created_by" "uuid") TO "anon";
+GRANT ALL ON FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_amount" numeric, "p_description" "text", "p_invoice_id" "uuid", "p_created_by" "uuid") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."apply_account_credit"("p_customer_id" "uuid", "p_amount" numeric, "p_description" "text", "p_invoice_id" "uuid", "p_created_by" "uuid") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."auto_archive_old_invoices"() TO "anon";
+GRANT ALL ON FUNCTION "public"."auto_archive_old_invoices"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."auto_archive_old_invoices"() TO "service_role";
 
 
 
@@ -1202,6 +1598,24 @@ GRANT ALL ON FUNCTION "public"."auto_complete_appointments"() TO "service_role";
 GRANT ALL ON FUNCTION "public"."generate_invoice_number"() TO "anon";
 GRANT ALL ON FUNCTION "public"."generate_invoice_number"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."generate_invoice_number"() TO "service_role";
+
+
+
+GRANT ALL ON TABLE "public"."invoices" TO "anon";
+GRANT ALL ON TABLE "public"."invoices" TO "authenticated";
+GRANT ALL ON TABLE "public"."invoices" TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."get_invoices_due_today"() TO "anon";
+GRANT ALL ON FUNCTION "public"."get_invoices_due_today"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."get_invoices_due_today"() TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."get_invoices_overdue_5_days"() TO "anon";
+GRANT ALL ON FUNCTION "public"."get_invoices_overdue_5_days"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."get_invoices_overdue_5_days"() TO "service_role";
 
 
 
@@ -1265,6 +1679,27 @@ GRANT ALL ON FUNCTION "public"."update_updated_at_column"() TO "service_role";
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 GRANT ALL ON TABLE "public"."admin_notifications" TO "anon";
 GRANT ALL ON TABLE "public"."admin_notifications" TO "authenticated";
 GRANT ALL ON TABLE "public"."admin_notifications" TO "service_role";
@@ -1289,6 +1724,12 @@ GRANT ALL ON TABLE "public"."booking_requests" TO "service_role";
 
 
 
+GRANT ALL ON TABLE "public"."customer_credits" TO "anon";
+GRANT ALL ON TABLE "public"."customer_credits" TO "authenticated";
+GRANT ALL ON TABLE "public"."customer_credits" TO "service_role";
+
+
+
 GRANT ALL ON TABLE "public"."customer_notifications" TO "anon";
 GRANT ALL ON TABLE "public"."customer_notifications" TO "authenticated";
 GRANT ALL ON TABLE "public"."customer_notifications" TO "service_role";
@@ -1298,12 +1739,6 @@ GRANT ALL ON TABLE "public"."customer_notifications" TO "service_role";
 GRANT ALL ON TABLE "public"."customer_reviews" TO "anon";
 GRANT ALL ON TABLE "public"."customer_reviews" TO "authenticated";
 GRANT ALL ON TABLE "public"."customer_reviews" TO "service_role";
-
-
-
-GRANT ALL ON TABLE "public"."invoices" TO "anon";
-GRANT ALL ON TABLE "public"."invoices" TO "authenticated";
-GRANT ALL ON TABLE "public"."invoices" TO "service_role";
 
 
 
@@ -1343,6 +1778,12 @@ GRANT ALL ON TABLE "public"."service_requests" TO "service_role";
 
 
 
+
+
+
+
+
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "postgres";
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "anon";
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "authenticated";
@@ -1367,6 +1808,30 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "anon";
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "authenticated";
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "service_role";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
