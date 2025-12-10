@@ -246,19 +246,18 @@ ${styles.cardHover}
                  <Calendar className="w-6 h-6 text-[#079447]" />
                 </div>
                 <div>
-                 <p className="text-2xl font-bold text-[#1C294E] leading-tight">
+<p className="text-2xl font-bold text-[#1C294E] leading-tight">
                   {format(
-                   new Date(nextAppointment.scheduled_date),
+                   new Date(nextAppointment.scheduled_date + 'T00:00:00'),
                    'EEEE',
                   )}
                  </p>
                  <p className="text-lg text-gray-600">
                   {format(
-                   new Date(nextAppointment.scheduled_date),
+                   new Date(nextAppointment.scheduled_date + 'T00:00:00'),
                    'MMMM d, yyyy',
                   )}
-                 </p>
-                </div>
+                 </p>                </div>
                </div>
                <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center">
