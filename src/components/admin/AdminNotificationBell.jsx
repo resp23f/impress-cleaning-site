@@ -221,8 +221,7 @@ export default function AdminNotificationBell() {
       {isOpen && (
         <div 
           className={`
-            fixed lg:absolute right-4 lg:right-0 top-16 lg:top-auto lg:bottom-full lg:mb-3
-            w-[380px] max-w-[calc(100vw-2rem)]
+fixed lg:absolute right-4 lg:left-0 lg:right-auto top-16 lg:top-auto lg:bottom-full lg:mb-3            w-[380px] max-w-[calc(100vw-2rem)]
                         bg-white rounded-2xl shadow-2xl shadow-black/20
             border border-gray-100 z-[100] overflow-hidden
             transition-all duration-200 ease-out origin-top-right
