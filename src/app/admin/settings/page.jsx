@@ -19,6 +19,7 @@ import {
   Receipt,
   Calendar,
   RefreshCw,
+  Users,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import AdminNav from '@/components/admin/AdminNav'
