@@ -68,7 +68,7 @@ export default function PortalNav({ userName }) {
 
     // CRITICAL: Cleanup on unmount
     return () => supabase.removeChannel(channel)
-  }, []) // Empty deps - supabase is stable via useMemo
+  }, [])
 
   const closeMenu = () => {
     setIsClosing(true)
@@ -105,26 +105,27 @@ export default function PortalNav({ userName }) {
               const isActive = pathname === item.href
               const isNotifications = item.label === 'Notifications'
               return (
-<Link
+                <Link
                   key={item.href}
                   href={item.href}
                   className={`
-                    group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-colors duration-200
+                    group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl
                     ${isActive
-                      ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white'
-                      : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900'
+                      ? 'bg-emerald-500 text-white'
+                      : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-900'
                     }
                   `}
-                >                  <div className={`
-                    relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
+                >
+                  <div className={`
+                    relative w-9 h-9 rounded-lg flex items-center justify-center
                     ${isActive
                       ? 'bg-white/20'
-                      : 'bg-gray-100 group-hover:bg-emerald-50'
+                      : 'bg-gray-100 group-hover:bg-emerald-100'
                     }
                   `}>
                     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
                     {isNotifications && unreadCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 shadow-md ring-2 ring-white">
+                      <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 ring-2 ring-white">
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
                     )}
@@ -139,9 +140,9 @@ export default function PortalNav({ userName }) {
           <div className="p-4 mt-auto border-t border-gray-100">
             <button
               onClick={handleLogout}
-              className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+              className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600"
             >
-              <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-all">
+              <div className="w-9 h-9 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center">
                 <LogOut className="w-5 h-5 text-gray-500 group-hover:text-red-600" />
               </div>
               <span className="flex-1">Log Out</span>
@@ -162,7 +163,7 @@ export default function PortalNav({ userName }) {
         <div className="flex items-center gap-2">
           <button   
             onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
-            className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors"
+            className="relative p-2 rounded-xl hover:bg-gray-100"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6 text-gray-700" />
@@ -201,28 +202,28 @@ export default function PortalNav({ userName }) {
                 const isActive = pathname === item.href
                 const isNotifications = item.label === 'Notifications'
                 return (
-<Link
+                  <Link
                     key={item.href}
                     href={item.href}
                     onClick={closeMenu}
                     className={`
-                      group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl transition-colors duration-200
+                      group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl
                       ${isActive
-                        ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white'
-                        : 'text-gray-600 hover:bg-emerald-50/80 hover:text-emerald-900'
+                        ? 'bg-emerald-500 text-white'
+                        : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-900'
                       }
                     `}
                   >
                     <div className={`
-                      relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
+                      relative w-9 h-9 rounded-lg flex items-center justify-center
                       ${isActive
                         ? 'bg-white/20'
-                        : 'bg-gray-100 group-hover:bg-emerald-50'
+                        : 'bg-gray-100 group-hover:bg-emerald-100'
                       }
                     `}>
                       <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
                       {isNotifications && unreadCount > 0 && (
-                        <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 shadow-md ring-2 ring-white">
+                        <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 ring-2 ring-white">
                           {unreadCount > 99 ? '99+' : unreadCount}
                         </span>
                       )}
@@ -237,9 +238,9 @@ export default function PortalNav({ userName }) {
             <div className="p-4 flex-shrink-0">
               <button
                 onClick={handleLogout}
-                className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-red-600 rounded-xl bg-red-50 hover:bg-red-100 transition-all duration-200"
+                className="group flex items-center gap-3 w-full px-4 py-3.5 text-sm font-medium text-red-600 rounded-xl bg-red-50 hover:bg-red-100"
               >
-                <div className="w-9 h-9 rounded-lg bg-red-100 group-hover:bg-red-200 flex items-center justify-center transition-all">
+                <div className="w-9 h-9 rounded-lg bg-red-100 group-hover:bg-red-200 flex items-center justify-center">
                   <LogOut className="w-5 h-5 text-red-600" />
                 </div>
                 <span className="flex-1 text-left">Log Out</span>
@@ -262,9 +263,9 @@ export default function PortalNav({ userName }) {
                 className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
               >
                 <div className={`
-                  w-10 h-10 rounded-xl flex items-center justify-center transition-all
+                  w-10 h-10 rounded-xl flex items-center justify-center
                   ${isActive
-                    ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
+                    ? 'bg-emerald-500'
                     : 'bg-gray-50 group-hover:bg-emerald-50'
                   }
                 `}>
@@ -282,9 +283,9 @@ export default function PortalNav({ userName }) {
             className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
           >
             <div className={`
-              relative w-10 h-10 rounded-xl flex items-center justify-center transition-all
+              relative w-10 h-10 rounded-xl flex items-center justify-center
               ${pathname === '/portal/notifications'
-                ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
+                ? 'bg-emerald-500'
                 : 'bg-gray-50 group-hover:bg-emerald-50'
               }
             `}>
