@@ -8,18 +8,19 @@ import {
   Clock,
   DollarSign,
   Save,
-  Settings as SettingsIcon,
   Phone,
   Globe,
   MapPin,
   Sparkles,
   Check,
   AlertCircle,
-  Percent,
   Receipt,
   Calendar,
   RefreshCw,
   Users,
+  Lock,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import AdminNav from '@/components/admin/AdminNav'
@@ -70,6 +71,19 @@ export default function SettingsPage() {
     appointmentCancelled: true,
     invoiceOverdue: true,
   })
+
+  // Password Change
+  const [passwords, setPasswords] = useState({
+    current: '',
+    new: '',
+    confirm: '',
+  })
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  })
+  const [changingPassword, setChangingPassword] = useState(false)
 
   // Load settings from database
   useEffect(() => {
@@ -225,11 +239,46 @@ export default function SettingsPage() {
     }
   }
 
+  // Change Password
+  const handleChangePassword = async () => {
+    if (!passwords.new || !passwords.confirm) {
+      toast.error('Please fill in all password fields')
+      return
+    }
+    
+    if (passwords.new.length < 8) {
+      toast.error('New password must be at least 8 characters')
+      return
+    }
+    
+    if (passwords.new !== passwords.confirm) {
+      toast.error('New passwords do not match')
+      return
+    }
+
+    setChangingPassword(true)
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: passwords.new
+      })
+
+      if (error) throw error
+      
+      toast.success('Password updated successfully!')
+      setPasswords({ current: '', new: '', confirm: '' })
+    } catch (error) {
+      toast.error(error.message || 'Failed to update password')
+    } finally {
+      setChangingPassword(false)
+    }
+  }
+
   const tabs = [
-    { id: 'business', label: 'Business Info', icon: Building2, color: 'blue' },
+    { id: 'business', label: 'Business', icon: Building2, color: 'blue' },
     { id: 'pricing', label: 'Pricing', icon: DollarSign, color: 'emerald' },
     { id: 'hours', label: 'Hours', icon: Clock, color: 'purple' },
-    { id: 'notifications', label: 'Notifications', icon: Bell, color: 'amber' },
+    { id: 'notifications', label: 'Alerts', icon: Bell, color: 'amber' },
+    { id: 'account', label: 'Account', icon: Lock, color: 'red' },
   ]
 
   const getTabColors = (color) => {
@@ -238,17 +287,9 @@ export default function SettingsPage() {
       emerald: { bg: 'bg-emerald-100', text: 'text-emerald-600', activeBg: 'bg-emerald-500' },
       purple: { bg: 'bg-purple-100', text: 'text-purple-600', activeBg: 'bg-purple-500' },
       amber: { bg: 'bg-amber-100', text: 'text-amber-600', activeBg: 'bg-amber-500' },
+      red: { bg: 'bg-red-100', text: 'text-red-600', activeBg: 'bg-red-500' },
     }
     return colors[color] || colors.blue
-  }
-
-  const formatTimeDisplay = (time24) => {
-    if (!time24) return ''
-    const [hours, minutes] = time24.split(':')
-    const hour = parseInt(hours)
-    const ampm = hour >= 12 ? 'PM' : 'AM'
-    const hour12 = hour % 12 || 12
-    return `${hour12}:${minutes} ${ampm}`
   }
 
   if (loading) {
@@ -299,7 +340,6 @@ export default function SettingsPage() {
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id
-              const colors = getTabColors(tab.color)
               
               return (
                 <button
@@ -337,11 +377,8 @@ export default function SettingsPage() {
               </div>
 
               <div className="p-6 space-y-6">
-                {/* Business Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Business Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
                   <div className="relative">
                     <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -354,12 +391,9 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {/* Email & Phone */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Business Email
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Business Email</label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
@@ -372,9 +406,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                     <div className="relative">
                       <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
@@ -388,11 +420,8 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Business Address
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Business Address</label>
                   <div className="relative">
                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -405,11 +434,8 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {/* Website */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Website
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
                   <div className="relative">
                     <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -422,18 +448,13 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {/* Save Button */}
                 <div className="pt-4 flex justify-end">
                   <button
                     onClick={handleSaveBusinessInfo}
                     disabled={saving}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] text-white rounded-xl font-medium hover:bg-emerald-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#079447]/20"
                   >
-                    {saving ? (
-                      <RefreshCw className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Save className="w-5 h-5" />
-                    )}
+                    {saving ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                     Save Changes
                   </button>
                 </div>
@@ -457,7 +478,6 @@ export default function SettingsPage() {
               </div>
 
               <div className="p-6 space-y-6">
-                {/* Pricing Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
                     { key: 'standard', label: 'Standard Cleaning', description: 'Regular maintenance cleaning', icon: Sparkles },
@@ -468,10 +488,7 @@ export default function SettingsPage() {
                   ].map((service) => {
                     const Icon = service.icon
                     return (
-                      <div 
-                        key={service.key} 
-                        className="p-4 border border-gray-200 rounded-xl hover:border-emerald-300 hover:shadow-sm transition-all"
-                      >
+                      <div key={service.key} className="p-4 border border-gray-200 rounded-xl hover:border-emerald-300 hover:shadow-sm transition-all">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
                             <Icon className="w-5 h-5 text-emerald-600" />
@@ -497,29 +514,21 @@ export default function SettingsPage() {
                   })}
                 </div>
 
-                {/* Info Note */}
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-blue-800">These are starting prices</p>
-                    <p className="text-sm text-blue-700 mt-1">
-                      You can adjust the final price per customer when creating invoices based on square footage, specific requirements, and other factors.
-                    </p>
+                    <p className="text-sm text-blue-700 mt-1">You can adjust the final price per customer when creating invoices.</p>
                   </div>
                 </div>
 
-                {/* Save Button */}
                 <div className="pt-4 flex justify-end">
                   <button
                     onClick={handleSavePricing}
                     disabled={saving}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] text-white rounded-xl font-medium hover:bg-emerald-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#079447]/20"
                   >
-                    {saving ? (
-                      <RefreshCw className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Save className="w-5 h-5" />
-                    )}
+                    {saving ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                     Save Pricing
                   </button>
                 </div>
@@ -546,31 +555,18 @@ export default function SettingsPage() {
                 {Object.entries(businessHours).map(([day, hours]) => (
                   <div 
                     key={day} 
-                    className={`
-                      flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl border transition-all
-                      ${hours.closed 
-                        ? 'bg-gray-50 border-gray-200' 
-                        : 'bg-white border-gray-200 hover:border-purple-300'
-                      }
-                    `}
+                    className={`flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl border transition-all ${hours.closed ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-200 hover:border-purple-300'}`}
                   >
-                    {/* Day Name */}
                     <div className="sm:w-28 flex-shrink-0">
-                      <span className={`text-sm font-semibold capitalize ${hours.closed ? 'text-gray-400' : 'text-[#1C294E]'}`}>
-                        {day}
-                      </span>
+                      <span className={`text-sm font-semibold capitalize ${hours.closed ? 'text-gray-400' : 'text-[#1C294E]'}`}>{day}</span>
                     </div>
 
-                    {/* Closed Toggle */}
                     <label className="flex items-center gap-2 cursor-pointer">
                       <div className="relative">
                         <input
                           type="checkbox"
                           checked={hours.closed}
-                          onChange={(e) => setBusinessHours({
-                            ...businessHours,
-                            [day]: { ...hours, closed: e.target.checked }
-                          })}
+                          onChange={(e) => setBusinessHours({ ...businessHours, [day]: { ...hours, closed: e.target.checked } })}
                           className="sr-only"
                         />
                         <div className={`w-10 h-6 rounded-full transition-colors ${hours.closed ? 'bg-gray-300' : 'bg-purple-500'}`}>
@@ -582,26 +578,19 @@ export default function SettingsPage() {
                       </span>
                     </label>
 
-                    {/* Time Inputs */}
                     {!hours.closed && (
                       <div className="flex items-center gap-2 flex-1 sm:justify-end">
                         <input
                           type="time"
                           value={hours.open}
-                          onChange={(e) => setBusinessHours({
-                            ...businessHours,
-                            [day]: { ...hours, open: e.target.value }
-                          })}
+                          onChange={(e) => setBusinessHours({ ...businessHours, [day]: { ...hours, open: e.target.value } })}
                           className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                         />
                         <span className="text-gray-400">to</span>
                         <input
                           type="time"
                           value={hours.close}
-                          onChange={(e) => setBusinessHours({
-                            ...businessHours,
-                            [day]: { ...hours, close: e.target.value }
-                          })}
+                          onChange={(e) => setBusinessHours({ ...businessHours, [day]: { ...hours, close: e.target.value } })}
                           className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                         />
                       </div>
@@ -609,18 +598,13 @@ export default function SettingsPage() {
                   </div>
                 ))}
 
-                {/* Save Button */}
                 <div className="pt-6 flex justify-end">
                   <button
                     onClick={handleSaveHours}
                     disabled={saving}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] text-white rounded-xl font-medium hover:bg-emerald-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#079447]/20"
                   >
-                    {saving ? (
-                      <RefreshCw className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Save className="w-5 h-5" />
-                    )}
+                    {saving ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                     Save Hours
                   </button>
                 </div>
@@ -645,41 +629,11 @@ export default function SettingsPage() {
 
               <div className="p-6 space-y-4">
                 {[
-                  { 
-                    key: 'newRegistration', 
-                    label: 'New Customer Registration', 
-                    description: 'Get notified when a new customer signs up and needs approval',
-                    icon: Users,
-                    color: 'blue'
-                  },
-                  { 
-                    key: 'serviceRequest', 
-                    label: 'New Service Request', 
-                    description: 'Alert when customers request new cleaning services',
-                    icon: Calendar,
-                    color: 'indigo'
-                  },
-                  { 
-                    key: 'paymentReceived', 
-                    label: 'Payment Received', 
-                    description: 'Notification when a payment is successfully completed',
-                    icon: DollarSign,
-                    color: 'emerald'
-                  },
-                  { 
-                    key: 'appointmentCancelled', 
-                    label: 'Appointment Cancelled', 
-                    description: 'Alert when customers cancel their scheduled appointments',
-                    icon: Calendar,
-                    color: 'red'
-                  },
-                  { 
-                    key: 'invoiceOverdue', 
-                    label: 'Invoice Overdue', 
-                    description: 'Reminder when customer invoices become past due',
-                    icon: Receipt,
-                    color: 'amber'
-                  },
+                  { key: 'newRegistration', label: 'New Customer Registration', description: 'Get notified when a new customer signs up', icon: Users, color: 'blue' },
+                  { key: 'serviceRequest', label: 'New Service Request', description: 'Alert when customers request new cleaning services', icon: Calendar, color: 'indigo' },
+                  { key: 'paymentReceived', label: 'Payment Received', description: 'Notification when a payment is successfully completed', icon: DollarSign, color: 'emerald' },
+                  { key: 'appointmentCancelled', label: 'Appointment Cancelled', description: 'Alert when customers cancel their scheduled appointments', icon: Calendar, color: 'red' },
+                  { key: 'invoiceOverdue', label: 'Invoice Overdue', description: 'Reminder when customer invoices become past due', icon: Receipt, color: 'amber' },
                 ].map((notification) => {
                   const Icon = notification.icon
                   const colorClasses = {
@@ -693,13 +647,7 @@ export default function SettingsPage() {
                   return (
                     <label 
                       key={notification.key} 
-                      className={`
-                        flex items-start gap-4 p-4 rounded-xl border cursor-pointer transition-all
-                        ${notifications[notification.key] 
-                          ? 'bg-emerald-50 border-emerald-200' 
-                          : 'bg-gray-50 border-gray-200 hover:border-gray-300'
-                        }
-                      `}
+                      className={`flex items-start gap-4 p-4 rounded-xl border cursor-pointer transition-all ${notifications[notification.key] ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-200 hover:border-gray-300'}`}
                     >
                       <div className={`w-10 h-10 rounded-lg ${colorClasses[notification.color]} flex items-center justify-center flex-shrink-0`}>
                         <Icon className="w-5 h-5" />
@@ -712,10 +660,7 @@ export default function SettingsPage() {
                         <input
                           type="checkbox"
                           checked={notifications[notification.key]}
-                          onChange={(e) => setNotifications({
-                            ...notifications,
-                            [notification.key]: e.target.checked
-                          })}
+                          onChange={(e) => setNotifications({ ...notifications, [notification.key]: e.target.checked })}
                           className="sr-only"
                         />
                         <div className={`w-12 h-7 rounded-full transition-colors ${notifications[notification.key] ? 'bg-[#079447]' : 'bg-gray-300'}`}>
@@ -726,19 +671,94 @@ export default function SettingsPage() {
                   )
                 })}
 
-                {/* Save Button */}
                 <div className="pt-6 flex justify-end">
                   <button
                     onClick={handleSaveNotifications}
                     disabled={saving}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#079447] text-white rounded-xl font-medium hover:bg-emerald-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#079447]/20"
                   >
-                    {saving ? (
-                      <RefreshCw className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Save className="w-5 h-5" />
-                    )}
+                    {saving ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                     Save Preferences
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Account Tab */}
+          {activeTab === 'account' && (
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-red-50 to-white">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+                    <Lock className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-[#1C294E]">Change Password</h2>
+                    <p className="text-sm text-gray-500">Update your admin account password</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type={showPasswords.new ? 'text' : 'password'}
+                      value={passwords.new}
+                      onChange={(e) => setPasswords({ ...passwords, new: e.target.value })}
+                      className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
+                      placeholder="Enter new password (min 8 characters)"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type={showPasswords.confirm ? 'text' : 'password'}
+                      value={passwords.confirm}
+                      onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
+                      className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
+                      placeholder="Confirm new password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-amber-800">Password Requirements</p>
+                    <p className="text-sm text-amber-700 mt-1">Must be at least 8 characters long. Use a mix of letters, numbers, and symbols for best security.</p>
+                  </div>
+                </div>
+
+                <div className="pt-4 flex justify-end">
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={changingPassword}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20"
+                  >
+                    {changingPassword ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Lock className="w-5 h-5" />}
+                    Update Password
                   </button>
                 </div>
               </div>
