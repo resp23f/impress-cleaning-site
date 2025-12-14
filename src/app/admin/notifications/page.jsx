@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import {
   Bell,
@@ -70,8 +70,8 @@ function formatTimeAgo(dateString) {
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState('all') // 'all', 'unread', 'read'
-  const supabase = createClient()
+  const [filter, setFilter] = useState('all')
+  const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
     fetchNotifications()

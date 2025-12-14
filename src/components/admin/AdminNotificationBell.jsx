@@ -1,14 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { Bell } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function AdminNotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0)
-  const supabase = createClient()
-
+const supabase = useMemo(() => createClient(), [])
   useEffect(() => {
     fetchUnreadCount()
 

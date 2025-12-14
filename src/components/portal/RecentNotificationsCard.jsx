@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import {
   Bell,
@@ -73,8 +73,7 @@ export default function RecentNotificationsCard() {
   const [userId, setUserId] = useState(null)
   
   // Create supabase client once
-  const supabase = createClient()
-
+  const supabase = useMemo(() => createClient(), [])
   // Memoized fetch function for security - always validates user session
   const fetchNotifications = useCallback(async () => {
     try {
@@ -126,10 +125,9 @@ export default function RecentNotificationsCard() {
   }, [supabase])
 
   // Initial fetch and real-time subscription
-  useEffect(() => {
+useEffect(() => {
     fetchNotifications()
 
-    // Set up real-time subscription for live updates
     const channel = supabase
       .channel('recent_notifications_card')
       .on(
@@ -138,11 +136,8 @@ export default function RecentNotificationsCard() {
           event: '*',
           schema: 'public',
           table: 'customer_notifications'
-          // Note: RLS policies handle user filtering server-side
         },
-        (payload) => {
-          // SECURITY: Re-fetch to ensure we only get authorized data
-          // Don't directly insert payload data without validation
+        () => {
           fetchNotifications()
         }
       )
@@ -151,8 +146,7 @@ export default function RecentNotificationsCard() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase, fetchNotifications])
-
+  }, []) // Remove dependencies - supabase is now stable
   // Mark single notification as read
   async function markAsRead(notificationId) {
     // SECURITY: Validate notificationId format (UUID)
