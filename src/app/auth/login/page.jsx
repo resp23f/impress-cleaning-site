@@ -176,10 +176,10 @@ function LoginPageContent() {
           <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
           
           {/* Soft colored orbs */}
-          <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-300/50 to-teal-300/40 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-200/60 to-indigo-200/50 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-200/60 to-green-200/50 rounded-full blur-3xl" />
-          
+{/* Soft colored orbs */}
+<div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl" />
+<div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/40 to-indigo-100/30 rounded-full blur-3xl" />
+<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/40 to-green-100/30 rounded-full blur-3xl" />          
           {/* Subtle pattern overlay */}
           <div
             className="absolute inset-0 opacity-[0.015]"
@@ -375,10 +375,9 @@ export default function LoginPage() {
           {/* Left panel - exact match */}
           <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
-            <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-300/50 to-teal-300/40 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-200/60 to-indigo-200/50 rounded-full blur-3xl" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-200/60 to-green-200/50 rounded-full blur-3xl" />
-            <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
+<div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl" />
+<div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/40 to-indigo-100/30 rounded-full blur-3xl" />
+<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/40 to-green-100/30 rounded-full blur-3xl" />            <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
             <div className="relative z-10 flex flex-col justify-start p-16 w-full h-full">
               <div className="mb-40">
                 <img
