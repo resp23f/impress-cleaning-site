@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { X, CreditCard, Printer, Download } from 'lucide-react'
+import { X, CreditCard, Download } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
 
@@ -44,9 +44,6 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
     }
   }
 
-  const handlePrint = () => {
-    window.print()
-  }
 
   const handlePayNow = () => {
     router.push(`/portal/invoices/${invoiceId}/pay`)
@@ -82,14 +79,14 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 print:hidden"
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 :hidden"
         onClick={onClose}
       />
 
       {/* Panel */}
       <div
         id="invoice-panel"
-        className={`fixed top-0 right-0 h-full w-full sm:w-[600px] bg-white z-50 transform transition-transform duration-300 ease-out overflow-y-auto print:absolute print:inset-0 print:w-full print:h-auto print:transform-none ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-[600px] bg-white z-50 transform transition-transform duration-300 ease-out overflow-y-auto ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -97,42 +94,34 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
           <InvoiceSkeleton />
         ) : (
           <>
-            {/* Action Bar */}
-            <div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-3 print:hidden">
-              <button
-                onClick={handlePrint}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Printer className="w-4 h-4" />
-                Print / Save PDF
-              </button>
-              {invoice?.status !== 'paid' && invoice?.status !== 'cancelled' && (
-                <button
-                  onClick={handlePayNow}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#079447] hover:bg-[#068438] rounded-lg transition-colors"
-                >
-                  <CreditCard className="w-4 h-4" />
-                  Pay Now
-                </button>
-              )}
-              <button
-                onClick={onClose}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
+{/* Action Bar */}
+<div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-3">
+  {invoice?.status !== 'paid' && invoice?.status !== 'cancelled' && (
+    <button
+      onClick={handlePayNow}
+      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#079447] hover:bg-[#068438] rounded-lg transition-colors"
+    >
+      <CreditCard className="w-4 h-4" />
+      Pay Now
+    </button>
+  )}
+  <button
+    onClick={onClose}
+    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
+  >
+    <X className="w-5 h-5" />
+  </button>
+</div>
             {/* Invoice Content */}
-            <div className="px-8 py-8 print:px-12 print:py-8" id="invoice-content">
+            <div className="px-8 py-8" id="invoice-content">
               
               {/* Header */}
-              <div className="flex items-start justify-between mb-10 print:mb-8">
+              <div className="flex items-start justify-between mb-10 mb-8">
                 <div>
                   <img
                     src="/ImpressLogoNoBackgroundBlue.png"
                     alt="Impress Cleaning Services"
-                    className="h-10 mb-4 print:h-8"
+                    className="h-10 mb-4 h-8"
                   />
                   <div className="text-xs text-gray-500 space-y-0.5">
                     <p className="font-medium text-gray-700">Impress Cleaning Services, LLC</p>
@@ -153,7 +142,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
               </div>
 
               {/* Info Grid */}
-              <div className="grid grid-cols-2 gap-x-8 gap-y-6 mb-8 pb-8 border-b border-gray-100 print:mb-6 print:pb-6">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-6 mb-8 pb-8 border-b border-gray-100 mb-6 pb-6">
                 <div>
                   <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Bill To</div>
                   <div className="text-sm">
@@ -188,7 +177,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
               </div>
 
               {/* Line Items */}
-              <div className="mb-8 print:mb-6">
+              <div className="mb-8 mb-6">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200">
@@ -212,7 +201,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
               </div>
 
               {/* Totals */}
-              <div className="flex justify-end mb-10 print:mb-6">
+              <div className="flex justify-end mb-10 mb-6">
                 <div className="w-64">
                   <div className="space-y-2 pb-3 border-b border-gray-100">
                     <div className="flex justify-between text-sm">
@@ -257,7 +246,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
 
               {/* Notes */}
               {invoice?.notes && (
-                <div className="mb-8 p-4 bg-amber-50/50 rounded-lg border border-amber-100 print:mb-6">
+                <div className="mb-8 p-4 bg-amber-50/50 rounded-lg border border-amber-100 mb-6">
                   <div className="text-xs font-medium text-amber-700 uppercase tracking-wider mb-1">Notes</div>
                   <p className="text-sm text-gray-700 whitespace-pre-line">{invoice.notes}</p>
                 </div>
@@ -276,46 +265,6 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
           </>
         )}
       </div>
-
-      {/* Print Styles */}
-      <style jsx global>{`
-        @media print {
-          @page {
-            size: letter;
-            margin: 0.5in;
-          }
-          
-          html, body {
-            background: white !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          
-          body > *:not(#invoice-panel) {
-            display: none !important;
-          }
-          
-          #invoice-panel {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-            height: auto !important;
-            transform: none !important;
-            box-shadow: none !important;
-            overflow: visible !important;
-          }
-          
-          .print\\:hidden {
-            display: none !important;
-          }
-          
-          * {
-            box-shadow: none !important;
-          }
-        }
-      `}</style>
     </>
   )
 }
