@@ -8,10 +8,9 @@ export async function middleware(request) {
   const userAgent = request.headers.get('user-agent') || ''
   const isBot = /googlebot|google-site-verification|APIs-Google|AdsBot-Google|Googlebot-Image|Googlebot-News|Googlebot-Video|bingbot|slurp|duckduckbot|baiduspider|yandexbot|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|pinterest|crawler|spider|robot|crawling/i.test(userAgent)
 
-  if (isBot) {
-    return await updateSession(request)
-  }
-
+if (isBot) {
+  return NextResponse.next()
+}
   // Get country from Vercel's geo headers
   const country = request.headers.get('x-vercel-ip-country') || 'US'
   
