@@ -182,45 +182,33 @@ const handlePrint = () => {
      </div>
     ) : (
      <>
-      {/* Header */}
-      <div className="sticky top-0 bg-white/80 backdrop-blur-md px-6 py-4 flex items-center justify-between z-10 border-b border-slate-100 print:hidden">
-       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center">
-         <FileText className="w-5 h-5 text-slate-600" />
-        </div>
-        <div>
-         <h2 className="text-lg font-bold text-slate-800">Invoice Details</h2>
-         <p className="text-xs text-slate-400">{invoice?.invoice_number || `INV-${invoice?.id}`}</p>
-        </div>
-       </div>
-       <button
-        onClick={onClose}
-        className="p-2 hover:bg-slate-100 rounded-xl transition-all duration-200"
-       >
-        <X className="w-5 h-5 text-slate-400" />
-       </button>
-      </div>
-      {/* Action Buttons */}
-      <div className="px-6 py-4 bg-slate-50/50 flex gap-3 print:hidden">
-       <Button
-        onClick={handlePrint}
-        variant="secondary"
-        className="flex-1 !bg-white !border-slate-200 hover:!border-slate-300 hover:!bg-slate-50 transition-all duration-200"
-       >
-        <Printer className="w-4 h-4 mr-2" />
-        Print / Save PDF
-       </Button>
-       {invoice?.status !== 'paid' && (
-        <Button
-         onClick={handlePayNow}
-         variant="primary"
-         className="flex-1 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20 transition-all duration-200"
-        >
-         <CreditCard className="w-4 h-4 mr-2" />
-         Pay Now
-        </Button>
-       )}
-      </div>
+{/* Action Buttons */}
+<div className="sticky top-0 z-10 px-6 py-4 bg-white/90 backdrop-blur-md border-b border-slate-100 flex items-center gap-3 print:hidden">
+  <Button
+    onClick={handlePrint}
+    variant="secondary"
+    className="flex-1 !bg-white !border-slate-200 hover:!border-slate-300 hover:!bg-slate-50"
+  >
+    <Printer className="w-4 h-4 mr-2" />
+    Print / Save PDF
+  </Button>
+  {invoice?.status !== 'paid' && invoice?.status !== 'cancelled' && (
+    <Button
+      onClick={handlePayNow}
+      variant="primary"
+      className="flex-1 !bg-gradient-to-r !from-emerald-500 !to-teal-500 hover:!from-emerald-600 hover:!to-teal-600 shadow-lg shadow-emerald-500/20"
+    >
+      <CreditCard className="w-4 h-4 mr-2" />
+      Pay Now
+    </Button>
+  )}
+  <button
+    onClick={onClose}
+    className="p-2.5 hover:bg-slate-100 rounded-xl border border-slate-200"
+  >
+    <X className="w-5 h-5 text-slate-500" />
+  </button>
+</div>
       {/* Invoice Content - with staggered fade in */}
       <div className="px-8 py-10 print:px-12 print:py-6 max-w-4xl mx-auto">
        {/* Professional Header */}
