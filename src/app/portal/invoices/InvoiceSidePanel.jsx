@@ -253,7 +253,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
               {/* Footer */}
               <div className="pt-6 border-t border-gray-100 text-center">
                 <p className="text-sm font-medium text-gray-700 mb-1">
-                  Thank you for choosing Impress Cleaning Services
+                  Thank you for choosing Impress Cleaning Services!
                 </p>
                 <p className="text-xs text-gray-400">
                   Questions? Contact us at billing@impressyoucleaning.com
