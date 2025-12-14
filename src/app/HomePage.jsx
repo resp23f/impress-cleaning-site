@@ -246,7 +246,7 @@ function WhyChoose() {
   },
   {
    t: 'Customer Portal',
-   d: 'Sign in to manage appointments, view invoices, and request services. By using our portal, you agree to our Privacy Policy and Terms of Service.',
+   d: 'Sign in to manage appointments, view invoices, and request services - all in one convenient place.',
    icon: null,
    customIcon: <PortalIcon />,
    color: 'from-green-500 to-green-700',
