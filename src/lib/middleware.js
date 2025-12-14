@@ -4,6 +4,14 @@ import { NextResponse } from 'next/server'
 const ALLOWED_COUNTRIES = ['US']
 
 export async function middleware(request) {
+  // Allow bots/crawlers through (Google, Bing, etc.)
+  const userAgent = request.headers.get('user-agent') || ''
+  const isBot = /googlebot|google-site-verification|APIs-Google|AdsBot-Google|Googlebot-Image|Googlebot-News|Googlebot-Video|bingbot|slurp|duckduckbot|baiduspider|yandexbot|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|pinterest|crawler|spider|robot|crawling/i.test(userAgent)
+
+  if (isBot) {
+    return await updateSession(request)
+  }
+
   // Get country from Vercel's geo headers
   const country = request.headers.get('x-vercel-ip-country') || 'US'
   
