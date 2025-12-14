@@ -333,13 +333,24 @@ export default function RequestServicePage() {
         body: JSON.stringify(payload),
       })
 
-      if (!res.ok) {
+if (!res.ok) {
         const data = await res.json().catch(() => ({}))
         throw new Error(data.error || 'Failed to submit request')
       }
 
-      setStep(6)
-    } catch (error) {
+      // Create notification for the user
+      const serviceLabel = SERVICE_TYPES.find(s => s.value === formData.serviceType)?.title || formData.serviceType
+      
+      await supabase.from('customer_notifications').insert({
+        user_id: user.id,
+        type: 'service_request_submitted',
+        title: 'Service Request Submitted',
+        message: `Your ${serviceLabel} request for ${formatDate(formData.preferredDate)} has been submitted. We'll confirm your appointment within 24 hours.`,
+        link: '/portal/appointments',
+        is_read: false
+      })
+
+      setStep(6)    } catch (error) {
       console.error('Error submitting request:', error)
       toast.error(error.message || 'Failed to submit request')
     } finally {
