@@ -432,7 +432,7 @@ export default function LoginPage() {
                 </div>
               </div>
               <p className="text-center text-xs text-slate-300 mt-10">
-                © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+© {new Date().getFullYear()} Impress Cleaning Services, LLC. All rights reserved.
               </p>
             </div>
           </div>
