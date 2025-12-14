@@ -483,107 +483,72 @@ const handlePrint = () => {
       margin: 0.5in;
     }
     
-    /* Reset html/body */
-    html, body {
-      height: auto !important;
-      min-height: 0 !important;
-      overflow: visible !important;
-      background: white !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-    
-    /* Hide everything except invoice */
-    body > *:not(#invoice-panel) {
+    /* Hide everything on the page */
+    body > * {
       display: none !important;
     }
     
-    body * {
-      visibility: hidden;
-    }
-    
-    #invoice-panel,
-    #invoice-panel * {
-      visibility: visible;
-    }
-    
+    /* Show only the invoice panel */
     #invoice-panel {
-      position: static !important;
-      left: auto !important;
-      top: auto !important;
-      right: auto !important;
+      display: block !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
       width: 100% !important;
       height: auto !important;
       min-height: 0 !important;
-      max-height: none !important;
       background: white !important;
       transform: none !important;
       overflow: visible !important;
       box-shadow: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
     }
     
-    /* Remove extra spacing that causes blank page */
-    #invoice-panel > div:last-child {
-      margin-bottom: 0 !important;
-      padding-bottom: 0 !important;
-    }
-    
-    .mb-10, .mb-12, .mt-12 {
-      margin: 0 !important;
-    }
-    
-    /* Remove backgrounds and shadows */
-    #invoice-panel,
-    #invoice-panel div,
-    #invoice-panel table {
-      background-image: none !important;
-      box-shadow: none !important;
+    /* Hide print:hidden elements */
+    .print\\:hidden,
+    [class*="print:hidden"] {
+      display: none !important;
     }
     
     /* Keep dark totals box */
-    #invoice-panel .from-slate-800 {
+    .from-slate-800,
+    .from-slate-800.to-slate-900 {
       background: #1e293b !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
     
-    /* Keep table header bg */
-    #invoice-panel thead tr {
+    /* Keep table header */
+    thead tr {
       background: #f8fafc !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
     
-    /* Prevent breaks */
-    #invoice-panel > div,
-    #invoice-panel table {
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-    
-    /* Reset animations */
+    /* Remove animations */
     .animate-fadeIn {
       animation: none !important;
       opacity: 1 !important;
       transform: none !important;
     }
     
-    /* Hide backdrop */
-    .backdrop-blur-sm,
-    .backdrop-blur-md,
-    .bg-slate-900\\/40 {
-      display: none !important;
+    /* Prevent page breaks */
+    table, .rounded-2xl {
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
     
-    /* Force colors */
+    /* Remove shadows */
+    * {
+      box-shadow: none !important;
+    }
+    
+    /* Force print colors */
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
   }
-`}</style>
-  </>
+`}</style>  </>
  )
 }
