@@ -176,10 +176,9 @@ export default function DashboardPage() {
  return (
   <>
    {/* Premium Background */}
-   <div
-    className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}
-   >
-    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+ <div
+    className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}
+   >    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
      {loading ? (
       // SINGLE, STABLE LOADER: same container as the real content
       <DashboardSkeleton />
