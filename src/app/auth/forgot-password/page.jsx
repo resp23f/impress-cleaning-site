@@ -53,15 +53,16 @@ return (
 <div className="w-full max-w-md">
 {/* Logo */}
 <div className="flex justify-center mb-10">
-<Image
-src="/ImpressLogoNoBackgroundBlue.png"
-alt="Impress Cleaning Services"
-width={180}
-height={60}
-className="h-12 w-auto"
-priority
-/>
-</div>
+  <Image
+    src="/ImpressLogoNoBackgroundBlue.png"
+    alt="Impress Cleaning Services"
+    width={220}
+    height={88}
+    className="h-16 w-auto"
+    style={{ minHeight: '64px' }}
+    priority
+  />
+  </div>
 {/* Success Icon */}
 <div className="flex justify-center mb-6">
 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
@@ -194,7 +195,7 @@ Back to Login
 </Link>
 {/* Footer */}
 <p className="text-center text-xs text-slate-300 mt-10">
-© {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+© {new Date().getFullYear()} Impress Cleaning Services, LLC. All rights reserved.
 </p>
 </div>
 </div>
