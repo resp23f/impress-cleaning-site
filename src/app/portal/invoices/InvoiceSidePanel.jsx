@@ -95,24 +95,14 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
         ) : (
           <>
 {/* Action Bar */}
-<div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-3">
-  {invoice?.status !== 'paid' && invoice?.status !== 'cancelled' && (
-    <button
-      onClick={handlePayNow}
-      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#079447] hover:bg-[#068438] rounded-lg transition-colors"
-    >
-      <CreditCard className="w-4 h-4" />
-      Pay Now
-    </button>
-  )}
+<div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-end">
   <button
     onClick={onClose}
-    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
+    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
   >
     <X className="w-5 h-5" />
   </button>
-</div>
-            {/* Invoice Content */}
+</div>            {/* Invoice Content */}
             <div className="px-8 py-8" id="invoice-content">
               
               {/* Header */}
@@ -200,50 +190,58 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                 </table>
               </div>
 
-              {/* Totals */}
-              <div className="flex justify-end mb-10 mb-6">
-                <div className="w-64">
-                  <div className="space-y-2 pb-3 border-b border-gray-100">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Subtotal</span>
-                      <span className="text-gray-900">
-                        {formatMoney(
-                          lineItems
-                            ?.filter(item => !item.description?.toLowerCase().includes('tax'))
-                            .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice?.amount
-                        )}
-                      </span>
-                    </div>
-                    {(() => {
-                      const taxItem = lineItems.find(item => item.description?.toLowerCase().includes('tax'))
-                      if (taxItem) {
-                        return (
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">{taxItem.description}</span>
-                            <span className="text-gray-900">{formatMoney(taxItem.amount)}</span>
-                          </div>
-                        )
-                      }
-                      if (invoice?.tax_rate > 0) {
-                        return (
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Tax ({invoice.tax_rate}%)</span>
-                            <span className="text-gray-900">{formatMoney(invoice.tax_amount)}</span>
-                          </div>
-                        )
-                      }
-                      return null
-                    })()}
-                  </div>
-                  <div className="flex justify-between pt-3">
-                    <span className="font-medium text-gray-900">Amount Due</span>
-                    <span className="text-xl font-bold text-[#079447]">
-                      {formatMoney(invoice?.total ?? invoice?.amount)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
+{/* Totals */}
+<div className="flex justify-end mb-10">
+  <div className="w-64">
+    <div className="space-y-2 pb-3 border-b border-gray-100">
+      <div className="flex justify-between text-sm">
+        <span className="text-gray-500">Subtotal</span>
+        <span className="text-gray-900">
+          {formatMoney(
+            lineItems
+              ?.filter(item => !item.description?.toLowerCase().includes('tax'))
+              .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice?.amount
+          )}
+        </span>
+      </div>
+      {(() => {
+        const taxItem = lineItems.find(item => item.description?.toLowerCase().includes('tax'))
+        if (taxItem) {
+          return (
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">{taxItem.description}</span>
+              <span className="text-gray-900">{formatMoney(taxItem.amount)}</span>
+            </div>
+          )
+        }
+        if (invoice?.tax_rate > 0) {
+          return (
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Tax ({invoice.tax_rate}%)</span>
+              <span className="text-gray-900">{formatMoney(invoice.tax_amount)}</span>
+            </div>
+          )
+        }
+        return null
+      })()}
+    </div>
+    <div className="flex justify-between pt-3 mb-4">
+      <span className="font-medium text-gray-900">Amount Due</span>
+      <span className="text-xl font-bold text-[#079447]">
+        {formatMoney(invoice?.total ?? invoice?.amount)}
+      </span>
+    </div>
+    {invoice?.status !== 'paid' && invoice?.status !== 'cancelled' && (
+      <button
+        onClick={handlePayNow}
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-[#079447] hover:bg-[#068438] rounded-lg transition-colors"
+      >
+        <CreditCard className="w-4 h-4" />
+        Pay Now
+      </button>
+    )}
+  </div>
+</div>
               {/* Notes */}
               {invoice?.notes && (
                 <div className="mb-8 p-4 bg-amber-50/50 rounded-lg border border-amber-100 mb-6">
