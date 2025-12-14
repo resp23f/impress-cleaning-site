@@ -255,13 +255,28 @@ export default function Footer() {
   </div>
   </div>
   
-  {/* Copyright */}
-  <div className="text-center pt-4 border-t border-slate-300/70">
-  <p className="text-xs text-slate-500 font-manrope">
-  &copy; {year} Impress Cleaning Services LLC. All rights reserved.
-  </p>
-  </div>
-  </div>
+{/* Copyright & Legal */}
+      <div className="text-center pt-4 border-t border-slate-300/70">
+        <p className="text-xs text-slate-500 font-manrope">
+          &copy; {year} Impress Cleaning Services LLC. All rights reserved.
+        </p>
+        <div className="flex items-center justify-center gap-4 mt-2">
+          <Link
+            href="/privacy"
+            className="text-xs text-slate-500 hover:text-[#079447] transition-colors font-manrope"
+          >
+            Privacy Policy
+          </Link>
+          <span className="text-slate-400">|</span>
+          <Link
+            href="/terms"
+            className="text-xs text-slate-500 hover:text-[#079447] transition-colors font-manrope"
+          >
+            Terms of Service
+          </Link>
+        </div>
+      </div>
+        </div>
   </footer>
  );
 }
