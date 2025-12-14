@@ -470,8 +470,9 @@ const handlePrint = () => {
      </>
     )}
    </div>
+   
    {/* Styles */}
-   <style jsx global>{`
+<style jsx global>{`
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -494,11 +495,19 @@ const handlePrint = () => {
       margin: 0.5in;
     }
     
-    /* Hide everything except invoice */
+    /* Reset html/body */
     html, body {
       height: auto !important;
+      min-height: 0 !important;
       overflow: visible !important;
       background: white !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    
+    /* Hide everything except invoice */
+    body > *:not(#invoice-panel) {
+      display: none !important;
     }
     
     body * {
@@ -511,9 +520,10 @@ const handlePrint = () => {
     }
     
     #invoice-panel {
-      position: absolute;
-      left: 0;
-      top: 0;
+      position: static !important;
+      left: auto !important;
+      top: auto !important;
+      right: auto !important;
       width: 100% !important;
       height: auto !important;
       min-height: 0 !important;
@@ -522,72 +532,70 @@ const handlePrint = () => {
       transform: none !important;
       overflow: visible !important;
       box-shadow: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
     
-    /* Remove all backgrounds and shadows */
+    /* Remove extra spacing that causes blank page */
+    #invoice-panel > div:last-child {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    
+    .mb-10, .mb-12, .mt-12 {
+      margin: 0 !important;
+    }
+    
+    /* Remove backgrounds and shadows */
     #invoice-panel,
     #invoice-panel div,
-    #invoice-panel table,
-    #invoice-panel thead,
-    #invoice-panel tbody,
-    #invoice-panel tr,
-    #invoice-panel td,
-    #invoice-panel th {
+    #invoice-panel table {
       background-image: none !important;
       box-shadow: none !important;
     }
     
-    /* Keep specific backgrounds we want */
-    #invoice-panel .bg-gradient-to-br.from-slate-800,
-    #invoice-panel .bg-gradient-to-r.from-slate-800 {
+    /* Keep dark totals box */
+    #invoice-panel .from-slate-800 {
       background: #1e293b !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
     
-    #invoice-panel .bg-gradient-to-r.from-slate-50,
+    /* Keep table header bg */
     #invoice-panel thead tr {
       background: #f8fafc !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
     
-    /* Prevent page breaks inside elements */
+    /* Prevent breaks */
     #invoice-panel > div,
-    #invoice-panel table,
-    #invoice-panel .rounded-2xl {
+    #invoice-panel table {
       page-break-inside: avoid;
       break-inside: avoid;
     }
     
-    /* Reset animations for print */
+    /* Reset animations */
     .animate-fadeIn {
       animation: none !important;
       opacity: 1 !important;
       transform: none !important;
     }
     
-    /* Force white background on gradient elements */
-    .bg-gradient-to-b,
-    .bg-gradient-to-br,
-    .from-white,
-    .from-slate-50,
-    .to-slate-50\\/80 {
-      background: white !important;
+    /* Hide backdrop */
+    .backdrop-blur-sm,
+    .backdrop-blur-md,
+    .bg-slate-900\\/40 {
+      display: none !important;
     }
     
-    /* Ensure text colors print correctly */
+    /* Force colors */
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
-    
-    /* Remove backdrop blur overlay */
-    .backdrop-blur-sm,
-    .backdrop-blur-md {
-      display: none !important;
-    }
   }
-`}</style>   </>
+`}</style>
+  </>
  )
 }
