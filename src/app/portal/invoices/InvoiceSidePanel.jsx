@@ -256,7 +256,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                   Thank you for choosing Impress Cleaning Services
                 </p>
                 <p className="text-xs text-gray-400">
-                  Questions? Contact us at notifications@impressyoucleaning.com
+                  Questions? Contact us at billing@impressyoucleaning.com
                 </p>
               </div>
             </div>
