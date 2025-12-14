@@ -23,7 +23,7 @@ function sanitizeInput(input) {
     .trim()
 }
 
-export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
+export default function AddressAutocomplete({ onSelect, onInputChange, defaultValue = '' }) {
   const [inputValue, setInputValue] = useState(defaultValue)
   const inputRef = useRef(null)
   const autocompleteRef = useRef(null)
@@ -111,8 +111,12 @@ export default function AddressAutocomplete({ onSelect, defaultValue = '' }) {
   const handleInputChange = (e) => {
     const sanitizedValue = sanitizeInput(e.target.value)
     setInputValue(sanitizedValue)
+    // Sync raw street address to parent for device autofill support
+    if (onInputChange) {
+      onInputChange(sanitizedValue)
+    }
   }
-
+  
   return (
     <div className="relative">
       <label className="block text-sm font-semibold text-gray-700 mb-2">

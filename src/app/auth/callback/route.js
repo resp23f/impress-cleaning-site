@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server'
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
+  const token_hash = searchParams.get('token_hash')
+  const type = searchParams.get('type')
   const next = searchParams.get('next') ?? '/portal/dashboard'
 
   // Validate redirect URL - must be relative path
@@ -15,37 +17,49 @@ export async function GET(request) {
 
   const safeRedirect = isValidRedirect(next) ? next : '/portal/dashboard'
 
-  if (code) {
-    const supabase = await createClient()
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+  const supabase = await createClient()
+  let data = null
+  let error = null
 
-    if (!error && data.user) {
-      // Check if profile is complete
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role, full_name, phone')
-        .eq('id', data.user.id)
-        .single()
+  // Handle invite/recovery/magiclink with token_hash
+  if (token_hash && type) {
+    const result = await supabase.auth.verifyOtp({ token_hash, type })
+    data = result.data
+    error = result.error
+  }
+  // Handle OAuth/email confirmation with code
+  else if (code) {
+    const result = await supabase.auth.exchangeCodeForSession(code)
+    data = result.data
+    error = result.error
+  }
 
-      const { data: addresses } = await supabase
-        .from('service_addresses')
-        .select('id')
-        .eq('user_id', data.user.id)
-        .limit(1)
+  if (!error && data?.user) {
+    // Check if profile is complete
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role, full_name, phone')
+      .eq('id', data.user.id)
+      .single()
 
-      // If profile incomplete, go to profile-setup
-      if (!profile?.full_name || !profile?.phone || !addresses?.length) {
-        return NextResponse.redirect(new URL('/auth/profile-setup', request.url))
-      }
+    const { data: addresses } = await supabase
+      .from('service_addresses')
+      .select('id')
+      .eq('user_id', data.user.id)
+      .limit(1)
 
-      // Admin goes to admin dashboard
-      if (profile?.role === 'admin') {
-        return NextResponse.redirect(new URL('/admin/dashboard', request.url))
-      }
-
-      // Complete profile goes to intended destination
-      return NextResponse.redirect(new URL(safeRedirect, request.url))
+    // If profile incomplete, go to profile-setup
+    if (!profile?.full_name || !profile?.phone || !addresses?.length) {
+      return NextResponse.redirect(new URL('/auth/profile-setup', request.url))
     }
+
+    // Admin goes to admin dashboard
+    if (profile?.role === 'admin') {
+      return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+    }
+
+    // Complete profile goes to intended destination
+    return NextResponse.redirect(new URL(safeRedirect, request.url))
   }
 
   return NextResponse.redirect(new URL('/auth/login?error=auth_callback_failed', request.url))

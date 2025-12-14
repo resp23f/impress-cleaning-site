@@ -261,11 +261,11 @@ body: JSON.stringify({
                 Service Address
               </h2>
               <div className="space-y-4">
-                <AddressAutocomplete 
+<AddressAutocomplete 
                   onSelect={handleAddressSelect}
+                  onInputChange={(value) => setAddressData(prev => ({ ...prev, street_address: value }))}
                   defaultValue={addressData.street_address}
                 />
-
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
                     Apt/Unit <span className="text-slate-400 font-normal">(Optional)</span>
