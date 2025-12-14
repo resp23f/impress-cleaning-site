@@ -21,12 +21,17 @@ export async function GET(request) {
   let data = null
   let error = null
 
-  // Handle invite/recovery/magiclink with token_hash
-  if (token_hash && type) {
-    const result = await supabase.auth.verifyOtp({ token_hash, type })
-    data = result.data
-    error = result.error
+// Handle invite/recovery/magiclink with token_hash
+if (token_hash && type) {
+  const result = await supabase.auth.verifyOtp({ token_hash, type })
+  data = result.data
+  error = result.error
+  
+  // Invites need password setup before proceeding
+  if (!error && type === 'invite') {
+    return NextResponse.redirect(new URL('/auth/set-password', request.url))
   }
+}
   // Handle OAuth/email confirmation with code
   else if (code) {
     const result = await supabase.auth.exchangeCodeForSession(code)
