@@ -117,7 +117,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                     <p className="font-medium text-gray-700">Impress Cleaning Services, LLC</p>
                     <p>1530 Sun City Blvd, Suite 120-403</p>
                     <p>Georgetown, TX 78633</p>
-                    <p className="text-[#079447]">notifications@impressyoucleaning.com</p>
+                    <p className="text-[#079447]">billing@impressyoucleaning.com</p>
                   </div>
                 </div>
                 <div className="text-right">
