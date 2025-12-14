@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -7,6 +7,7 @@ import {
   Calendar,
   History,
   Receipt,
+  Bell,
   Settings,
   LogOut,
   Menu,
@@ -20,16 +21,54 @@ const navItems = [
   { icon: Calendar, label: 'Appointments', href: '/portal/appointments' },
   { icon: History, label: 'Service History', href: '/portal/service-history' },
   { icon: Receipt, label: 'Invoices', href: '/portal/invoices' },
+  { icon: Bell, label: 'Notifications', href: '/portal/notifications' },
   { icon: Settings, label: 'Settings', href: '/portal/settings' },
 ]
 
-
 export default function PortalNav({ userName }) {
- 
-   const pathname = usePathname()
+  const pathname = usePathname()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  // CRITICAL: Stable supabase reference to prevent subscription leak
+  const supabase = useMemo(() => createClient(), [])
+
+  // Fetch unread notification count
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { count } = await supabase
+        .from('customer_notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('is_read', false)
+
+      setUnreadCount(count || 0)
+    }
+
+    fetchUnreadCount()
+
+    // Realtime subscription for notification changes
+    const channel = supabase
+      .channel('portal_nav_notifications')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'customer_notifications'
+        },
+        () => fetchUnreadCount()
+      )
+      .subscribe()
+
+    // CRITICAL: Cleanup on unmount
+    return () => supabase.removeChannel(channel)
+  }, []) // Empty deps - supabase is stable via useMemo
 
   const closeMenu = () => {
     setIsClosing(true)
@@ -38,8 +77,6 @@ export default function PortalNav({ userName }) {
       setIsClosing(false)
     }, 600)
   }
-  
-  const supabase = createClient()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -49,7 +86,7 @@ export default function PortalNav({ userName }) {
   return (
     <>
       {/* Desktop Sidebar */}
-<aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col bg-white border-r border-gray-100 shadow-[4px_0_24px_-8px_rgba(0,0,0,0.08)] relative">
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col bg-white border-r border-gray-100 shadow-[4px_0_24px_-8px_rgba(0,0,0,0.08)] relative">
         <div className="flex flex-col flex-grow pt-8 overflow-y-auto">
 
           {/* Logo */}
@@ -61,11 +98,12 @@ export default function PortalNav({ userName }) {
             />
           </div>
 
-{/* Navigation */}
+          {/* Navigation */}
           <nav className="flex-1 px-4 pt-2 pb-4 space-y-1.5 overflow-y-auto">
             {navItems.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href
+              const isNotifications = item.label === 'Notifications'
               return (
                 <Link
                   key={item.href}
@@ -79,13 +117,18 @@ export default function PortalNav({ userName }) {
                   `}
                 >
                   <div className={`
-                    w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
+                    relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
                     ${isActive
                       ? 'bg-white/20'
                       : 'bg-gray-100 group-hover:bg-emerald-50'
                     }
                   `}>
                     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+                    {isNotifications && unreadCount > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 shadow-md ring-2 ring-white">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
                   </div>
                   <span className="flex-1">{item.label}</span>
                 </Link>
@@ -117,15 +160,20 @@ export default function PortalNav({ userName }) {
             className="h-10 w-auto"
           />
         </div>
-<div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <button   
-                   onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
-            className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
+            onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
+            className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6 text-gray-700" />
             ) : (
-              <Menu className="w-6 h-6 text-gray-700" />
+              <>
+                <Menu className="w-6 h-6 text-gray-700" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 h-2.5 w-2.5 bg-red-500 rounded-full ring-2 ring-white" />
+                )}
+              </>
             )}
           </button>
         </div>
@@ -152,6 +200,7 @@ export default function PortalNav({ userName }) {
               {navItems.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href
+                const isNotifications = item.label === 'Notifications'
                 return (
                   <Link
                     key={item.href}
@@ -166,19 +215,23 @@ export default function PortalNav({ userName }) {
                     `}
                   >
                     <div className={`
-                      w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
+                      relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300
                       ${isActive
                         ? 'bg-white/20'
                         : 'bg-gray-100 group-hover:bg-emerald-50'
                       }
                     `}>
                       <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+                      {isNotifications && unreadCount > 0 && (
+                        <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full px-1 shadow-md ring-2 ring-white">
+                          {unreadCount > 99 ? '99+' : unreadCount}
+                        </span>
+                      )}
                     </div>
                     <span className="flex-1">{item.label}</span>
                   </Link>
                 )
               })}
-
             </nav>
 
             {/* Logout - pinned to bottom */}
@@ -224,21 +277,27 @@ export default function PortalNav({ userName }) {
               </Link>
             )
           })}
+          {/* Notifications in bottom nav */}
           <Link
-            href="/portal/settings"
+            href="/portal/notifications"
             className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
           >
             <div className={`
-              w-10 h-10 rounded-xl flex items-center justify-center transition-all
-              ${pathname === '/portal/settings'
+              relative w-10 h-10 rounded-xl flex items-center justify-center transition-all
+              ${pathname === '/portal/notifications'
                 ? 'bg-gradient-to-br from-emerald-500 to-green-500 shadow-md shadow-emerald-200/50'
                 : 'bg-gray-50 group-hover:bg-emerald-50'
               }
             `}>
-              <Settings className={`w-5 h-5 ${pathname === '/portal/settings' ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+              <Bell className={`w-5 h-5 ${pathname === '/portal/notifications' ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 h-4 min-w-4 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1 ring-2 ring-white">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
             </div>
-            <span className={`text-xs font-medium ${pathname === '/portal/settings' ? 'text-emerald-600' : 'text-gray-500'}`}>
-              Settings
+            <span className={`text-xs font-medium ${pathname === '/portal/notifications' ? 'text-emerald-600' : 'text-gray-500'}`}>
+              Alerts
             </span>
           </Link>
         </nav>
