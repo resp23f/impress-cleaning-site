@@ -9,7 +9,7 @@ export default function TermsOfService() {
         {/* Header */}
         <div className="border-b border-gray-200 pb-6 mb-8">
           <h1 className="text-2xl font-semibold text-gray-900 mb-1">Terms of Service</h1>
-          <p className="text-xs text-gray-500">Effective Date: December 14, 2024</p>
+          <p className="text-xs text-gray-500">Effective Date: December 14, 2025</p>
         </div>
 
         {/* Intro */}
@@ -23,28 +23,6 @@ export default function TermsOfService() {
           </p>
         </div>
 
-        {/* Table of Contents */}
-        <div className="mb-8 text-sm">
-          <p className="font-medium text-gray-700 mb-2">Contents:</p>
-          <div className="text-blue-600 space-y-1">
-            <a href="#definitions" className="block hover:underline">1. Definitions</a>
-            <a href="#services" className="block hover:underline">2. Services</a>
-            <a href="#accounts" className="block hover:underline">3. Account Responsibilities</a>
-            <a href="#booking" className="block hover:underline">4. Booking &amp; Scheduling</a>
-            <a href="#cancellation" className="block hover:underline">5. Cancellation &amp; Rescheduling Policy</a>
-            <a href="#pricing" className="block hover:underline">6. Pricing &amp; Payment</a>
-            <a href="#property" className="block hover:underline">7. Property Access &amp; Liability</a>
-            <a href="#satisfaction" className="block hover:underline">8. Service Satisfaction</a>
-            <a href="#conduct" className="block hover:underline">9. Customer Conduct</a>
-            <a href="#indemnification" className="block hover:underline">10. Indemnification</a>
-            <a href="#limitation" className="block hover:underline">11. Limitation of Liability</a>
-            <a href="#force-majeure" className="block hover:underline">12. Force Majeure</a>
-            <a href="#termination" className="block hover:underline">13. Termination</a>
-            <a href="#governing-law" className="block hover:underline">14. Governing Law &amp; Dispute Resolution</a>
-            <a href="#general" className="block hover:underline">15. General Provisions</a>
-            <a href="#contact" className="block hover:underline">16. Contact Us</a>
-          </div>
-        </div>
 
         {/* Section 1 */}
         <div id="definitions" className="mb-6 scroll-mt-8">

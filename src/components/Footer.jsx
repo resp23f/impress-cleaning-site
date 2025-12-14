@@ -258,7 +258,7 @@ export default function Footer() {
 {/* Copyright & Legal */}
       <div className="text-center pt-4 border-t border-slate-300/70">
         <p className="text-xs text-slate-500 font-manrope">
-          &copy; {year} Impress Cleaning Services LLC. All rights reserved.
+          &copy; {year} Impress Cleaning Services, LLC. All rights reserved.
         </p>
         <div className="flex items-center justify-center gap-4 mt-2">
           <Link

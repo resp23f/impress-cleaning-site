@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
         {/* Header */}
         <div className="border-b border-gray-200 pb-6 mb-8">
           <h1 className="text-2xl font-semibold text-gray-900 mb-1">Privacy Policy</h1>
-          <p className="text-xs text-gray-500">Effective Date: December 14, 2024</p>
+          <p className="text-xs text-gray-500">Effective Date: December 14, 2025</p>
         </div>
 
         {/* Intro */}
@@ -23,22 +23,6 @@ export default function PrivacyPolicy() {
           </p>
         </div>
 
-        {/* Table of Contents */}
-        <div className="mb-8 text-sm">
-          <p className="font-medium text-gray-700 mb-2">Contents:</p>
-          <div className="text-blue-600 space-y-1">
-            <a href="#definitions" className="block hover:underline">1. Definitions</a>
-            <a href="#information-we-collect" className="block hover:underline">2. Information We Collect</a>
-            <a href="#how-we-use" className="block hover:underline">3. How We Use Your Information</a>
-            <a href="#third-party-services" className="block hover:underline">4. Third-Party Services</a>
-            <a href="#data-security" className="block hover:underline">5. Data Security &amp; Retention</a>
-            <a href="#cookies" className="block hover:underline">6. Cookies &amp; Tracking Technologies</a>
-            <a href="#your-rights" className="block hover:underline">7. Your Rights</a>
-            <a href="#children" className="block hover:underline">8. Children&apos;s Privacy</a>
-            <a href="#changes" className="block hover:underline">9. Changes to This Policy</a>
-            <a href="#contact" className="block hover:underline">10. Contact Us</a>
-          </div>
-        </div>
 
         {/* Section 1 */}
         <div id="definitions" className="mb-6 scroll-mt-8">
