@@ -56,13 +56,13 @@ return (
   <Image
     src="/ImpressLogoNoBackgroundBlue.png"
     alt="Impress Cleaning Services"
-    width={220}
-    height={88}
-    className="h-16 w-auto"
-    style={{ minHeight: '64px' }}
+    width={280}
+    height={112}
+    className="h-24 w-auto"
+    style={{ minHeight: '96px' }}
     priority
   />
-  </div>
+    </div>
 {/* Success Icon */}
 <div className="flex justify-center mb-6">
 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
