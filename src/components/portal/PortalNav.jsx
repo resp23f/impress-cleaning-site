@@ -36,7 +36,7 @@ export default function PortalNav({ userName }) {
   const supabase = useMemo(() => createClient(), [])
 
   // Fetch unread notification count
-  useEffect(() => {
+useEffect(() => {
     const fetchUnreadCount = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -52,24 +52,16 @@ export default function PortalNav({ userName }) {
 
     fetchUnreadCount()
 
-    // Realtime subscription for notification changes
-    const channel = supabase
-      .channel('portal_nav_notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'customer_notifications'
-        },
-        () => fetchUnreadCount()
-      )
-      .subscribe()
+    // Listen for notification read events from notifications page
+    const handleNotificationRead = () => fetchUnreadCount()
+    window.addEventListener('notificationRead', handleNotificationRead)
 
     // CRITICAL: Cleanup on unmount
-    return () => supabase.removeChannel(channel)
-  }, [])
-
+    return () => {
+      window.removeEventListener('notificationRead', handleNotificationRead)
+    }
+  }, [supabase])
+  
   const closeMenu = () => {
     setIsClosing(true)
     setTimeout(() => {

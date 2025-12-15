@@ -99,14 +99,30 @@ export default function DashboardPage() {
     0,
    )
    setBalance(totalBalance)
-   // Load ONLY the 2 most recent invoices for the visual list
-   const { data: invoicesData } = await supabase
-   .from('invoices')
-   .select('*')
-   .eq('customer_id', authUser.id)
-   .order('created_at', { ascending: false })
-   .limit(1)
-   setInvoices(invoicesData || [])
+// Load invoices for dashboard - prioritize unpaid
+const { data: unpaidInvoicesData } = await supabase
+ .from('invoices')
+ .select('*')
+ .eq('customer_id', authUser.id)
+ .in('status', ['sent', 'pending', 'overdue'])
+ .order('created_at', { ascending: false })
+ .limit(2)
+
+const { data: paidInvoicesData } = await supabase
+ .from('invoices')
+ .select('*')
+ .eq('customer_id', authUser.id)
+ .eq('status', 'paid')
+ .order('created_at', { ascending: false })
+ .limit(1)
+
+// Combine: unpaid first, then most recent paid (max 3 total)
+const combinedInvoices = [
+ ...(unpaidInvoicesData || []),
+ ...(paidInvoicesData || []),
+].slice(0, 3)
+
+setInvoices(combinedInvoices)
   } catch (error) {
    console.error('Error loading dashboard:', error)
   } finally {

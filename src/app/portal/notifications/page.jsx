@@ -240,13 +240,16 @@ export default function NotificationsPage() {
         return
       }
 
-      setNotifications(prev =>
+setNotifications(prev =>
         prev.map(n => n.id === notificationId 
           ? { ...n, is_read: true, read_at: new Date().toISOString() } 
           : n
         )
       )
-    } catch (error) {
+      
+      // Dispatch event to update nav bell badge
+      window.dispatchEvent(new CustomEvent('notificationRead'))
+          } catch (error) {
       console.error('Error in markAsRead:', error)
     } finally {
       setActionLoading(null)
@@ -288,13 +291,16 @@ export default function NotificationsPage() {
         return
       }
 
-      setNotifications(prev =>
+setNotifications(prev =>
         prev.map(n => n.id === notificationId 
           ? { ...n, is_read: false, read_at: null } 
           : n
         )
       )
-    } catch (error) {
+      
+      // Dispatch event to update nav bell badge
+      window.dispatchEvent(new CustomEvent('notificationRead'))
+          } catch (error) {
       console.error('Error in markAsUnread:', error)
     } finally {
       setActionLoading(null)
@@ -328,12 +334,15 @@ export default function NotificationsPage() {
         return
       }
 
-      setNotifications(prev => prev.map(n => ({ 
+setNotifications(prev => prev.map(n => ({ 
         ...n, 
         is_read: true, 
         read_at: new Date().toISOString() 
       })))
-    } catch (error) {
+      
+      // Dispatch event to update nav bell badge
+      window.dispatchEvent(new CustomEvent('notificationRead'))
+          } catch (error) {
       console.error('Error in markAllAsRead:', error)
     } finally {
       setMarkingAll(false)
@@ -463,7 +472,7 @@ export default function NotificationsPage() {
                           </div>
                           
                           <div className="flex-shrink-0 flex items-center gap-2">
-                            {!notification.is_read ? (
+{!notification.is_read ? (
                               <>
                                 <span className="h-2 w-2 bg-emerald-500 rounded-full ring-2 ring-emerald-100" />
                                 <button
@@ -476,7 +485,7 @@ export default function NotificationsPage() {
                                   {isActionLoading ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                   ) : (
-                                    <MailOpen className="h-4 w-4" />
+                                    <Mail className="h-4 w-4" />
                                   )}
                                 </button>
                               </>
@@ -491,11 +500,11 @@ export default function NotificationsPage() {
                                 {isActionLoading ? (
                                   <Loader2 className="h-4 w-4 animate-spin" />
                                 ) : (
-                                  <Mail className="h-4 w-4" />
+                                  <MailOpen className="h-4 w-4" />
                                 )}
                               </button>
                             )}
-                          </div>
+                                                      </div>
                         </div>
                       </div>
                     </Link>
