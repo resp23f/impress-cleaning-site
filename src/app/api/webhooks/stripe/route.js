@@ -201,13 +201,13 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
   return { success: false, error: 'No customer email' }
  }
  
- // Check if invoice already exists in our system
+// Check if invoice already exists in our system
  const { data: existingInvoice } = await supabaseAdmin
-  .from('invoices')
-  .select('id, status')
-  .eq('stripe_invoice_id', stripeInvoice.id)
-  .single()
- 
+ .from('invoices')
+ .select('id, status, due_date')
+ .eq('stripe_invoice_id', stripeInvoice.id)
+ .single()
+
  // Look up customer by email
  const { data: customer, error: customerError } = await supabaseAdmin
   .from('profiles')
@@ -268,12 +268,14 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
  
  try {
   if (existingInvoice) {
-   // Update existing invoice
+// Update existing invoice (preserve existing due_date if set)
    const { error } = await supabaseAdmin
-    .from('invoices')
-    .update(invoiceData)
-    .eq('id', existingInvoice.id)
-   
+   .from('invoices')
+   .update({
+    ...invoiceData,
+    due_date: existingInvoice.due_date || invoiceData.due_date
+   })
+   .eq('id', existingInvoice.id)   
    if (error) throw error
    
    console.log(`Updated invoice ${invoiceData.invoice_number} (${eventType})`)
