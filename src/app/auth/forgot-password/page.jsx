@@ -135,14 +135,15 @@ return (
 <div className="w-full max-w-md">
 {/* Logo */}
 <div className="flex justify-center mb-10">
-<Image
-src="/ImpressLogoNoBackgroundBlue.png"
-alt="Impress Cleaning Services"
-width={180}
-height={60}
-className="h-12 w-auto"
-priority
-/>
+  <Image
+    src="/ImpressLogoNoBackgroundBlue.png"
+    alt="Impress Cleaning Services"
+    width={280}
+    height={112}
+    className="h-24 w-auto"
+    style={{ minHeight: '96px' }}
+    priority
+  />
 </div>
 <div className="text-center mb-8">
 <h2 className="text-2xl font-bold text-slate-800 mb-2">
