@@ -218,18 +218,18 @@ export async function POST(request) {
         currency: 'USD'
       }).format(invoice.total || invoice.amount)
 
-      await supabaseAdmin
+await supabaseAdmin
         .from('customer_notifications')
         .insert({
           user_id: customerId,
           type: 'invoice_sent',
           title: 'New Invoice Ready',
           message: `Invoice ${invoice.invoice_number} for ${formattedAmount} is ready for payment`,
-          link: '/portal/invoices',
+          link: `/portal/invoices/${invoice.id}/pay`,
           reference_id: invoice.id,
           reference_type: 'invoice'
         })
-    }
+            }
 
     
     return NextResponse.json({

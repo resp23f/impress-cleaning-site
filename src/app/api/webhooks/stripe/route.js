@@ -203,17 +203,17 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
  
  // Check if invoice already exists in our system
  const { data: existingInvoice } = await supabaseAdmin
- .from('invoices')
- .select('id, status')
- .eq('stripe_invoice_id', stripeInvoice.id)
- .single()
+  .from('invoices')
+  .select('id, status')
+  .eq('stripe_invoice_id', stripeInvoice.id)
+  .single()
  
  // Look up customer by email
  const { data: customer, error: customerError } = await supabaseAdmin
- .from('profiles')
- .select('id, full_name, email')
- .ilike('email', customerEmail)
- .single()
+  .from('profiles')
+  .select('id, full_name, email')
+  .ilike('email', customerEmail)
+  .single()
  
  if (customerError) {
   console.log('Profile lookup failed:', customerError.message, '- will use Stripe email as fallback')
@@ -255,11 +255,11 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
   total: total,
   status: status,
   due_date: stripeInvoice.due_date
-  ? new Date(stripeInvoice.due_date * 1000).toISOString().split('T')[0]
-  : null,
+   ? new Date(stripeInvoice.due_date * 1000).toISOString().split('T')[0]
+   : null,
   paid_date: stripeInvoice.status === 'paid' && stripeInvoice.status_transitions?.paid_at
-  ? new Date(stripeInvoice.status_transitions.paid_at * 1000).toISOString().split('T')[0]
-  : null,
+   ? new Date(stripeInvoice.status_transitions.paid_at * 1000).toISOString().split('T')[0]
+   : null,
   payment_method: stripeInvoice.status === 'paid' ? 'stripe' : null,
   line_items: lineItems,
   notes: stripeInvoice.description || null,
@@ -270,9 +270,9 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
   if (existingInvoice) {
    // Update existing invoice
    const { error } = await supabaseAdmin
-   .from('invoices')
-   .update(invoiceData)
-   .eq('id', existingInvoice.id)
+    .from('invoices')
+    .update(invoiceData)
+    .eq('id', existingInvoice.id)
    
    if (error) throw error
    
@@ -282,45 +282,45 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
    if (customer?.id) {
     if (eventType === 'finalized') {
      const { data: existingNotif } = await supabaseAdmin
-     .from('customer_notifications')
-     .select('id')
-     .eq('reference_id', existingInvoice.id)
-     .eq('type', 'invoice_sent')
-     .single()
+      .from('customer_notifications')
+      .select('id')
+      .eq('reference_id', existingInvoice.id)
+      .eq('type', 'invoice_sent')
+      .single()
      
      if (!existingNotif) {
       await supabaseAdmin
-      .from('customer_notifications')
-      .insert({
-       user_id: customer.id,
-       type: 'invoice_sent',
-       title: 'New Invoice Ready',
-       message: `Invoice ${invoiceData.invoice_number} for $${total.toFixed(2)} is ready for payment`,
-       link: '/portal/invoices',
-       reference_id: existingInvoice.id,
-       reference_type: 'invoice'
-      })
+       .from('customer_notifications')
+       .insert({
+        user_id: customer.id,
+        type: 'invoice_sent',
+        title: 'New Invoice Ready',
+        message: `Invoice ${invoiceData.invoice_number} for $${total.toFixed(2)} is ready for payment`,
+        link: `/portal/invoices/${existingInvoice.id}/pay`,
+        reference_id: existingInvoice.id,
+        reference_type: 'invoice'
+       })
      }
     } else if (eventType === 'paid') {
      const { data: existingNotif } = await supabaseAdmin
-     .from('customer_notifications')
-     .select('id')
-     .eq('reference_id', existingInvoice.id)
-     .eq('type', 'payment_received')
-     .single()
+      .from('customer_notifications')
+      .select('id')
+      .eq('reference_id', existingInvoice.id)
+      .eq('type', 'payment_received')
+      .single()
      
      if (!existingNotif) {
       await supabaseAdmin
-      .from('customer_notifications')
-      .insert({
-       user_id: customer.id,
-       type: 'payment_received',
-       title: 'Payment Confirmed',
-       message: `Your payment for Invoice ${invoiceData.invoice_number} has been received`,
-       link: '/portal/invoices',
-       reference_id: existingInvoice.id,
-       reference_type: 'invoice'
-      })
+       .from('customer_notifications')
+       .insert({
+        user_id: customer.id,
+        type: 'payment_received',
+        title: 'Payment Confirmed',
+        message: `Your payment for Invoice ${invoiceData.invoice_number} has been received`,
+        link: `/portal/invoices?status=paid`,
+        reference_id: existingInvoice.id,
+        reference_type: 'invoice'
+       })
      }
     }
    }
@@ -330,11 +330,11 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
   } else {
    // Create new invoice
    const { error } = await supabaseAdmin
-   .from('invoices')
-   .insert([{
-    ...invoiceData,
-    created_at: new Date().toISOString(),
-   }])
+    .from('invoices')
+    .insert([{
+     ...invoiceData,
+     created_at: new Date().toISOString(),
+    }])
    
    if (error) throw error
    
@@ -342,37 +342,37 @@ async function handleStripeInvoice(stripeInvoice, eventType) {
    
    // Get the newly created invoice ID for notifications
    const { data: newInvoice } = await supabaseAdmin
-   .from('invoices')
-   .select('id')
-   .eq('stripe_invoice_id', stripeInvoice.id)
-   .single()
+    .from('invoices')
+    .select('id')
+    .eq('stripe_invoice_id', stripeInvoice.id)
+    .single()
    
    // Create customer notifications based on event type
    if (customer?.id && newInvoice?.id) {
     if (eventType === 'finalized') {
      await supabaseAdmin
-     .from('customer_notifications')
-     .insert({
-      user_id: customer.id,
-      type: 'invoice_sent',
-      title: 'New Invoice Ready',
-      message: `Invoice ${invoiceData.invoice_number} for $${total.toFixed(2)} is ready for payment`,
-      link: '/portal/invoices',
-      reference_id: newInvoice.id,
-      reference_type: 'invoice'
-     })
+      .from('customer_notifications')
+      .insert({
+       user_id: customer.id,
+       type: 'invoice_sent',
+       title: 'New Invoice Ready',
+       message: `Invoice ${invoiceData.invoice_number} for $${total.toFixed(2)} is ready for payment`,
+       link: `/portal/invoices/${newInvoice.id}/pay`,
+       reference_id: newInvoice.id,
+       reference_type: 'invoice'
+      })
     } else if (eventType === 'paid') {
      await supabaseAdmin
-     .from('customer_notifications')
-     .insert({
-      user_id: customer.id,
-      type: 'payment_received',
-      title: 'Payment Confirmed',
-      message: `Your payment for Invoice ${invoiceData.invoice_number} has been received`,
-      link: '/portal/invoices',
-      reference_id: newInvoice.id,
-      reference_type: 'invoice'
-     })
+      .from('customer_notifications')
+      .insert({
+       user_id: customer.id,
+       type: 'payment_received',
+       title: 'Payment Confirmed',
+       message: `Your payment for Invoice ${invoiceData.invoice_number} has been received`,
+       link: `/portal/invoices?status=paid`,
+       reference_id: newInvoice.id,
+       reference_type: 'invoice'
+      })
     }
    }
    
@@ -465,14 +465,14 @@ export async function POST(request) {
    // Handle invoice payments (portal payments)
    if (session.metadata?.invoice_id) {
     const { error } = await supabaseAdmin
-    .from('invoices')
-    .update({
-     status: 'paid',
-     paid_date: new Date().toISOString().split('T')[0],
-     payment_method: 'stripe',
-     updated_at: new Date().toISOString(),
-    })
-    .eq('id', session.metadata.invoice_id)
+     .from('invoices')
+     .update({
+      status: 'paid',
+      paid_date: new Date().toISOString().split('T')[0],
+      payment_method: 'stripe',
+      updated_at: new Date().toISOString(),
+     })
+     .eq('id', session.metadata.invoice_id)
     
     if (error) {
      console.error('Error updating invoice:', error)
@@ -490,10 +490,10 @@ export async function POST(request) {
    // Check if this payment was for a portal invoice
    if (paymentIntent.metadata?.invoice_id) {
     const { data: existingInvoice } = await supabaseAdmin
-    .from('invoices')
-    .select('id, status, invoice_number, total, amount, customer_id, customer_email')
-    .eq('id', paymentIntent.metadata.invoice_id)
-    .single()
+     .from('invoices')
+     .select('id, status, invoice_number, total, amount, customer_id, customer_email')
+     .eq('id', paymentIntent.metadata.invoice_id)
+     .single()
     
     if (!existingInvoice) {
      console.log('Invoice not found:', paymentIntent.metadata.invoice_id)
@@ -503,15 +503,15 @@ export async function POST(request) {
     // Update invoice if not already paid
     if (existingInvoice.status !== 'paid') {
      const { error } = await supabaseAdmin
-     .from('invoices')
-     .update({
-      status: 'paid',
-      paid_date: new Date().toISOString().split('T')[0],
-      payment_method: 'stripe',
-      stripe_payment_intent_id: paymentIntent.id,
-      updated_at: new Date().toISOString(),
-     })
-     .eq('id', paymentIntent.metadata.invoice_id)
+      .from('invoices')
+      .update({
+       status: 'paid',
+       paid_date: new Date().toISOString().split('T')[0],
+       payment_method: 'stripe',
+       stripe_payment_intent_id: paymentIntent.id,
+       updated_at: new Date().toISOString(),
+      })
+      .eq('id', paymentIntent.metadata.invoice_id)
      
      if (error) {
       console.error('Failed to update invoice from webhook:', error)
@@ -524,24 +524,24 @@ export async function POST(request) {
     if (existingInvoice.customer_id) {
      try {
       const { data: existingNotif } = await supabaseAdmin
-      .from('customer_notifications')
-      .select('id')
-      .eq('reference_id', existingInvoice.id)
-      .eq('type', 'payment_received')
-      .single()
+       .from('customer_notifications')
+       .select('id')
+       .eq('reference_id', existingInvoice.id)
+       .eq('type', 'payment_received')
+       .single()
       
       if (!existingNotif) {
        await supabaseAdmin
-       .from('customer_notifications')
-       .insert({
-        user_id: existingInvoice.customer_id,
-        type: 'payment_received',
-        title: 'Payment Confirmed',
-        message: `Your payment for Invoice ${existingInvoice.invoice_number} has been received`,
-        link: '/portal/invoices',
-        reference_id: existingInvoice.id,
-        reference_type: 'invoice'
-       })
+        .from('customer_notifications')
+        .insert({
+         user_id: existingInvoice.customer_id,
+         type: 'payment_received',
+         title: 'Payment Confirmed',
+         message: `Your payment for Invoice ${existingInvoice.invoice_number} has been received`,
+         link: `/portal/invoices?status=paid`,
+         reference_id: existingInvoice.id,
+         reference_type: 'invoice'
+        })
       }
      } catch (notifError) {
       console.error('Failed to create notification:', notifError)
@@ -557,58 +557,58 @@ export async function POST(request) {
    
    if (paymentIntent.metadata?.invoice_id) {
     const { data: invoice } = await supabaseAdmin
-    .from('invoices')
-    .select('id, status, due_date, invoice_number, customer_id')
-    .eq('id', paymentIntent.metadata.invoice_id)
-    .single()
+     .from('invoices')
+     .select('id, status, due_date, invoice_number, customer_id')
+     .eq('id', paymentIntent.metadata.invoice_id)
+     .single()
     
     if (invoice && invoice.status !== 'paid') {
      const isOverdue = invoice.due_date && new Date(invoice.due_date) < new Date()
      
      if (isOverdue && invoice.status !== 'overdue') {
       await supabaseAdmin
-      .from('invoices')
-      .update({
-       status: 'overdue',
-       updated_at: new Date().toISOString(),
-      })
-      .eq('id', invoice.id)
+       .from('invoices')
+       .update({
+        status: 'overdue',
+        updated_at: new Date().toISOString(),
+       })
+       .eq('id', invoice.id)
       
       console.log(`Invoice ${invoice.invoice_number} marked as overdue after failed payment`)
      }
      
      await supabaseAdmin
-     .from('admin_notifications')
-     .insert({
-      type: 'payment_failed',
-      title: 'Payment Failed',
-      message: `Payment failed for invoice ${invoice.invoice_number}`,
-      link: `/admin/invoices`,
-     })
+      .from('admin_notifications')
+      .insert({
+       type: 'payment_failed',
+       title: 'Payment Failed',
+       message: `Payment failed for invoice ${invoice.invoice_number}`,
+       link: `/admin/invoices`,
+      })
      
      if (invoice.customer_id) {
       const failureMessage = paymentIntent.last_payment_error?.message || 'Payment could not be processed'
       await supabaseAdmin
-      .from('customer_notifications')
-      .insert({
-       user_id: invoice.customer_id,
-       type: 'payment_failed',
-       title: 'Payment Failed',
-       message: `Your payment for Invoice ${invoice.invoice_number} failed: ${failureMessage}`,
-       link: `/portal/invoices/${invoice.id}/pay`,
-       reference_id: invoice.id,
-       reference_type: 'invoice'
-      })
+       .from('customer_notifications')
+       .insert({
+        user_id: invoice.customer_id,
+        type: 'payment_failed',
+        title: 'Payment Failed',
+        message: `Your payment for Invoice ${invoice.invoice_number} failed: ${failureMessage}`,
+        link: `/portal/invoices/${invoice.id}/pay`,
+        reference_id: invoice.id,
+        reference_type: 'invoice'
+       })
      }
      
      const failureReason = paymentIntent.last_payment_error?.message || 'Payment failed'
      await supabaseAdmin
-     .from('invoices')
-     .update({
-      notes: `Payment attempt failed on ${new Date().toLocaleDateString()}: ${failureReason}`,
-      updated_at: new Date().toISOString(),
-     })
-     .eq('id', invoice.id)
+      .from('invoices')
+      .update({
+       notes: `Payment attempt failed on ${new Date().toLocaleDateString()}: ${failureReason}`,
+       updated_at: new Date().toISOString(),
+      })
+      .eq('id', invoice.id)
      
      console.log(`Payment failed for invoice ${invoice.invoice_number}`)
     }
@@ -625,19 +625,19 @@ export async function POST(request) {
    
    if (charge.invoice && charge.payment_intent) {
     const { data: invoice } = await supabaseAdmin
-    .from('invoices')
-    .select('id, invoice_number, stripe_payment_intent_id')
-    .eq('stripe_invoice_id', charge.invoice)
-    .single()
+     .from('invoices')
+     .select('id, invoice_number, stripe_payment_intent_id')
+     .eq('stripe_invoice_id', charge.invoice)
+     .single()
     
     if (invoice && !invoice.stripe_payment_intent_id) {
      await supabaseAdmin
-     .from('invoices')
-     .update({
-      stripe_payment_intent_id: charge.payment_intent,
-      updated_at: new Date().toISOString()
-     })
-     .eq('id', invoice.id)
+      .from('invoices')
+      .update({
+       stripe_payment_intent_id: charge.payment_intent,
+       updated_at: new Date().toISOString()
+      })
+      .eq('id', invoice.id)
      
      console.log(`Saved payment_intent ${charge.payment_intent} to invoice ${invoice.invoice_number}`)
     }
@@ -645,22 +645,22 @@ export async function POST(request) {
    
    if (!charge.invoice && charge.payment_intent && charge.customer) {
     const { data: recentInvoice } = await supabaseAdmin
-    .from('invoices')
-    .select('id, invoice_number, stripe_payment_intent_id, stripe_invoice_id')
-    .eq('status', 'paid')
-    .is('stripe_payment_intent_id', null)
-    .order('updated_at', { ascending: false })
-    .limit(1)
-    .single()
+     .from('invoices')
+     .select('id, invoice_number, stripe_payment_intent_id, stripe_invoice_id')
+     .eq('status', 'paid')
+     .is('stripe_payment_intent_id', null)
+     .order('updated_at', { ascending: false })
+     .limit(1)
+     .single()
     
     if (recentInvoice) {
      await supabaseAdmin
-     .from('invoices')
-     .update({
-      stripe_payment_intent_id: charge.payment_intent,
-      updated_at: new Date().toISOString()
-     })
-     .eq('id', recentInvoice.id)
+      .from('invoices')
+      .update({
+       stripe_payment_intent_id: charge.payment_intent,
+       updated_at: new Date().toISOString()
+      })
+      .eq('id', recentInvoice.id)
      
      console.log(`Saved payment_intent ${charge.payment_intent} to recent invoice ${recentInvoice.invoice_number} (fallback)`)
     }
@@ -689,22 +689,22 @@ export async function POST(request) {
    
    if (paymentIntentId) {
     const { data, error } = await supabaseAdmin
-    .from('invoices')
-    .select('id, invoice_number, customer_id, total, amount, refund_amount, stripe_payment_intent_id, customer_email, profiles:customer_id(email, full_name)')
-    .eq('stripe_payment_intent_id', paymentIntentId)
-    .single()
+     .from('invoices')
+     .select('id, invoice_number, customer_id, total, amount, refund_amount, stripe_payment_intent_id, customer_email, profiles:customer_id(email, full_name)')
+     .eq('stripe_payment_intent_id', paymentIntentId)
+     .single()
     if (error) console.log('Lookup by payment_intent failed:', error.message)
-     invoice = data
+    invoice = data
    }
    
    if (!invoice && stripeInvoiceId) {
     const { data, error } = await supabaseAdmin
-    .from('invoices')
-    .select('id, invoice_number, customer_id, total, amount, refund_amount, stripe_payment_intent_id, customer_email, profiles:customer_id(email, full_name)')
-    .eq('stripe_invoice_id', stripeInvoiceId)
-    .single()
+     .from('invoices')
+     .select('id, invoice_number, customer_id, total, amount, refund_amount, stripe_payment_intent_id, customer_email, profiles:customer_id(email, full_name)')
+     .eq('stripe_invoice_id', stripeInvoiceId)
+     .single()
     if (error) console.log('Lookup by stripe_invoice_id failed:', error.message)
-     invoice = data
+    invoice = data
    }
    
    if (!invoice) {
@@ -724,9 +724,9 @@ export async function POST(request) {
    }
    
    await supabaseAdmin
-   .from('invoices')
-   .update(updateData)
-   .eq('id', invoice.id)
+    .from('invoices')
+    .update(updateData)
+    .eq('id', invoice.id)
    
    const formattedRefund = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -735,26 +735,26 @@ export async function POST(request) {
    
    if (invoice.customer_id) {
     await supabaseAdmin
-    .from('customer_notifications')
-    .insert({
-     user_id: invoice.customer_id,
-     type: 'refund_processed',
-     title: 'Refund Processed',
-     message: `A refund of ${formattedRefund} has been issued for Invoice ${invoice.invoice_number}`,
-     link: '/portal/invoices',
-     reference_id: invoice.id,
-     reference_type: 'invoice'
-    })
+     .from('customer_notifications')
+     .insert({
+      user_id: invoice.customer_id,
+      type: 'refund_processed',
+      title: 'Refund Processed',
+      message: `A refund of ${formattedRefund} has been issued for Invoice ${invoice.invoice_number}`,
+      link: `/portal/invoices?status=paid`,
+      reference_id: invoice.id,
+      reference_type: 'invoice'
+     })
    }
    
    await supabaseAdmin
-   .from('admin_notifications')
-   .insert({
-    type: 'refund_processed',
-    title: 'Refund Issued',
-    message: `Refund of ${formattedRefund} issued for Invoice ${invoice.invoice_number}`,
-    link: '/admin/invoices'
-   })
+    .from('admin_notifications')
+    .insert({
+     type: 'refund_processed',
+     title: 'Refund Issued',
+     message: `Refund of ${formattedRefund} issued for Invoice ${invoice.invoice_number}`,
+     link: '/admin/invoices'
+    })
    
    console.log(`Refund of ${formattedRefund} processed for invoice ${invoice.invoice_number}`)
    break
@@ -783,10 +783,10 @@ export async function POST(request) {
    }
    
    const { data: invoice } = await supabaseAdmin
-   .from('invoices')
-   .select('id, invoice_number, customer_id, profiles:customer_id(full_name)')
-   .eq('stripe_payment_intent_id', paymentIntentId)
-   .single()
+    .from('invoices')
+    .select('id, invoice_number, customer_id, profiles:customer_id(full_name)')
+    .eq('stripe_payment_intent_id', paymentIntentId)
+    .single()
    
    if (!invoice) {
     console.log('No invoice found for disputed payment intent:', paymentIntentId)
@@ -794,26 +794,26 @@ export async function POST(request) {
    }
    
    await supabaseAdmin
-   .from('invoices')
-   .update({
-    disputed: true,
-    notes: `DISPUTE OPENED on ${new Date().toLocaleDateString()}: ${dispute.reason || 'No reason provided'}`,
-    updated_at: new Date().toISOString()
-   })
-   .eq('id', invoice.id)
+    .from('invoices')
+    .update({
+     disputed: true,
+     notes: `DISPUTE OPENED on ${new Date().toLocaleDateString()}: ${dispute.reason || 'No reason provided'}`,
+     updated_at: new Date().toISOString()
+    })
+    .eq('id', invoice.id)
    
    const customerName = invoice.profiles?.full_name || 'Customer'
    
    await supabaseAdmin
-   .from('admin_notifications')
-   .insert({
-    type: 'dispute_opened',
-    title: 'URGENT: Payment Dispute',
-    message: `A dispute has been opened for Invoice ${invoice.invoice_number} (${customerName})`,
-    link: '/admin/invoices'
-   })
+    .from('admin_notifications')
+    .insert({
+     type: 'dispute_opened',
+     title: 'URGENT: Payment Dispute',
+     message: `A dispute has been opened for Invoice ${invoice.invoice_number} (${customerName})`,
+     link: '/admin/invoices'
+    })
    
-   // SMS alert for disputes (keeping this - it's useful!)
+   // SMS alert for disputes
    const smsGatewayEmail = '5129989658@tmomail.net'
    try {
     await resend.emails.send({
@@ -850,10 +850,10 @@ export async function POST(request) {
    }
    
    const { data: invoice } = await supabaseAdmin
-   .from('invoices')
-   .select('id, invoice_number, customer_id, profiles:customer_id(full_name)')
-   .eq('stripe_payment_intent_id', paymentIntentId)
-   .single()
+    .from('invoices')
+    .select('id, invoice_number, customer_id, profiles:customer_id(full_name)')
+    .eq('stripe_payment_intent_id', paymentIntentId)
+    .single()
    
    if (!invoice) {
     console.log('No invoice found for disputed payment intent:', paymentIntentId)
@@ -865,69 +865,69 @@ export async function POST(request) {
    
    if (disputeWon) {
     await supabaseAdmin
-    .from('invoices')
-    .update({
-     disputed: false,
-     notes: `Dispute resolved in our favor on ${new Date().toLocaleDateString()}`,
-     updated_at: new Date().toISOString()
-    })
-    .eq('id', invoice.id)
+     .from('invoices')
+     .update({
+      disputed: false,
+      notes: `Dispute resolved in our favor on ${new Date().toLocaleDateString()}`,
+      updated_at: new Date().toISOString()
+     })
+     .eq('id', invoice.id)
     
     await supabaseAdmin
-    .from('admin_notifications')
-    .insert({
-     type: 'dispute_won',
-     title: 'Dispute Resolved - Won',
-     message: `Dispute for Invoice ${invoice.invoice_number} resolved in your favor`,
-     link: '/admin/invoices'
-    })
+     .from('admin_notifications')
+     .insert({
+      type: 'dispute_won',
+      title: 'Dispute Resolved - Won',
+      message: `Dispute for Invoice ${invoice.invoice_number} resolved in your favor`,
+      link: '/admin/invoices'
+     })
     
     if (invoice.customer_id) {
      await supabaseAdmin
-     .from('customer_notifications')
-     .insert({
-      user_id: invoice.customer_id,
-      type: 'dispute_resolved',
-      title: 'Dispute Resolved',
-      message: `The dispute for Invoice ${invoice.invoice_number} has been resolved`,
-      link: '/portal/invoices',
-      reference_id: invoice.id,
-      reference_type: 'invoice'
-     })
+      .from('customer_notifications')
+      .insert({
+       user_id: invoice.customer_id,
+       type: 'dispute_resolved',
+       title: 'Dispute Resolved',
+       message: `The dispute for Invoice ${invoice.invoice_number} has been resolved`,
+       link: `/portal/invoices?status=paid`,
+       reference_id: invoice.id,
+       reference_type: 'invoice'
+      })
     }
    } else {
     await supabaseAdmin
-    .from('invoices')
-    .update({
-     disputed: false,
-     status: 'cancelled',
-     refund_reason: 'Dispute lost - funds returned to customer',
-     notes: `Dispute lost on ${new Date().toLocaleDateString()}. Funds returned to customer.`,
-     updated_at: new Date().toISOString()
-    })
-    .eq('id', invoice.id)
+     .from('invoices')
+     .update({
+      disputed: false,
+      status: 'cancelled',
+      refund_reason: 'Dispute lost - funds returned to customer',
+      notes: `Dispute lost on ${new Date().toLocaleDateString()}. Funds returned to customer.`,
+      updated_at: new Date().toISOString()
+     })
+     .eq('id', invoice.id)
     
     await supabaseAdmin
-    .from('admin_notifications')
-    .insert({
-     type: 'dispute_lost',
-     title: 'Dispute Resolved - Lost',
-     message: `Dispute for Invoice ${invoice.invoice_number} resolved against. Funds returned to ${customerName}.`,
-     link: '/admin/invoices'
-    })
+     .from('admin_notifications')
+     .insert({
+      type: 'dispute_lost',
+      title: 'Dispute Resolved - Lost',
+      message: `Dispute for Invoice ${invoice.invoice_number} resolved against. Funds returned to ${customerName}.`,
+      link: '/admin/invoices'
+     })
     
     if (invoice.customer_id) {
      await supabaseAdmin
-     .from('customer_notifications')
-     .insert({
-      user_id: invoice.customer_id,
-      type: 'refund_processed',
-      title: 'Dispute Resolved - Refund Issued',
-      message: `The dispute for Invoice ${invoice.invoice_number} has been resolved and a refund has been issued`,
-      link: '/portal/invoices',
-      reference_id: invoice.id,
-      reference_type: 'invoice'
-     })
+      .from('customer_notifications')
+      .insert({
+       user_id: invoice.customer_id,
+       type: 'refund_processed',
+       title: 'Dispute Resolved - Refund Issued',
+       message: `The dispute for Invoice ${invoice.invoice_number} has been resolved and a refund has been issued`,
+       link: `/portal/invoices?status=paid`,
+       reference_id: invoice.id,
+       reference_type: 'invoice'
+      })
     }
    }
    
@@ -936,7 +936,7 @@ export async function POST(request) {
   }
   
   default:
-  console.log(`Unhandled event type: ${event.type}`)
+   console.log(`Unhandled event type: ${event.type}`)
  }
  
  return NextResponse.json({ received: true })
