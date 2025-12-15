@@ -71,30 +71,11 @@ export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
-  const supabase = useMemo(() => createClient(), [])
+const supabase = createClient()
 
-  useEffect(() => {
-    fetchNotifications()
-
-    const channel = supabase
-      .channel('admin_notifications_page')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'admin_notifications'
-        },
-        () => {
-          fetchNotifications()
-        }
-      )
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [])
+useEffect(() => {
+  fetchNotifications()
+}, [])
 
   async function fetchNotifications() {
     try {
