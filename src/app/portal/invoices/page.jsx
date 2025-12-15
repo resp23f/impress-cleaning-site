@@ -50,10 +50,10 @@ function CancellationTooltip() {
 
 function formatDateLocal(dateStr) {
   if (!dateStr) return '—'
-  const [y, m, d] = dateStr.split('-').map(Number)
-  return new Date(y, m - 1, d).toLocaleDateString()
+  // Extract date portion and parse as local time
+  const dateOnly = dateStr.slice(0, 10)
+  return new Date(dateOnly + 'T00:00:00').toLocaleDateString()
 }
-
 export default function InvoicesPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -289,10 +289,9 @@ export default function InvoicesPage() {
                               </Badge>
                             )}
                           </div>
-                          <p className="text-sm text-gray-600">
-                            Issued: {formatDateLocal(invoice.created_at.slice(0, 10))}
-                          </p>
-                          {invoice.due_date && (
+<p className="text-sm text-gray-600">
+  Issued: {formatDateLocal(invoice.issue_date || invoice.created_at)}
+</p>                          {invoice.due_date && (
                             <p className="text-sm text-gray-600">
                               Due: {formatDateLocal(invoice.due_date)}
                             </p>
