@@ -99,28 +99,19 @@ export default function DashboardPage() {
     0,
    )
    setBalance(totalBalance)
-// Load invoices for dashboard - prioritize unpaid
-const { data: unpaidInvoicesData } = await supabase
- .from('invoices')
- .select('*')
- .eq('customer_id', authUser.id)
- .in('status', ['sent', 'pending', 'overdue'])
- .order('created_at', { ascending: false })
- .limit(2)
+// Use allInvoices (already fetched) - filter and sort client-side
+const unpaidList = (allInvoices || [])
+ .filter(inv => ['sent', 'pending', 'overdue'].includes(inv.status))
+ .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+ .slice(0, 2)
 
-const { data: paidInvoicesData } = await supabase
- .from('invoices')
- .select('*')
- .eq('customer_id', authUser.id)
- .eq('status', 'paid')
- .order('created_at', { ascending: false })
- .limit(1)
+const paidList = (allInvoices || [])
+ .filter(inv => inv.status === 'paid')
+ .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+ .slice(0, 1)
 
 // Combine: unpaid first, then most recent paid (max 3 total)
-const combinedInvoices = [
- ...(unpaidInvoicesData || []),
- ...(paidInvoicesData || []),
-].slice(0, 3)
+const combinedInvoices = [...unpaidList, ...paidList].slice(0, 3)
 
 setInvoices(combinedInvoices)
   } catch (error) {
