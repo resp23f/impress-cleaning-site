@@ -154,6 +154,19 @@ export default function InvoicesPage() {
   }
  }, [invoices])
 
+// Extract unique descriptions from past invoices
+const previousDescriptions = useMemo(() => {
+  const descriptions = new Set()
+  invoices.forEach(inv => {
+    inv.line_items?.forEach(item => {
+      if (item.description?.trim()) {
+        descriptions.add(item.description.trim())
+      }
+    })
+  })
+  return Array.from(descriptions).sort()
+}, [invoices])
+
  // Handlers
  const handleStatClick = (filter) => {
   setStatusFilter(filter)
@@ -836,10 +849,40 @@ export default function InvoicesPage() {
 
             {/* Right side */}
             <div className="flex items-center gap-3 lg:flex-shrink-0">
-             <Button variant="primary" size="sm" onClick={() => openViewModal(invoice)}>
+             {invoice.status === 'draft' && (
+              <Button
+               variant="success"
+               size="sm"
+               onClick={async (e) => {
+                e.stopPropagation()
+                setProcessing(true)
+                try {
+                 const response = await fetch('/api/admin/invoices/send', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ invoiceId: invoice.id }),
+                 })
+                 if (!response.ok) {
+                  const data = await response.json()
+                  throw new Error(data.error || 'Failed to send invoice')
+                 }
+                 toast.success('Invoice sent!')
+                 loadInvoices()
+                } catch (error) {
+                 toast.error(error.message || 'Failed to send invoice')
+                } finally {
+                 setProcessing(false)
+                }
+               }}
+               disabled={processing}
+              >
+               <Send className="w-4 h-4" />
+               Send
+              </Button>
+             )}
+             <Button variant="secondary" size="sm" onClick={() => openViewModal(invoice)}>
               <Eye className="w-4 h-4" />
               View
-              <ChevronRight className="w-4 h-4" />
              </Button>
             </div>
            </div>
@@ -1134,12 +1177,23 @@ export default function InvoicesPage() {
        {newInvoice.line_items.map((item, index) => (
         <div key={index} className="grid grid-cols-12 gap-3 items-end">
          <div className="col-span-5">
-          <Input
-           label={index === 0 ? 'Description' : ''}
-           placeholder="Service description"
-           value={item.description}
-           onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
-          />
+<div className={index === 0 ? '' : ''}>
+  {index === 0 && (
+    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+  )}
+  <input
+    list={`descriptions-${index}`}
+    placeholder="Service description"
+    value={item.description}
+    onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
+    className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
+  />
+  <datalist id={`descriptions-${index}`}>
+    {previousDescriptions.map((desc, i) => (
+      <option key={i} value={desc} />
+    ))}
+  </datalist>
+</div>
          </div>
          <div className="col-span-2">
           <Input
