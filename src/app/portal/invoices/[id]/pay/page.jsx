@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { format } from 'date-fns'
 import { loadStripe } from '@stripe/stripe-js'
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import {
   CreditCard,
   CheckCircle,

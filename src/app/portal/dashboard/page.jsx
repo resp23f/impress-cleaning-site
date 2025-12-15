@@ -109,9 +109,8 @@ const paidList = (allInvoices || [])
  .filter(inv => inv.status === 'paid')
  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
  .slice(0, 1)
-
-// Combine: unpaid first, then most recent paid (max 3 total)
-const combinedInvoices = [...unpaidList, ...paidList].slice(0, 3)
+// Combine: unpaid first, then most recent paid (max 2 total)
+const combinedInvoices = [...unpaidList, ...paidList].slice(0, 2)
 
 setInvoices(combinedInvoices)
   } catch (error) {
