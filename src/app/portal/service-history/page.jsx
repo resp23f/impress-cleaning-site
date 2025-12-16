@@ -19,7 +19,6 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { ServiceHistorySkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
-export const metadata = { title: 'Service History' }
 const serviceTypeLabel = (type) => {
   const labels = {
     standard: 'Standard Cleaning',

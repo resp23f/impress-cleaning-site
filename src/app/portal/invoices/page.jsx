@@ -10,7 +10,6 @@ import Badge from '@/components/ui/Badge'
 import { InvoicesSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from './InvoiceSidePanel'
 import Modal from '@/components/ui/Modal'
-export const metadata = { title: 'Invoices' }
 function CancellationTooltip() {
   const [open, setOpen] = useState(false)
 

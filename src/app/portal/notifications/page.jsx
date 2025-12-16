@@ -23,7 +23,6 @@ import {
 import { createClient } from '@/lib/supabase/client'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-export const metadata = { title: 'Notifications' }
 
 const ITEMS_PER_PAGE = 20
 

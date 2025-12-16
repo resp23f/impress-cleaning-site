@@ -28,7 +28,6 @@ import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
 import { AppointmentsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
-export const metadata = { title: 'Appointments' }
 
 const statusBadges = {
   pending: 'warning',
@@ -165,7 +164,9 @@ export default function AppointmentsPage() {
     base.setDate(1)
     return base
   })
-
+  useEffect(() => {
+    document.title = 'Appointments | Impress Cleaning Services'
+  }, [])
   // Keep calendar in sync if date changes
   useEffect(() => {
     if (rescheduleData.date) {

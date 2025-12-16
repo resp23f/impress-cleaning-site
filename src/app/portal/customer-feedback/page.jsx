@@ -9,7 +9,6 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
 import styles from '../shared-animations.module.css'
 import { sanitizeText } from '@/lib/sanitize'
-export const metadata = { title: 'Feedback' }
 
 export default function CustomerFeedbackPage() {
   const router = useRouter()
@@ -115,8 +114,8 @@ export default function CustomerFeedbackPage() {
                     >
                       <Star
                         className={`w-12 h-12 ${star <= (hoverRating || rating)
-                            ? 'fill-amber-400 text-amber-400'
-                            : 'text-gray-300'
+                          ? 'fill-amber-400 text-amber-400'
+                          : 'text-gray-300'
                           }`}
                       />
                     </button>
