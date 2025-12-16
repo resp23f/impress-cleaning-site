@@ -5,7 +5,7 @@ import Toast from '@/components/ui/Toast'
 export const metadata = {
   title: {
     template: '%s | Impress Cleaning Services',
-    default: 'Customer Portal',
+    default: 'Client Portal',
   },
 }
 export default async function PortalLayout({ children }) {

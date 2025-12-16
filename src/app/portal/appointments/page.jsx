@@ -138,7 +138,10 @@ const getMaxDate = () => {
 export default function AppointmentsPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
-
+  // Set page title
+  useEffect(() => {
+    document.title = 'Appointments | Impress Cleaning Services'
+  }, [])
   const [loading, setLoading] = useState(true)
   const [appointments, setAppointments] = useState([])
   const [userId, setUserId] = useState(null)
@@ -164,9 +167,7 @@ export default function AppointmentsPage() {
     base.setDate(1)
     return base
   })
-  useEffect(() => {
-    document.title = 'Appointments | Impress Cleaning Services'
-  }, [])
+
   // Keep calendar in sync if date changes
   useEffect(() => {
     if (rescheduleData.date) {
