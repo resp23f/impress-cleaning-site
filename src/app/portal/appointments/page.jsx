@@ -576,7 +576,7 @@ export default function AppointmentsPage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
                   <Clock className="w-5 h-5 text-gray-500" />
                 </div>
-                <h2 className="text-xl font-bold text-[#1C294E]">Past Appointments</h2>
+                <h2 className="text-xl font-bold text-[#1C294E]">Cancelled</h2>
               </div>
               {past.length === 0 ? (
                 <Card className="text-center py-8 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] text-gray-500">
