@@ -3,47 +3,35 @@ import { useState, useEffect } from 'react'
 import styles from '../shared-animations.module.css'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { FileText, DollarSign, AlertCircle, Calendar, RefreshCw } from 'lucide-react'
+import { FileText, DollarSign, AlertCircle, RefreshCw } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { InvoicesSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from './InvoiceSidePanel'
-
+import Modal from '@/components/ui/Modal'
 function CancellationTooltip() {
   const [open, setOpen] = useState(false)
 
   return (
     <>
       <div
-        onClick={() => setOpen(true)}
+        onClick={(e) => {
+          e.stopPropagation()
+          setOpen(true)
+        }}
         className="w-9 h-9 rounded-full bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 flex items-center justify-center transition-colors duration-200 cursor-pointer"
       >
         <AlertCircle className="w-4 h-4 text-red-600" />
       </div>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-white/20 backdrop-blur-xl"
-          onClick={() => setOpen(false)}
-        >
-          <div className="bg-white rounded-3xl shadow-xl max-w-sm w-full overflow-hidden">
-            <div className="bg-gradient-to-r from-red-500 to-rose-500 px-6 py-4">
-              <h3 className="text-lg font-bold text-white">Cancellation Policy</h3>
-            </div>
-
-            <div className="px-6 py-5 space-y-3 text-sm">
-              <p><span className="font-semibold">48+ Hours:</span> Free cancellation</p>
-              <p><span className="font-semibold">24-48 Hours:</span> $50 fee</p>
-              <p><span className="font-semibold">Under 24 Hours:</span> Full service fee</p>
-            </div>
-
-            <div className="px-6 py-4 bg-gray-50 text-center text-sm text-gray-500">
-              Tap anywhere to close
-            </div>
-          </div>
+      <Modal isOpen={open} onClose={() => setOpen(false)} title="Cancellation Policy" maxWidth="sm">
+        <div className="space-y-3 text-sm text-gray-700">
+          <p><span className="font-semibold text-gray-900">48+ Hours:</span> Free cancellation</p>
+          <p><span className="font-semibold text-gray-900">24-48 Hours:</span> $50 fee</p>
+          <p><span className="font-semibold text-gray-900">Under 24 Hours:</span> Full service fee</p>
         </div>
-      )}
+      </Modal>
     </>
   )
 }
@@ -187,9 +175,9 @@ export default function InvoicesPage() {
           {/* Balance Summary */}
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 ${styles.cardReveal1}`}>
             <Card className="p-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] bg-gradient-to-br from-white to-slate-50">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between h-9 mb-4">
                 <span className="text-sm font-medium text-gray-500">Total Balance</span>
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center flex-shrink-0">
                   <DollarSign className="w-4 h-4 text-emerald-600" />
                 </div>
               </div>
@@ -199,7 +187,7 @@ export default function InvoicesPage() {
             </Card>
 
             <Card className="p-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] bg-gradient-to-br from-white to-red-50/30">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between h-9 mb-4">
                 <span className="text-sm font-medium text-gray-500">Overdue</span>
                 <CancellationTooltip />
               </div>
