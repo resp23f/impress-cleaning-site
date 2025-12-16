@@ -88,28 +88,8 @@ export function AppointmentsSkeleton() {
           <Skeleton height={24} width={120} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2].map((i) => (
-            <div
-              key={i}
-              className="rounded-2xl bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-l-4 border-emerald-400"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <Skeleton height={22} width={180} />
-                  <Skeleton height={16} width={140} className="mt-1" />
-                </div>
-                <Skeleton height={24} width={80} borderRadius={12} />
-              </div>
-              <div className="space-y-2 mb-4">
-                <Skeleton height={16} width={160} />
-                <Skeleton height={16} width={220} />
-              </div>
-              <div className="flex gap-3">
-                <Skeleton height={36} width={110} borderRadius={8} />
-                <Skeleton height={36} width={90} borderRadius={8} />
-              </div>
-            </div>
-          ))}
+          <Skeleton height={200} borderRadius={16} />
+          <Skeleton height={200} borderRadius={16} />
         </div>
       </div>
 
@@ -117,24 +97,11 @@ export function AppointmentsSkeleton() {
       <div>
         <div className="flex items-center gap-3 mb-4">
           <Skeleton circle height={40} width={40} />
-          <Skeleton height={24} width={160} />
+          <Skeleton height={24} width={180} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2].map((i) => (
-            <div
-              key={i}
-              className="rounded-2xl bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <Skeleton height={18} width={120} />
-                  <Skeleton height={14} width={100} className="mt-1" />
-                </div>
-                <Skeleton height={24} width={80} borderRadius={12} />
-              </div>
-              <Skeleton height={14} width={140} />
-            </div>
-          ))}
+          <Skeleton height={140} borderRadius={16} />
+          <Skeleton height={140} borderRadius={16} />
         </div>
       </div>
     </div>
