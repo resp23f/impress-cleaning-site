@@ -306,7 +306,8 @@ export default function ServiceHistoryPage() {
         ) : (
           <>
             {/* Header */}
-            <div className={`mb-10 ${styles.cardReveal}`}>
+            <div className="mb-10">
+
 
               <div className="flex items-center gap-3 mb-2">
                 <div className="h-1 w-12 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" />
@@ -329,12 +330,8 @@ export default function ServiceHistoryPage() {
             </div>
             {/* Filters */}
             <div
-              className={`
-              relative z-10 rounded-2xl bg-white p-6 sm:p-8 mb-8 
-              shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
-              border border-gray-100/80
-              ${styles.cardReveal1}
-            `}
+              className="relative z-10 rounded-2xl bg-white p-6 sm:p-8 mb-8 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80"
+
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center">
@@ -394,7 +391,6 @@ export default function ServiceHistoryPage() {
                 rounded-2xl bg-white p-8 sm:p-12
                 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                 border border-gray-100/80
-                ${styles.cardReveal2}
               `}
               >
                 <div className="flex flex-col items-center justify-center text-center">
@@ -418,7 +414,8 @@ export default function ServiceHistoryPage() {
                 </div>
               </div>
             ) : (
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${styles.cardReveal2}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
                 {filtered.map((svc, index) => (
                   <div
                     key={svc.id}
@@ -426,7 +423,7 @@ export default function ServiceHistoryPage() {
                       relative overflow-hidden rounded-2xl bg-white
                       shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]
                       border border-gray-100/80
-                      ${styles[`cardReveal${Math.min(index + 3, 6)}`] || styles.cardReveal}
+
                     `}
                   >
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />

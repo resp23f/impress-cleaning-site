@@ -484,7 +484,7 @@ export default function SettingsPage() {
         ) : (
           <>
             {/* Header */}
-            <div className={styles.cardReveal}>
+            <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
                 <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Settings</span>
@@ -496,7 +496,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* PROFILE INFORMATION (Name, Phone, Comm Pref) */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal1}`}>
+            <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 `}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
                   <User className="w-5 h-5 text-blue-600" />
@@ -548,7 +548,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* SECURITY & PASSWORD */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal2}`}>
+            <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 `}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-50 to-violet-50 flex items-center justify-center">
                   <KeyRound className="w-5 h-5 text-purple-600" />
@@ -592,7 +592,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* EMAIL CHANGE (Separate Section) */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal3}`}>
+            <Card padding="lg" className={`space-y-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 3`}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 flex items-center justify-center">
                   <Mail className="w-5 h-5 text-teal-600" />
@@ -640,7 +640,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* SERVICE ADDRESSES */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal4}`}>
+            <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 4`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center">
@@ -696,7 +696,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* PAYMENT METHODS */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-5 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal5}`}>
+            <Card padding="lg" className={`space-y-5 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 5`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
@@ -817,7 +817,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* SUPPORT & HELP */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardReveal6}`}>
+            <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 6`}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 flex items-center justify-center">
                   <Phone className="w-5 h-5 text-teal-600" />
@@ -872,7 +872,7 @@ export default function SettingsPage() {
             {/* ============================================ */}
             {/* DANGER ZONE - DELETE ACCOUNT */}
             {/* ============================================ */}
-            <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-2 border-red-100 bg-gradient-to-br from-red-50/30 to-white ${styles.cardReveal7}`}>
+            <Card padding="lg" className={`space-y-4 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border-2 border-red-100 bg-gradient-to-br from-red-50/30 to-white 7`}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
                   <Trash2 className="w-5 h-5 text-red-600" />

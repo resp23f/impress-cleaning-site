@@ -346,7 +346,8 @@ export default function NotificationsPage() {
         ) : (
           <>
             {/* Header */}
-            <div className={`mb-6 sm:mb-8 ${styles.cardReveal}`}>
+            <div className="mb-6 sm:mb-8">
+
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
@@ -374,7 +375,8 @@ export default function NotificationsPage() {
             </div>
 
             {/* Filters */}
-            <div className={`rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 mb-6 ${styles.cardReveal1}`}>
+            <div className="rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 mb-6">
+
               <div className="flex items-center gap-2 p-3 sm:p-4 overflow-x-auto">
                 <Filter className="h-4 w-4 text-gray-400 flex-shrink-0" />
                 {FILTER_OPTIONS.map((option) => (
@@ -399,7 +401,8 @@ export default function NotificationsPage() {
               </div>
             </div>
             {/* Notifications List */}
-            <div className={`rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden transition-opacity duration-200 ${styles.cardReveal2} ${loading && !isInitialLoad ? 'opacity-60' : 'opacity-100'}`}>
+            <div className={`rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden transition-opacity duration-200 ${loading && !isInitialLoad ? 'opacity-60' : 'opacity-100'}`}>
+
               {notifications.length === 0 ? (
                 <div className="py-16 text-center px-4">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center mx-auto mb-4">
@@ -422,7 +425,7 @@ export default function NotificationsPage() {
                     const isActionLoading = actionLoading === notification.id
 
                     return (
-                      <li key={notification.id} className={styles[`cardReveal${Math.min(index + 3, 6)}`] || styles.cardReveal}>
+                      <li key={notification.id}>
                         <Link
                           href={safeLink}
                           onClick={() => {

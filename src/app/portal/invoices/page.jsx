@@ -199,7 +199,7 @@ export default function InvoicesPage() {
           ) : (
             <>
               {/* Header */}
-              <div className={`mb-8 ${styles.cardReveal}`}>
+              <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
                   <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Invoices</span>
@@ -208,7 +208,8 @@ export default function InvoicesPage() {
               </div>
 
               {/* Balance Summary */}
-              <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 ${styles.cardReveal1}`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
                 <Card className="p-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] bg-gradient-to-br from-white to-slate-50">
                   <div className="flex items-center justify-between h-9 mb-4">
                     <span className="text-sm font-medium text-gray-500">Total Balance</span>
@@ -233,7 +234,7 @@ export default function InvoicesPage() {
               </div>
 
               {/* Filters */}
-              <div className={`flex justify-center mb-8 ${styles.cardReveal2}`}>
+              <div className="flex justify-center mb-8">
                 <div className="inline-flex flex-nowrap justify-center gap-2.5 sm:gap-3">
                   {['all', 'unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
                     <button
@@ -254,7 +255,7 @@ export default function InvoicesPage() {
               </div>
 
               {/* Invoices List */}
-              <div className={styles.cardReveal3}>
+              <div>
                 {filteredInvoices.length === 0 ? (
                   <Card className="p-12 text-center !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)]">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-50 to-slate-100 flex items-center justify-center mx-auto mb-4">
@@ -270,7 +271,8 @@ export default function InvoicesPage() {
                     {paginatedInvoices.map((invoice, index) => (
                       <Card
                         key={invoice.id}
-                        className={`p-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] border border-gray-100/50 ${styles[`cardReveal${Math.min(index + 4, 6)}`] || styles.cardReveal}`}
+                        className="p-6 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] border border-gray-100/50"
+
                       >
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                           <div className="flex items-start gap-4">
