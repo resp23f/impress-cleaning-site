@@ -28,6 +28,7 @@ import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
 import { AppointmentsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
+import PageTitle from '@/components/portal/PageTitle'
 
 const statusBadges = {
   pending: 'warning',
@@ -138,10 +139,6 @@ const getMaxDate = () => {
 export default function AppointmentsPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
-  // Set page title
-  useEffect(() => {
-    document.title = 'Appointments | Impress Cleaning Services'
-  }, [])
   const [loading, setLoading] = useState(true)
   const [appointments, setAppointments] = useState([])
   const [userId, setUserId] = useState(null)
@@ -456,6 +453,7 @@ export default function AppointmentsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+      <PageTitle title="Appointments" />
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10">
         {loading ? (
           <AppointmentsSkeleton />
