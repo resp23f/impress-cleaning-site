@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import styles from '../shared-animations.module.css'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { FileText, DollarSign, AlertCircle, RefreshCw } from 'lucide-react'
+import { FileText, DollarSign, AlertCircle, RefreshCw, Check, Clock } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
@@ -26,47 +26,50 @@ function CancellationTooltip() {
       </div>
 
       <Modal isOpen={open} onClose={() => setOpen(false)} title="Cancellation & Rescheduling Policy" maxWidth="sm" centered>
-        <div className="space-y-4">
+        <div className="space-y-5">
           <p className="text-sm text-gray-500">Changes made before your scheduled appointment:</p>
 
           <div className="space-y-3">
             {/* Free tier */}
-            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-100">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-green-600 text-lg">✓</span>
+            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center flex-shrink-0 shadow-md shadow-green-200">
+                <Check className="w-6 h-6 text-white" strokeWidth={3} />
               </div>
-              <div>
-                <p className="font-semibold text-gray-900">48+ hours before</p>
-                <p className="text-sm text-green-600">No fee</p>
+              <div className="text-left">
+                <p className="font-bold text-gray-900">48+ hours before</p>
+                <p className="text-sm font-medium text-green-600">No fee</p>
               </div>
             </div>
 
             {/* $50 tier */}
-            <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-xl border border-amber-100">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-amber-600 text-lg">$</span>
+            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-2xl border border-amber-100 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center flex-shrink-0 shadow-md shadow-amber-200">
+                <DollarSign className="w-6 h-6 text-white" strokeWidth={3} />
               </div>
-              <div>
-                <p className="font-semibold text-gray-900">24–48 hours before</p>
-                <p className="text-sm text-amber-600">$50 fee</p>
+              <div className="text-left">
+                <p className="font-bold text-gray-900">24–48 hours before</p>
+                <p className="text-sm font-medium text-amber-600">$50 fee</p>
               </div>
             </div>
 
             {/* Full fee tier */}
-            <div className="flex items-center gap-3 p-3 bg-red-50 rounded-xl border border-red-100">
-              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-red-600 text-lg">!</span>
+            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-red-50 to-rose-50 rounded-2xl border border-red-100 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-rose-500 flex items-center justify-center flex-shrink-0 shadow-md shadow-red-200">
+                <Clock className="w-6 h-6 text-white" strokeWidth={2.5} />
               </div>
-              <div>
-                <p className="font-semibold text-gray-900">Less than 24 hours</p>
-                <p className="text-sm text-red-600">Full service fee</p>
+              <div className="text-left">
+                <p className="font-bold text-gray-900">Less than 24 hours</p>
+                <p className="text-sm font-medium text-red-600">Full service fee</p>
               </div>
             </div>
           </div>
 
-          <p className="text-xs text-gray-400 pt-2">
-            No-shows incur the full service fee after a 15-minute grace period.
-          </p>
+          <div className="flex items-start gap-2 pt-3 border-t border-gray-100">
+            <AlertCircle className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-gray-400">
+              No-shows incur the full service fee after a 15-minute grace period.
+            </p>
+          </div>
         </div>
       </Modal>
     </>
