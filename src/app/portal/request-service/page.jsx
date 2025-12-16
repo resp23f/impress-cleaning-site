@@ -29,6 +29,7 @@ import Input from '@/components/ui/Input'
 import { RequestServiceSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 import { sanitizeText } from '@/lib/sanitize'
+export const metadata = { title: 'Request Service' }
 
 const libraries = ['places']
 

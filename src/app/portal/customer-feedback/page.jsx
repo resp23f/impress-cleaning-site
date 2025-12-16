@@ -9,11 +9,12 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
 import styles from '../shared-animations.module.css'
 import { sanitizeText } from '@/lib/sanitize'
+export const metadata = { title: 'Feedback' }
 
 export default function CustomerFeedbackPage() {
   const router = useRouter()
   const supabase = createClient()
-  
+
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [rating, setRating] = useState(0)
@@ -22,7 +23,7 @@ export default function CustomerFeedbackPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (rating === 0) {
       toast.error('Please select a rating')
       return
@@ -31,7 +32,7 @@ export default function CustomerFeedbackPage() {
     setLoading(true)
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      
+
       if (!user) {
         router.push('/auth/login')
         return
@@ -42,17 +43,18 @@ export default function CustomerFeedbackPage() {
         .insert({
           customer_id: user.id,
           rating,
-review_text: sanitizeText(feedback)?.slice(0, 2000) || null,        })
+          review_text: sanitizeText(feedback)?.slice(0, 2000) || null,
+        })
 
       if (error) throw error
 
       setSubmitted(true)
       toast.success('Thank you for your feedback!')
-      
+
       setTimeout(() => {
         router.push('/portal/dashboard')
       }, 2000)
-      
+
     } catch (err) {
       console.error('Error submitting feedback:', err)
       toast.error('Failed to submit feedback')
@@ -80,11 +82,11 @@ review_text: sanitizeText(feedback)?.slice(0, 2000) || null,        })
   }
 
   return (
-<div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-        
+
         <div className={`mb-8 ${styles.cardReveal}`}>
-                  <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
+          <h1 className="text-3xl font-bold text-[#1C294E] mb-2">
             Share Your Feedback
           </h1>
           <p className="text-gray-600">
@@ -92,10 +94,10 @@ review_text: sanitizeText(feedback)?.slice(0, 2000) || null,        })
           </p>
         </div>
 
-<div className={styles.cardReveal1}>
+        <div className={styles.cardReveal1}>
           <Card className={styles.cardHover} padding="lg">
             <form onSubmit={handleSubmit} className="space-y-6">
-              
+
               {/* Rating */}
               <div>
                 <label className="block text-sm font-semibold text-[#1C294E] mb-3">
@@ -112,11 +114,10 @@ review_text: sanitizeText(feedback)?.slice(0, 2000) || null,        })
                       className={`${styles.smoothTransition} transform hover:scale-110`}
                     >
                       <Star
-                        className={`w-12 h-12 ${
-                          star <= (hoverRating || rating)
+                        className={`w-12 h-12 ${star <= (hoverRating || rating)
                             ? 'fill-amber-400 text-amber-400'
                             : 'text-gray-300'
-                        }`}
+                          }`}
                       />
                     </button>
                   ))}

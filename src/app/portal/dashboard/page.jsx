@@ -23,6 +23,7 @@ import Badge from '@/components/ui/Badge'
 import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from '../invoices/InvoiceSidePanel'
 import styles from '../shared-animations.module.css'
+export const metadata = { title: 'Dashboard' }
 export default function DashboardPage() {
   const router = useRouter()
   const supabase = createClient()

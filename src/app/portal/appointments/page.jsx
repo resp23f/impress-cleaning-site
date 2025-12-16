@@ -28,6 +28,7 @@ import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
 import { AppointmentsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
+export const metadata = { title: 'Appointments' }
 
 const statusBadges = {
   pending: 'warning',

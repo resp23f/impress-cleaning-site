@@ -17,6 +17,7 @@ import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import toast from 'react-hot-toast'
 import confetti from 'canvas-confetti'
+export const metadata = { title: 'Pay Invoice' }
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 // Stripe Elements card styling
 const cardElementOptions = {

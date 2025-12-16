@@ -29,6 +29,7 @@ import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
 import { SettingsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
+export const metadata = { title: 'Settings' }
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
