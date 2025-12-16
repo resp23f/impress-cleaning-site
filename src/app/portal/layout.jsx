@@ -2,12 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import PortalNav from '@/components/portal/PortalNav'
 import Toast from '@/components/ui/Toast'
-export const metadata = {
-  title: {
-    template: '%s | Impress Cleaning Services',
-    default: 'Client Portal',
-  },
-}
+
 export default async function PortalLayout({ children }) {
   const supabase = await createClient()
   const {
