@@ -451,170 +451,169 @@ export default function AppointmentsPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-        <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-          <AppointmentsSkeleton />
-        </div>
-      </div>
-    )
-  }
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}>
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10">
-        <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${styles.cardReveal}`}>
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
-              <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Appointments</span>
-            </div>
-            <h1 className="text-4xl font-bold text-[#1C294E] tracking-tight">Manage Your Cleanings</h1>
-          </div>
-          <Link href="/portal/request-service" className="w-full sm:w-auto">
-            <Button variant="primary" className="w-full sm:w-auto whitespace-nowrap">Book another cleaning</Button>
-          </Link>
-        </div>
-
-        {/* Upcoming */}
-        <section className={styles.cardReveal1}>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-[#079447]" />
-            </div>
-            <h2 className="text-xl font-bold text-[#1C294E]">Upcoming</h2>
-          </div>
-          {upcoming.length === 0 ? (
-            <Card className="text-center py-8">
-              <div className="flex flex-col items-center gap-2">
-                <ShieldCheck className="w-10 h-10 text-gray-300" />
-                <p className="text-gray-600">No upcoming appointments</p>
-                <Link href="/portal/request-service">
-                  <Button variant="primary">Schedule a cleaning</Button>
-                </Link>
-              </div>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {upcoming.map((apt) => (
-                <Card key={apt.id} padding="lg" className="space-y-4 border-l-4 border-emerald-400 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] transition-shadow duration-200">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-lg font-semibold text-[#1C294E]">
-                        {format(parseISO(apt.scheduled_date), 'EEEE, MMM d')}
-                      </p>
-                      <p className="text-gray-600">
-                        {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {apt.is_recurring && (
-                        <Badge variant="info" className="flex items-center gap-1">
-                          <RefreshCw className="w-3 h-3" />
-                          Recurring
-                        </Badge>
-                      )}
-                      <Badge variant={statusBadges[apt.status] || 'default'}>
-                        {statusLabels[apt.status] || apt.status}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="space-y-2 text-sm text-gray-700">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      <span>{serviceTypeLabel(apt.service_type)}</span>
-                    </div>
-                    {apt.service_addresses && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-gray-400" />
-                        <span>
-                          {apt.service_addresses.street_address}
-                          {apt.service_addresses.unit &&
-                            `, ${apt.service_addresses.unit}`}
-                          , {apt.service_addresses.city},{' '}
-                          {apt.service_addresses.state}{' '}
-                          {apt.service_addresses.zip_code}
-                        </span>
-                      </div>
-
-                    )}
-                    {apt.team_members && apt.team_members.length > 0 && (
-                      <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-gray-400" />
-                        <span>Team: {apt.team_members.join(', ')}</span>
-                      </div>
-
-                    )}
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => openReschedule(apt)}
-                      disabled={apt.status === 'cancelled' || isWithin48Hours(apt)}
-                    >
-                      <RefreshCw className="w-4 h-4" />
-                      Reschedule
-                    </Button>    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openCancel(apt)}
-                      disabled={
-                        apt.status === 'cancelled' || isWithin48Hours(apt)
-                      }
-                    >
-                      <XCircle className="w-4 h-4" />
-                      Cancel
-                    </Button>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Past & Cancelled */}
-        <section className={styles.cardReveal2}>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-gray-500" />
-            </div>
-            <h2 className="text-xl font-bold text-[#1C294E]">Cancelled & Incomplete</h2>
-
-          </div>
-          {past.length === 0 ? (
-            <Card className="text-center py-8 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] text-gray-500">
-              Nothing here yet
-            </Card>) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {past.map((apt) => (
-                <Card key={apt.id} padding="lg" className="space-y-3 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100">    <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-[#1C294E]">
-                      {format(parseISO(apt.scheduled_date), 'MMM d, yyyy')}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
-                    </p>
-                  </div>
-                  <Badge variant={statusBadges[apt.status] || 'default'}>
-                    {statusLabels[apt.status] || apt.status}
-                  </Badge>
+        {loading ? (
+          <AppointmentsSkeleton />
+        ) : (
+          <>
+            <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${styles.cardReveal}`}>
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
+                  <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Appointments</span>
                 </div>
-                  <p className="text-sm text-gray-700">
-                    {serviceTypeLabel(apt.service_type)}
-                  </p>
-                  {apt.cancellation_reason && (
-                    <p className="text-xs text-gray-500">
-                      Cancel reason: {apt.cancellation_reason}
-                    </p>
-                  )}
-                </Card>
-              ))}
+                <h1 className="text-4xl font-bold text-[#1C294E] tracking-tight">Manage Your Cleanings</h1>
+              </div>
+              <Link href="/portal/request-service" className="w-full sm:w-auto">
+                <Button variant="primary" className={`w-full sm:w-auto whitespace-nowrap ${styles.smoothTransition}`}>Book another cleaning</Button>
+              </Link>
             </div>
-          )}
-        </section>
+
+            {/* Upcoming */}
+            <section className={styles.cardReveal1}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-[#079447]" />
+                </div>
+                <h2 className="text-xl font-bold text-[#1C294E]">Upcoming</h2>
+              </div>
+              {upcoming.length === 0 ? (
+                <Card className="text-center py-8">
+                  <div className="flex flex-col items-center gap-2">
+                    <ShieldCheck className="w-10 h-10 text-gray-300" />
+                    <p className="text-gray-600">No upcoming appointments</p>
+                    <Link href="/portal/request-service">
+                      <Button variant="primary" className={styles.smoothTransition}>Schedule a cleaning</Button>
+                    </Link>
+                  </div>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {upcoming.map((apt, index) => (
+                    <Card key={apt.id} padding="lg" className={`space-y-4 border-l-4 border-emerald-400 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] transition-shadow duration-200 ${styles[`cardReveal${Math.min(index + 3, 6)}`] || styles.cardReveal}`}>
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-lg font-semibold text-[#1C294E]">
+                            {format(parseISO(apt.scheduled_date), 'EEEE, MMM d')}
+                          </p>
+                          <p className="text-gray-600">
+                            {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {apt.is_recurring && (
+                            <Badge variant="info" className="flex items-center gap-1">
+                              <RefreshCw className="w-3 h-3" />
+                              Recurring
+                            </Badge>
+                          )}
+                          <Badge variant={statusBadges[apt.status] || 'default'}>
+                            {statusLabels[apt.status] || apt.status}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-sm text-gray-700">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          <span>{serviceTypeLabel(apt.service_type)}</span>
+                        </div>
+                        {apt.service_addresses && (
+                          <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-gray-400" />
+                            <span>
+                              {apt.service_addresses.street_address}
+                              {apt.service_addresses.unit &&
+                                `, ${apt.service_addresses.unit}`}
+                              , {apt.service_addresses.city},{' '}
+                              {apt.service_addresses.state}{' '}
+                              {apt.service_addresses.zip_code}
+                            </span>
+                          </div>
+
+                        )}
+                        {apt.team_members && apt.team_members.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4 text-gray-400" />
+                            <span>Team: {apt.team_members.join(', ')}</span>
+                          </div>
+
+                        )}
+                      </div>
+
+                      <div className="flex flex-wrap gap-3">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => openReschedule(apt)}
+                          disabled={apt.status === 'cancelled' || isWithin48Hours(apt)}
+                          className={styles.smoothTransition}
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Reschedule
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => openCancel(apt)}
+                          disabled={apt.status === 'cancelled' || isWithin48Hours(apt)}
+                          className={styles.smoothTransition}
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Cancel
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* Past & Cancelled */}
+            <section className={styles.cardReveal2}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-gray-500" />
+                </div>
+                <h2 className="text-xl font-bold text-[#1C294E]">Cancelled & Incomplete</h2>
+
+              </div>
+              {past.length === 0 ? (
+                <Card className="text-center py-8 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] text-gray-500">
+                  Nothing here yet
+                </Card>) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {past.map((apt, index) => (
+                    <Card key={apt.id} padding="lg" className={`space-y-3 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 ${styles[`cardReveal${Math.min(index + 3, 6)}`] || styles.cardReveal}`}>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold text-[#1C294E]">
+                            {format(parseISO(apt.scheduled_date), 'MMM d, yyyy')}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {formatTime(apt.scheduled_time_start)} - {formatTime(apt.scheduled_time_end)}
+                          </p>
+                        </div>
+                        <Badge variant={statusBadges[apt.status] || 'default'}>
+                          {statusLabels[apt.status] || apt.status}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        {serviceTypeLabel(apt.service_type)}
+                      </p>
+                      {apt.cancellation_reason && (
+                        <p className="text-xs text-gray-500">
+                          Cancel reason: {apt.cancellation_reason}
+                        </p>
+                      )}
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </section>
+          </>
+        )}
 
         {/* Modal */}
         <Modal

@@ -9,6 +9,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -19,6 +20,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -28,6 +30,7 @@
   0% {
     background-position: -1000px 0;
   }
+
   100% {
     background-position: 1000px 0;
   }
@@ -38,6 +41,7 @@
     opacity: 0;
     transform: translateX(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -49,6 +53,7 @@
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -60,6 +65,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -67,27 +73,36 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.8;
   }
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-8px);
   }
 }
 
 @keyframes glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(7, 148, 71, 0.15);
   }
+
   50% {
     box-shadow: 0 0 30px rgba(7, 148, 71, 0.25);
   }
@@ -97,18 +112,22 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
+
 @keyframes slideInMenuPanel {
   from {
     opacity: 0;
     transform: translateX(100%) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -120,6 +139,7 @@
     opacity: 1;
     transform: translateX(0) scale(1);
   }
+
   to {
     opacity: 0;
     transform: translateX(100%) scale(0.98);
@@ -131,6 +151,7 @@
     opacity: 0;
     backdrop-filter: blur(0px);
   }
+
   to {
     opacity: 1;
     backdrop-filter: blur(4px);
@@ -142,6 +163,7 @@
     opacity: 1;
     backdrop-filter: blur(4px);
   }
+
   to {
     opacity: 0;
     backdrop-filter: blur(0px);
@@ -179,6 +201,7 @@
 .animateGlow {
   animation: glow 2s ease-in-out infinite;
 }
+
 /* ============================================
    BUTTER-SMOOTH PAGE REVEAL SYSTEM
    ============================================ */
@@ -187,6 +210,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -198,6 +222,7 @@
     opacity: 0;
     transform: translateY(6px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -260,6 +285,7 @@
 .fadeOutOverlaySmooth {
   animation: fadeOutOverlaySmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
 /* ============================================
    STAGGER DELAYS FOR SEQUENTIAL ANIMATIONS
    ============================================ */
@@ -314,7 +340,7 @@
 
 .cardHover:hover {
   transform: translateY(-6px);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 25px 50px -12px rgba(0, 0, 0, 0.12);
 }
@@ -326,7 +352,7 @@
 
 .cardInteractive:hover {
   transform: translateY(-3px);
-  box-shadow: 
+  box-shadow:
     0 10px 25px -5px rgba(0, 0, 0, 0.08),
     0 8px 10px -6px rgba(0, 0, 0, 0.04);
   border-color: #079447;
@@ -338,6 +364,7 @@
 
 /* Subtle card lift for touch devices */
 @media (hover: none) {
+
   .cardHover:hover,
   .cardInteractive:hover {
     transform: none;
@@ -410,7 +437,7 @@
 
 .buttonHover:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 4px 12px -2px rgba(0, 0, 0, 0.12),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -430,12 +457,10 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    45deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.2) 50%,
-    transparent 70%
-  );
+  background: linear-gradient(45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 70%);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
 }
@@ -683,6 +708,7 @@
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
   .animateFadeInUp,
   .animateFadeIn,
   .animateSlideInRight,
@@ -699,7 +725,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }  
+  }
+
   .cardHover:hover,
   .cardInteractive:hover,
   .buttonHover:hover,
@@ -713,7 +740,7 @@
   .cardHover:hover {
     transform: translateY(-4px);
   }
-  
+
   .animateFadeInUp {
     animation-duration: 0.4s;
   }
