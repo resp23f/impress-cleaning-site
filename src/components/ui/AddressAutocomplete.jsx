@@ -15,12 +15,14 @@ function debounce(func, wait) {
   }
 }
 
-// XSS sanitization for address fields
-function sanitizeInput(input) {
+// XSS sanitization for address fields - preserves spaces in middle
+function sanitizeInput(input, preserveSpaces = true) {
   if (!input) return ''
-  return String(input)
-    .replace(/[<>]/g, '') // Remove angle brackets
-    .trim()
+  let sanitized = String(input)
+    .replace(/[<>]/g, '') // Remove angle brackets only
+
+  // Only trim if not preserving spaces (for final values, not during typing)
+  return preserveSpaces ? sanitized : sanitized.trim()
 }
 
 export default function AddressAutocomplete({ onSelect, onInputChange, defaultValue = '' }) {
@@ -45,7 +47,7 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
     // Debounced place selection handler
     const handlePlaceChanged = () => {
       const place = autocompleteRef.current.getPlace()
-      
+
       if (!place.address_components) {
         return
       }
@@ -65,7 +67,7 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
 
       place.address_components.forEach((component) => {
         const types = component.types
-        
+
         if (types.includes('street_number')) {
           streetNumber = sanitizeInput(component.long_name)
         }
@@ -83,7 +85,7 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
         }
       })
 
-      addressData.street_address = `${streetNumber} ${route}`.trim()
+      addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false) // trim on final
       setInputValue(addressData.formatted_address)
       onSelect(addressData)
     }
@@ -109,14 +111,14 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
   )
 
   const handleInputChange = (e) => {
-    const sanitizedValue = sanitizeInput(e.target.value)
+    // Preserve spaces during typing - only sanitize dangerous characters
+    const sanitizedValue = sanitizeInput(e.target.value, true)
     setInputValue(sanitizedValue)
     // Sync raw street address to parent for device autofill support
     if (onInputChange) {
       onInputChange(sanitizedValue)
     }
   }
-  
   return (
     <div className="relative">
       <label className="block text-sm font-semibold text-gray-700 mb-2">

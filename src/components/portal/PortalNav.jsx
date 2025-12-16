@@ -36,7 +36,7 @@ export default function PortalNav({ userName }) {
   const supabase = useMemo(() => createClient(), [])
 
   // Fetch unread notification count
-useEffect(() => {
+  useEffect(() => {
     const fetchUnreadCount = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -61,7 +61,7 @@ useEffect(() => {
       window.removeEventListener('notificationRead', handleNotificationRead)
     }
   }, [supabase])
-  
+
   const closeMenu = () => {
     setIsClosing(true)
     setTimeout(() => {
@@ -100,6 +100,12 @@ useEffect(() => {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={(e) => {
+                    if (isActive) {
+                      e.preventDefault()
+                      router.refresh()
+                    }
+                  }}
                   className={`
                     group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl
                     ${isActive
@@ -153,11 +159,11 @@ useEffect(() => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <button   
+          <button
             onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
             className="relative p-2 rounded-xl hover:bg-gray-100"
           >
-            {mobileMenuOpen ? (
+            {mobileMenuOpen && !isClosing ? (
               <X className="w-6 h-6 text-gray-700" />
             ) : (
               <>
@@ -197,7 +203,13 @@ useEffect(() => {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={closeMenu}
+                    onClick={(e) => {
+                      if (isActive) {
+                        e.preventDefault()
+                        router.refresh()
+                      }
+                      closeMenu()
+                    }}
                     className={`
                       group flex items-center gap-3 px-4 py-3.5 text-sm font-medium rounded-xl
                       ${isActive
@@ -243,8 +255,8 @@ useEffect(() => {
       )}
 
       {/* Mobile Bottom Navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)]">
-        <nav className="flex justify-around px-2 py-2">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)] pb-[env(safe-area-inset-bottom)]">
+        <nav className="flex justify-evenly items-center px-1 py-2">
           {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
@@ -252,7 +264,13 @@ useEffect(() => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
+                onClick={(e) => {
+                  if (isActive) {
+                    e.preventDefault()
+                    router.refresh()
+                  }
+                }}
+                className="flex flex-col items-center justify-center gap-1 py-1.5 flex-1 max-w-[72px] group"
               >
                 <div className={`
                   w-10 h-10 rounded-xl flex items-center justify-center
@@ -272,7 +290,13 @@ useEffect(() => {
           {/* Notifications in bottom nav */}
           <Link
             href="/portal/notifications"
-            className="flex flex-col items-center gap-1 py-2 px-3 min-w-0 group"
+            onClick={(e) => {
+              if (pathname === '/portal/notifications') {
+                e.preventDefault()
+                router.refresh()
+              }
+            }}
+            className="flex flex-col items-center justify-center gap-1 py-1.5 flex-1 max-w-[72px] group"
           >
             <div className={`
               relative w-10 h-10 rounded-xl flex items-center justify-center

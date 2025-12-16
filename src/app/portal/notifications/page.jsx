@@ -74,13 +74,13 @@ function formatDate(dateString) {
   if (!dateString || typeof dateString !== 'string') {
     return 'Unknown'
   }
-  
+
   const date = new Date(dateString)
-  
+
   if (isNaN(date.getTime())) {
     return 'Unknown'
   }
-  
+
   const now = new Date()
   const diffInSeconds = Math.floor((now - date) / 1000)
 
@@ -149,15 +149,18 @@ export default function NotificationsPage() {
   const [totalCount, setTotalCount] = useState(0)
   const [markingAll, setMarkingAll] = useState(false)
   const [actionLoading, setActionLoading] = useState(null)
-  
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
   // CRITICAL: Stable supabase reference
   const supabase = useMemo(() => createClient(), [])
 
   const fetchNotifications = useCallback(async () => {
-    setLoading(true)
+    // Only show full skeleton on initial load, not filter changes
+    if (isInitialLoad) {
+      setLoading(true)
+    }
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser()
-      
+
       if (authError || !user) {
         console.error('Authentication error:', authError)
         setNotifications([])
@@ -198,9 +201,9 @@ export default function NotificationsPage() {
       console.error('Error in fetchNotifications:', error)
     } finally {
       setLoading(false)
+      setIsInitialLoad(false)
     }
-  }, [supabase, filter, page])
-
+  }, [supabase, filter, page, isInitialLoad])
   useEffect(() => {
     fetchNotifications()
   }, [fetchNotifications])
@@ -210,17 +213,17 @@ export default function NotificationsPage() {
       e.preventDefault()
       e.stopPropagation()
     }
-    
+
     if (!notificationId || typeof notificationId !== 'string') {
       console.error('Invalid notification ID')
       return
     }
 
     setActionLoading(notificationId)
-    
+
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser()
-      
+
       if (authError || !user) {
         console.error('Authentication required')
         return
@@ -240,16 +243,16 @@ export default function NotificationsPage() {
         return
       }
 
-setNotifications(prev =>
-        prev.map(n => n.id === notificationId 
-          ? { ...n, is_read: true, read_at: new Date().toISOString() } 
+      setNotifications(prev =>
+        prev.map(n => n.id === notificationId
+          ? { ...n, is_read: true, read_at: new Date().toISOString() }
           : n
         )
       )
-      
+
       // Dispatch event to update nav bell badge
       window.dispatchEvent(new CustomEvent('notificationRead'))
-          } catch (error) {
+    } catch (error) {
       console.error('Error in markAsRead:', error)
     } finally {
       setActionLoading(null)
@@ -261,17 +264,17 @@ setNotifications(prev =>
       e.preventDefault()
       e.stopPropagation()
     }
-    
+
     if (!notificationId || typeof notificationId !== 'string') {
       console.error('Invalid notification ID')
       return
     }
 
     setActionLoading(notificationId)
-    
+
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser()
-      
+
       if (authError || !user) {
         console.error('Authentication required')
         return
@@ -291,16 +294,16 @@ setNotifications(prev =>
         return
       }
 
-setNotifications(prev =>
-        prev.map(n => n.id === notificationId 
-          ? { ...n, is_read: false, read_at: null } 
+      setNotifications(prev =>
+        prev.map(n => n.id === notificationId
+          ? { ...n, is_read: false, read_at: null }
           : n
         )
       )
-      
+
       // Dispatch event to update nav bell badge
       window.dispatchEvent(new CustomEvent('notificationRead'))
-          } catch (error) {
+    } catch (error) {
       console.error('Error in markAsUnread:', error)
     } finally {
       setActionLoading(null)
@@ -309,12 +312,12 @@ setNotifications(prev =>
 
   async function markAllAsRead() {
     if (markingAll) return
-    
+
     setMarkingAll(true)
-    
+
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser()
-      
+
       if (authError || !user) {
         console.error('Authentication required')
         return
@@ -334,15 +337,15 @@ setNotifications(prev =>
         return
       }
 
-setNotifications(prev => prev.map(n => ({ 
-        ...n, 
-        is_read: true, 
-        read_at: new Date().toISOString() 
+      setNotifications(prev => prev.map(n => ({
+        ...n,
+        is_read: true,
+        read_at: new Date().toISOString()
       })))
-      
+
       // Dispatch event to update nav bell badge
       window.dispatchEvent(new CustomEvent('notificationRead'))
-          } catch (error) {
+    } catch (error) {
       console.error('Error in markAllAsRead:', error)
     } finally {
       setMarkingAll(false)
@@ -404,20 +407,22 @@ setNotifications(prev => prev.map(n => ({
                   setFilter(option.value)
                   setPage(1)
                 }}
-                className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap ${
-                  filter === option.value
-                    ? 'bg-emerald-100 text-emerald-700'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                disabled={loading && !isInitialLoad}
+                className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-200 ${filter === option.value
+                  ? 'bg-emerald-100 text-emerald-700'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  } ${loading && !isInitialLoad ? 'opacity-50 cursor-wait' : ''}`}
               >
                 {option.label}
               </button>
             ))}
+            {loading && !isInitialLoad && (
+              <Loader2 className="h-4 w-4 text-emerald-500 animate-spin flex-shrink-0" />
+            )}
           </div>
         </div>
-
         {/* Notifications List */}
-        <div className={`rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden ${styles.cardReveal2}`}>
+        <div className={`rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden transition-opacity duration-200 ${styles.cardReveal2} ${loading && !isInitialLoad ? 'opacity-60' : 'opacity-100'}`}>
           {notifications.length === 0 ? (
             <div className="py-16 text-center px-4">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center mx-auto mb-4">
@@ -433,12 +438,12 @@ setNotifications(prev => prev.map(n => ({
           ) : (
             <ul className="divide-y divide-gray-100">
               {notifications.map((notification) => {
-                const safeLink = notification.link?.startsWith('/') 
-                  ? notification.link 
+                const safeLink = notification.link?.startsWith('/')
+                  ? notification.link
                   : '/portal'
-                
+
                 const isActionLoading = actionLoading === notification.id
-                
+
                 return (
                   <li key={notification.id}>
                     <Link
@@ -448,9 +453,8 @@ setNotifications(prev => prev.map(n => ({
                           markAsRead(notification.id)
                         }
                       }}
-                      className={`flex items-start gap-3 sm:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 active:bg-gray-100 ${
-                        !notification.is_read ? 'bg-emerald-50/50' : ''
-                      }`}
+                      className={`flex items-start gap-3 sm:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 active:bg-gray-100 ${!notification.is_read ? 'bg-emerald-50/50' : ''
+                        }`}
                     >
                       <div className="flex-shrink-0 mt-0.5">
                         <div className="p-2 bg-gray-100 rounded-lg">
@@ -470,9 +474,9 @@ setNotifications(prev => prev.map(n => ({
                               {formatDate(notification.created_at)}
                             </p>
                           </div>
-                          
+
                           <div className="flex-shrink-0 flex items-center gap-2">
-{!notification.is_read ? (
+                            {!notification.is_read ? (
                               <>
                                 <span className="h-2 w-2 bg-emerald-500 rounded-full ring-2 ring-emerald-100" />
                                 <button
@@ -504,7 +508,7 @@ setNotifications(prev => prev.map(n => ({
                                 )}
                               </button>
                             )}
-                                                      </div>
+                          </div>
                         </div>
                       </div>
                     </Link>

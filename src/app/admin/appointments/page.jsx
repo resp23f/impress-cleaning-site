@@ -62,7 +62,7 @@ const STATUS_CONFIG = {
 
 export default function AppointmentsPage() {
   const supabase = useMemo(() => createClient(), [])
-  
+
   const [loading, setLoading] = useState(true)
   const [appointments, setAppointments] = useState([])
   const [customers, setCustomers] = useState([])
@@ -111,9 +111,9 @@ export default function AppointmentsPage() {
       if (!res.ok) throw new Error('Failed to load appointments')
       const { data } = await res.json()
       setAppointments(data || [])
-} catch (error) {
+    } catch (error) {
       toast.error('Failed to load appointments')
-          } finally {
+    } finally {
       setLoading(false)
     }
   }
@@ -124,9 +124,10 @@ export default function AppointmentsPage() {
       if (!res.ok) throw new Error('Failed to load customers')
       const { data } = await res.json()
       setCustomers(data || [])
-} catch (error) {
+    } catch (error) {
       // Silent fail - customers list is supplementary
-    }  }
+    }
+  }
 
   // Load addresses when customer is selected
   useEffect(() => {
@@ -148,9 +149,9 @@ export default function AppointmentsPage() {
   const filteredAppointments = useMemo(() => {
     let filtered = [...appointments]
 
-if (searchQuery) {
+    if (searchQuery) {
       const q = sanitizeText(searchQuery)?.toLowerCase() || ''
-            filtered = filtered.filter(apt =>
+      filtered = filtered.filter(apt =>
         apt.profiles?.full_name?.toLowerCase().includes(q) ||
         apt.profiles?.email?.toLowerCase().includes(q) ||
         apt.profiles?.phone?.toLowerCase().includes(q)
@@ -220,14 +221,14 @@ if (searchQuery) {
   const minDateObj = new Date()
   const maxDateObj = new Date()
   maxDateObj.setMonth(maxDateObj.getMonth() + 3)
-  
+
   const calendarDays = useMemo(() => {
     const startOfMonth = new Date(calendarMonth)
     startOfMonth.setDate(1)
     const monthStartDay = startOfMonth.getDay()
     const gridStart = new Date(startOfMonth)
     gridStart.setDate(gridStart.getDate() - monthStartDay)
-    
+
     const days = []
     for (let i = 0; i < 42; i++) {
       days.push(new Date(gridStart))
@@ -270,7 +271,7 @@ if (searchQuery) {
 
   const handleCreateAppointment = async () => {
     const { customer_id, address_id, service_type, scheduled_date, timeRange, special_instructions } = createForm
-    
+
     if (!customer_id || !service_type || !scheduled_date || !timeRange) {
       toast.error('Please fill in all required fields')
       return
@@ -305,9 +306,9 @@ if (searchQuery) {
       toast.success('Appointment created successfully!')
       setShowCreateModal(false)
       loadAppointments()
-} catch (error) {
+    } catch (error) {
       toast.error(error.message || 'Failed to create appointment')
-          } finally {
+    } finally {
       setProcessing(false)
     }
   }
@@ -345,15 +346,17 @@ if (searchQuery) {
               scheduledTime: formatTime(selectedAppointment.scheduled_time_start),
             }),
           })
-} catch (e) {
+        } catch (e) {
           // Email send failed silently - appointment still updated
-        }      }
+        }
+      }
 
       toast.success(`Appointment ${status.replace('_', ' ')}!`)
       setShowManageModal(false)
       loadAppointments()
-} catch (error) {
-      toast.error('Failed to update appointment')    } finally {
+    } catch (error) {
+      toast.error('Failed to update appointment')
+    } finally {
       setProcessing(false)
     }
   }
@@ -402,9 +405,10 @@ if (searchQuery) {
               newTime: formatTime(timeStart),
             }),
           })
-} catch (e) {
+        } catch (e) {
           // Email send failed silently - reschedule still saved
-        }      }
+        }
+      }
 
       toast.success('Appointment rescheduled!')
       setShowManageModal(false)
@@ -415,7 +419,46 @@ if (searchQuery) {
       setProcessing(false)
     }
   }
+  // Toggle running late status
+  const handleToggleRunningLate = async () => {
+    if (!selectedAppointment) return
 
+    setProcessing(true)
+    try {
+      const newStatus = !selectedAppointment.is_running_late
+
+      const { error } = await supabase
+        .from('appointments')
+        .update({
+          is_running_late: newStatus,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', selectedAppointment.id)
+
+      if (error) throw error
+
+      // Create customer notification
+      if (newStatus && selectedAppointment.customer_id) {
+        await supabase.from('customer_notifications').insert({
+          user_id: selectedAppointment.customer_id,
+          type: 'appointment_update',
+          title: 'Appointment Update',
+          message: 'Our team is running slightly behind schedule. We\'ll be there as soon as possible. Thank you for your patience!',
+          link: '/portal/dashboard',
+          reference_id: selectedAppointment.id,
+          reference_type: 'appointment',
+        })
+      }
+
+      toast.success(newStatus ? 'Marked as running late' : 'Running late status cleared')
+      setSelectedAppointment(prev => ({ ...prev, is_running_late: newStatus }))
+      loadAppointments()
+    } catch (error) {
+      toast.error('Failed to update status')
+    } finally {
+      setProcessing(false)
+    }
+  }
   const handleUpdateTeam = async () => {
     if (!selectedAppointment) return
 
@@ -436,8 +479,9 @@ if (searchQuery) {
       toast.success('Team updated!')
       setSelectedAppointment(prev => ({ ...prev, team_members: teamMembers }))
       loadAppointments()
-} catch (error) {
-      toast.error('Failed to update team')    } finally {
+    } catch (error) {
+      toast.error('Failed to update team')
+    } finally {
       setProcessing(false)
     }
   }
@@ -458,8 +502,9 @@ if (searchQuery) {
       toast.success('Appointment deleted')
       setShowManageModal(false)
       loadAppointments()
-} catch (error) {
-      toast.error('Failed to delete')    } finally {
+    } catch (error) {
+      toast.error('Failed to delete')
+    } finally {
       setProcessing(false)
     }
   }
@@ -502,7 +547,7 @@ if (searchQuery) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
       <AdminNav pendingCount={stats.pending} requestsCount={0} />
-      
+
       <div className="lg:pl-64">
         <main className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {/* Header */}
@@ -538,8 +583,8 @@ if (searchQuery) {
                   onClick={() => handleStatClick(stat.key)}
                   className={`
                     relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300
-                    ${isActive 
-                      ? `bg-gradient-to-br ${stat.gradient} text-white shadow-lg scale-[1.02]` 
+                    ${isActive
+                      ? `bg-gradient-to-br ${stat.gradient} text-white shadow-lg scale-[1.02]`
                       : 'bg-white hover:shadow-lg hover:scale-[1.01] border border-gray-100'
                     }
                   `}
@@ -553,9 +598,8 @@ if (searchQuery) {
                         {stat.value}
                       </p>
                     </div>
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isActive ? 'bg-white/20' : `bg-${stat.color}-100`
-                    }`}>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isActive ? 'bg-white/20' : `bg-${stat.color}-100`
+                      }`}>
                       <Icon className={`w-6 h-6 ${isActive ? 'text-white' : `text-${stat.color}-600`}`} />
                     </div>
                   </div>
@@ -607,7 +651,7 @@ if (searchQuery) {
                 />
               </div>
             </div>
-            
+
             {hasActiveFilters && (
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
                 <p className="text-sm text-gray-600">
@@ -630,11 +674,11 @@ if (searchQuery) {
               {filteredAppointments.map((apt) => {
                 const statusConfig = STATUS_CONFIG[apt.status] || STATUS_CONFIG.pending
                 const StatusIcon = apt.status === 'confirmed' ? CheckCircle :
-                                   apt.status === 'pending' ? Clock :
-                                   apt.status === 'en_route' ? Navigation :
-                                   apt.status === 'cancelled' ? XCircle :
-                                   apt.status === 'completed' ? CheckCircle : AlertCircle
-                
+                  apt.status === 'pending' ? Clock :
+                    apt.status === 'en_route' ? Navigation :
+                      apt.status === 'cancelled' ? XCircle :
+                        apt.status === 'completed' ? CheckCircle : AlertCircle
+
                 return (
                   <div
                     key={apt.id}
@@ -647,7 +691,7 @@ if (searchQuery) {
                           <div className={`w-14 h-14 rounded-2xl ${statusConfig.bg} flex items-center justify-center flex-shrink-0`}>
                             <StatusIcon className={`w-7 h-7 ${statusConfig.text}`} />
                           </div>
-                          
+
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-3 flex-wrap mb-2">
                               <h3 className="text-lg font-bold text-[#1C294E] truncate">
@@ -657,11 +701,11 @@ if (searchQuery) {
                                 {statusConfig.label}
                               </Badge>
                             </div>
-                            
+
                             <p className="text-[#079447] font-medium mb-3">
                               {formatServiceType(apt.service_type)}
                             </p>
-                            
+
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
                               <div className="flex items-center gap-2">
                                 <Calendar className="w-4 h-4 text-gray-400" />
@@ -787,11 +831,10 @@ if (searchQuery) {
                   key={service.value}
                   type="button"
                   onClick={() => setCreateForm(prev => ({ ...prev, service_type: service.value }))}
-                  className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
-                    createForm.service_type === service.value
-                      ? 'border-[#079447] bg-[#079447]/5 text-[#079447]'
-                      : 'border-gray-200 hover:border-gray-300 text-gray-700'
-                  }`}
+                  className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${createForm.service_type === service.value
+                    ? 'border-[#079447] bg-[#079447]/5 text-[#079447]'
+                    : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                    }`}
                 >
                   {service.label}
                 </button>
@@ -899,15 +942,13 @@ if (searchQuery) {
                     key={time.value}
                     type="button"
                     onClick={() => setCreateForm(prev => ({ ...prev, timeRange: time.value }))}
-                    className={`relative p-4 rounded-xl border-2 transition-all text-center ${
-                      isSelected
-                        ? 'border-[#079447] bg-[#079447]/5'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    className={`relative p-4 rounded-xl border-2 transition-all text-center ${isSelected
+                      ? 'border-[#079447] bg-[#079447]/5'
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
                   >
-                    <div className={`w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center ${
-                      isSelected ? 'bg-[#079447]' : 'bg-gray-100'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center ${isSelected ? 'bg-[#079447]' : 'bg-gray-100'
+                      }`}>
                       <Icon className={`w-5 h-5 ${isSelected ? 'text-white' : 'text-gray-500'}`} />
                     </div>
                     <p className={`font-semibold text-sm ${isSelected ? 'text-[#079447]' : 'text-[#1C294E]'}`}>
@@ -1006,7 +1047,7 @@ if (searchQuery) {
                   </p>
                 </div>
               </div>
-              
+
               {selectedAppointment.service_addresses && (
                 <div className="bg-gray-50 rounded-xl p-4 mt-4">
                   <p className="text-xs text-gray-500 mb-1">Address</p>
@@ -1087,6 +1128,37 @@ if (searchQuery) {
             {/* Quick Actions */}
             <div className="pt-4 border-t border-gray-200">
               <h3 className="text-sm font-semibold text-gray-700 mb-3">Quick Actions</h3>
+
+              {/* Running Late Toggle - Only for today's confirmed/en_route appointments */}
+              {(() => {
+                const today = format(new Date(), 'yyyy-MM-dd')
+                const isToday = selectedAppointment.scheduled_date === today
+                const isActive = ['confirmed', 'en_route'].includes(selectedAppointment.status)
+
+                if (isToday && isActive) {
+                  return (
+                    <div className="mb-3">
+                      <Button
+                        variant={selectedAppointment.is_running_late ? 'warning' : 'outline'}
+                        fullWidth
+                        onClick={handleToggleRunningLate}
+                        loading={processing}
+                        className={selectedAppointment.is_running_late ? 'bg-amber-500 hover:bg-amber-600 text-white border-amber-500' : ''}
+                      >
+                        <Clock className="w-4 h-4" />
+                        {selectedAppointment.is_running_late ? 'Running Late (Click to Clear)' : 'Mark as Running Late'}
+                      </Button>
+                      {selectedAppointment.is_running_late && (
+                        <p className="text-xs text-amber-600 mt-1 text-center">
+                          Customer has been notified
+                        </p>
+                      )}
+                    </div>
+                  )
+                }
+                return null
+              })()}
+
               <div className="grid grid-cols-2 gap-3">
                 <Link href={`/admin/invoices?customer=${selectedAppointment.customer_id}`}>
                   <Button variant="outline" fullWidth size="sm">

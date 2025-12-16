@@ -52,7 +52,7 @@ export default async function AdminDashboard() {
       .select('*', { count: 'exact', head: true })
       .eq('role', 'customer')
       .eq('account_status', 'active'),
-    
+
     // Today's appointments with details
     supabase
       .from('appointments')
@@ -63,21 +63,21 @@ export default async function AdminDashboard() {
       `)
       .eq('scheduled_date', today)
       .order('scheduled_time_start', { ascending: true }),
-    
+
     // Upcoming appointments (next 7 days)
     supabase
       .from('appointments')
       .select('*', { count: 'exact', head: true })
       .gte('scheduled_date', today)
       .in('status', ['pending', 'confirmed']),
-    
+
     // Unpaid invoices
     supabase
       .from('invoices')
       .select('id, total, amount, status, due_date, invoice_number')
       .in('status', ['sent', 'overdue'])
       .eq('archived', false),
-    
+
     // Overdue invoices specifically
     supabase
       .from('invoices')
@@ -86,26 +86,25 @@ export default async function AdminDashboard() {
       .eq('archived', false)
       .order('due_date', { ascending: true })
       .limit(5),
-    
+
     // Pending service requests
     supabase
       .from('service_requests')
       .select(`
         *,
-        profiles(full_name, email),
-        service_addresses(street_address, city)
+        profiles!customer_id(full_name, email),
+        service_addresses!address_id(street_address, city)
       `)
       .eq('status', 'pending')
       .order('created_at', { ascending: false })
       .limit(5),
-    
     // Pending registrations
     supabase
       .from('profiles')
       .select('*', { count: 'exact', head: true })
       .eq('account_status', 'pending')
       .eq('role', 'customer'),
-    
+
     // Recent payments (last 7 days)
     supabase
       .from('invoices')
@@ -114,27 +113,27 @@ export default async function AdminDashboard() {
       .gte('paid_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
       .order('paid_date', { ascending: false })
       .limit(5),
-    
+
     // This month's revenue
     supabase
       .from('invoices')
       .select('total, amount')
       .eq('status', 'paid')
       .gte('paid_date', startOfMonth),
-    
+
     // Total all-time revenue
     supabase
       .from('invoices')
       .select('total, amount')
       .eq('status', 'paid'),
-    
+
     // Zelle claims awaiting verification
     supabase
       .from('invoices')
       .select('id, invoice_number, total, amount, profiles(full_name)')
       .eq('payment_method', 'zelle')
       .eq('status', 'sent'),
-    
+
     // Recent activity (admin notifications)
     supabase
       .from('admin_notifications')
@@ -375,8 +374,8 @@ export default async function AdminDashboard() {
                   {todayAppointments.map((apt, index) => {
                     const statusConfig = getStatusConfig(apt.status)
                     return (
-                      <div 
-                        key={apt.id} 
+                      <div
+                        key={apt.id}
                         className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors"
                       >
                         {/* Time */}
@@ -441,8 +440,8 @@ export default async function AdminDashboard() {
                     const iconConfig = getActivityIcon(activity.type)
                     const Icon = iconConfig.icon
                     return (
-                      <Link 
-                        key={activity.id} 
+                      <Link
+                        key={activity.id}
                         href={activity.link || '/admin/notifications'}
                         className="flex items-start gap-3 px-6 py-4 hover:bg-gray-50 transition-colors"
                       >
@@ -496,8 +495,8 @@ export default async function AdminDashboard() {
               {pendingRequests.length > 0 ? (
                 <div className="divide-y divide-gray-50">
                   {pendingRequests.slice(0, 4).map((req) => (
-                    <Link 
-                      key={req.id} 
+                    <Link
+                      key={req.id}
                       href="/admin/requests"
                       className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors"
                     >

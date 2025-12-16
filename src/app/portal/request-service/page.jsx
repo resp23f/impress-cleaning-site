@@ -85,7 +85,59 @@ const TIME_RANGES = [
     icon: Sunset,
   },
 ]
-
+// Service-specific planning options
+const SERVICE_OPTIONS = {
+  standard: {
+    helperText: 'Standard cleaning assumes the home is regularly maintained. These selections help us plan the appropriate time and team.',
+    options: [
+      { value: 'first_time', label: 'First-time cleaning at this address' },
+      { value: 'buildup', label: 'Noticeable buildup in kitchens or bathrooms (grease, soap scum, grime)' },
+      { value: 'pet_hair', label: 'Heavy pet hair present' },
+      { value: 'construction_dust', label: 'Recent remodel or construction dust' },
+      { value: 'interior_windows', label: 'Interior windows requested' },
+    ],
+  },
+  deep: {
+    helperText: 'Deep cleaning includes detailed work throughout the home. These selections help identify cases that may require extended time or expanded scope.',
+    options: [
+      { value: 'significant_buildup', label: 'Significant buildup beyond a typical deep clean (heavy grease, scale, or residue)' },
+      { value: 'pet_hair_odors', label: 'Heavy pet hair and/or lingering pet odors' },
+      { value: 'inside_appliances', label: 'Inside appliances requested (oven and/or fridge)' },
+      { value: 'first_professional', label: 'First professional cleaning in a long period of time' },
+      { value: 'interior_windows', label: 'Interior windows requested' },
+    ],
+  },
+  move_in_out: {
+    helperText: 'Move in/out cleaning scope varies based on property status. These selections help us plan accordingly.',
+    options: [
+      { value: 'vacant', label: 'Property will be vacant' },
+      { value: 'inside_appliances', label: 'Inside appliances requested (oven and/or fridge)' },
+      { value: 'cabinets_closets', label: 'Inside cabinets or closets requested' },
+      { value: 'heavy_buildup', label: 'Heavy buildup present' },
+      { value: 'interior_windows', label: 'Interior windows requested' },
+    ],
+  },
+  post_construction: {
+    helperText: 'Post-construction cleaning varies by debris type and intensity. These selections help us plan crew size and duration.',
+    options: [
+      { value: 'fine_dust', label: 'Fine construction dust on floors and surfaces' },
+      { value: 'paint_residue', label: 'Paint, caulk, or adhesive residue present' },
+      { value: 'heavy_debris', label: 'Heavy debris or material remnants' },
+      { value: 'interior_windows', label: 'Interior windows requested' },
+      { value: 'first_after_construction', label: 'First professional cleaning after construction' },
+    ],
+  },
+  office: {
+    helperText: 'Office cleaning scope depends on traffic and facilities. These selections help us plan appropriately.',
+    options: [
+      { value: 'high_traffic', label: 'High-traffic office environment (10+ people daily)' },
+      { value: 'breakroom', label: 'Breakroom or kitchen included' },
+      { value: 'restrooms', label: 'Restrooms require deep sanitizing' },
+      { value: 'interior_windows', label: 'Interior windows requested' },
+      { value: 'first_time', label: 'First-time cleaning for this office space' },
+    ],
+  },
+}
 const FREQUENCIES = [
   {
     value: 'weekly',
@@ -150,11 +202,11 @@ export default function RequestServicePage() {
       zipCode: '',
       placeId: '',
     },
-    specialRequests: '',
+    planningOptions: [], // Selected checkboxes
+    additionalNotes: '', // Only shown if planningOptions.length > 0
     isRecurring: false,
     recurringFrequency: '',
   })
-
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const base = formData.preferredDate
@@ -315,13 +367,24 @@ export default function RequestServicePage() {
         addressId = newAddr.id
       }
 
+      // Build special_requests from planning options + additional notes
+      const planningLabels = formData.planningOptions.map(opt => {
+        const serviceOpts = SERVICE_OPTIONS[formData.serviceType]?.options || []
+        const found = serviceOpts.find(o => o.value === opt)
+        return found?.label || opt
+      })
+      const specialRequestsText = [
+        planningLabels.length > 0 ? `Planning flags: ${planningLabels.join('; ')}` : '',
+        formData.additionalNotes ? `Notes: ${sanitizeText(formData.additionalNotes)}` : '',
+      ].filter(Boolean).join('\n\n')
+
       const payload = {
         service_type: formData.serviceType,
         preferred_date: formData.preferredDate,
         preferred_time: formData.preferredTime,
         is_flexible: formData.isFlexible,
         address_id: addressId,
-        special_requests: sanitizeText(formData.specialRequests),
+        special_requests: specialRequestsText || null,
         is_recurring: formData.isRecurring,
         recurring_frequency: formData.isRecurring ? formData.recurringFrequency : null,
       }
@@ -333,14 +396,14 @@ export default function RequestServicePage() {
         body: JSON.stringify(payload),
       })
 
-if (!res.ok) {
+      if (!res.ok) {
         const data = await res.json().catch(() => ({}))
         throw new Error(data.error || 'Failed to submit request')
       }
 
       // Create notification for the user
       const serviceLabel = SERVICE_TYPES.find(s => s.value === formData.serviceType)?.title || formData.serviceType
-      
+
       await supabase.from('customer_notifications').insert({
         user_id: user.id,
         type: 'service_request_submitted',
@@ -350,7 +413,8 @@ if (!res.ok) {
         is_read: false
       })
 
-      setStep(6)    } catch (error) {
+      setStep(6)
+    } catch (error) {
       console.error('Error submitting request:', error)
       toast.error(error.message || 'Failed to submit request')
     } finally {
@@ -381,7 +445,7 @@ if (!res.ok) {
 
   const weekdayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
-if (!user) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
         <div className="py-8 px-4 sm:px-6 lg:px-8">
@@ -390,7 +454,7 @@ if (!user) {
       </div>
     )
   }
-    // Success screen
+  // Success screen
   if (step === 6) {
     return (
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
@@ -434,7 +498,8 @@ if (!user) {
                     zipCode: '',
                     placeId: '',
                   },
-                  specialRequests: '',
+                  planningOptions: [],
+                  additionalNotes: '',
                   isRecurring: false,
                   recurringFrequency: '',
                 })
@@ -787,22 +852,36 @@ if (!user) {
                         newAddress: { ...formData.newAddress, unit: e.target.value }
                       })}
                     />
-                    {/* City, State, Zip auto-filled */}
+
+                    {/* City, State, Zip - auto-filled but editable */}
                     <div className="grid grid-cols-3 gap-4">
                       <Input
                         label="City"
                         value={formData.newAddress.city}
-                        readOnly
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          newAddress: { ...formData.newAddress, city: e.target.value }
+                        })}
+                        placeholder="City"
                       />
                       <Input
                         label="State"
                         value={formData.newAddress.state}
-                        readOnly
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          newAddress: { ...formData.newAddress, state: e.target.value.toUpperCase().slice(0, 2) }
+                        })}
+                        placeholder="TX"
+                        maxLength={2}
                       />
                       <Input
                         label="Zip"
                         value={formData.newAddress.zipCode}
-                        readOnly
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          newAddress: { ...formData.newAddress, zipCode: e.target.value.replace(/\D/g, '').slice(0, 10) }
+                        })}
+                        placeholder="78633"
                       />
                     </div>
                   </div>
@@ -828,25 +907,131 @@ if (!user) {
             </div>
           )}
 
-          {/* Step 4: Special Requests */}
+          {/* Step 4: Planning Options */}
           {step === 4 && (
             <div>
               <h2 className="text-2xl font-bold text-[#1C294E] mb-2">
-                Any special requests?
+                Help us plan your service
               </h2>
               <p className="text-gray-600 mb-6">
-                Tell us anything special about this cleaning (optional)
+                Select any that apply to help us schedule the right team and time (optional)
               </p>
 
-              <textarea
-                value={formData.specialRequests}
-                onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
-                placeholder="E.g., Focus on kitchen, pet-friendly products, gate code is 1234..."
-                rows={6}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 transition-all duration-200 resize-none"
-              />
+              {SERVICE_OPTIONS[formData.serviceType] && (
+                <div className="space-y-5">
+                  {/* Helper text card */}
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/80">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <p className="text-sm text-blue-700 leading-relaxed">
+                        {SERVICE_OPTIONS[formData.serviceType].helperText}
+                      </p>
+                    </div>
+                  </div>
 
-              <div className="flex gap-3 mt-6">
+                  {/* Checkboxes */}
+                  <div className="space-y-3">
+                    {SERVICE_OPTIONS[formData.serviceType].options.map((option, index) => {
+                      const isChecked = formData.planningOptions.includes(option.value)
+                      return (
+                        <label
+                          key={option.value}
+                          className={`
+                            group relative flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer 
+                            transition-all duration-200 ease-out
+                            ${isChecked
+                              ? 'border-[#079447] bg-gradient-to-br from-emerald-50/80 to-green-50/50 shadow-sm shadow-emerald-100'
+                              : 'border-gray-200 bg-white hover:border-emerald-200 hover:bg-gray-50/50'
+                            }
+                          `}
+                        >
+                          {/* Custom checkbox */}
+                          <div className={`
+                            relative w-6 h-6 rounded-lg border-2 flex items-center justify-center flex-shrink-0 mt-0.5
+                            transition-all duration-200
+                            ${isChecked
+                              ? 'bg-[#079447] border-[#079447]'
+                              : 'border-gray-300 bg-white group-hover:border-emerald-300'
+                            }
+                          `}>
+                            <CheckCircle className={`
+                              w-4 h-4 text-white transition-all duration-200
+                              ${isChecked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}
+                            `} />
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData({
+                                    ...formData,
+                                    planningOptions: [...formData.planningOptions, option.value],
+                                  })
+                                } else {
+                                  setFormData({
+                                    ...formData,
+                                    planningOptions: formData.planningOptions.filter(v => v !== option.value),
+                                  })
+                                }
+                              }}
+                              className="absolute inset-0 opacity-0 cursor-pointer"
+                            />
+                          </div>
+
+                          {/* Label text */}
+                          <span className={`
+                            text-sm leading-relaxed transition-colors duration-200
+                            ${isChecked ? 'text-[#1C294E] font-medium' : 'text-gray-600 group-hover:text-gray-800'}
+                          `}>
+                            {option.label}
+                          </span>
+
+                          {/* Selected indicator accent */}
+                          {isChecked && (
+                            <div className="absolute top-0 left-0 w-1 h-full bg-[#079447] rounded-l-xl" />
+                          )}
+                        </label>
+                      )
+                    })}
+                  </div>
+
+                  {/* Additional notes - only shown if at least one option selected */}
+                  {formData.planningOptions.length > 0 && (
+                    <div className="mt-6 pt-6 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center">
+                          <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </div>
+                        <label className="text-sm font-semibold text-[#1C294E]">
+                          Additional notes
+                        </label>
+                        <span className="text-xs text-gray-400 font-normal">(optional)</span>
+                      </div>
+                      <textarea
+                        value={formData.additionalNotes}
+                        onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
+                        placeholder="Gate code, parking instructions, areas of focus, or anything else we should know..."
+                        rows={3}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 transition-all duration-200 resize-none text-sm placeholder:text-gray-400"
+                      />
+                    </div>
+                  )}
+
+                  {/* Selection summary */}
+                  {formData.planningOptions.length > 0 && (
+                    <div className="flex items-center gap-2 text-sm text-emerald-600 font-medium">
+                      <CheckCircle className="w-4 h-4" />
+                      <span>{formData.planningOptions.length} option{formData.planningOptions.length !== 1 ? 's' : ''} selected</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="flex gap-3 mt-8">
                 <Button
                   variant="secondary"
                   onClick={() => setStep(3)}
@@ -864,7 +1049,6 @@ if (!user) {
               </div>
             </div>
           )}
-
           {/* Step 5: Recurring */}
           {step === 5 && (
             <div>
