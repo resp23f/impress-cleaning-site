@@ -31,22 +31,9 @@ export default async function PortalLayout({ children }) {
   html, body {
     background: #f9fafb;
     overscroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  @supports (-webkit-touch-callout: none) {
-    /* iOS Safari specific */
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-    #portal-scroll-container {
-      height: 100%;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
   }
 `}</style>
-      <div id="portal-scroll-container" className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 overscroll-none">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 overscroll-none">
         <PortalNav userName={firstName} />
         {/* Main Content */}
         <div className="lg:pl-72">
