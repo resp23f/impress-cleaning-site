@@ -124,6 +124,7 @@ export default function SettingsPage() {
       if (!stripe) return
       const elements = stripe.elements()
       const card = elements.create('card', {
+        disableLink: true,
         style: {
           base: {
             fontSize: '16px',
@@ -730,7 +731,7 @@ export default function SettingsPage() {
                         <p className="text-sm text-gray-600">
                           Expires {pm.card_exp_month}/{pm.card_exp_year}
                         </p>
-                        {pm.is_default && (
+                        {(pm.is_default || payments.length === 1) && (
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
                             <Star className="w-3.5 h-3.5 fill-amber-600" /> Default Card
                           </span>
@@ -742,7 +743,7 @@ export default function SettingsPage() {
                         </Button>
                       </div>
                     </div>
-                    {!pm.is_default && (
+                    {!pm.is_default && payments.length > 1 && (
                       <div className="mt-3 pt-3 border-t border-gray-100">
                         <Button size="sm" variant="ghost" onClick={() => makeDefaultCard(pm.stripe_payment_method_id)} className="text-xs">
                           Make Default

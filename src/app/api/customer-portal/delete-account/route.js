@@ -19,7 +19,7 @@ export async function DELETE() {
   const userId = user.id
   const userEmail = user.email
 
-  // Get user's name before deletion
+  // Get user's name before anonymization
   const { data: profile } = await supabaseAdmin
     .from('profiles')
     .select('full_name')
@@ -29,36 +29,38 @@ export async function DELETE() {
   const userName = profile?.full_name || 'Valued Customer'
 
   try {
-    // Anonymize profile data
+    // Soft delete: Update profile status and anonymize PII
     await supabaseAdmin
       .from('profiles')
       .update({
-        full_name: 'Deleted Customer',
+        account_status: 'deleted',
+        deleted_at: new Date().toISOString(),
+        email: `deleted_${userId}@removed.local`,
         phone: null,
-        email: null,
+        // Keep full_name for business record context
       })
       .eq('id', userId)
 
-    // Anonymize addresses
+    // Anonymize addresses (keep structure for appointment history context)
     await supabaseAdmin
       .from('service_addresses')
       .update({
-        street_address: 'Deleted Address',
+        street_address: 'Address Removed',
         unit: null,
-        city: null,
-        state: null,
-        zip_code: null,
+        city: 'Removed',
+        state: 'XX',
+        zip_code: '00000',
         is_primary: false,
       })
       .eq('user_id', userId)
 
-    // Delete payment methods
+    // Delete payment methods (security - don't retain card data)
     await supabaseAdmin
       .from('payment_methods')
       .delete()
       .eq('user_id', userId)
 
-    // Delete auth user
+    // Delete auth user (prevents login, but profile record remains)
     const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId)
     if (authError) throw authError
 
@@ -103,7 +105,7 @@ export async function DELETE() {
                         </p>
                         
                         <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #475569;">
-                          All your personal information, saved addresses, and payment methods have been removed from our system.
+                          Your personal information and payment methods have been removed from our system. We may retain basic records for legal and accounting purposes.
                         </p>
                         
                         <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: #475569;">
@@ -141,7 +143,6 @@ export async function DELETE() {
         `,
       })
     } catch (emailError) {
-      // Log but don't fail - account is already deleted
       console.error('Failed to send deletion confirmation email:', emailError)
     }
 

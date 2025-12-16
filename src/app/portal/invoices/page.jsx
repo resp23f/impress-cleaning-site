@@ -210,8 +210,8 @@ export default function InvoicesPage() {
           </div>
 
           {/* Filters */}
-          <div className={`rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 mb-6 ${styles.cardReveal2}`}>
-            <div className="flex flex-wrap items-center gap-2 p-3 sm:p-4">
+          <div className={`flex justify-center mb-8 ${styles.cardReveal2}`}>
+            <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3">
               {['all', 'unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
                 <button
                   key={filterOption}
@@ -219,9 +219,9 @@ export default function InvoicesPage() {
                     setFilter(filterOption)
                     setCurrentPage(1)
                   }}
-                  className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${filter === filterOption
-                    ? 'bg-emerald-100 text-emerald-700'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  className={`px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 ${filter === filterOption
+                    ? 'bg-[#079447] text-white shadow-lg shadow-emerald-200'
+                    : 'bg-white text-gray-600 shadow-md hover:shadow-lg hover:bg-gray-50 border border-gray-100'
                     }`}
                 >
                   {filterOption.charAt(0).toUpperCase() + filterOption.slice(1)}
