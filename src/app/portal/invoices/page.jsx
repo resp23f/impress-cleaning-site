@@ -25,11 +25,48 @@ function CancellationTooltip() {
         <AlertCircle className="w-4 h-4 text-red-600" />
       </div>
 
-      <Modal isOpen={open} onClose={() => setOpen(false)} title="Cancellation Policy" maxWidth="sm" centered>
-        <div className="space-y-3 text-sm text-gray-700">
-          <p><span className="font-semibold text-gray-900">48+ Hours:</span> Free cancellation</p>
-          <p><span className="font-semibold text-gray-900">24-48 Hours:</span> $50 fee</p>
-          <p><span className="font-semibold text-gray-900">Under 24 Hours:</span> Full service fee</p>
+      <Modal isOpen={open} onClose={() => setOpen(false)} title="Cancellation & Rescheduling Policy" maxWidth="sm" centered>
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500">Changes made before your scheduled appointment:</p>
+
+          <div className="space-y-3">
+            {/* Free tier */}
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-100">
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-green-600 text-lg">✓</span>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">48+ hours before</p>
+                <p className="text-sm text-green-600">No fee</p>
+              </div>
+            </div>
+
+            {/* $50 tier */}
+            <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-xl border border-amber-100">
+              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-amber-600 text-lg">$</span>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">24–48 hours before</p>
+                <p className="text-sm text-amber-600">$50 fee</p>
+              </div>
+            </div>
+
+            {/* Full fee tier */}
+            <div className="flex items-center gap-3 p-3 bg-red-50 rounded-xl border border-red-100">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-red-600 text-lg">!</span>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">Less than 24 hours</p>
+                <p className="text-sm text-red-600">Full service fee</p>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-xs text-gray-400 pt-2">
+            No-shows incur the full service fee after a 15-minute grace period.
+          </p>
         </div>
       </Modal>
     </>
