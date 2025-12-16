@@ -25,7 +25,7 @@ function CancellationTooltip() {
         <AlertCircle className="w-4 h-4 text-red-600" />
       </div>
 
-      <Modal isOpen={open} onClose={() => setOpen(false)} title="Cancellation Policy" maxWidth="sm">
+      <Modal isOpen={open} onClose={() => setOpen(false)} title="Cancellation Policy" maxWidth="sm" centered>
         <div className="space-y-3 text-sm text-gray-700">
           <p><span className="font-semibold text-gray-900">48+ Hours:</span> Free cancellation</p>
           <p><span className="font-semibold text-gray-900">24-48 Hours:</span> $50 fee</p>
