@@ -211,7 +211,7 @@ export default function InvoicesPage() {
 
           {/* Filters */}
           <div className={`flex justify-center mb-8 ${styles.cardReveal2}`}>
-            <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3">
+            <div className="inline-flex flex-nowrap justify-center gap-1.5 sm:gap-3">
               {['all', 'unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
                 <button
                   key={filterOption}
@@ -219,7 +219,7 @@ export default function InvoicesPage() {
                     setFilter(filterOption)
                     setCurrentPage(1)
                   }}
-                  className={`px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 ${filter === filterOption
+                  className={`px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 ${filter === filterOption
                     ? 'bg-[#079447] text-white shadow-lg shadow-emerald-200'
                     : 'bg-white text-gray-600 shadow-md hover:shadow-lg hover:bg-gray-50 border border-gray-100'
                     }`}
