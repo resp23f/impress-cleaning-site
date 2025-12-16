@@ -29,7 +29,7 @@ import Input from '@/components/ui/Input'
 import { RequestServiceSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 import { sanitizeText } from '@/lib/sanitize'
-
+import PageTitle from '@/components/portal/PageTitle'
 const libraries = ['places']
 
 const SERVICE_TYPES = [
@@ -521,6 +521,7 @@ export default function RequestServicePage() {
       />
 
       <div className={`py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto ${styles.contentReveal}`}>
+        <PageTitle title="Request Service" />
         {/* Header */}
         <div className={`mb-8 ${styles.cardReveal}`}>
           <h1 className="text-3xl font-bold text-[#1C294E] mb-2">

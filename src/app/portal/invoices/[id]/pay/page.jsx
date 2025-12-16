@@ -17,6 +17,7 @@ import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import toast from 'react-hot-toast'
 import confetti from 'canvas-confetti'
+import PageTitle from '@/components/portal/PageTitle'
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 // Stripe Elements card styling
 const cardElementOptions = {
@@ -236,6 +237,7 @@ function CardPaymentForm({
   }
   return (
     <div className="animate-fadeIn">
+      <PageTitle title="Pay Invoice" />
       {savedCards.length > 0 && !useNewCard && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold text-slate-700 mb-3">

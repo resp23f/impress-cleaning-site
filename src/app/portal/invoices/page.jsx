@@ -10,6 +10,7 @@ import Badge from '@/components/ui/Badge'
 import { InvoicesSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from './InvoiceSidePanel'
 import Modal from '@/components/ui/Modal'
+import PageTitle from '@/components/portal/PageTitle'
 function CancellationTooltip() {
   const [open, setOpen] = useState(false)
 
@@ -190,6 +191,7 @@ export default function InvoicesPage() {
 
   return (
     <>
+      <PageTitle title="Invoices" />
       <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">
           {loading ? (

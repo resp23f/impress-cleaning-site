@@ -29,6 +29,7 @@ import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
 import { SettingsSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
+import PageTitle from '@/components/portal/PageTitle'
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
@@ -476,6 +477,7 @@ export default function SettingsPage() {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}>
+      <PageTitle title="Settings" />
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
         {loading ? (
           <SettingsSkeleton />

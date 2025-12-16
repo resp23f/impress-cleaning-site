@@ -23,7 +23,7 @@ import {
 import { createClient } from '@/lib/supabase/client'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-
+import PageTitle from '@/components/portal/PageTitle'
 const ITEMS_PER_PAGE = 20
 
 const FILTER_OPTIONS = [
@@ -339,6 +339,7 @@ export default function NotificationsPage() {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}>
+      <PageTitle title="Notifications" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <NotificationsSkeleton />

@@ -5,11 +5,10 @@ import { Star, Send, CheckCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import toast from 'react-hot-toast'
 import styles from '../shared-animations.module.css'
 import { sanitizeText } from '@/lib/sanitize'
-
+import PageTitle from '@/components/portal/PageTitle'
 export default function CustomerFeedbackPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -81,7 +80,7 @@ export default function CustomerFeedbackPage() {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}> <PageTitle title="Feedback" />
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
 
         <div className={`mb-8 ${styles.cardReveal}`}>

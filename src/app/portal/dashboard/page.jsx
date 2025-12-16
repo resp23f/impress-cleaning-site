@@ -23,6 +23,9 @@ import Badge from '@/components/ui/Badge'
 import { DashboardSkeleton } from '@/components/ui/SkeletonLoader'
 import InvoiceSidePanel from '../invoices/InvoiceSidePanel'
 import styles from '../shared-animations.module.css'
+import PageTitle from '@/components/portal/PageTitle'
+
+
 export default function DashboardPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -190,6 +193,7 @@ export default function DashboardPage() {
   const nextAppointment = upcomingAppointments[0]
   return (
     <>
+      <PageTitle title="Dashboard" />
       {/* Premium Background */}
       <div
         className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}

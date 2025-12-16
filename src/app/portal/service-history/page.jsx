@@ -19,6 +19,8 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { ServiceHistorySkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
+import PageTitle from '@/components/portal/PageTitle'
+
 const serviceTypeLabel = (type) => {
   const labels = {
     standard: 'Standard Cleaning',
@@ -297,6 +299,7 @@ export default function ServiceHistoryPage() {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}>
+      <PageTitle title="Service History" />
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {loading ? (
           <ServiceHistorySkeleton />
