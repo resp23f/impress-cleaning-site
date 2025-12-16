@@ -209,10 +209,12 @@
 @keyframes gentleReveal {
   0% {
     opacity: 0;
+    visibility: visible;
   }
 
   100% {
     opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -237,6 +239,7 @@
 /* Smooth fade when content replaces skeleton */
 .contentFadeIn {
   opacity: 0;
+  visibility: hidden;
   animation: gentleReveal 0.5s ease-out 0.016s forwards;
 }
 
