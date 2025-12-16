@@ -1,8 +1,15 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
 export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md', centered = false }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -14,7 +21,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
   const maxWidths = {
     sm: 'max-w-md',
@@ -23,7 +30,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
     xl: 'max-w-4xl',
   }
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div
@@ -31,7 +38,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
         onClick={onClose}
       />
 
-      {/* Modal Container - added relative z-10 to sit above backdrop */}
+      {/* Modal Container */}
       <div className="relative z-10 flex min-h-full items-center justify-center p-4">
         <div
           className={`
@@ -44,7 +51,6 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
           {/* Header */}
           {title && (
             centered ? (
-              // Centered layout: title centered, X button absolute positioned
               <div className="relative px-6 py-4 border-b border-gray-200 text-center">
                 <h2 className="text-xl font-bold text-[#1C294E]">{title}</h2>
                 <button
@@ -55,7 +61,6 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
                 </button>
               </div>
             ) : (
-              // Default layout: flex with title left, X button right (unchanged)
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                 <h2 className="text-xl font-bold text-[#1C294E]">{title}</h2>
                 <button
@@ -76,4 +81,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
       </div>
     </div>
   )
+
+  // Portal renders modal at document.body level, escaping any parent overflow constraints
+  return createPortal(modalContent, document.body)
 }
