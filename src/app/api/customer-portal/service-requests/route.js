@@ -4,13 +4,24 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { sanitizeText } from '@/lib/sanitize'
 const resend = new Resend(process.env.RESEND_API_KEY)
-// Validated internal API base URL
-const INTERNAL_API_URL = (() => {
-  const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
-  const allowed = ['https://impressyoucleaning.com', 'https://www.impressyoucleaning.com', 'http://localhost:3000']
-  return allowed.some(domain => url.startsWith(domain)) ? url : 'https://impressyoucleaning.com'
-})()
-export async function POST(request) {
+
+// Secure internal URL: derived from request origin + validated against allowlist
+const ALLOWED_ORIGINS = new Set([
+  'https://impressyoucleaning.com',
+  'https://www.impressyoucleaning.com',
+  'http://localhost:3000',
+])
+
+function getSecureOrigin(request) {
+  const origin = new URL(request.url).origin
+  if (!ALLOWED_ORIGINS.has(origin)) {
+    throw new Error(`Untrusted origin: ${origin}`)
+  }
+  return origin
+}
+function getOrigin(request) {
+  return new URL(request.url).origin
+} export async function POST(request) {
   try {
     const supabase = await createClient()
     const {
@@ -144,12 +155,12 @@ export async function POST(request) {
               ` : ''}
               
 <div style="margin-top: 30px; text-align: center;">
-                <a href="${INTERNAL_API_URL}/admin/requests" 
+                <a href="${getSecureOrigin(request)}/admin/requests"
                    style="background: #079447; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;">
                   View in Admin Portal
                 </a>
               </div>
-                          </div>
+                                        </div>
             
             <div style="padding: 20px; text-align: center; color: #666; font-size: 12px;">
               <p>Impress Cleaning Services, LLC</p>
@@ -168,7 +179,7 @@ export async function POST(request) {
         ? `${address.street_address}${address.unit ? ', ' + address.unit : ''}, ${address.city}, ${address.state} ${address.zip_code}`
         : 'N/A'
 
-      await fetch(`${INTERNAL_API_URL}/api/email/service-request-received`, {
+      await fetch(`${getSecureOrigin(request)}/api/email/service-request-received`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
