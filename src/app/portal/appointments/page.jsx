@@ -458,13 +458,13 @@ export default function AppointmentsPage() {
           <AppointmentsSkeleton />
         ) : (
           <div className={styles.contentFadeIn}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
                   <span className="text-sm font-medium text-[#079447] uppercase tracking-wider">Appointments</span>
                 </div>
-                <h1 className="text-4xl font-bold text-[#1C294E] tracking-tight">Manage Your Cleanings</h1>
+                <h1 className="text-3xl sm:text-4xl font-bold text-[#1C294E] tracking-tight">Manage Your Cleanings</h1>
               </div>
               <Link href="/portal/request-service" className="w-full sm:w-auto">
                 <Button variant="primary" className={`w-full sm:w-auto whitespace-nowrap ${styles.smoothTransition}`}>Book another cleaning</Button>
@@ -472,8 +472,8 @@ export default function AppointmentsPage() {
             </div>
 
             {/* Upcoming */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
+            <section className="mb-10">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-[#079447]" />
                 </div>
@@ -570,14 +570,13 @@ export default function AppointmentsPage() {
               )}
             </section>
 
-            {/* Past & Cancelled */}
+            {/* Past Appointments */}
             <section>
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
                   <Clock className="w-5 h-5 text-gray-500" />
                 </div>
-                <h2 className="text-xl font-bold text-[#1C294E]">Cancelled & Incomplete</h2>
-
+                <h2 className="text-xl font-bold text-[#1C294E]">Past Appointments</h2>
               </div>
               {past.length === 0 ? (
                 <Card className="text-center py-8 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] text-gray-500">
