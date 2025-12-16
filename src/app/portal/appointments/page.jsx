@@ -452,12 +452,12 @@ export default function AppointmentsPage() {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${!loading ? styles.contentReveal : ''}`}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-10">
         {loading ? (
           <AppointmentsSkeleton />
         ) : (
-          <>
+          <div className={styles.contentFadeIn}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
@@ -612,7 +612,7 @@ export default function AppointmentsPage() {
                 </div>
               )}
             </section>
-          </>
+          </div>
         )}
 
         {/* Modal */}
