@@ -211,7 +211,7 @@ export default function InvoicesPage() {
 
           {/* Filters */}
           <div className={`flex justify-center mb-8 ${styles.cardReveal2}`}>
-            <div className="inline-flex flex-nowrap justify-center gap-1.5 sm:gap-3">
+            <div className="inline-flex flex-nowrap justify-center gap-2.5 sm:gap-3">
               {['all', 'unpaid', 'paid', 'overdue', 'cancelled'].map((filterOption) => (
                 <button
                   key={filterOption}
