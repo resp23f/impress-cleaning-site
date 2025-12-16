@@ -237,7 +237,7 @@
 /* Smooth fade when content replaces skeleton */
 .contentFadeIn {
   opacity: 0;
-  animation: gentleReveal 0.5s ease-out forwards;
+  animation: gentleReveal 0.5s ease-out 0.016s forwards;
 }
 
 /* Cards – soft fade + tiny slide, no scale pop */
