@@ -31,6 +31,7 @@ export default async function PortalLayout({ children }) {
   html, body {
     background: #f9fafb;
     overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
   }
 `}</style>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 overscroll-none">
