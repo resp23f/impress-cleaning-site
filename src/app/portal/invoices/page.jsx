@@ -17,9 +17,9 @@ function CancellationTooltip() {
     <>
       <div
         onClick={() => setOpen(true)}
-        className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors duration-200 cursor-pointer"
+        className="w-9 h-9 rounded-full bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 flex items-center justify-center transition-colors duration-200 cursor-pointer"
       >
-        <AlertCircle className="w-4 h-4 text-red-500" />
+        <AlertCircle className="w-4 h-4 text-red-600" />
       </div>
 
       {open && (
