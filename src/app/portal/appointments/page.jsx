@@ -458,7 +458,7 @@ export default function AppointmentsPage() {
           <AppointmentsSkeleton />
         ) : (
           <>
-            <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${styles.cardReveal}`}>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <div className="h-1 w-12 bg-gradient-to-r from-[#079447] to-emerald-400 rounded-full" />
@@ -472,7 +472,7 @@ export default function AppointmentsPage() {
             </div>
 
             {/* Upcoming */}
-            <section className={styles.cardReveal1}>
+            <section>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-[#079447]" />
@@ -492,7 +492,7 @@ export default function AppointmentsPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {upcoming.map((apt, index) => (
-                    <Card key={apt.id} padding="lg" className={`space-y-4 border-l-4 border-emerald-400 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] transition-shadow duration-200 ${styles[`cardReveal${Math.min(index + 3, 6)}`] || styles.cardReveal}`}>
+                    <Card key={apt.id} padding="lg" className="space-y-4 border-l-4 border-emerald-400 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:!shadow-[0_1px_3px_rgba(0,0,0,0.08),0_15px_40px_-10px_rgba(0,0,0,0.12)] transition-shadow duration-200">
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-lg font-semibold text-[#1C294E]">
@@ -571,7 +571,7 @@ export default function AppointmentsPage() {
             </section>
 
             {/* Past & Cancelled */}
-            <section className={styles.cardReveal2}>
+            <section>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-slate-100 flex items-center justify-center">
                   <Clock className="w-5 h-5 text-gray-500" />
@@ -585,7 +585,7 @@ export default function AppointmentsPage() {
                 </Card>) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {past.map((apt, index) => (
-                    <Card key={apt.id} padding="lg" className={`space-y-3 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 ${styles[`cardReveal${Math.min(index + 3, 6)}`] || styles.cardReveal}`}>
+                    <Card key={apt.id} padding="lg" className="space-y-3 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-semibold text-[#1C294E]">
