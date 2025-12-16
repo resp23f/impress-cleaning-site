@@ -52,7 +52,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'md
           {title && (
             centered ? (
               <div className="relative px-6 py-4 border-b border-gray-200 text-center">
-                <h2 className="text-xl font-bold text-[#1C294E]">{title}</h2>
+                <h2 className="text-xl font-bold text-[#1C294E] px-6 sm:px-0">{title}</h2>
                 <button
                   onClick={onClose}
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
