@@ -29,8 +29,7 @@ export default async function PortalLayout({ children }) {
     <>
       <style>{`
   html, body {
-    background: #f9fafb;
-    overscroll-behavior: none;
+    background: #f1f5f9;
     -webkit-overflow-scrolling: touch;
   }
 `}</style>
