@@ -15,9 +15,7 @@ import {
   Bell,
   CreditCard,
   Shield,
-  ShieldCheck,
   Lock,
-  Fingerprint,
   Loader2,
   AlertTriangle,
 } from 'lucide-react'
@@ -395,7 +393,8 @@ export default function SettingsPage() {
       const saveRes = await fetch('/api/stripe/save-payment-method', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentMethodId: pmId, makeDefault: true }),
+        body: JSON.stringify({ paymentMethodId: pmId, makeDefault: payments.length === 0 }),
+
       })
       const saveJson = await saveRes.json()
       if (saveJson.error) throw new Error(saveJson.error)
@@ -758,7 +757,8 @@ export default function SettingsPage() {
                     </div>
                     Add New Card
                   </p>
-                  <div ref={cardElementRef} className="border-2 border-gray-200 rounded-xl p-3 bg-white" />
+                  <div ref={cardElementRef} className="border-2 border-gray-200 rounded-xl p-4 bg-white min-h-[50px]" />
+
                   <Button variant="primary" fullWidth onClick={handleAddCard} disabled={processingCard} className={styles.smoothTransition}>
                     {processingCard ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
                     Save Card

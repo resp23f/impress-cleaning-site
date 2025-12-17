@@ -246,7 +246,7 @@ export default function AppointmentsPage() {
   }, [router, supabase])
 
   const UPCOMING_STATUSES = ['pending', 'confirmed', 'en_route']
-  const PAST_STATUSES = ['cancelled', 'not_completed'] // completed goes to Service History, not here
+  const CANCELLED_STATUSES = ['cancelled', 'not_completed']
   const now = new Date()
 
   const upcoming = appointments.filter((apt) => {
@@ -255,11 +255,10 @@ export default function AppointmentsPage() {
     return dt >= now && UPCOMING_STATUSES.includes(apt.status)
   })
 
-  const past = appointments.filter((apt) => {
-    const dt = getAppointmentDateTime(apt)
-    if (!dt) return false
-    return dt < now || PAST_STATUSES.includes(apt.status)
+  const cancelled = appointments.filter((apt) => {
+    return CANCELLED_STATUSES.includes(apt.status)
   })
+
   const formatTime = (timeStr) => {
     if (!timeStr) return ''
     // handle "08:00:00" or "08:00"
@@ -579,12 +578,12 @@ export default function AppointmentsPage() {
                 </div>
                 <h2 className="text-xl font-bold text-[#1C294E]">Cancelled</h2>
               </div>
-              {past.length === 0 ? (
+              {cancelled.length === 0 ? (
                 <Card className="text-center py-8 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] text-gray-500">
                   Nothing here yet
                 </Card>) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {past.map((apt, index) => (
+                  {cancelled.map((apt, index) => (
                     <Card key={apt.id} padding="lg" className="space-y-3 !rounded-2xl !shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100">
                       <div className="flex items-center justify-between">
                         <div>

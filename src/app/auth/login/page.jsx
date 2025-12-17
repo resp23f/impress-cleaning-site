@@ -42,7 +42,7 @@ function LoginPageContent() {
       try {
         // Check if there's an existing session
         const { data: { session } } = await supabase.auth.getSession()
-        
+
         // If there's a session but user navigated to login, clear it
         // This handles the case where user was signed out but client has stale state
         if (session) {
@@ -85,9 +85,9 @@ function LoginPageContent() {
         }
 
         // Handle invalid credentials
-        if (error.message.includes('Invalid login credentials') || 
-            error.message.includes('invalid_credentials') ||
-            error.message.includes('Invalid email or password')) {
+        if (error.message.includes('Invalid login credentials') ||
+          error.message.includes('invalid_credentials') ||
+          error.message.includes('Invalid email or password')) {
           setLoginError('Invalid email or password. Please check your credentials and try again.')
           resetCaptcha()
           return
@@ -174,12 +174,12 @@ function LoginPageContent() {
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
           {/* Soft gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
-          
+
           {/* Soft colored orbs */}
-{/* Soft colored orbs */}
-<div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl" />
-<div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/40 to-indigo-100/30 rounded-full blur-3xl" />
-<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/40 to-green-100/30 rounded-full blur-3xl" />          
+          {/* Soft colored orbs */}
+          <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/40 to-indigo-100/30 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/40 to-green-100/30 rounded-full blur-3xl" />
           {/* Subtle pattern overlay */}
           <div
             className="absolute inset-0 opacity-[0.015]"
@@ -188,10 +188,10 @@ function LoginPageContent() {
               backgroundSize: '32px 32px'
             }}
           />
-          
+
           {/* Glass card overlay */}
           <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
-          
+
           {/* Content */}
           <div className="relative z-10 flex flex-col justify-start p-16 w-full h-full">
             {/* Logo */}
@@ -206,7 +206,7 @@ function LoginPageContent() {
                 priority
               />
             </div>
-            
+
             {/* Middle content */}
             <div className="max-w-sm">
               <div className="flex items-center gap-2 mb-4">
@@ -215,14 +215,14 @@ function LoginPageContent() {
                   Customer Portal
                 </span>
               </div>
-              
+
               <h1 className="text-3xl font-bold text-slate-800 mb-4 leading-snug">
                 Your Home, <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
                   Sparkling Clean
                 </span>
               </h1>
-              
+
               <p className="text-slate-500 leading-relaxed">
                 Access your personalized dashboard to manage appointments, view invoices, and keep your space looking its best.
               </p>
@@ -238,14 +238,13 @@ function LoginPageContent() {
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={180}
-                height={56}
-                className="h-14 w-auto"
-                style={{ minHeight: '56px' }}
+                width={240}
+                height={80}
+                className="h-20 w-auto"
+                style={{ minHeight: '80px' }}
                 priority
               />
             </div>
-
             {/* Form Container */}
             <div className="lg:px-4">
               <div className="text-center mb-8">
@@ -375,9 +374,9 @@ export default function LoginPage() {
           {/* Left panel - exact match */}
           <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-white" />
-<div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl" />
-<div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/40 to-indigo-100/30 rounded-full blur-3xl" />
-<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/40 to-green-100/30 rounded-full blur-3xl" />            <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
+            <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/40 to-indigo-100/30 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-100/40 to-green-100/30 rounded-full blur-3xl" />            <div className="absolute inset-8 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/60 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]" />
             <div className="relative z-10 flex flex-col justify-start p-16 w-full h-full">
               <div className="mb-40">
                 <img
@@ -431,7 +430,7 @@ export default function LoginPage() {
                 </div>
               </div>
               <p className="text-center text-xs text-slate-300 mt-10">
-© {new Date().getFullYear()} Impress Cleaning Services, LLC. All rights reserved.
+                © {new Date().getFullYear()} Impress Cleaning Services, LLC. All rights reserved.
               </p>
             </div>
           </div>

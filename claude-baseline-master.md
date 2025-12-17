@@ -1,240 +1,22 @@
-# Impress Cleaning Services - Comprehensive Project Analysis
-## Version 4.0 - Updated December 14, 2024
+# Impress Cleaning Services — Project Baseline
+
+> Immutable baseline document.  
+> This file defines the complete project scope, architecture, rules, and decisions.  
+> All changes after 2025-12-16 are recorded in `patch-log.md`.
 
 ---
 
-## 📋 CHANGELOG FROM VERSION 3.0
-
-### New Legal Pages Added
-**Status: NEW**
-
-| Page | Route | Description |
-|------|-------|-------------|
-| **Privacy Policy** | `/privacy` | Enterprise-level privacy policy with definitions, data collection, third-party services, retention, rights |
-| **Terms of Service** | `/terms` | Comprehensive ToS with cancellation policy, indemnification, force majeure, severability |
-
-**Files Created:**
-- `src/app/(public)/privacy/page.jsx`
-- `src/app/(public)/terms/page.jsx`
-
-**Key Policies Documented:**
-| Policy | Details |
-|--------|---------|
-| Cancellation 48+ hours | Free |
-| Cancellation 24-48 hours | $50 fee |
-| Cancellation <24 hours | Full service fee |
-| Rescheduling | Same fees as cancellation |
-| Reschedule window | Must rebook within 30 days |
-| No-show grace period | 15 minutes |
-| Repeat reschedulers | Prepayment required after 4 reschedules |
-| Late payment | 5% fee after 7-day grace period |
-| Emergencies | Fees waived at company discretion |
-| Governing law | Texas, Williamson County courts |
-
-**Enterprise Legal Sections Included:**
-- Definitions section
-- Indemnification clause
-- Force Majeure (weather, emergencies, acts of God)
-- Severability
-- Entire Agreement
-- Waiver clause
-- Assignment clause
+## Status
+- **Baseline established:** 2025-12-16
+- **Modification policy:** Append-only via patches
+- **Source of truth:** This file + patch log
 
 ---
 
-### Supabase Realtime Subscription Leak - FIXED
-**Status: CRITICAL BUG FIX**
-
-**Problem:** Query Performance dashboard showed `realtime.list_changes` with 733,848 calls consuming 86.7% of database time. Caused by realtime subscriptions stacking infinitely on page navigation.
-
-**Root Cause:** `createClient()` was being recreated on every render → useEffect saw "new" supabase reference → re-subscribed → old subscriptions never cleaned up properly.
-
-**Files Fixed:**
-
-| File | Change |
-|------|--------|
-| `src/components/admin/AdminNotificationBell.jsx` | Added `useMemo` for supabase client |
-| `src/components/portal/RecentNotificationsCard.jsx` | Added `useMemo`, removed useEffect dependencies |
-| `src/app/admin/notifications/page.jsx` | Added `useMemo` for supabase client |
-
-**Fix Pattern:**
-```jsx
-// BEFORE (caused leak)
-const supabase = createClient()
-
-// AFTER (stable reference)
-import { useState, useEffect, useMemo } from 'react'
-const supabase = useMemo(() => createClient(), [])
-```
-
-**useEffect Change:**
-```jsx
-// BEFORE (re-ran on every render)
-useEffect(() => { ... }, [supabase, fetchNotifications])
-
-// AFTER (runs once)
-useEffect(() => { ... }, [])
-```
-
----
-
-### Admin Settings - Password Change Feature Added
-**Status: NEW FEATURE**
-
-**File:** `src/app/admin/settings/page.jsx`
-
-**New Tab Added:** Account (5th tab with Lock icon, red color theme)
-
-**Features:**
-- New password field with show/hide toggle
-- Confirm password field with show/hide toggle
-- Validation: min 8 characters, passwords must match
-- Uses `supabase.auth.updateUser({ password: newPassword })`
-- Toast notifications for success/error
-- Premium styling matching other tabs
-
-**New State:**
-```jsx
-const [passwords, setPasswords] = useState({ current: '', new: '', confirm: '' })
-const [showPasswords, setShowPasswords] = useState({ current: false, new: false, confirm: false })
-const [changingPassword, setChangingPassword] = useState(false)
-```
-
-**New Imports:**
-```jsx
-import { Lock, Eye, EyeOff } from 'lucide-react'
-```
-
----
-
-### Admin Email Security Upgrade
-**Status: SECURITY IMPROVEMENT**
-
-**Change:** Admin portal login changed from public email to private alias
-
-| Before | After |
-|--------|-------|
-| `admin@impressyoucleaning.com` (public) | `portal@impressyoucleaning.com` (private) |
-
-**Reason:** Public email visible on website/social media is easier to target for hacking attempts.
-
-**Implementation:**
-1. Created alias in Google Workspace
-2. Updated `auth.users` email via SQL:
-```sql
-UPDATE auth.users 
-SET email = 'portal@impressyoucleaning.com'
-WHERE email = 'ahoff1888@gmail.com';
-```
-3. Updated `profiles` table manually
-
----
-
-### Customer Portal Launch Strategy Documented
-**Status: PROCESS DEFINED**
-
-**Recommended Launch Flow:**
-1. Create invoice in Admin with customer email (no account needed yet)
-2. Send Supabase invite to same email (Dashboard → Authentication → Users → Invite User)
-3. `link_orphan_invoices` trigger auto-connects invoice when user registers
-4. Customer receives one email (invite), logs in, invoice already waiting
-
-**Branded Invite Email:** Configured in Supabase Dashboard → Authentication → Email Templates → Invite User
-
----
-
-### Google OAuth Configuration
-**Status: CONFIGURED**
-
-**Google Cloud Console Settings:**
-- App name: Impress Cleaning Services, LLC
-- User support email: admin@impressyoucleaning.com
-- Authorized domains: impressyoucleaning.com, impresscleaningservices.com
-
-**Custom Auth Domain:** Decided NOT to implement ($10/mo Supabase add-on for cosmetic improvement)
-
-**Verification Status:** App in Production mode (anyone can sign in with Google)
-
----
-
-### Apple Sign-In
-**Status: PLANNED**
-
-**Timeline:**
-- Apple Developer Account: $99/year, 1-2 days to verify
-- Implementation: ~1 hour once verified
-- DUNS number: Already obtained under "Impress You Cleaning" (matches domain)
-
-**Decision:** Launch with Google only, add Apple after developer account verified
-
----
-
-## 📋 CHANGELOG FROM VERSION 2.0
-
-### Admin Appointments Page (`src/app/admin/appointments/page.jsx`)
-**Status: COMPLETELY REVAMPED**
-
-| Change | Details |
-|--------|---------|
-| **Clickable Stat Cards** | Total, Today, Confirmed, Pending, En Route - click to filter instantly |
-| **Active Filter Indicator** | Visual highlight shows which filter is active |
-| **Create Appointment Modal** | Full modal with customer dropdown, address selection, service type, calendar date picker, time windows (Morning/Afternoon/Evening) |
-| **Modern Design** | Gradient background, rounded cards, smooth hover transitions, skeleton loader |
-| **Customer/Address Auto-Select** | When customer selected, their addresses load automatically with primary pre-selected |
-| **Clear Filters Button** | Easy reset for all active filters |
-| **Debug Code Removed** | All `console.log` and `console.error` statements removed |
-| **Sanitization Added** | `searchQuery` and `special_instructions` now sanitized |
-
-**New Features:**
-- Admin can now create appointments directly (not just from service requests)
-- Appointments created by admin auto-confirm and send customer email + portal notification
-- Time windows: Morning (8AM-12PM), Afternoon (12PM-3PM), Evening (3PM-5:45PM)
-
----
-
-### Admin Invoices Page (`src/app/admin/invoices/page.jsx`)
-**Status: COMPLETELY REVAMPED**
-
-| Change | Details |
-|--------|---------|
-| **Clickable Stat Cards** | Total, Paid, Pending, Overdue, Revenue - click to filter (except Revenue) |
-| **Active Filter Indicator** | Visual highlight shows which filter is active |
-| **Edit Draft Invoice** | New feature - modify draft invoices before sending |
-| **Resend Invoice** | New feature - resend emails for sent/overdue invoices |
-| **Modern Design** | Matches appointments page - gradient background, premium cards, skeleton loader |
-| **Tax Selection Buttons** | Visual toggle buttons (8.25%, No Tax, Custom) instead of dropdown |
-| **Payment Method Selection** | Radio buttons with visual selection state for Mark as Paid |
-| **Debug Code Removed** | All 13 `console.log` and `console.error` statements removed |
-| **Sanitization Added** | `searchQuery`, `newInvoice.notes`, line item descriptions, customer fields all sanitized |
-
-**New Features:**
-- **Edit Draft**: Opens pre-filled modal for draft invoices, "Save Changes" updates the invoice
-- **Resend Invoice**: Button appears for sent/overdue invoices, resends email to customer
-
----
-
-### Files Modified This Session (v4.0)
-
-| File | Status | Changes |
-|------|--------|---------|
-| `src/app/(public)/privacy/page.jsx` | **NEW** | Enterprise privacy policy page |
-| `src/app/(public)/terms/page.jsx` | **NEW** | Enterprise terms of service page |
-| `src/components/admin/AdminNotificationBell.jsx` | **MODIFIED** | Added useMemo for supabase client |
-| `src/components/portal/RecentNotificationsCard.jsx` | **MODIFIED** | Added useMemo, fixed useEffect deps |
-| `src/app/admin/notifications/page.jsx` | **MODIFIED** | Added useMemo for supabase client |
-| `src/app/admin/settings/page.jsx` | **MODIFIED** | Added Account tab with password change |
-
----
-
-### Security Improvements (v4.0)
-
-| Area | Implementation |
-|------|----------------|
-| **Realtime Subscription Leak** | Fixed with useMemo pattern to prevent infinite subscriptions |
-| **Admin Email Security** | Changed to private alias (portal@) for admin login |
-| **Password Change** | Proper Supabase auth method in admin settings |
-| **Input Sanitization** | All user inputs sanitized via `sanitizeText()` from `@/lib/sanitize.js` |
-| **Debug Code Removal** | All `console.log` and `console.error` removed from production frontend |
+## How to Use This Document
+- Do not edit this file directly
+- All updates must be added to `patch-log.md`
+- Regenerate derived “current state” files as needed
 
 ---
 
@@ -244,7 +26,7 @@ WHERE email = 'ahoff1888@gmail.com';
 Impress Cleaning Services is a full-stack web application for managing a residential and commercial cleaning business. It provides:
 - **Customer Portal**: Service booking, appointment management, invoice payments, and account management
 - **Admin Dashboard**: Customer management, service request handling, appointment scheduling, invoicing, and business analytics
-- **Public Website**: Service information, booking requests, gift certificate purchases, **privacy policy, and terms of service**
+- **Public Website**: Service information, booking requests, gift certificate purchases, privacy policy, and terms of service
 
 ### Tech Stack
 
@@ -274,8 +56,8 @@ impress-cleaning-site/
 ├── src/
 │   ├── app/
 │   │   ├── (public)/         # Public marketing pages
-│   │   │   ├── privacy/      # Privacy Policy (NEW)
-│   │   │   └── terms/        # Terms of Service (NEW)
+│   │   │   ├── privacy/      # Privacy Policy
+│   │   │   └── terms/        # Terms of Service
 │   │   ├── admin/            # Admin dashboard pages
 │   │   ├── api/              # API routes
 │   │   │   ├── admin/        # Admin-only endpoints
@@ -291,6 +73,7 @@ impress-cleaning-site/
 │   │   └── ui/               # Reusable UI components
 │   └── lib/
 │       ├── supabase/         # Supabase clients
+│       ├── emailTemplate.js  # Shared email template utilities (NEW)
 │       └── sanitize.js       # Input sanitization
 ├── public/                   # Static assets
 └── CLAUDE.md                 # Project context file
@@ -310,10 +93,11 @@ impress-cleaning-site/
 | full_name | TEXT | Customer/admin name |
 | phone | TEXT | Contact phone |
 | role | ENUM | 'customer' or 'admin' |
-| account_status | ENUM | 'pending', 'active', 'suspended' |
+| account_status | ENUM | 'pending', 'active', 'suspended', **'deleted'** |
 | communication_preference | ENUM | 'text', 'email', 'both' |
 | avatar_url | TEXT | Profile picture URL |
 | stripe_customer_id | TEXT | Linked Stripe customer ID |
+| **deleted_at** | TIMESTAMPTZ | **NEW** - Soft delete timestamp |
 | created_at | TIMESTAMP | Creation timestamp |
 | updated_at | TIMESTAMP | Last update timestamp |
 
@@ -333,6 +117,7 @@ impress-cleaning-site/
 | is_recurring | BOOLEAN | Recurring flag |
 | recurring_frequency | TEXT | weekly, biweekly, monthly |
 | parent_recurring_id | UUID (FK) | Self-reference for recurring series |
+| **is_running_late** | BOOLEAN | **NEW** - Running behind flag |
 | completed_at | TIMESTAMP | Completion timestamp |
 | cancelled_at | TIMESTAMP | Cancellation timestamp |
 | cancellation_reason | TEXT | Reason for cancellation |
@@ -494,7 +279,7 @@ impress-cleaning-site/
 - **service_requests** N:1 profiles, N:1 service_addresses
 
 ### Row Level Security Policies
-- **Customers**: Can view/update only their own data (own profile, addresses, appointments, invoices)
+- **Customers**: Can view/update only their own data
 - **Admins**: Full access to all data (role = 'admin' check via `is_admin()` function)
 - **Service Role**: Internal operations bypass RLS
 
@@ -527,12 +312,6 @@ impress-cleaning-site/
 5. If admin → `/admin/dashboard`
 6. If customer → `/portal/dashboard`
 
-**Recent Updates:**
-- Added inline error message box (red background, AlertCircle icon)
-- Added useEffect to clear stale session on page load
-- Error clears when user starts typing
-- Turnstile CAPTCHA resets on error
-
 ### How Sessions are Managed
 **Files:** `src/lib/supabase/middleware.js`, `src/lib/supabase/server.js`
 
@@ -548,7 +327,7 @@ impress-cleaning-site/
 - **RLS**: Database policies enforce access at query level
 
 ### Admin Login Security
-- **Email**: `portal@impressyoucleaning.com` (private alias, not public)
+- **Email**: `portal@impressyoucleaning.com` (private alias)
 - **Password Change**: Available in Admin Settings → Account tab
 
 ---
@@ -582,7 +361,7 @@ impress-cleaning-site/
 |-------|--------|-------------|
 | `/customer-portal/service-requests` | POST | Submits new service request |
 | `/customer-portal/invoice/[id]` | GET | Get invoice details |
-| `/customer-portal/delete-account` | POST | Delete customer account |
+| `/customer-portal/delete-account` | POST | **Soft delete** customer account |
 
 ### Stripe Routes (`/api/stripe/`)
 
@@ -601,8 +380,8 @@ impress-cleaning-site/
 | `/email/appointment-cancelled` | POST | Sends cancellation notice |
 | `/email/appointment-rescheduled` | POST | Sends reschedule notice |
 | `/email/notify-appointment-change` | POST | Notifies admin of customer reschedule/cancel request |
-| `/email/service-request-received` | POST | Confirms service request received |
 | `/email/service-request-declined` | POST | Notifies customer of declined request |
+| ~~`/email/service-request-received`~~ | ~~POST~~ | **DELETED** - Portal notification sufficient |
 
 ### Webhook Routes (`/api/webhooks/`)
 
@@ -640,8 +419,8 @@ impress-cleaning-site/
 | `/gift-certificate` | Gift certificate purchase |
 | `/apply` | Job applications |
 | `/aplicar` | Spanish job applications |
-| `/privacy` | **NEW** - Privacy Policy |
-| `/terms` | **NEW** - Terms of Service |
+| `/privacy` | Privacy Policy |
+| `/terms` | Terms of Service |
 
 ### Auth Pages (`src/app/auth/`)
 
@@ -659,12 +438,12 @@ impress-cleaning-site/
 
 | Page | Description |
 |------|-------------|
-| `/portal/dashboard` | Customer dashboard with overview |
+| `/portal/dashboard` | Customer dashboard with overview + **Arriving Today** badge |
 | `/portal/request-service` | Submit new service request |
 | `/portal/appointments` | List all appointments (with reschedule/cancel) |
-| `/portal/invoices` | List all invoices |
+| `/portal/invoices` | List all invoices + **Cancellation Policy modal** |
 | `/portal/invoices/[id]/pay` | Pay specific invoice |
-| `/portal/settings` | Profile, password, email change sections |
+| `/portal/settings` | Profile, password, email, **payment methods** |
 | `/portal/service-history` | Past service history |
 | `/portal/customer-feedback` | Leave feedback |
 | `/portal/notifications` | View notifications |
@@ -676,103 +455,236 @@ impress-cleaning-site/
 | `/admin/dashboard` | Admin dashboard with stats and insights |
 | `/admin/requests` | View/manage service requests |
 | `/admin/customers` | Customer list and management (CRM) |
-| `/admin/appointments` | Appointment management with create feature |
+| `/admin/appointments` | Appointment management + **Running Behind toggle** |
 | `/admin/invoices` | Invoice management with edit/resend features |
 | `/admin/reports` | Business reports/analytics |
 | `/admin/notifications` | Admin notifications page |
-| `/admin/settings` | Business settings + **Account tab with password change** |
+| `/admin/settings` | Business settings + Account tab with password change |
 
 ---
 
 ## 6. Detailed User Flows
 
 ### Flow A: New Customer Signup
-*(Unchanged from v3.0)*
+1. User visits `/auth/signup`
+2. Enters email, password (8+ chars), completes CAPTCHA
+3. `supabase.auth.signUp()` creates auth user
+4. Trigger creates profile with role='customer', status='pending'
+5. User redirected to `/auth/verify-email`
+6. User clicks verification link in email
+7. Redirected to `/auth/callback` → `/auth/profile-setup`
+8. User completes profile (name, phone)
+9. Profile status updated to 'active'
+10. Redirected to `/portal/dashboard`
 
 ### Flow B: Customer Submits Service Request
-*(Unchanged from v3.0)*
+1. Customer visits `/portal/request-service`
+2. Selects service type, date, time preference
+3. Selects or adds service address
+4. Adds special requests (optional)
+5. Submits request
+6. API creates service_request with status='pending'
+7. Customer notification created
+8. Admin notification created
+9. Customer sees confirmation
 
 ### Flow C: Admin Approves Service Request
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/requests`
+2. Views pending request details
+3. Clicks "Approve"
+4. Selects date, time window, team members
+5. API creates appointment with status='confirmed'
+6. Updates service_request status='approved'
+7. Sends confirmation email to customer
+8. Creates customer notification
+9. Customer sees appointment in portal
 
 ### Flow D: Admin Declines Service Request
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/requests`
+2. Views pending request
+3. Clicks "Decline"
+4. Enters decline reason
+5. API updates service_request status='declined'
+6. Sends decline email to customer (uses standardized template)
+7. Creates customer notification
 
 ### Flow E: Admin Creates Appointment Directly
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/appointments`
+2. Clicks "Create Appointment"
+3. Selects customer from dropdown
+4. Customer addresses load automatically
+5. Selects address, service type, date, time window
+6. Adds special instructions (optional)
+7. API creates appointment with status='confirmed'
+8. Sends confirmation email
+9. Creates customer notification
 
 ### Flow F: Admin Reschedules Appointment
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/appointments`
+2. Clicks on appointment
+3. Changes date/time
+4. Saves changes
+5. API updates appointment
+6. Sends reschedule email to customer (uses standardized template)
+7. Creates customer notification
 
 ### Flow G: Customer Reschedules Appointment
-*(Unchanged from v3.0)*
+1. Customer visits `/portal/appointments`
+2. Clicks "Reschedule" on appointment
+3. If within 48 hours, button disabled with tooltip showing policy
+4. Selects new preferred date/time
+5. API sets appointment status='pending'
+6. Sends confirmation email to customer
+7. Sends notification to admin
+8. Admin reviews and approves/modifies
 
 ### Flow H: Customer Cancels Appointment
-*(Unchanged from v3.0)*
+1. Customer visits `/portal/appointments`
+2. Clicks "Cancel" on appointment
+3. Confirms cancellation
+4. API updates status='cancelled'
+5. Sends cancellation email to customer
+6. Notifies admin
 
 ### Flow I: Admin Creates Invoice
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/invoices`
+2. Clicks "Create Invoice"
+3. Selects customer or creates new
+4. Adds line items (description, rate, quantity)
+5. Sets tax rate (8.25%, None, Custom)
+6. Adds notes (optional)
+7. Saves as draft
+8. Reviews and clicks "Send"
+9. API creates Stripe invoice, sends to customer
+10. Creates customer notification
 
 ### Flow J: Admin Edits Draft Invoice
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/invoices`
+2. Finds draft invoice
+3. Clicks "Edit"
+4. Modifies line items, tax, notes
+5. Saves changes
+6. Can then send when ready
 
 ### Flow K: Admin Resends Invoice
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/invoices`
+2. Finds sent/overdue invoice
+3. Clicks "Resend"
+4. API resends email via Stripe
+5. Customer receives new email
 
 ### Flow L: Customer Pays Invoice
-*(Unchanged from v3.0)*
+1. Customer visits `/portal/invoices`
+2. Clicks "Pay Now" on unpaid invoice
+3. Redirected to `/portal/invoices/[id]/pay`
+4. Enters card or uses saved payment method
+5. Clicks "Pay"
+6. Stripe processes payment
+7. Webhook updates invoice status='paid'
+8. Success animation plays
+9. Customer notification created
 
 ### Flow M: Admin Cancels/Refunds Invoice
-*(Unchanged from v3.0)*
+1. Admin visits `/admin/invoices`
+2. Clicks on invoice
+3. Clicks "Cancel" or "Refund"
+4. Confirms action
+5. API voids in Stripe if applicable
+6. Updates invoice status
+7. Creates customer credit if refund
 
-### Flow N: Admin Changes Password (NEW)
-
-**File:** `src/app/admin/settings/page.jsx`
-
-**Step-by-step:**
+### Flow N: Admin Changes Password
 1. Admin visits `/admin/settings`
-2. Clicks "Account" tab (5th tab)
+2. Clicks "Account" tab
 3. Enters new password (min 8 characters)
 4. Confirms new password
 5. Clicks "Update Password"
 6. `supabase.auth.updateUser({ password: newPassword })` called
-7. Password updated in auth.users
-8. Toast success, fields cleared
-9. Password change takes effect immediately
+7. Toast success, fields cleared
 
-### Flow O: Customer Portal Invite (NEW)
-
-**Step-by-step:**
+### Flow O: Customer Portal Invite
 1. Admin creates invoice with customer email (no account needed)
-2. Admin invites customer via Supabase Dashboard → Authentication → Users → Invite User
+2. Admin invites customer via Supabase Dashboard
 3. Customer receives branded invite email
 4. Customer clicks link, sets password
-5. Account created, `link_orphan_invoices` trigger runs
-6. Customer logs in, invoice already linked to their account
+5. `link_orphan_invoices` trigger runs
+6. Customer logs in, invoice already linked
+
+### Flow P: Customer Deletes Account (NEW)
+1. Customer visits `/portal/settings`
+2. Clicks "Delete Account"
+3. Confirms deletion
+4. API soft deletes:
+   - Sets `account_status = 'deleted'`
+   - Sets `deleted_at` timestamp
+   - Anonymizes email to `deleted_[id]@removed.local`
+   - Clears phone
+   - Anonymizes addresses
+   - Deletes payment methods
+   - Deletes auth.users record
+5. Confirmation email sent to original email
+6. Customer logged out
+
+### Flow Q: Arriving Today & Running Behind (NEW)
+1. Customer appointment scheduled for today
+2. Customer visits `/portal/dashboard`
+3. Sees "Arriving Today" badge automatically
+4. If admin enables "Running Behind":
+   - Admin clicks toggle in `/admin/appointments`
+   - Sets `is_running_late = true`
+   - Creates customer notification
+5. Customer sees "Running slightly behind" message
+6. Admin can toggle off when back on schedule
 
 ---
 
 ## 7. Email System
 
+### Email Templates (Standardized in v6.0)
+**File:** `src/lib/emailTemplate.js`
+
+**Shared Utilities:**
+```javascript
+// Main template wrapper
+generateEmailTemplate(title, content)
+
+// Appointment details table
+generateAppointmentDetailsHtml(appointment)
+
+// Colored info boxes
+generateInfoBox(message, type) // type: 'info' | 'warning' | 'success'
+
+// Service type labels
+serviceLabelMap = {
+  standard: 'Standard Cleaning',
+  deep: 'Deep Cleaning',
+  move_in_out: 'Move In/Out Cleaning',
+  post_construction: 'Post-Construction Cleaning',
+  office: 'Office Cleaning'
+}
+
+// Time formatting (12-hour)
+formatTime(time)
+
+// Date formatting (locale)
+formatDate(date)
+```
+
 ### Email Triggers Summary
 
-| Trigger | Email Type | Recipient | Method |
-|---------|-----------|-----------|--------|
-| Customer signup complete | Admin notification | Admin | Resend direct |
-| Service request submitted | Request received | Customer | Resend direct |
-| Service request submitted | New request alert | Admin | Resend direct |
-| Admin approves request | Appointment confirmed | Customer | Resend direct |
-| Admin declines request | Request declined | Customer | Resend direct |
-| Admin creates appointment | Appointment confirmed | Customer | Resend direct |
-| Admin reschedules appointment | Appointment rescheduled | Customer | Resend direct |
-| Customer requests reschedule | Reschedule request pending | Customer | Resend direct |
-| Customer requests reschedule | New reschedule request | Admin | Resend direct |
-| Customer cancels appointment | Cancellation confirmed | Customer | Resend direct |
-| Customer cancels appointment | Cancellation notice | Admin | Resend direct |
-| Gift certificate purchased | Gift certificate | Recipient | Resend direct |
-| Dispute opened | SMS alert | Admin | Resend email-to-SMS |
-| Invoice sent/resent | Invoice notification | Customer | Stripe + notification |
-| Portal invite | Invite email | Customer | Supabase (via Resend) |
+| Trigger | Email Type | Recipient | Template |
+|---------|-----------|-----------|----------|
+| Customer signup | Admin notification | Admin | Direct |
+| Admin approves request | Appointment confirmed | Customer | **Standardized** |
+| Admin declines request | Request declined | Customer | **Standardized** |
+| Admin creates appointment | Appointment confirmed | Customer | **Standardized** |
+| Admin reschedules | Appointment rescheduled | Customer | **Standardized** |
+| Customer requests reschedule | Pending notice | Customer + Admin | Direct |
+| Customer cancels | Cancellation confirmed | Customer + Admin | **Standardized** |
+| Gift certificate purchased | Gift certificate | Recipient | Direct |
+| Invoice sent/resent | Invoice notification | Customer | Stripe |
+| Portal invite | Invite email | Customer | Supabase |
+| Account deleted | Confirmation | Customer | Direct |
 
 ### Email Addresses
 - **From**: `notifications@impressyoucleaning.com`
@@ -781,11 +693,40 @@ impress-cleaning-site/
 - **Admin Login**: `portal@impressyoucleaning.com` (private)
 - **SMS Gateway**: `5129989658@tmomail.net`
 
+### Logo URL
+```
+https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png
+```
+
 ---
 
 ## 8. Payment System (Stripe Integration)
 
-*(Unchanged from v3.0)*
+### Payment Methods
+- **Credit/Debit Cards** via Stripe
+- **Zelle** (manual verification)
+- **Cash** (admin marks paid)
+- **Check** (admin marks paid)
+
+### Invoice Flow
+1. Admin creates invoice with line items
+2. Tax calculated (8.25% default for Texas)
+3. Invoice saved as draft
+4. Admin sends → Stripe invoice created
+5. Customer receives email with payment link
+6. Customer pays via portal or Stripe link
+7. Webhook updates status to 'paid'
+
+### Saved Payment Methods
+- Customers can save cards via Setup Intent
+- Default card used for quick payments
+- Single card auto-shows as default
+- Stripe Link disabled (`disableLink: true`)
+
+### Refunds & Credits
+- Admin can issue partial/full refunds
+- Refunds processed through Stripe
+- Customer credits tracked in `customer_credits` table
 
 ---
 
@@ -795,42 +736,56 @@ impress-cleaning-site/
 
 | Component | Props | Description |
 |-----------|-------|-------------|
-| `Button` | variant, size, fullWidth, loading, disabled, onClick | Primary action button with loading state |
+| `Button` | variant, size, fullWidth, loading, disabled, onClick | Primary action button |
 | `Card` | className, padding, hover | Container card with shadow |
-| `Modal` | isOpen, onClose, title, maxWidth, children | Dialog overlay with backdrop |
-| `Input` | label, error, icon, type, placeholder, fullWidth | Form input with validation |
-| `PasswordInput` | label, error, showToggle | Password input with show/hide toggle |
+| `Modal` | isOpen, onClose, title, maxWidth, **centered**, children | **Portal-based** dialog |
+| `Input` | label, error, icon, type, placeholder, fullWidth | Form input |
+| `PasswordInput` | label, error, showToggle | Password with show/hide |
 | `Badge` | variant, size, children | Status/count badge |
 | `LoadingSpinner` | size | Loading spinner |
 | `SkeletonLoader` | type | Skeleton loading placeholder |
-| `Toast` | - | Toast notifications (via react-hot-toast) |
+| `Toast` | - | Toast notifications |
 | `TurnstileWidget` | onVerify, onError | Cloudflare CAPTCHA |
 | `AddressAutocomplete` | onSelect | Google Places autocomplete |
-| `SelectableCard` | selected, onClick | Selectable card component |
+| `SelectableCard` | selected, onClick | Selectable card |
 
 ### Button Variants
 - `primary`: Green background (#079447)
 - `secondary`: Navy border, outline style
 - `ghost`: Text only, subtle hover
-- `danger`: Red background for destructive actions
+- `danger`: Red background
 - `success`: Green for confirmations
-- `warning`: Yellow/amber for cautions
+- `warning`: Yellow/amber
 - `outline`: Border only
+
+### Modal Component (Updated v6.0)
+```jsx
+// Standard modal
+<Modal isOpen={open} onClose={close} title="Title" maxWidth="md">
+  {children}
+</Modal>
+
+// Centered modal (new)
+<Modal isOpen={open} onClose={close} title="Title" maxWidth="sm" centered>
+  {children}
+</Modal>
+```
 
 ### Admin Components (`src/components/admin/`)
 
 | Component | Description |
 |-----------|-------------|
 | `AdminNav` | Sidebar navigation with routes and pending counts |
-| `AdminNotificationBell` | Notification dropdown (uses useMemo for stable supabase client) |
+| `AdminNotificationBell` | Notification dropdown (uses useMemo) |
 
 ### Portal Components (`src/components/portal/`)
 
 | Component | Description |
 |-----------|-------------|
 | `PortalNav` | Customer portal sidebar navigation |
-| `RecentNotificationsCard` | Dashboard notifications card (uses useMemo for stable supabase client) |
+| `RecentNotificationsCard` | Dashboard notifications card (uses useMemo) |
 | `SupportCard` | Support contact card |
+| `InvoiceSidePanel` | Invoice details slide-out panel |
 
 ---
 
@@ -865,79 +820,17 @@ NEXT_PUBLIC_APP_URL=
 
 ## 11. Known Patterns
 
-### Data Flow: Frontend to Backend
-
-1. **Client Component** makes API call via `fetch()`
-2. **API Route** receives request
-3. Validates authentication via `createClient()` from `@/lib/supabase/server`
-4. For admin routes, checks `profile.role === 'admin'`
-5. Uses `supabaseAdmin` (service role) for operations requiring elevated access
-6. Returns JSON response
-
-### Error Handling Pattern (No Debug Logs)
-```javascript
-try {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  // ... business logic
-
-  const { data, error } = await supabase.from('table').select()
-  if (error) throw error
-
-  return NextResponse.json({ success: true, data })
-} catch (error) {
-  return NextResponse.json({ error: error.message }, { status: 500 })
-}
-```
-
-### Loading State Pattern (Skeleton)
+### Modal Usage Pattern (Updated v6.0)
 ```jsx
-const [loading, setLoading] = useState(true)
-const [data, setData] = useState([])
+// Uses React Portal - escapes parent overflow constraints
+<Modal isOpen={open} onClose={() => setOpen(false)} title="Title" maxWidth="md">
+  {children}
+</Modal>
 
-useEffect(() => {
-  const loadData = async () => {
-    try {
-      const response = await fetch('/api/...')
-      const result = await response.json()
-      setData(result.data || [])
-    } catch (error) {
-      toast.error('Failed to load data')
-    } finally {
-      setLoading(false)
-    }
-  }
-  loadData()
-}, [])
-
-if (loading) {
-  return (
-    
-      {[...Array(4)].map((_, i) => (
-        
-      ))}
-    
-  )
-}
-```
-
-### Input Sanitization Pattern (CRITICAL)
-All user inputs MUST be sanitized using functions from `src/lib/sanitize.js`:
-- `sanitizeText()`: Strips HTML, trims whitespace
-- Applied to: search queries, notes, instructions, descriptions, names
-```javascript
-import { sanitizeText } from '@/lib/sanitize'
-
-// Before using in filter
-const q = sanitizeText(searchQuery)?.toLowerCase() || ''
-
-// Before saving to database
-notes: newInvoice.notes ? sanitizeText(newInvoice.notes.trim()) : null,
+// Centered variant for policies
+<Modal isOpen={open} onClose={() => setOpen(false)} title="Policy" maxWidth="sm" centered>
+  {children}
+</Modal>
 ```
 
 ### Date Handling Pattern (Timezone-Safe)
@@ -952,7 +845,7 @@ new Date(scheduled_date + 'T00:00:00')
 format(new Date(apt.scheduled_date + 'T00:00:00'), 'EEE, MMM d, yyyy')
 ```
 
-### Realtime Subscription Pattern (CRITICAL - Prevents Leaks)
+### Realtime Subscription Pattern (Prevents Leaks)
 ```jsx
 import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -973,9 +866,53 @@ export default function Component() {
 }
 ```
 
+### Input Sanitization Pattern
+```javascript
+import { sanitizeText } from '@/lib/sanitize'
+
+// Before using in filter
+const q = sanitizeText(searchQuery)?.toLowerCase() || ''
+
+// Before saving to database
+notes: newInvoice.notes ? sanitizeText(newInvoice.notes.trim()) : null,
+```
+
+### Error Handling Pattern (No Debug Logs)
+```javascript
+try {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const { data, error } = await supabase.from('table').select()
+  if (error) throw error
+
+  return NextResponse.json({ success: true, data })
+} catch (error) {
+  return NextResponse.json({ error: error.message }, { status: 500 })
+}
+```
+
+### Loading State Pattern (Skeleton)
+```jsx
+const [loading, setLoading] = useState(true)
+
+if (loading) {
+  return (
+    <div className="space-y-4">
+      {[...Array(4)].map((_, i) => (
+        <SkeletonLoader key={i} type="card" />
+      ))}
+    </div>
+  )
+}
+```
+
 ### Role-Based Route Protection
 ```javascript
-// API Route
 const { data: profile } = await supabase
   .from('profiles')
   .select('role')
@@ -1002,10 +939,10 @@ await supabaseAdmin.from('customer_notifications').insert({
 
 // Admin notification
 await supabaseAdmin.from('admin_notifications').insert({
-  type: 'appointment_reschedule_request',
-  title: 'Reschedule Request',
-  message: `${customerName} requested to reschedule...`,
-  link: '/admin/appointments',
+  type: 'new_service_request',
+  title: 'New Request',
+  message: `${customerName} submitted a service request`,
+  link: '/admin/requests',
   is_read: false
 })
 ```
@@ -1039,8 +976,11 @@ await supabaseAdmin.from('admin_notifications').insert({
 ### Appointment Statuses
 `pending` → `confirmed` → `en_route` → `completed` | `cancelled` | `not_completed`
 
+### Account Statuses
+`pending` → `active` | `suspended` | `deleted`
+
 ### Status Labels (Customer Portal)
-- `pending`: "Pending Approval" (not just "Pending")
+- `pending`: "Pending Approval"
 - `confirmed`: "Confirmed"
 - `en_route`: "En Route"
 - `completed`: "Completed"
@@ -1049,131 +989,3 @@ await supabaseAdmin.from('admin_notifications').insert({
 
 ---
 
-## 12. Recent Bug Fixes
-
-### v4.0 Fixes
-
-| Bug | Solution |
-|-----|----------|
-| Realtime subscription leak (733k queries) | Added useMemo for supabase client in all realtime components |
-| Admin settings missing password change | Added Account tab with password change feature |
-
-### v3.0 Fixes
-
-| Bug | Solution |
-|-----|----------|
-| Password change not working | Removed current password check, immediate update via `supabase.auth.updateUser()`, force sign-out after |
-| Email change not syncing to profiles | Created SQL trigger `sync_user_email()` on auth.users |
-| Login error messages not showing | Added inline error display with specific messages |
-| Stale session after sign-out | Added useEffect to clear session on login page load |
-| Reschedule auto-confirmed | Changed to set status='pending', requires admin approval |
-| No 48hr rule on reschedule | Added `isWithin48Hours()` check, button disabled |
-| No customer email on reschedule | Added customer confirmation email to notify-appointment-change |
-| Status showing "Pending" | Changed to "Pending Approval" for clarity |
-| Dates off by one day | Use `new Date(date + 'T00:00:00')` pattern everywhere |
-
----
-
-## 13. Supabase Settings Configured
-
-| Setting | Value | Reason |
-|---------|-------|--------|
-| Secure email change | OFF | Only new email gets confirmation link |
-| Secure password change | OFF | Immediate update, user already authenticated |
-
----
-
-## 14. Business Policies (from Terms of Service)
-
-| Policy | Details |
-|--------|---------|
-| **Cancellation 48+ hours** | Free |
-| **Cancellation 24-48 hours** | $50 fee |
-| **Cancellation <24 hours** | Full service fee |
-| **Rescheduling** | Same fees as cancellation |
-| **Reschedule window** | Must rebook within 30 days |
-| **No-show** | Full service fee (15 min grace period) |
-| **Repeat reschedulers** | Prepayment required after 4 reschedules |
-| **Late payment** | 5% fee after 7-day grace period |
-| **Emergencies** | Fees waived at company discretion |
-| **Governing law** | Texas, Williamson County courts |
-
----
-
-## 15. Admin Page Features Summary
-
-### Appointments Page Features
-- ✅ View all appointments with filtering
-- ✅ Clickable stat cards (Total, Today, Confirmed, Pending, En Route)
-- ✅ Search by customer name/email/phone
-- ✅ Filter by status and date
-- ✅ Create new appointment (customer, address, service, date, time)
-- ✅ Manage appointment (view details, update status)
-- ✅ Reschedule appointment with customer notification
-- ✅ Assign team members
-- ✅ Quick links to invoices
-
-### Invoices Page Features
-- ✅ View all invoices with filtering
-- ✅ Clickable stat cards (Total, Paid, Pending, Overdue, Revenue)
-- ✅ Search by invoice number or customer
-- ✅ Filter by status (including Archived)
-- ✅ Create new invoice with line items
-- ✅ Create new customer inline
-- ✅ Tax calculation (8.25%, None, Custom)
-- ✅ Edit draft invoices
-- ✅ Send/Resend invoices
-- ✅ Mark as paid (Zelle, Cash, Check)
-- ✅ Apply credit
-- ✅ Cancel invoice
-- ✅ Archive invoice
-- ✅ Zelle payment verification (Verify/Reject)
-- ✅ Refund display
-- ✅ Dispute warning display
-
-### Settings Page Features
-- ✅ Business information tab
-- ✅ Service pricing tab
-- ✅ Business hours tab
-- ✅ Notifications tab
-- ✅ **Account tab (NEW)** - Password change with validation
-
----
-
-## 16. Pending / Future Work
-
-### Planned Features
-- [ ] Apple Sign-In (waiting on Apple Developer verification)
-- [ ] Weather widget for customer dashboard (code ready, deferred)
-- [ ] Countdown badge for appointments (code ready, deferred)
-- [ ] Admin Customers CRM page enhancements
-- [ ] admin_notes SQL migration
-
-### Monitoring
-- [ ] Check Supabase Query Performance in 24 hours to confirm realtime fix worked
-
----
-
-## 17. Design System
-
-### Colors
-- **Primary Green**: `#079447`
-- **Navy Blue**: `#18335A` / `#0B2850` / `#1C294E`
-- **Background Gradient**: `from-[#0B2850] to-[#18335A]`
-
-### Typography
-- **Headings**: `font-display`
-- **Body**: `font-manrope`
-
-### Component Styling
-- Rounded corners: `rounded-2xl`
-- Transitions: `duration-300`
-- Hover effects: `hover:scale-105`, `hover:-translate-y-1`
-- Glass effects: `bg-white/10`, `backdrop-blur`
-- Shadows: `shadow-sm`, `shadow-lg`, `shadow-xl`
-
-### Animation Patterns
-- Staggered animations via `StaggerItem` component
-- Skeleton loaders for loading states
-- Hover scale and lift effects
-- Smooth transitions on all interactive elements
