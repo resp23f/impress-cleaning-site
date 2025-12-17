@@ -356,7 +356,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
 
             {/* Fixed Pay Button - Mobile Only */}
             {canPay && (
-              <div className="sm:hidden flex-shrink-0 p-4 pb-6 bg-white border-t border-gray-100">
+              <div className="sm:hidden flex-shrink-0 p-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] bg-white border-t border-gray-100">
                 <Button
                   variant="primary"
                   fullWidth

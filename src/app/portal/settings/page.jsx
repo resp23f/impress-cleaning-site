@@ -726,7 +726,7 @@ export default function SettingsPage() {
                             <p className="text-sm text-gray-600">
                               Expires {pm.card_exp_month}/{pm.card_exp_year}
                             </p>
-                            {(pm.is_default || payments.length === 1) && (
+                            {pm.is_default && (
                               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
                                 <Star className="w-3.5 h-3.5 fill-amber-600" /> Default Card
                               </span>
@@ -738,7 +738,7 @@ export default function SettingsPage() {
                             </Button>
                           </div>
                         </div>
-                        {!pm.is_default && payments.length > 1 && (
+                        {!pm.is_default && (
                           <div className="mt-3 pt-3 border-t border-gray-100">
                             <Button size="sm" variant="ghost" onClick={() => makeDefaultCard(pm.stripe_payment_method_id)} className={`text-xs ${styles.smoothTransition}`}>
                               Make Default
@@ -757,7 +757,7 @@ export default function SettingsPage() {
                     </div>
                     Add New Card
                   </p>
-                  <div ref={cardElementRef} className="border-2 border-gray-200 rounded-xl p-4 bg-white min-h-[50px]" />
+                  <div ref={cardElementRef} className="border-2 border-gray-200 rounded-xl px-4 py-4 bg-white min-h-[56px] flex items-center" />
 
                   <Button variant="primary" fullWidth onClick={handleAddCard} disabled={processingCard} className={styles.smoothTransition}>
                     {processingCard ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}

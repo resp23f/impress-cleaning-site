@@ -258,7 +258,7 @@ export default function PortalNav({ userName }) {
         </>
       )}
       {/* Mobile Bottom Navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)] pb-[env(safe-area-inset-bottom)]">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom)]">
         <nav className="flex justify-evenly items-center px-1 py-2">
           {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon
