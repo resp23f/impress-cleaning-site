@@ -210,30 +210,40 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {lineItems.filter(item => !item.description?.toLowerCase().includes('tax')).map((item, idx) => (
-                        <tr key={idx} className="border-b border-gray-50">
-                          <td className="py-3 text-gray-900">{item.description || 'Service'}</td>
-                          <td className="py-3 text-center text-gray-600">{item.quantity ?? 1}</td>
-                          <td className="py-3 text-right text-gray-600">{formatMoney(item.rate)}</td>
-                          <td className="py-3 text-right font-medium text-gray-900">{formatMoney(item.amount)}</td>
-                        </tr>
-                      ))}
+                      {lineItems
+                        .filter(item => 
+                          !item.description?.toLowerCase().includes('tax') &&
+                          !item.description?.toLowerCase().includes('late fee')
+                        )
+                        .map((item, idx) => (
+                          <tr key={idx} className="border-b border-gray-50">
+                            <td className="py-3 text-gray-900">{item.description || 'Service'}</td>
+                            <td className="py-3 text-center text-gray-600">{item.quantity ?? 1}</td>
+                            <td className="py-3 text-right text-gray-600">{formatMoney(item.rate)}</td>
+                            <td className="py-3 text-right font-medium text-gray-900">{formatMoney(item.amount)}</td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
 
                   {/* Mobile Cards */}
                   <div className="sm:hidden space-y-2">
-                    {lineItems.filter(item => !item.description?.toLowerCase().includes('tax')).map((item, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex-1 min-w-0 pr-3">
-                          <p className="text-sm font-medium text-gray-900 truncate">{item.description || 'Service'}</p>
-                          <p className="text-xs text-gray-500">
-                            {item.quantity ?? 1} × {formatMoney(item.rate)}
-                          </p>
+                    {lineItems
+                      .filter(item => 
+                        !item.description?.toLowerCase().includes('tax') &&
+                        !item.description?.toLowerCase().includes('late fee')
+                      )
+                      .map((item, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <div className="flex-1 min-w-0 pr-3">
+                            <p className="text-sm font-medium text-gray-900 truncate">{item.description || 'Service'}</p>
+                            <p className="text-xs text-gray-500">
+                              {item.quantity ?? 1} × {formatMoney(item.rate)}
+                            </p>
+                          </div>
+                          <span className="text-sm font-semibold text-gray-900">{formatMoney(item.amount)}</span>
                         </div>
-                        <span className="text-sm font-semibold text-gray-900">{formatMoney(item.amount)}</span>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
 
@@ -241,16 +251,21 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                 <div className="bg-gray-50 sm:bg-transparent rounded-xl p-4 sm:p-0 sm:flex sm:justify-end mb-6">
                   <div className="sm:w-64">
                     <div className="space-y-2 pb-3 border-b border-gray-200 sm:border-gray-100">
+                      {/* Subtotal - exclude tax and late fee */}
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Subtotal</span>
                         <span className="text-gray-900">
                           {formatMoney(
                             lineItems
-                              ?.filter(item => !item.description?.toLowerCase().includes('tax'))
+                              ?.filter(item => 
+                                !item.description?.toLowerCase().includes('tax') &&
+                                !item.description?.toLowerCase().includes('late fee')
+                              )
                               .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice?.amount
                           )}
                         </span>
                       </div>
+                      {/* Tax */}
                       {(() => {
                         const taxItem = lineItems.find(item => item.description?.toLowerCase().includes('tax'))
                         if (taxItem) {
@@ -266,6 +281,19 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Tax ({invoice.tax_rate}%)</span>
                               <span className="text-gray-900">{formatMoney(invoice.tax_amount)}</span>
+                            </div>
+                          )
+                        }
+                        return null
+                      })()}
+                      {/* Late Fee - show as separate line if exists */}
+                      {(() => {
+                        const lateFeeItem = lineItems.find(item => item.description?.toLowerCase().includes('late fee'))
+                        if (lateFeeItem) {
+                          return (
+                            <div className="flex justify-between text-sm">
+                              <span className="text-red-600 font-medium">Late Fee (5%)</span>
+                              <span className="text-red-600 font-medium">{formatMoney(lateFeeItem.amount)}</span>
                             </div>
                           )
                         }
@@ -293,8 +321,18 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                   </div>
                 </div>
 
-                {/* Notes */}
-                {invoice?.notes && (
+                {/* Late Payment Policy - shown for overdue invoices with late fee */}
+                {invoice?.status === 'overdue' && lineItems.some(item => item.description?.toLowerCase().includes('late fee')) && (
+                  <div className="mb-6 p-4 bg-red-50/50 rounded-lg border border-red-100">
+                    <div className="text-xs font-medium text-red-700 uppercase tracking-wider mb-2">Late Payment Policy</div>
+                    <p className="text-sm text-gray-700">
+                      A 5% late fee has been applied to this invoice as payment was not received within the 7-day grace period after the due date.
+                    </p>
+                  </div>
+                )}
+
+                {/* Notes - only show if there are actual customer-facing notes (not system-generated) */}
+                {invoice?.notes && !invoice.notes.includes('Manually marked overdue') && !invoice.notes.includes('late fee applied') && (
                   <div className="mb-6 p-4 bg-amber-50/50 rounded-lg border border-amber-100">
                     <div className="text-xs font-medium text-amber-700 uppercase tracking-wider mb-1">Notes</div>
                     <p className="text-sm text-gray-700 whitespace-pre-line">{invoice.notes}</p>

@@ -537,28 +537,55 @@ export default function InvoicesPage() {
 
     setProcessing(true)
     try {
-      // Apply 5% late fee
-      const currentAmount = parseFloat(selectedInvoice.amount) || 0
-      const currentTaxRate = parseFloat(selectedInvoice.tax_rate) || 0
-      const newAmount = currentAmount * 1.05
-      const newTaxAmount = currentTaxRate > 0 ? newAmount * (currentTaxRate / 100) : (parseFloat(selectedInvoice.tax_amount) || 0)
-      const newTotal = newAmount + newTaxAmount
+      // Check if late fee already exists
+      const existingLineItems = selectedInvoice.line_items || []
+      const hasLateFee = existingLineItems.some(item => 
+        item.description?.toLowerCase().includes('late fee')
+      )
 
-      const { error } = await supabase
-        .from('invoices')
-        .update({
-          status: 'overdue',
-          amount: newAmount,
-          tax_amount: newTaxAmount,
-          total: newTotal,
-          notes: (selectedInvoice.notes || '') + `\n[${new Date().toLocaleDateString()}] Manually marked overdue. 5% late fee applied.`,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', selectedInvoice.id)
+      if (hasLateFee) {
+        // Just update status if late fee already applied
+        const { error } = await supabase
+          .from('invoices')
+          .update({
+            status: 'overdue',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', selectedInvoice.id)
 
-      if (error) throw error
+        if (error) throw error
+        toast.success('Invoice marked as overdue')
+      } else {
+        // Calculate 5% late fee on current total
+        const currentTotal = parseFloat(selectedInvoice.total) || parseFloat(selectedInvoice.amount) || 0
+        const lateFee = Math.round(currentTotal * 0.05 * 100) / 100
+        const newTotal = currentTotal + lateFee
 
-      toast.success('Invoice marked as overdue with 5% late fee applied')
+        // Add late fee as a line item
+        const updatedLineItems = [
+          ...existingLineItems,
+          {
+            description: 'Late Fee (5%)',
+            quantity: 1,
+            rate: lateFee,
+            amount: lateFee
+          }
+        ]
+
+        const { error } = await supabase
+          .from('invoices')
+          .update({
+            status: 'overdue',
+            line_items: updatedLineItems,
+            total: newTotal,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', selectedInvoice.id)
+
+        if (error) throw error
+        toast.success('Invoice marked as overdue with 5% late fee applied')
+      }
+
       setShowViewModal(false)
       loadInvoices()
     } catch (error) {
