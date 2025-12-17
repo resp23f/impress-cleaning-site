@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X, CreditCard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
@@ -10,23 +11,33 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
   const [customer, setCustomer] = useState(null)
   const [lineItems, setLineItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  // Portal mounting
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Handle open/close animations
+  useEffect(() => {
+    if (isOpen) {
+      // Small delay to ensure DOM is ready, then trigger animation
+      requestAnimationFrame(() => {
+        setIsAnimating(true)
+      })
+      document.body.style.overflow = 'hidden'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (isOpen && invoiceId) {
       loadInvoice()
     }
   }, [isOpen, invoiceId])
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen])
 
   const loadInvoice = async () => {
     setLoading(true)
@@ -44,9 +55,17 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
     }
   }
 
+  const handleClose = () => {
+    setIsAnimating(false)
+    document.body.style.overflow = 'unset'
+    setTimeout(() => {
+      onClose()
+    }, 300)
+  }
+
   const handlePayNow = () => {
     router.push(`/portal/invoices/${invoiceId}/pay`)
-    onClose()
+    handleClose()
   }
 
   const formatMoney = (value) =>
@@ -74,92 +93,70 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
 
   const canPay = invoice?.status !== 'paid' && invoice?.status !== 'cancelled'
 
-  if (!isOpen) return null
+  // Don't render until mounted (for portal) or if not open
+  if (!mounted || !isOpen) return null
 
-  return (
-    <>
+  const panelContent = (
+    <div className="fixed inset-0 z-[9999]">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 transition-opacity duration-300"
-        onClick={onClose}
+        className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out ${
+          isAnimating ? 'opacity-100' : 'opacity-0'
+        }`}
+        onClick={handleClose}
       />
 
       {/* Panel */}
       <div
         className={`
-          fixed inset-0 sm:inset-y-0 sm:right-0 sm:left-auto
-          w-full sm:w-[540px] md:w-[600px]
-          bg-white z-[60]
-          transform transition-transform duration-300 ease-out
+          absolute inset-y-0 right-0 w-full sm:w-[540px] md:w-[600px]
+          bg-white shadow-2xl
           flex flex-col
-          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+          transition-transform duration-300 ease-out
+          ${isAnimating ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
         {loading ? (
-          <InvoiceSkeleton onClose={onClose} />
+          <InvoiceSkeleton onClose={handleClose} />
         ) : (
           <>
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-20 bg-white border-b border-gray-100">              <div className="flex items-center justify-between px-4 sm:px-6 h-14 sm:h-16">
-              {/* Mobile: X button */}
+            {/* Header */}
+            <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 h-16 bg-white border-b border-gray-100">
+              {/* Left: Invoice number and status */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-semibold text-gray-900">
+                  {invoice?.invoice_number || `INV-${invoice?.id}`}
+                </span>
+                <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full border ${getStatusStyle(invoice?.status)}`}>
+                  {invoice?.status === 'sent' || invoice?.status === 'pending' ? 'Unpaid' : invoice?.status?.charAt(0).toUpperCase() + invoice?.status?.slice(1)}
+                </span>
+              </div>
+
+              {/* Right: X button */}
               <button
-                onClick={onClose}
-                className="sm:hidden p-2 -ml-2 text-gray-500 hover:text-gray-700 active:bg-gray-100 rounded-lg transition-colors"
+                onClick={handleClose}
+                className="p-2.5 -mr-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 active:bg-gray-200 rounded-xl transition-colors"
                 aria-label="Close invoice"
               >
                 <X className="w-6 h-6" />
               </button>
-              {/* Invoice number - centered on mobile, left on desktop */}
-              <div className="absolute left-1/2 -translate-x-1/2 sm:relative sm:left-0 sm:translate-x-0">
-                <span className="text-sm font-semibold text-gray-900">
-                  {invoice?.invoice_number || `INV-${invoice?.id}`}
-                </span>
-              </div>
-
-              {/* Desktop: X button */}
-              <button
-                onClick={onClose}
-                className="hidden sm:flex p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                aria-label="Close invoice"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              {/* Mobile: Status badge */}
-              <span className={`sm:hidden inline-flex px-2.5 py-1 text-xs font-medium rounded-full border ${getStatusStyle(invoice?.status)}`}>
-                {invoice?.status === 'sent' || invoice?.status === 'pending' ? 'Unpaid' : invoice?.status?.charAt(0).toUpperCase() + invoice?.status?.slice(1)}
-              </span>
-            </div>
             </div>
 
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto overscroll-contain">
               <div className="px-4 sm:px-8 py-6 sm:py-8">
 
-                {/* Header - Company & Invoice Info */}
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 sm:mb-8">
-                  <div>
-                    <img
-                      src="/ImpressLogoNoBackgroundBlue.png"
-                      alt="Impress Cleaning Services"
-                      className="h-8 sm:h-10 mb-3 sm:mb-4"
-                    />
-                    <div className="text-xs text-gray-500 space-y-0.5">
-                      <p className="font-medium text-gray-700">Impress Cleaning Services, LLC</p>
-                      <p>1530 Sun City Blvd, Suite 120-403</p>
-                      <p>Georgetown, TX 78633</p>
-                    </div>
-                  </div>
-
-                  {/* Desktop: Invoice number & status */}
-                  <div className="hidden sm:block text-right">
-                    <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Invoice</div>
-                    <div className="text-xl font-bold text-gray-900 mb-2">
-                      {invoice?.invoice_number || `INV-${invoice?.id}`}
-                    </div>
-                    <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full border ${getStatusStyle(invoice?.status)}`}>
-                      {invoice?.status === 'sent' || invoice?.status === 'pending' ? 'Unpaid' : invoice?.status?.charAt(0).toUpperCase() + invoice?.status?.slice(1)}
-                    </span>
+                {/* Header - Company Info */}
+                <div className="mb-6 sm:mb-8">
+                  <img
+                    src="/ImpressLogoNoBackgroundBlue.png"
+                    alt="Impress Cleaning Services"
+                    className="h-8 sm:h-10 mb-3 sm:mb-4"
+                  />
+                  <div className="text-xs text-gray-500 space-y-0.5">
+                    <p className="font-medium text-gray-700">Impress Cleaning Services, LLC</p>
+                    <p>1530 Sun City Blvd, Suite 120-403</p>
+                    <p>Georgetown, TX 78633</p>
                   </div>
                 </div>
 
@@ -198,7 +195,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                   )}
                 </div>
 
-                {/* Line Items - Card style on mobile, table on desktop */}
+                {/* Line Items */}
                 <div className="mb-6">
                   <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3 sm:hidden">Services</div>
 
@@ -281,7 +278,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                         {invoice?.status === 'paid' ? '$0.00' : formatMoney(invoice?.total ?? invoice?.amount)}
                       </span>
                     </div>
-                    {/* Pay Button - Desktop only, inside totals */}
+                    {/* Pay Button - Desktop (inside totals) */}
                     {canPay && (
                       <Button
                         variant="primary"
@@ -295,6 +292,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                     )}
                   </div>
                 </div>
+
                 {/* Notes */}
                 {invoice?.notes && (
                   <div className="mb-6 p-4 bg-amber-50/50 rounded-lg border border-amber-100">
@@ -313,14 +311,14 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                   </p>
                 </div>
 
-                {/* Bottom spacing for sticky button */}
+                {/* Bottom spacing for mobile pay button */}
                 {canPay && <div className="h-24 sm:hidden" />}
               </div>
             </div>
 
             {/* Fixed Pay Button - Mobile Only */}
             {canPay && (
-              <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 pb-6 bg-white border-t border-gray-100 z-[70]">
+              <div className="sm:hidden flex-shrink-0 p-4 pb-6 bg-white border-t border-gray-100">
                 <Button
                   variant="primary"
                   fullWidth
@@ -336,44 +334,39 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
           </>
         )}
       </div>
-    </>
+    </div>
   )
+
+  // Render via portal to escape any parent stacking contexts
+  return createPortal(panelContent, document.body)
 }
 
 function InvoiceSkeleton({ onClose }) {
   return (
     <>
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-white border-b border-gray-100">
-        <div className="flex items-center justify-between px-4 sm:px-6 h-14 sm:h-16">
-          <button
-            onClick={onClose}
-            className="sm:hidden p-2 -ml-2 text-gray-500 hover:text-gray-700 rounded-lg"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse mx-auto sm:mx-0" />
-          <button
-            onClick={onClose}
-            className="hidden sm:flex p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <div className="sm:hidden h-6 w-16 bg-gray-200 rounded-full animate-pulse" />
+      <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 h-16 bg-white border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+          <div className="h-6 w-16 bg-gray-200 rounded-full animate-pulse" />
         </div>
+        <button
+          onClick={onClose}
+          className="p-2.5 -mr-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+        >
+          <X className="w-6 h-6" />
+        </button>
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 sm:py-8">
         <div className="animate-pulse">
-          {/* Header skeleton */}
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
-            <div>
-              <div className="h-8 w-32 bg-gray-200 rounded mb-3" />
-              <div className="space-y-2">
-                <div className="h-3 w-40 bg-gray-100 rounded" />
-                <div className="h-3 w-36 bg-gray-100 rounded" />
-              </div>
+          {/* Logo skeleton */}
+          <div className="mb-6">
+            <div className="h-8 w-32 bg-gray-200 rounded mb-3" />
+            <div className="space-y-2">
+              <div className="h-3 w-40 bg-gray-100 rounded" />
+              <div className="h-3 w-36 bg-gray-100 rounded" />
             </div>
           </div>
 
