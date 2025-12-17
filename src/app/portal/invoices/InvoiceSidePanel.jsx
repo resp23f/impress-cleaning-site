@@ -79,29 +79,32 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 :hidden"
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50"
         onClick={onClose}
       />
-
       {/* Panel */}
       <div
         id="invoice-panel"
-        className={`fixed top-0 right-0 h-full w-full sm:w-[600px] bg-white z-50 transform transition-transform duration-300 ease-out overflow-y-auto ${isOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[600px] bg-white z-[60] transform transition-transform duration-300 ease-out overflow-y-auto ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {loading ? (
           <InvoiceSkeleton />
         ) : (
           <>
             {/* Action Bar */}
-            <div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-end">
+            <div className="sticky top-0 z-20 bg-white border-b border-gray-100 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-500 sm:hidden">Invoice Details</span>
+              <span className="hidden sm:block" />
               <button
                 onClick={onClose}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2.5 sm:p-2 -mr-1 sm:mr-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl sm:rounded-lg transition-colors"
+                aria-label="Close invoice"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6 sm:w-5 sm:h-5" />
               </button>
-            </div>            {/* Invoice Content */}
+            </div>
+
+            {/* Invoice Content */}
             <div className="px-8 py-8" id="invoice-content">
 
               {/* Header */}

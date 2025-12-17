@@ -413,8 +413,8 @@ export default function LoginPage() {
                 <img
                   src="/ImpressLogoNoBackgroundBlue.png"
                   alt="Impress Cleaning Services"
-                  className="h-14 w-auto"
-                  style={{ minHeight: '56px' }}
+                  className="h-20 w-auto"
+                  style={{ minHeight: '80px' }}
                 />
               </div>
               <div className="lg:px-4">

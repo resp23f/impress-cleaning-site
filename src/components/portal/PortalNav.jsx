@@ -179,12 +179,15 @@ export default function PortalNav({ userName }) {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div
-          className={`lg:hidden fixed inset-0 z-50 bg-slate-100/70 ${isClosing ? styles.fadeOutOverlaySmooth : styles.fadeInOverlaySmooth}`}
-          onClick={closeMenu}
-        >
+        <>
+          {/* Backdrop - z-30 keeps header clickable */}
           <div
-            className={`fixed inset-y-0 right-0 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
+            className={`lg:hidden fixed inset-0 z-30 bg-slate-100/70 ${isClosing ? styles.fadeOutOverlaySmooth : styles.fadeInOverlaySmooth}`}
+            onClick={closeMenu}
+          />
+          {/* Panel - z-40 same as header */}
+          <div
+            className={`lg:hidden fixed inset-y-0 right-0 z-40 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with user greeting */}
@@ -251,9 +254,8 @@ export default function PortalNav({ userName }) {
               </button>
             </div>
           </div>
-        </div>
+        </>
       )}
-
       {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-2px_16px_rgba(0,0,0,0.04)] pb-[env(safe-area-inset-bottom)]">
         <nav className="flex justify-evenly items-center px-1 py-2">
