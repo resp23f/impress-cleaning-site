@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { X, CreditCard, ChevronLeft } from 'lucide-react'
+import { X, CreditCard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
 
@@ -100,39 +100,36 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
         ) : (
           <>
             {/* Sticky Header */}
-            <div className="sticky top-0 z-20 bg-white border-b border-gray-100 safe-area-top">
-              <div className="flex items-center justify-between px-4 sm:px-6 h-14 sm:h-16">
-                {/* Mobile: Back button with text */}
-                <button
-                  onClick={onClose}
-                  className="sm:hidden flex items-center gap-1 -ml-2 px-2 py-2 text-gray-600 hover:text-gray-900 active:bg-gray-100 rounded-lg transition-colors"
-                  aria-label="Close invoice"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                  <span className="text-sm font-medium">Back</span>
-                </button>
-
-                {/* Invoice number - centered on mobile, left on desktop */}
-                <div className="absolute left-1/2 -translate-x-1/2 sm:relative sm:left-0 sm:translate-x-0">
-                  <span className="text-sm font-semibold text-gray-900">
-                    {invoice?.invoice_number || `INV-${invoice?.id}`}
-                  </span>
-                </div>
-
-                {/* Desktop: X button */}
-                <button
-                  onClick={onClose}
-                  className="hidden sm:flex p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                  aria-label="Close invoice"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                {/* Mobile: Status badge */}
-                <span className={`sm:hidden inline-flex px-2.5 py-1 text-xs font-medium rounded-full border ${getStatusStyle(invoice?.status)}`}>
-                  {invoice?.status === 'sent' || invoice?.status === 'pending' ? 'Unpaid' : invoice?.status?.charAt(0).toUpperCase() + invoice?.status?.slice(1)}
+            <div className="sticky top-0 z-20 bg-white border-b border-gray-100">              <div className="flex items-center justify-between px-4 sm:px-6 h-14 sm:h-16">
+              {/* Mobile: X button */}
+              <button
+                onClick={onClose}
+                className="sm:hidden p-2 -ml-2 text-gray-500 hover:text-gray-700 active:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Close invoice"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              {/* Invoice number - centered on mobile, left on desktop */}
+              <div className="absolute left-1/2 -translate-x-1/2 sm:relative sm:left-0 sm:translate-x-0">
+                <span className="text-sm font-semibold text-gray-900">
+                  {invoice?.invoice_number || `INV-${invoice?.id}`}
                 </span>
               </div>
+
+              {/* Desktop: X button */}
+              <button
+                onClick={onClose}
+                className="hidden sm:flex p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Close invoice"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Mobile: Status badge */}
+              <span className={`sm:hidden inline-flex px-2.5 py-1 text-xs font-medium rounded-full border ${getStatusStyle(invoice?.status)}`}>
+                {invoice?.status === 'sent' || invoice?.status === 'pending' ? 'Unpaid' : invoice?.status?.charAt(0).toUpperCase() + invoice?.status?.slice(1)}
+              </span>
+            </div>
             </div>
 
             {/* Scrollable Content */}
@@ -278,15 +275,26 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                         return null
                       })()}
                     </div>
-                    <div className="flex justify-between pt-3">
+                    <div className="flex justify-between pt-3 mb-4">
                       <span className="font-medium text-gray-900">Amount Due</span>
                       <span className={`text-xl font-bold ${invoice?.status === 'paid' ? 'text-emerald-600' : 'text-[#079447]'}`}>
                         {invoice?.status === 'paid' ? '$0.00' : formatMoney(invoice?.total ?? invoice?.amount)}
                       </span>
                     </div>
+                    {/* Pay Button - Desktop only, inside totals */}
+                    {canPay && (
+                      <Button
+                        variant="primary"
+                        fullWidth
+                        onClick={handlePayNow}
+                        className="hidden sm:flex shadow-lg shadow-emerald-200 hover:shadow-xl hover:shadow-emerald-300"
+                      >
+                        <CreditCard className="w-4 h-4" />
+                        Pay Now
+                      </Button>
+                    )}
                   </div>
                 </div>
-
                 {/* Notes */}
                 {invoice?.notes && (
                   <div className="mb-6 p-4 bg-amber-50/50 rounded-lg border border-amber-100">
@@ -310,9 +318,9 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
               </div>
             </div>
 
-            {/* Sticky Pay Button - Mobile Only */}
+            {/* Fixed Pay Button - Mobile Only */}
             {canPay && (
-              <div className="sm:hidden sticky bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 safe-area-bottom">
+              <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 pb-6 bg-white border-t border-gray-100 z-[70]">
                 <Button
                   variant="primary"
                   fullWidth
@@ -323,25 +331,6 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                   <CreditCard className="w-5 h-5" />
                   Pay {formatMoney(invoice?.total ?? invoice?.amount)}
                 </Button>
-              </div>
-            )}
-
-            {/* Desktop Pay Button - Inline */}
-            {canPay && (
-              <div className="hidden sm:block px-8 pb-8">
-                <div className="flex justify-end">
-                  <div className="w-64">
-                    <Button
-                      variant="primary"
-                      fullWidth
-                      onClick={handlePayNow}
-                      className="shadow-lg shadow-emerald-200 hover:shadow-xl hover:shadow-emerald-300"
-                    >
-                      <CreditCard className="w-4 h-4" />
-                      Pay Now
-                    </Button>
-                  </div>
-                </div>
               </div>
             )}
           </>
@@ -359,10 +348,9 @@ function InvoiceSkeleton({ onClose }) {
         <div className="flex items-center justify-between px-4 sm:px-6 h-14 sm:h-16">
           <button
             onClick={onClose}
-            className="sm:hidden flex items-center gap-1 -ml-2 px-2 py-2 text-gray-600 rounded-lg"
+            className="sm:hidden p-2 -ml-2 text-gray-500 hover:text-gray-700 rounded-lg"
           >
-            <ChevronLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
+            <X className="w-6 h-6" />
           </button>
           <div className="h-4 w-24 bg-gray-200 rounded animate-pulse mx-auto sm:mx-0" />
           <button
