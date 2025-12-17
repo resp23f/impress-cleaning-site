@@ -186,10 +186,13 @@ export default function PortalNav({ userName }) {
             onClick={closeMenu}
           />
           {/* Panel - z-40 same as header */}
+// START — Replace with
+          {/* Panel - starts below header, z-50 so it's above header visually on overlap */}
           <div
-            className={`lg:hidden fixed inset-y-0 right-0 z-40 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
+            className={`lg:hidden fixed top-16 right-0 bottom-0 z-50 w-80 backdrop-blur-xl bg-white/40 shadow-2xl flex flex-col ${isClosing ? styles.slideOutMenuPanel : styles.slideInMenuPanel}`}
             onClick={(e) => e.stopPropagation()}
           >
+// END
             {/* Header with user greeting */}
             <div className="pt-6 px-6 pb-4">
               <p className="text-sm text-gray-500">Welcome back,</p>
