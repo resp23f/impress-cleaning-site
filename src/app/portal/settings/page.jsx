@@ -77,8 +77,22 @@ export default function SettingsPage() {
 
   // Payment methods
   const [processingCard, setProcessingCard] = useState(false)
-  const cardElementRef = useRef(null)
-  const stripeCardRef = useRef(null)
+  const [cardState, setCardState] = useState({
+    numberComplete: false,
+    expiryComplete: false,
+    cvcComplete: false,
+    numberError: '',
+    expiryError: '',
+    cvcError: '',
+  })
+  const cardNumberRef = useRef(null)
+  const cardExpiryRef = useRef(null)
+  const cardCvcRef = useRef(null)
+  const stripeElementsRef = useRef(null)
+  
+  // Computed validation state
+  const cardComplete = cardState.numberComplete && cardState.expiryComplete && cardState.cvcComplete
+  const cardError = cardState.numberError || cardState.expiryError || cardState.cvcError
 
   useEffect(() => {
     const load = async () => {
@@ -117,32 +131,83 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (loading) return
-    const mountCardElement = async () => {
-      if (!cardElementRef.current || stripeCardRef.current) return
+    
+    const mountCardElements = async () => {
+      // Don't remount if already mounted
+      if (stripeElementsRef.current) return
+      if (!cardNumberRef.current || !cardExpiryRef.current || !cardCvcRef.current) return
+      
       const stripe = await stripePromise
       if (!stripe) return
+      
       const elements = stripe.elements()
-      const card = elements.create('card', {
-        disableLink: true,
-        style: {
-          base: {
-            fontSize: '16px',
-            color: '#1C294E',
-            '::placeholder': { color: '#9ca3af' },
-          },
+      
+      const baseStyle = {
+        base: {
+          fontSize: '16px',
+          fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+          fontSmoothing: 'antialiased',
+          color: '#1C294E',
+          '::placeholder': { color: '#9ca3af' },
+          iconColor: '#6b7280',
         },
+        invalid: {
+          color: '#dc2626',
+          iconColor: '#dc2626',
+        },
+      }
+      
+      // Create individual elements
+      const cardNumber = elements.create('cardNumber', { 
+        style: baseStyle,
+        showIcon: true,
       })
-      card.mount(cardElementRef.current)
-      stripeCardRef.current = { stripe, card }
+      const cardExpiry = elements.create('cardExpiry', { style: baseStyle })
+      const cardCvc = elements.create('cardCvc', { style: baseStyle })
+      
+      // Listen for changes on each element
+      cardNumber.on('change', (event) => {
+        setCardState(prev => ({
+          ...prev,
+          numberComplete: event.complete,
+          numberError: event.error ? event.error.message : '',
+        }))
+      })
+      
+      cardExpiry.on('change', (event) => {
+        setCardState(prev => ({
+          ...prev,
+          expiryComplete: event.complete,
+          expiryError: event.error ? event.error.message : '',
+        }))
+      })
+      
+      cardCvc.on('change', (event) => {
+        setCardState(prev => ({
+          ...prev,
+          cvcComplete: event.complete,
+          cvcError: event.error ? event.error.message : '',
+        }))
+      })
+      
+      // Mount elements
+      cardNumber.mount(cardNumberRef.current)
+      cardExpiry.mount(cardExpiryRef.current)
+      cardCvc.mount(cardCvcRef.current)
+      
+      stripeElementsRef.current = { stripe, cardNumber, cardExpiry, cardCvc }
     }
-    const timer = setTimeout(mountCardElement, 150)
+    
+    const timer = setTimeout(mountCardElements, 150)
     return () => clearTimeout(timer)
   }, [loading])
 
   useEffect(() => {
     return () => {
-      if (stripeCardRef.current?.card) {
-        stripeCardRef.current.card.unmount()
+      if (stripeElementsRef.current) {
+        stripeElementsRef.current.cardNumber?.unmount()
+        stripeElementsRef.current.cardExpiry?.unmount()
+        stripeElementsRef.current.cardCvc?.unmount()
       }
     }
   }, [])
@@ -373,7 +438,7 @@ export default function SettingsPage() {
   // PAYMENT METHODS
   // ============================================
   const handleAddCard = async () => {
-    if (!stripeCardRef.current?.stripe || !stripeCardRef.current?.card) {
+    if (!stripeElementsRef.current?.stripe || !stripeElementsRef.current?.cardNumber) {
       toast.error('Payment form not ready')
       return
     }
@@ -383,9 +448,9 @@ export default function SettingsPage() {
       const { clientSecret, error: createError } = await createRes.json()
       if (createError || !clientSecret) throw new Error(createError || 'Unable to start card setup')
 
-      const { stripe, card } = stripeCardRef.current
+      const { stripe, cardNumber } = stripeElementsRef.current
       const result = await stripe.confirmCardSetup(clientSecret, {
-        payment_method: { card },
+        payment_method: { card: cardNumber },
       })
       if (result.error) throw new Error(result.error.message)
 
@@ -394,7 +459,6 @@ export default function SettingsPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ paymentMethodId: pmId, makeDefault: payments.length === 0 }),
-
       })
       const saveJson = await saveRes.json()
       if (saveJson.error) throw new Error(saveJson.error)
@@ -405,7 +469,21 @@ export default function SettingsPage() {
         .eq('user_id', user.id)
         .order('is_default', { ascending: false })
       setPayments(paymentData || [])
-      toast.success('Card saved')
+      
+      // Clear all card elements for next entry
+      stripeElementsRef.current?.cardNumber?.clear()
+      stripeElementsRef.current?.cardExpiry?.clear()
+      stripeElementsRef.current?.cardCvc?.clear()
+      setCardState({
+        numberComplete: false,
+        expiryComplete: false,
+        cvcComplete: false,
+        numberError: '',
+        expiryError: '',
+        cvcError: '',
+      })
+      
+      toast.success('Card saved successfully!')
     } catch (err) {
       console.error('Add card error', err)
       toast.error(err.message || 'Could not save card')
@@ -716,57 +794,150 @@ export default function SettingsPage() {
                       </div>
                     </div>
                   ) : (
-                    payments.map((pm) => (
-                      <div key={pm.id} className="border border-gray-200 rounded-xl p-5 bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md transition-all duration-200">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="space-y-1.5 flex-1 min-w-0">
-                            <p className="font-bold text-[#1C294E] text-base">
-                              {pm.card_brand?.toUpperCase()} •••• {pm.card_last4}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Expires {pm.card_exp_month}/{pm.card_exp_year}
-                            </p>
-                            {pm.is_default && (
-                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
-                                <Star className="w-3.5 h-3.5 fill-amber-600" /> Default Card
-                              </span>
-                            )}
+                    payments.map((pm) => {
+                      // Show default badge if is_default OR if it's the only card
+                      const showDefaultBadge = pm.is_default || payments.length === 1
+                      // Only show "Make Default" if there are multiple cards and this one isn't default
+                      const showMakeDefault = payments.length > 1 && !pm.is_default
+                      
+                      return (
+                        <div key={pm.id} className="border border-gray-200 rounded-xl p-5 bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md transition-all duration-200">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="space-y-1.5 flex-1 min-w-0">
+                              <p className="font-bold text-[#1C294E] text-base">
+                                {pm.card_brand?.toUpperCase()} •••• {pm.card_last4}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Expires {pm.card_exp_month}/{pm.card_exp_year}
+                              </p>
+                              {showDefaultBadge && (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+                                  <CreditCard className="w-3.5 h-3.5" /> Default Payment
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                              <Button size="sm" variant="danger" onClick={() => deletePaymentMethod(pm.id)} className={`!p-2 ${styles.smoothTransition}`}>
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1.5 flex-shrink-0">
-                            <Button size="sm" variant="danger" onClick={() => deletePaymentMethod(pm.id)} className={`!p-2 ${styles.smoothTransition}`}>
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
+                          {showMakeDefault && (
+                            <div className="mt-3 pt-3 border-t border-gray-100">
+                              <Button size="sm" variant="ghost" onClick={() => makeDefaultCard(pm.stripe_payment_method_id)} className={`text-xs ${styles.smoothTransition}`}>
+                                Make Default
+                              </Button>
+                            </div>
+                          )}
                         </div>
-                        {!pm.is_default && (
-                          <div className="mt-3 pt-3 border-t border-gray-100">
-                            <Button size="sm" variant="ghost" onClick={() => makeDefaultCard(pm.stripe_payment_method_id)} className={`text-xs ${styles.smoothTransition}`}>
-                              Make Default
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    ))
+                      )
+                    })
                   )}
                 </div>
 
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-5 space-y-4 bg-gradient-to-br from-gray-50 to-slate-50">
+                <div className="border-2 border-dashed border-gray-300 rounded-2xl p-5 space-y-4 bg-gradient-to-br from-gray-50/80 to-slate-50/80">
                   <p className="text-sm font-bold text-[#1C294E] flex items-center gap-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
-                      <CreditCard className="w-4 h-4 text-blue-600" />
+                      <Plus className="w-4 h-4 text-blue-600" />
                     </div>
                     Add New Card
                   </p>
-                  <div ref={cardElementRef} className="border-2 border-gray-200 rounded-xl px-4 py-4 bg-white min-h-[56px] flex items-center" />
+                  
+                  {/* Card Number */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Card Number</label>
+                    <div 
+                      ref={cardNumberRef} 
+                      className={`border-2 rounded-xl px-4 py-3.5 bg-white min-h-[48px] transition-all duration-200 ${
+                        cardState.numberError 
+                          ? 'border-red-300 focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100' 
+                          : cardState.numberComplete 
+                            ? 'border-emerald-300 focus-within:border-emerald-400' 
+                            : 'border-gray-200 focus-within:border-[#079447] focus-within:ring-2 focus-within:ring-[#079447]/10'
+                      }`} 
+                    />
+                    {cardState.numberError && (
+                      <p className="text-xs text-red-600 flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3" />
+                        {cardState.numberError}
+                      </p>
+                    )}
+                  </div>
+                  
+                  {/* Expiry and CVC Row */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Expiry</label>
+                      <div 
+                        ref={cardExpiryRef} 
+                        className={`border-2 rounded-xl px-4 py-3.5 bg-white min-h-[48px] transition-all duration-200 ${
+                          cardState.expiryError 
+                            ? 'border-red-300 focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100' 
+                            : cardState.expiryComplete 
+                              ? 'border-emerald-300 focus-within:border-emerald-400' 
+                              : 'border-gray-200 focus-within:border-[#079447] focus-within:ring-2 focus-within:ring-[#079447]/10'
+                        }`} 
+                      />
+                      {cardState.expiryError && (
+                        <p className="text-xs text-red-600 flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3" />
+                          {cardState.expiryError}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">CVC</label>
+                      <div 
+                        ref={cardCvcRef} 
+                        className={`border-2 rounded-xl px-4 py-3.5 bg-white min-h-[48px] transition-all duration-200 ${
+                          cardState.cvcError 
+                            ? 'border-red-300 focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100' 
+                            : cardState.cvcComplete 
+                              ? 'border-emerald-300 focus-within:border-emerald-400' 
+                              : 'border-gray-200 focus-within:border-[#079447] focus-within:ring-2 focus-within:ring-[#079447]/10'
+                        }`} 
+                      />
+                      {cardState.cvcError && (
+                        <p className="text-xs text-red-600 flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3" />
+                          {cardState.cvcError}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Validation Status */}
+                  {cardComplete && !cardError && (
+                    <div className="flex items-center gap-2 p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
+                      <Shield className="w-4 h-4 text-emerald-600" />
+                      <p className="text-xs text-emerald-700 font-medium">Card details complete - ready to save</p>
+                    </div>
+                  )}
 
-                  <Button variant="primary" fullWidth onClick={handleAddCard} disabled={processingCard} className={styles.smoothTransition}>
-                    {processingCard ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
-                    Save Card
+                  <Button 
+                    variant="primary" 
+                    fullWidth 
+                    onClick={handleAddCard} 
+                    disabled={processingCard || !cardComplete} 
+                    className={`${styles.smoothTransition} ${!cardComplete && !processingCard ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {processingCard ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="w-4 h-4" />
+                        {cardComplete ? 'Save Card' : 'Enter Card Details'}
+                      </>
+                    )}
                   </Button>
-                  <div className="flex items-start gap-2 pt-2">
-                    <Shield className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-xs text-gray-600">
-                      Cards are securely stored with Stripe. We never see your full card number.
+                  
+                  <div className="flex items-start gap-2 pt-1">
+                    <Lock className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" />
+                    <p className="text-xs text-gray-500">
+                      Your card is securely encrypted and stored with Stripe.
                     </p>
                   </div>
                 </div>

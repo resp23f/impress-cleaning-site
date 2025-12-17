@@ -49,8 +49,10 @@ export default function CustomersPage() {
     full_name: '',
     email: '',
     phone: '',
+    sendWelcomeEmail: true,
   })
   const [processing, setProcessing] = useState(false)
+  const [sendingWelcome, setSendingWelcome] = useState(false)
 
   const [stats, setStats] = useState({
     total: 0,
@@ -148,7 +150,10 @@ export default function CustomersPage() {
       const res = await fetch('/api/admin/customers/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sanitizedCustomer),
+        body: JSON.stringify({
+          ...sanitizedCustomer,
+          sendWelcomeEmail: newCustomer.sendWelcomeEmail,
+        }),
       })
 
       if (!res.ok) {
@@ -156,9 +161,11 @@ export default function CustomersPage() {
         throw new Error(data.error || 'Failed to create customer')
       }
 
-      toast.success('Customer created!')
+      const data = await res.json()
+      const emailNote = data.welcomeEmailSent ? ' Welcome email sent!' : ''
+      toast.success(`Customer created!${emailNote}`)
       setShowCreateCustomerModal(false)
-      setNewCustomer({ full_name: '', email: '', phone: '' })
+      setNewCustomer({ full_name: '', email: '', phone: '', sendWelcomeEmail: true })
       await loadCustomers()
     } catch (error) {
       console.error('Error creating customer:', error)
@@ -229,6 +236,43 @@ export default function CustomersPage() {
       toast.error('Failed to update customer status')
     } finally {
       setProcessing(false)
+    }
+  }
+
+  const handleSendWelcomeEmail = async () => {
+    if (!selectedCustomer?.email || !selectedCustomer?.full_name) {
+      toast.error('Customer must have name and email')
+      return
+    }
+
+    // Check for placeholder email
+    if (selectedCustomer.email.includes('@placeholder.')) {
+      toast.error('Cannot send to placeholder email')
+      return
+    }
+
+    setSendingWelcome(true)
+    try {
+      const res = await fetch('/api/email/customer-welcome', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: selectedCustomer.email,
+          firstName: selectedCustomer.full_name.split(' ')[0],
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to send email')
+      }
+
+      toast.success('Welcome email sent!')
+    } catch (error) {
+      console.error('Error sending welcome email:', error)
+      toast.error(error.message || 'Failed to send welcome email')
+    } finally {
+      setSendingWelcome(false)
     }
   }
 
@@ -580,6 +624,20 @@ export default function CustomersPage() {
                     </Button>
                   </Link>
                 </div>
+                {/* Send Welcome Email - only if real email */}
+                {selectedCustomer.email && !selectedCustomer.email.includes('@placeholder.') && (
+                  <Button
+                    variant="outline"
+                    fullWidth
+                    size="sm"
+                    className="mt-3"
+                    onClick={handleSendWelcomeEmail}
+                    loading={sendingWelcome}
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Send Welcome Email
+                  </Button>
+                )}
               </div>
             )}
 
@@ -700,6 +758,27 @@ export default function CustomersPage() {
               setNewCustomer({ ...newCustomer, phone: e.target.value })
             }
           />
+
+          {/* Welcome Email Toggle */}
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div>
+              <p className="text-sm font-medium text-gray-700">Send Welcome Email</p>
+              <p className="text-xs text-gray-500">Invite customer to create their portal account</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setNewCustomer({ ...newCustomer, sendWelcomeEmail: !newCustomer.sendWelcomeEmail })}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                newCustomer.sendWelcomeEmail ? 'bg-[#079447]' : 'bg-gray-300'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  newCustomer.sendWelcomeEmail ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
 
           <div className="flex gap-3 pt-4 border-t border-gray-200">
             <Button
