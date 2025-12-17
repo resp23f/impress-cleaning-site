@@ -26,14 +26,30 @@ export function sanitizeText(input) {
 
 /**
  * Sanitize email addresses
+ * Includes length check to prevent ReDoS attacks
  */
 export function sanitizeEmail(email) {
   if (!email) return ''
   
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const sanitized = String(email).trim().toLowerCase()
   
-  return emailRegex.test(sanitized) ? sanitized : ''
+  // RFC 5321: Max email length is 254 characters
+  // Length check prevents ReDoS attacks on malicious input
+  if (sanitized.length > 254) return ''
+  
+  // Simple email validation (no backtracking vulnerability)
+  const atIndex = sanitized.indexOf('@')
+  const lastDotIndex = sanitized.lastIndexOf('.')
+  
+  // Must have @ and . in correct positions
+  if (atIndex < 1 || lastDotIndex < atIndex + 2 || lastDotIndex >= sanitized.length - 1) {
+    return ''
+  }
+  
+  // No spaces allowed
+  if (sanitized.includes(' ')) return ''
+  
+  return sanitized
 }
 
 /**

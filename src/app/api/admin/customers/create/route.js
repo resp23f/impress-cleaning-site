@@ -39,8 +39,8 @@ export async function POST(request) {
     const sanitizedEmail = email ? sanitizeEmail(email) : null
     const sanitizedPhone = phone ? sanitizePhone(phone) : null
 
-    // Validate email format if provided
-    if (sanitizedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
+    // Validate email format if provided (sanitizeEmail returns '' for invalid emails)
+    if (email && !sanitizedEmail) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
     }
 
