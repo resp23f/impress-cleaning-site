@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'This link has already been used' }, { status: 401 })
     }
 
-    // Check if expired (60 seconds)
+    // Check if expired (30 minutes)
     if (new Date(handoffToken.expires_at) < new Date()) {
       return NextResponse.json({ error: 'Link expired. Please request a new invite.' }, { status: 401 })
     }

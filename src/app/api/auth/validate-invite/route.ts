@@ -64,10 +64,10 @@ export async function GET(request: Request) {
       // Continue anyway - better UX to let them proceed
     }
 
-    // Generate a short-lived handoff token (60 seconds)
+    // Generate a handoff token (30 minutes - enough time to fill password form)
     const handoffToken = generateHandoffToken()
     const handoffHash = hashToken(handoffToken)
-    const handoffExpiry = new Date(Date.now() + 60 * 1000).toISOString() // 60 seconds
+    const handoffExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString() // 30 minutes
 
     // Store handoff token
     const { error: handoffError } = await adminClient
