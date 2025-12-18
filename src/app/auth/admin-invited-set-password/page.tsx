@@ -130,6 +130,26 @@ function AdminInvitedSetPasswordContent() {
 
     } catch (error) {
       const err = error as Error
+      
+      // If token was already used, password was likely set - try signing in
+      if (err.message === 'This link has already been used' && userInfo?.email) {
+        setPageState('signing-in')
+        try {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: userInfo.email,
+            password: password,
+          })
+          
+          if (!signInError) {
+            toast.success('Account created successfully!')
+            router.push('/auth/profile-setup')
+            return
+          }
+        } catch {
+          // Sign in failed, fall through to error
+        }
+      }
+      
       toast.error(err.message || 'Something went wrong')
       setPageState('ready')
     }
@@ -462,7 +482,7 @@ function AdminInvitedSetPasswordContent() {
 
             <button
               type="submit"
-              disabled={!checks.length || (confirmPassword.length > 0 && !checks.match)}
+              disabled={!checks.length || (confirmPassword.length > 0 && !checks.match) || pageState !== 'ready'}
               className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue
