@@ -546,7 +546,7 @@ export default function RequestServicePage() {
                   Select the service that best fits your needs
                 </p>
 
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {SERVICE_TYPES.map((service) => (
                     <SelectableCard
                       key={service.value}
