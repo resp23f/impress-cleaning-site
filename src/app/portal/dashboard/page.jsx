@@ -217,20 +217,24 @@ export default function DashboardPage() {
                 <p className="text-lg text-gray-500">Your home at a glance</p>
               </div>
               {/* ========== ROW 1: NEXT APPOINTMENT & BALANCE ========== */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
-                {/* Next Appointment Card - Compact Premium */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                {/* Next Appointment Card - Hero Style */}
                 <div className={`lg:col-span-2 ${styles.cardReveal1}`}>
-                  <div className={`relative overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80 ${styles.cardHover}`}>
+                  <div className="relative overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100/80">
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#079447] via-emerald-400 to-teal-400" />
-                    <div className="p-5">
+                    <div className="p-6">
                       {nextAppointment ? (
                         <>
-                          {/* Header Row */}
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2">
-                              <Sparkles className="w-4 h-4 text-[#079447]" />
-                              <span className="text-xs font-semibold text-[#079447] uppercase tracking-wider">Coming Up</span>
-                              <span className="text-lg font-bold text-[#1C294E] ml-2">Next Appointment</span>
+                          {/* Header */}
+                          <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
+                                <Sparkles className="w-5 h-5 text-[#079447]" />
+                              </div>
+                              <div>
+                                <p className="text-xs font-semibold text-[#079447] uppercase tracking-wider">Coming Up</p>
+                                <h2 className="text-xl font-bold text-[#1C294E]">Next Appointment</h2>
+                              </div>
                             </div>
                             {(() => {
                               const today = new Date().toISOString().split('T')[0]
@@ -242,15 +246,21 @@ export default function DashboardPage() {
                               return <Badge variant={getAppointmentStatusVariant(nextAppointment.status)}>{nextAppointment.status}</Badge>
                             })()}
                           </div>
-                          {/* Content - Horizontal Layout */}
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                            {/* Date */}
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#079447]/10 to-emerald-50 flex items-center justify-center">
-                                <Calendar className="w-5 h-5 text-[#079447]" />
+
+                          {/* Main Content */}
+                          <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+                            {/* Date Block - Hero Element */}
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#079447] to-emerald-600 flex flex-col items-center justify-center text-white shadow-lg shadow-emerald-200">
+                                <span className="text-2xl font-bold leading-none">
+                                  {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'd')}
+                                </span>
+                                <span className="text-xs font-medium uppercase tracking-wide opacity-90">
+                                  {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'MMM')}
+                                </span>
                               </div>
                               <div>
-                                <p className="text-lg font-bold text-[#1C294E] leading-tight">
+                                <p className="text-xl font-bold text-[#1C294E]">
                                   {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'EEEE')}
                                 </p>
                                 <p className="text-sm text-gray-500">
@@ -258,52 +268,61 @@ export default function DashboardPage() {
                                 </p>
                               </div>
                             </div>
+
                             {/* Divider */}
-                            <div className="hidden sm:block w-px h-10 bg-gray-200" />
-                            {/* Time */}
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center">
-                                <Clock className="w-5 h-5 text-gray-400" />
+                            <div className="hidden lg:block w-px h-14 bg-gray-200" />
+
+                            {/* Details */}
+                            <div className="flex flex-wrap gap-x-8 gap-y-3">
+                              <div className="flex items-center gap-2">
+                                <Clock className="w-4 h-4 text-gray-400" />
+                                <div>
+                                  <p className="text-xs text-gray-400 uppercase font-medium">Window</p>
+                                  <p className="text-sm font-semibold text-[#1C294E]">
+                                    {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
+                                  </p>
+                                </div>
                               </div>
-                              <div>
-                                <p className="text-xs font-medium text-gray-400 uppercase">Window</p>
-                                <p className="text-sm font-semibold text-[#1C294E]">
-                                  {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
-                                </p>
+                              <div className="flex items-center gap-2">
+                                <Calendar className="w-4 h-4 text-gray-400" />
+                                <div>
+                                  <p className="text-xs text-gray-400 uppercase font-medium">Service</p>
+                                  <p className="text-sm font-semibold text-[#1C294E]">{formatServiceType(nextAppointment.service_type)}</p>
+                                </div>
                               </div>
                             </div>
-                            {/* Divider */}
-                            <div className="hidden sm:block w-px h-10 bg-gray-200" />
-                            {/* Service Type */}
-                            <div className="flex-1">
-                              <p className="text-xs font-medium text-gray-400 uppercase">Service</p>
-                              <p className="text-sm font-semibold text-[#1C294E]">{formatServiceType(nextAppointment.service_type)}</p>
+
+                            {/* Action Button */}
+                            <div className="lg:ml-auto">
+                              <Link href="/portal/appointments">
+                                <Button variant="primary">
+                                  View Details
+                                  <ChevronRight className="w-4 h-4 ml-1" />
+                                </Button>
+                              </Link>
                             </div>
-                            {/* Action */}
-                            <Link href="/portal/appointments" className="sm:ml-auto">
-                              <Button variant="primary" size="sm" className={styles.smoothTransition}>
-                                View Details
-                                <ChevronRight className="w-4 h-4 ml-1" />
-                              </Button>
-                            </Link>
                           </div>
-                          {/* Address - Subtle */}
+
+                          {/* Address Footer */}
                           {primaryAddress && (
-                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
-                              <MapPin className="w-4 h-4 text-gray-400" />
+                            <div className="flex items-center gap-2 mt-5 pt-4 border-t border-gray-100">
+                              <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
                               <p className="text-sm text-gray-500">
                                 {primaryAddress.street_address}{primaryAddress.unit && `, ${primaryAddress.unit}`}, {primaryAddress.city}, {primaryAddress.state} {primaryAddress.zip_code}
                               </p>
                             </div>
                           )}
+
                           {/* Running Late Notice */}
                           {(() => {
                             const today = new Date().toISOString().split('T')[0]
                             if (nextAppointment.scheduled_date === today && nextAppointment.is_running_late) {
                               return (
-                                <div className="mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 flex items-center gap-2">
-                                  <Clock className="w-4 h-4 text-amber-600" />
-                                  <p className="text-sm text-amber-700">Running slightly behind - we'll keep you updated</p>
+                                <div className="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                    <Clock className="w-4 h-4 text-amber-600" />
+                                  </div>
+                                  <p className="text-sm text-amber-700">Running slightly behind schedule — we'll keep you updated!</p>
                                 </div>
                               )
                             }
@@ -312,15 +331,16 @@ export default function DashboardPage() {
                         </>
                       ) : (
                         /* Empty State */
-                        <div className="text-center py-8">
-                          <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gray-100 mb-4">
-                            <Calendar className="w-7 h-7 text-gray-300" />
+                        <div className="text-center py-10">
+                          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-50 mb-5">
+                            <Calendar className="w-8 h-8 text-gray-300" />
                           </div>
-                          <h3 className="text-lg font-bold text-[#1C294E] mb-1">No Upcoming Appointments</h3>
-                          <p className="text-sm text-gray-500 mb-4">Ready for your next cleaning?</p>
+                          <h3 className="text-xl font-bold text-[#1C294E] mb-2">No Upcoming Appointments</h3>
+                          <p className="text-gray-500 mb-6 max-w-sm mx-auto">Ready to schedule your next cleaning? We'd love to help.</p>
                           <Link href="/portal/request-service">
-                            <Button variant="primary" size="sm" className={styles.smoothTransition}>
-                              <Plus className="w-4 h-4" /> Request Service
+                            <Button variant="primary">
+                              <Plus className="w-4 h-4" />
+                              Request Service
                             </Button>
                           </Link>
                         </div>
@@ -328,39 +348,46 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </div>
-                {/* Balance Card - Compact */}
+
+                {/* Balance Card - Prominent */}
                 <div className={styles.cardReveal2}>
-                  <div className={`relative overflow-hidden rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] ${balance > 0 ? 'bg-gradient-to-br from-red-50 to-rose-50 border border-red-200/60' : 'bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200/50'} ${styles.cardHover}`}>
-                    <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-20 ${balance > 0 ? 'bg-red-300' : 'bg-emerald-300'}`} />
-                    <div className="relative p-5">
-                      <div className="flex items-center gap-2 mb-3">
-                        <CreditCard className={`w-4 h-4 ${balance > 0 ? 'text-red-600' : 'text-emerald-600'}`} />
-                        <h2 className="text-sm font-semibold text-[#1C294E]">Account Balance</h2>
+                  <div className={`relative overflow-hidden rounded-2xl h-full shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_30px_-10px_rgba(0,0,0,0.08)] ${balance > 0 ? 'bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 border border-red-200/60' : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200/50'}`}>
+                    {/* Decorative elements */}
+                    <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-20 ${balance > 0 ? 'bg-red-300' : 'bg-emerald-300'}`} />
+                    <div className={`absolute -bottom-6 -left-6 w-24 h-24 rounded-full opacity-15 ${balance > 0 ? 'bg-rose-300' : 'bg-green-300'}`} />
+                    
+                    <div className="relative p-6 h-full flex flex-col">
+                      {/* Header */}
+                      <div className="flex items-center gap-2 mb-4">
+                        <CreditCard className={`w-5 h-5 ${balance > 0 ? 'text-red-600' : 'text-emerald-600'}`} />
+                        <h2 className="text-lg font-bold text-[#1C294E]">Account Balance</h2>
                       </div>
+
                       {balance > 0 ? (
-                        <div>
-                          <p className="text-3xl font-bold text-red-600 mb-1">${balance.toFixed(2)}</p>
-                          <p className="text-xs text-gray-600 mb-3">Balance Due</p>
-                          <Link href={unpaidInvoiceIds.length === 1 ? `/portal/invoices/${unpaidInvoiceIds[0]}/pay` : '/portal/invoices?status=sent'}>
-                            <Button variant="primary" fullWidth size="sm" className={`${styles.smoothTransition} bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700`}>
-                              <CreditCard className="w-4 h-4" /> Pay Now
+                        <div className="flex-1 flex flex-col">
+                          <div className="flex-1">
+                            <p className="text-4xl font-bold text-red-600 mb-1">${balance.toFixed(2)}</p>
+                            <p className="text-sm text-gray-600">Balance Due</p>
+                          </div>
+                          <Link href={unpaidInvoiceIds.length === 1 ? `/portal/invoices/${unpaidInvoiceIds[0]}/pay` : '/portal/invoices?status=sent'} className="mt-4">
+                            <Button variant="primary" fullWidth className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 border-0">
+                              <CreditCard className="w-4 h-4" />
+                              Pay Now
                             </Button>
                           </Link>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-4">
-                          <div className="relative">
-                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center shadow-md shadow-emerald-200">
-                              <CheckCircle className="w-7 h-7 text-white" />
+                        <div className="flex-1 flex flex-col items-center justify-center text-center">
+                          <div className="relative mb-3">
+                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+                              <CheckCircle className="w-8 h-8 text-white" />
                             </div>
-                            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white shadow flex items-center justify-center">
-                              <Sparkles className="w-3 h-3 text-emerald-500" />
+                            <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white shadow-md flex items-center justify-center">
+                              <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
                             </div>
                           </div>
-                          <div>
-                            <p className="text-2xl font-bold text-[#1C294E]">$0.00</p>
-                            <p className="text-sm text-emerald-600 font-medium">All caught up!</p>
-                          </div>
+                          <p className="text-3xl font-bold text-[#1C294E] mb-1">$0.00</p>
+                          <p className="text-emerald-600 font-medium">All caught up!</p>
                         </div>
                       )}
                     </div>
