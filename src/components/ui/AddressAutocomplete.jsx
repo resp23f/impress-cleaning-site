@@ -44,40 +44,20 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
       }
     )
 
-    // Place selection handler with retry logic
-    const handlePlaceChanged = () => {
-      const place = autocompleteRef.current.getPlace()
-
-      // If place details are ready, process immediately
-      if (place.address_components) {
-        processPlace(place)
-        return
-      }
-
-      // Retry with increasing delays (50ms, 100ms, 200ms, 400ms)
-      let retryCount = 0
-      const maxRetries = 4
-      const delays = [50, 100, 200, 400]
-
-      const attemptRetry = () => {
-        const retryPlace = autocompleteRef.current.getPlace()
-        if (retryPlace.address_components) {
-          processPlace(retryPlace)
-          return
-        }
-        
-        retryCount++
-        if (retryCount < maxRetries) {
-          setTimeout(attemptRetry, delays[retryCount])
-        }
-      }
-
-      setTimeout(attemptRetry, delays[0])
+    // Helper: Check if place has all required address components
+    const hasRequiredComponents = (place) => {
+      if (!place?.address_components?.length) return false
+      const types = place.address_components.flatMap(c => c.types)
+      // Need at least: street info + city/locality + state + zip
+      const hasStreet = types.includes('street_number') || types.includes('route')
+      const hasCity = types.includes('locality') || types.includes('sublocality_level_1') || types.includes('neighborhood') || types.includes('administrative_area_level_2')
+      const hasState = types.includes('administrative_area_level_1')
+      const hasZip = types.includes('postal_code')
+      return hasStreet && hasCity && hasState && hasZip
     }
 
-    const processPlace = (place) => {
-
-      // Parse address components with XSS sanitization
+    // Helper: Extract address data from place object
+    const extractAddressData = (place) => {
       const addressData = {
         street_address: '',
         city: '',
@@ -99,7 +79,8 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
         if (types.includes('route')) {
           route = sanitizeInput(component.long_name)
         }
-        if (types.includes('locality')) {
+        // Try multiple locality types for city (apartments/condos may use different types)
+        if (!addressData.city && (types.includes('locality') || types.includes('sublocality_level_1') || types.includes('neighborhood'))) {
           addressData.city = sanitizeInput(component.long_name)
         }
         if (types.includes('administrative_area_level_1')) {
@@ -110,9 +91,59 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
         }
       })
 
-      addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false) // trim on final
-      setInputValue(addressData.formatted_address)
-      onSelect(addressData)
+      // Fallback: if no city found, try county (administrative_area_level_2)
+      if (!addressData.city) {
+        const countyComponent = place.address_components.find(c => c.types.includes('administrative_area_level_2'))
+        if (countyComponent) {
+          addressData.city = sanitizeInput(countyComponent.long_name)
+        }
+      }
+
+      addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false)
+      return addressData
+    }
+
+    // Place selection handler with robust retry logic
+    const handlePlaceChanged = () => {
+      const place = autocompleteRef.current.getPlace()
+
+      // If all required components are ready, process immediately
+      if (hasRequiredComponents(place)) {
+        const addressData = extractAddressData(place)
+        setInputValue(addressData.formatted_address)
+        onSelect(addressData)
+        return
+      }
+
+      // Retry with exponential backoff until all components load
+      let retryCount = 0
+      const maxRetries = 6
+      const delays = [50, 100, 150, 250, 400, 600]
+
+      const attemptRetry = () => {
+        const retryPlace = autocompleteRef.current.getPlace()
+        
+        if (hasRequiredComponents(retryPlace)) {
+          const addressData = extractAddressData(retryPlace)
+          setInputValue(addressData.formatted_address)
+          onSelect(addressData)
+          return
+        }
+        
+        retryCount++
+        if (retryCount < maxRetries) {
+          setTimeout(attemptRetry, delays[retryCount])
+        } else {
+          // Final fallback: use whatever data we have
+          if (retryPlace?.address_components?.length) {
+            const addressData = extractAddressData(retryPlace)
+            setInputValue(addressData.formatted_address || inputRef.current?.value || '')
+            onSelect(addressData)
+          }
+        }
+      }
+
+      setTimeout(attemptRetry, delays[0])
     }
 
     // Add listener with debouncing

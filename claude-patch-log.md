@@ -461,8 +461,6 @@ END PATCH LOG #3
 
 
 
-
-
 ================================================================================
 PATCH LOG #4 2025-12-17 — Profile Validation, Name Split, Phone Blocklist, Birthday Field, Registration Address Lock
 ================================================================================
@@ -607,3 +605,103 @@ Why keep full_name in sync?
 ================================================================================
 END PATCH LOG #4
 ================================================================================
+
+
+================================================================================
+PATCH LOG #5 2025-12-18 — Dashboard Row 1 Premium Redesign & Admin Invite Error Handling
+================================================================================
+
+1. DEEP LEVEL OBJECTIVE
+--------------------------------------------------------------------------------
+- Optimize portal dashboard layout for 16" MacBook Pro displays
+- Redesign service request page cards from vertical to horizontal layout
+- Create premium, cohesive Row 1 (Next Appointment + Account Balance cards)
+- Fix admin-invited customer onboarding flow crashing on password submission
+- Ensure all UI elements are polished without glitchy animations
+
+2. FILES TOUCHED (EXACT PATHS)
+--------------------------------------------------------------------------------
+/Volumes/T7 Shield/impress-cleaning-site/src/app/portal/request-service/page.jsx
+/Volumes/T7 Shield/impress-cleaning-site/src/app/portal/dashboard/page.jsx
+/Volumes/T7 Shield/impress-cleaning-site/src/app/auth/admin-invited-set-password/page.tsx
+/Volumes/T7 Shield/impress-cleaning-site/src/app/auth/profile-setup/page.jsx
+
+3. WHAT CHANGED IN EACH FILE
+--------------------------------------------------------------------------------
+
+### /src/app/portal/request-service/page.jsx
+- Replaced vertical SelectableCard components with inline horizontal button layout
+- Changed grid from 2-column to single column (grid-cols-1 gap-3)
+- Icon positioned on left (12x12, colored when selected)
+- Title + description in middle with line-clamp-1 truncation
+- Checkmark indicator on right when selected
+- Compact padding (p-4) for tighter layout
+- All 5 service types now fit without scrolling on laptop screens
+
+### /src/app/portal/dashboard/page.jsx
+- Changed container from max-w-7xl to max-w-6xl (matches appointments page)
+- Complete Row 1 redesign (multiple iterations):
+  
+  NEXT APPOINTMENT CARD:
+  - Added hero date block with green gradient showing day number + month abbreviation
+  - Header with icon in rounded container + "Coming Up" label + "Next Appointment" title
+  - Horizontal layout for date, time window, and service type with vertical dividers
+  - View Details button changed from Button component to inline styled span
+  - Removed styles.cardHover and styles.smoothTransition to prevent button shake
+  - Address shown in subtle footer row with border-top separator
+  - Running late notice with amber styling and icon
+  - Empty state centered with flex justify-center wrapper for button
+  
+  ACCOUNT BALANCE CARD:
+  - Centered layout for $0 state with prominent checkmark icon
+  - Two decorative gradient circles (top-right and bottom-left)
+  - Larger text sizing (text-3xl for amount, text-lg for header)
+  - Full height with flex column layout to match appointment card height
+  - Red gradient for balance due state, emerald gradient for all caught up
+
+- Grid gap changed from gap-5 to gap-6 for Row 1
+- Margin bottom changed from mb-8 to mb-6 for Row 1
+
+### /src/app/auth/admin-invited-set-password/page.tsx
+- Wrapped sign-in attempt in its own try/catch block
+- On sign-in failure: shows toast "Account created! Please log in manually."
+- On sign-in failure: redirects to /auth/login instead of crashing
+- Added console.error logging for sign-in errors
+
+### /src/app/auth/profile-setup/page.jsx
+- Wrapped entire getUser async function in try/catch
+- Added error handling for supabase.auth.getUser() call
+- Added error handling for profile fetch (ignores PGRST116 - no rows)
+- Added error handling for address fetch
+- Console.error logging for debugging
+- Page no longer crashes on data fetch errors
+
+4. LOGIC DECISIONS MADE
+--------------------------------------------------------------------------------
+- max-w-6xl chosen to match appointments page proportions (1152px vs 1280px)
+- Horizontal service cards prevent orphan 5th card that looked bad in 2-column grid
+- Hero date block (day/month in gradient square) makes appointment feel more special
+- Removed hover animations from View Details button to prevent shake/glitch
+- Inline styled span for button instead of Button component for more control
+- Sign-in errors redirect to login page rather than crashing - better UX
+- Profile setup errors don't redirect - lets user attempt to use page anyway
+- No emojis used - only Lucide React SVG icons throughout
+
+5. KNOWN ISSUES STILL OPEN
+--------------------------------------------------------------------------------
+- Admin invite flow needs real-world testing to confirm error handling works
+- Browser console errors not captured yet for admin invite crash
+- Root cause of original client-side exception unknown (error handling added as safety)
+
+6. NEXT STEPS / TODOs
+--------------------------------------------------------------------------------
+- Test admin invite flow end-to-end with new error handling
+- If crash persists, capture browser console errors for debugging
+- Monitor for any layout issues on different screen sizes
+- Consider adding more detailed error messages for specific failure cases
+- Verify profile-setup page works correctly for new invited customers
+
+================================================================================
+END OF PATCH LOG #5
+================================================================================
+

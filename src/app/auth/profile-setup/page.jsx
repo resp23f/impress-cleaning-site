@@ -295,19 +295,6 @@ const { error: addressError } = existingAddressId
       })
       if (addressError) throw addressError
 
-      // Only notify admin for new registrations, not profile fixes
-      if (!existingAddressId) {
-        fetch('/api/email/admin-new-registration', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            customerName: sanitizeText(`${formData.firstName} ${formData.lastName}`),
-            customerEmail: user.email,
-            customerId: user.id,
-          }),
-        }).catch(err => console.error('Admin notification failed:', err))
-      }
-
       toast.success('Profile setup complete!')
       router.push('/portal/dashboard')
     } catch (error) {
