@@ -337,12 +337,14 @@ export default function DashboardPage() {
                           </div>
                           <h3 className="text-xl font-bold text-[#1C294E] mb-2">No Upcoming Appointments</h3>
                           <p className="text-gray-500 mb-6 max-w-sm mx-auto">Ready to schedule your next cleaning? We'd love to help.</p>
-                          <Link href="/portal/request-service">
-                            <Button variant="primary">
-                              <Plus className="w-4 h-4" />
-                              Request Service
-                            </Button>
-                          </Link>
+                          <div className="flex justify-center">
+                            <Link href="/portal/request-service">
+                              <Button variant="primary">
+                                <Plus className="w-4 h-4" />
+                                Request Service
+                              </Button>
+                            </Link>
+                          </div>
                         </div>
                       )}
                     </div>
