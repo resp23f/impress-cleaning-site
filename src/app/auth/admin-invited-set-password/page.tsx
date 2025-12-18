@@ -498,6 +498,7 @@ function AdminInvitedSetPasswordContent() {
             <TurnstileWidget
               key={turnstileKey}
               onVerify={(token) => setCaptchaToken(token)}
+              onError={() => setCaptchaToken(null)}
               onExpire={() => setCaptchaToken(null)}
               className="mb-4"
             />
