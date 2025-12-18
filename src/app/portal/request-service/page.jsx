@@ -546,16 +546,38 @@ export default function RequestServicePage() {
                   Select the service that best fits your needs
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3">
                   {SERVICE_TYPES.map((service) => (
-                    <SelectableCard
+                    <button
                       key={service.value}
-                      selected={formData.serviceType === service.value}
                       onClick={() => setFormData({ ...formData, serviceType: service.value })}
-                      icon={service.icon}
-                      title={service.title}
-                      description={service.description}
-                    />
+                      className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all duration-200 ${
+                        formData.serviceType === service.value
+                          ? 'border-[#079447] bg-[#079447]/5'
+                          : 'border-gray-200 hover:border-gray-300 bg-white'
+                      }`}
+                    >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        formData.serviceType === service.value
+                          ? 'bg-[#079447] text-white'
+                          : 'bg-gray-100 text-[#1C294E]'
+                      }`}>
+                        {service.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-semibold ${
+                          formData.serviceType === service.value ? 'text-[#079447]' : 'text-[#1C294E]'
+                        }`}>
+                          {service.title}
+                        </p>
+                        <p className="text-sm text-gray-500 line-clamp-1">
+                          {service.description}
+                        </p>
+                      </div>
+                      {formData.serviceType === service.value && (
+                        <CheckCircle className="w-5 h-5 text-[#079447] flex-shrink-0" />
+                      )}
+                    </button>
                   ))}
                 </div>
 
