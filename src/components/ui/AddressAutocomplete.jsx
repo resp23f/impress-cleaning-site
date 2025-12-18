@@ -44,22 +44,35 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
       }
     )
 
-    // Debounced place selection handler
+    // Place selection handler with retry logic
     const handlePlaceChanged = () => {
       const place = autocompleteRef.current.getPlace()
 
-      // If place details aren't loaded yet, retry after short delay
-      if (!place.address_components) {
-        setTimeout(() => {
-          const retryPlace = autocompleteRef.current.getPlace()
-          if (retryPlace.address_components) {
-            processPlace(retryPlace)
-          }
-        }, 100)
+      // If place details are ready, process immediately
+      if (place.address_components) {
+        processPlace(place)
         return
       }
 
-      processPlace(place)
+      // Retry with increasing delays (50ms, 100ms, 200ms, 400ms)
+      let retryCount = 0
+      const maxRetries = 4
+      const delays = [50, 100, 200, 400]
+
+      const attemptRetry = () => {
+        const retryPlace = autocompleteRef.current.getPlace()
+        if (retryPlace.address_components) {
+          processPlace(retryPlace)
+          return
+        }
+        
+        retryCount++
+        if (retryCount < maxRetries) {
+          setTimeout(attemptRetry, delays[retryCount])
+        }
+      }
+
+      setTimeout(attemptRetry, delays[0])
     }
 
     const processPlace = (place) => {

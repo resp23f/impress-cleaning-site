@@ -202,9 +202,9 @@ function AdminInvitedSetPasswordContent() {
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={240}
-                height={80}
-                className="h-16 w-auto"
+                width={280}
+                height={100}
+                className="h-20 w-auto"
                 priority
               />
             </div>
@@ -248,9 +248,9 @@ function AdminInvitedSetPasswordContent() {
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={240}
-                height={80}
-                className="h-16 w-auto"
+                width={280}
+                height={100}
+                className="h-20 w-auto"
                 priority
               />
             </div>
@@ -294,9 +294,9 @@ function AdminInvitedSetPasswordContent() {
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={240}
-                height={80}
-                className="h-16 w-auto"
+                width={280}
+                height={100}
+                className="h-20 w-auto"
                 priority
               />
             </div>
@@ -340,9 +340,9 @@ function AdminInvitedSetPasswordContent() {
             <Image
               src="/ImpressLogoNoBackgroundBlue.png"
               alt="Impress Cleaning Services"
-              width={240}
-              height={80}
-              className="h-16 w-auto"
+              width={280}
+              height={100}
+              className="h-20 w-auto"
               priority
             />
           </div>
@@ -496,9 +496,9 @@ function LoadingFallback() {
             <Image
               src="/ImpressLogoNoBackgroundBlue.png"
               alt="Impress Cleaning Services"
-              width={240}
-              height={80}
-              className="h-16 w-auto"
+              width={280}
+              height={100}
+              className="h-20 w-auto"
               priority
             />
           </div>
