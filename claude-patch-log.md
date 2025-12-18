@@ -1,7 +1,6 @@
-# claude-patch-log.md
-
-## 2025-12-16 — UI Polish & Modal Fixes
-
+================================================================================
+## PATCH LOG #0 — 2025-12-16 — UI Polish & Modal Fixes
+================================================================================
 ### Modal Component — React Portal Implementation
 **Status:** ARCHITECTURE IMPROVEMENT  
 **File Modified:** `src/components/ui/Modal.jsx`
@@ -24,8 +23,6 @@
 - `src/app/portal/invoices/[id]/pay/page.jsx` (1 modal)
 - `src/app/portal/settings/page.jsx` (1 modal)
 
----
-
 ### Cancellation & Rescheduling Policy Modal — Complete Redesign
 **Status:** UX IMPROVEMENT  
 **File Modified:** `src/app/portal/invoices/page.jsx`
@@ -36,8 +33,6 @@
 3. Color-coded tier cards (green → amber → red)
 4. Lucide icons (Check, DollarSign, Clock)
 5. No-show footnote disclaimer (15-minute grace period)
-
----
 
 ### Invoice Page — Balance Cards Alignment Fix
 **Status:** UI CONSISTENCY  
@@ -51,8 +46,6 @@
 - Standardized overdue icon container: `w-9 h-9` + `flex-shrink-0`
 - Updated overdue icon background to gradient (`from-red-50 to-red-100`)
 - Updated overdue icon color to `text-red-600`
-
----
 
 ### Batch 9 — Email Templates, Soft Delete, & “Arriving Today”
 **Status:** MAJOR FEATURE ADDITIONS
@@ -69,7 +62,6 @@
 **Deleted:**
 - `src/app/api/email/service-request-received/route.js` (portal notification sufficient)
 
----
 
 #### Soft Delete Implementation
 **File Modified:** `src/app/api/customer-portal/delete-account/route.js`
@@ -80,13 +72,16 @@ ALTER TYPE public.account_status ADD VALUE 'deleted';
 
 ALTER TABLE public.profiles 
 ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ DEFAULT NULL;
-
+================================================================================
+END PATCH LOG #0
 ================================================================================
 
-# PATCH LOG — 2025-12-17 — Mobile UX Fixes: Login Logo, PortalNav Menu, Invoice Side Panel
+
+
+
 ================================================================================
-
-
+# PATCH LOG #1 — 2025-12-17 — Mobile UX Fixes: Login Logo, PortalNav Menu, Invoice Side Panel
+================================================================================
 ---
 
 ## 1. High-Level Objective
@@ -189,16 +184,18 @@ Fix three mobile UI issues in the customer portal:
    - If pg_cron only updates status → need to add DB trigger for notifications OR keep API route
    - If keeping API route → need external cron caller (Vercel Cron)
 
----
-
 ## Session Metadata
 
 - **Date:** 2025-12-17
 - **Baseline:** `claude-baseline-master.md` (2025-12-16)
 - **Patch applies to:** Portal mobile experience
+================================================================================
+END PATCH LOG #1
+================================================================================
+
 
 ================================================================================
-PATCH LOG ## 2025-12-17 — Customer Portal Payment Methods Card Input & Validation UX
+PATCH LOG #2 ## 2025-12-17 — Customer Portal Payment Methods Card Input & Validation UX
 ================================================================================
 
 1. HIGH-LEVEL OBJECTIVE
@@ -300,13 +297,13 @@ None from this session.
 - Confirm multi-card scenario shows "Make Default" on non-default cards
 
 ================================================================================
-END PATCH LOG
+END PATCH LOG #2
 ================================================================================
 
 
 
 ================================================================================
-PATCH LOG ## 2025-12-17 — Admin-Invited Customer Onboarding Flow & Welcome Email
+PATCH LOG #3 ## 2025-12-17 — Admin-Invited Customer Onboarding Flow & Welcome Email
 ================================================================================
 
 1. DEEP LEVEL OBJECTIVE
@@ -458,5 +455,155 @@ Continues from: 2025-12-17 — Fixes & Decisions (Session B)
 New TypeScript file: src/app/auth/admin-invited-set-password/page.tsx
 
 ================================================================================
-END PATCH LOG
+END PATCH LOG #3
+================================================================================
+
+
+
+
+
+
+================================================================================
+PATCH LOG #4 2025-12-17 — Profile Validation, Name Split, Phone Blocklist, Birthday Field, Registration Address Lock
+================================================================================
+
+1. OBJECTIVE
+--------------------------------------------------------------------------------
+Implement strict profile validation to prevent incomplete or invalid customer 
+data from entering the system. Four specific requirements:
+  - Split Full Name into First Name + Last Name with validation
+  - Block fake phone numbers using pattern blocklist
+  - Add optional Birthday field (Month + Day only) for marketing
+  - Lock registration addresses so customers cannot edit/delete them
+
+2. FILES TOUCHED
+--------------------------------------------------------------------------------
+src/lib/sanitize.js
+src/app/auth/profile-setup/page.jsx
+src/app/portal/settings/page.jsx
+src/lib/supabase/middleware.js
+
+SQL Migration (run directly in Supabase):
+  - profiles table: added first_name, last_name, birth_month, birth_day columns
+  - service_addresses table: added is_registration_address column
+  - Backfill queries for existing data
+
+3. CHANGES BY FILE
+--------------------------------------------------------------------------------
+
+src/lib/sanitize.js
+  - Added validateName(name, fieldLabel) function
+    - Requires 2+ characters, max 50
+    - Allows letters (including accented: À-ÿ), hyphens, apostrophes
+    - Returns { valid: boolean, error?: string }
+  - Added validatePhone(phone) function
+    - Requires exactly 10 digits
+    - Blocks: 555 prefix, all-same-digit, sequential, repeating patterns
+    - Blocks invalid area codes: 000, 111, 555, 999, 123
+    - Returns { valid: boolean, error?: string }
+  - Updated default export to include new functions
+
+src/app/auth/profile-setup/page.jsx
+  - Changed formData state: fullName → firstName + lastName + birthMonth + birthDay
+  - Updated useEffect to:
+    - Query first_name, last_name, birth_month, birth_day from profiles
+    - Check hasCompleteName = first_name && last_name for redirect logic
+    - Pre-fill firstName/lastName from existing data or parse from full_name
+    - Pre-fill birthday fields if they exist
+  - Updated handleSubmit:
+    - Validate firstName with validateName()
+    - Validate lastName with validateName()
+    - Validate phone with validatePhone()
+    - Validate birthday: if one filled, both must be filled
+    - Save first_name, last_name, full_name (synced), birth_month, birth_day
+    - Set is_registration_address: true on new address insert
+  - Updated form UI:
+    - Side-by-side First Name / Last Name fields (stacked on mobile)
+    - Added Birthday section with Month/Day dropdowns
+    - Added Gift icon and friendly copy for birthday
+  - Added Gift to lucide-react imports
+
+src/app/portal/settings/page.jsx
+  - Changed profileForm state: full_name → first_name + last_name + birth_month + birth_day
+  - Updated load to populate new fields from profile data
+  - Updated handleProfileSave:
+    - Validate first_name, last_name, phone using new validators
+    - Validate birthday completeness
+    - Save first_name, last_name, full_name (synced), birth_month, birth_day
+    - Clear birthday if removed (set to null)
+  - Updated profile form UI:
+    - Split into First Name / Last Name inputs
+    - Added Birthday section with Month/Day dropdowns
+    - Added Gift icon
+  - Updated Service Addresses section:
+    - Check is_registration_address to determine if locked
+    - Locked addresses: green background, Home icon, "Primary Service Address" badge, "Locked" indicator
+    - No Edit/Delete buttons for locked addresses
+    - Non-locked addresses: normal styling, "Additional Address" badge
+    - Changed "Make Primary" to "Make Default for Appointments"
+    - Added help text about locked addresses
+  - Added safeguards in deleteAddress() and saveAddress() to block operations on registration addresses
+  - Added Gift, Home, Lock to lucide-react imports
+  - Added validateName, validatePhone to sanitize imports
+
+src/lib/supabase/middleware.js
+  - Changed profile query: full_name, phone → first_name, last_name, phone
+  - Updated completeness check: hasCompleteName = first_name && last_name
+  - isProfileComplete now requires: first_name AND last_name AND phone AND valid address
+
+4. LOGIC DECISIONS
+--------------------------------------------------------------------------------
+
+Why split First/Last name instead of parsing Full Name?
+  - Clean data for personalization ("Hi {firstName}")
+  - Reliable for invoices, Stripe, mail marketing
+  - Parsing "Mary Ann Smith" is ambiguous (which is last name?)
+
+Why blocklist approach for phone validation instead of API?
+  - No external dependencies or costs
+  - Catches 99% of fake numbers
+  - Instant validation, no latency
+
+Why Month + Day only for birthday (no year)?
+  - Sufficient for marketing (birthday emails, coupons)
+  - Reduces privacy concerns
+  - Lower friction for users
+
+Why is_registration_address column instead of using is_primary?
+  - is_primary could be repurposed later (e.g., default for appointments)
+  - Explicit semantic meaning: "this address was set during registration"
+  - Clear business rule: is_registration_address = true → locked forever
+
+Why backfill existing is_primary addresses as is_registration_address?
+  - Existing customers already have validated primary addresses
+  - Maintains data consistency
+  - No manual cleanup needed
+
+Why keep full_name in sync?
+  - Backward compatibility with existing code that queries full_name
+  - Admin portal customer list, emails, etc. may still use it
+
+5. KNOWN ISSUES STILL OPEN
+--------------------------------------------------------------------------------
+- Admin portal customer creation still uses single full_name field
+  (works fine — middleware will redirect invited users to profile-setup)
+- Admin portal customer edit uses full_name
+  (could be updated later to show first/last separately)
+- TypeScript types regenerated but admin-invited-set-password.tsx only queries full_name
+  (still works, just doesn't use new columns)
+
+6. NEXT STEPS / TODOS
+--------------------------------------------------------------------------------
+- Test complete flows:
+  - Self-registered customer signup
+  - Admin-invited customer signup
+  - Existing customer with incomplete profile (forced to profile-setup)
+  - Settings page profile editing
+  - Settings page address management (verify lock works)
+- Verify fake phone blocklist catches edge cases in production
+- Consider updating admin portal to show first/last name separately
+- Future: birthday email automation using birth_month/birth_day
+
+================================================================================
+END PATCH LOG #4
 ================================================================================

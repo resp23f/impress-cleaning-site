@@ -1,22 +1,35 @@
 'use client'
 
 import { useState, useEffect, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
-import { Eye, EyeOff, KeyRound, CheckCircle, XCircle, RefreshCw, ArrowRight, Sparkles } from 'lucide-react'
+import { Eye, EyeOff, KeyRound, CheckCircle, XCircle, ArrowRight, Sparkles, Shield } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+type PageState = 'validating' | 'ready' | 'submitting' | 'signing-in' | 'error'
+
+interface UserInfo {
+  id: string
+  email: string
+  firstName: string
+}
 
 export default function AdminInvitedSetPasswordPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const token = searchParams.get('token')
+
+  const [pageState, setPageState] = useState<PageState>('validating')
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+  const [errorMessage, setErrorMessage] = useState('')
+
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [validSession, setValidSession] = useState(false)
-  const [checkingSession, setCheckingSession] = useState(true)
-  const [userName, setUserName] = useState('')
 
   const supabase = createClient()
 
@@ -35,29 +48,40 @@ export default function AdminInvitedSetPasswordPage() {
     match: password === confirmPassword && password.length > 0,
   }
 
+  // Validate handoff token on mount
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
-        setValidSession(true)
-        // Get user's name for personalized greeting
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('full_name')
-          .eq('id', session.user.id)
-          .single()
-        
-        if (profile?.full_name) {
-          setUserName(profile.full_name.split(' ')[0])
-        }
-      } else {
-        toast.error('Invalid or expired link. Please request a new invite.')
-        setTimeout(() => router.push('/auth/login'), 2000)
+    const validateToken = async () => {
+      if (!token) {
+        setErrorMessage('Invalid link. Please request a new invite from your administrator.')
+        setPageState('error')
+        return
       }
-      setCheckingSession(false)
+
+      try {
+        const response = await fetch('/api/auth/verify-handoff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          setErrorMessage(data.error || 'Invalid or expired link')
+          setPageState('error')
+          return
+        }
+
+        setUserInfo(data.user)
+        setPageState('ready')
+      } catch {
+        setErrorMessage('Unable to verify your invite. Please try again.')
+        setPageState('error')
+      }
     }
-    checkSession()
-  }, [supabase, router])
+
+    validateToken()
+  }, [token])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -72,18 +96,42 @@ export default function AdminInvitedSetPasswordPage() {
       return
     }
 
-    setLoading(true)
-    try {
-      const { error } = await supabase.auth.updateUser({ password })
-      if (error) throw error
+    setPageState('submitting')
 
-      toast.success('Password created! Let\'s complete your profile.')
-      setTimeout(() => router.push('/auth/profile-setup'), 1000)
+    try {
+      // Set password via our custom API
+      const response = await fetch('/api/auth/complete-invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to set password')
+      }
+
+      // Password set successfully - now sign in automatically
+      setPageState('signing-in')
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: password,
+      })
+
+      if (signInError) {
+        throw new Error('Account created but sign-in failed. Please log in manually.')
+      }
+
+      // Success! Redirect to profile setup
+      toast.success('Account created successfully!')
+      router.push('/auth/profile-setup')
+
     } catch (error) {
       const err = error as Error
-      toast.error(err.message || 'Failed to set password')
-    } finally {
-      setLoading(false)
+      toast.error(err.message || 'Something went wrong')
+      setPageState('ready')
     }
   }
 
@@ -107,8 +155,63 @@ export default function AdminInvitedSetPasswordPage() {
     return 'text-emerald-500'
   }
 
-  // Loading/checking state
-  if (checkingSession || !validSession) {
+  // Validating state - skeleton loader
+  if (pageState === 'validating') {
+    return (
+      <>
+        <style>{`html, body { background: #ffffff; }`}</style>
+        <div className="min-h-screen flex items-center justify-center bg-white p-6">
+          <div className="w-full max-w-md">
+            {/* Logo */}
+            <div className="flex justify-center mb-10">
+              <Image
+                src="/ImpressLogoNoBackgroundBlue.png"
+                alt="Impress Cleaning Services"
+                width={180}
+                height={60}
+                className="h-12 w-auto"
+                priority
+              />
+            </div>
+
+            {/* Skeleton content */}
+            <div className="flex justify-center mb-6">
+              <Skeleton width={180} height={36} borderRadius={20} />
+            </div>
+
+            <div className="flex justify-center mb-6">
+              <Skeleton width={64} height={64} borderRadius={16} />
+            </div>
+
+            <div className="text-center mb-8">
+              <Skeleton width={100} height={28} borderRadius={20} className="mx-auto mb-4" />
+              <Skeleton width={280} height={32} className="mx-auto mb-2" />
+              <Skeleton width={240} height={20} className="mx-auto" />
+            </div>
+
+            <div className="space-y-5">
+              <div>
+                <Skeleton width={80} height={20} className="mb-1.5" />
+                <Skeleton height={52} borderRadius={12} />
+              </div>
+              <div>
+                <Skeleton width={120} height={20} className="mb-1.5" />
+                <Skeleton height={52} borderRadius={12} />
+              </div>
+              <Skeleton height={52} borderRadius={12} />
+            </div>
+
+            <p className="text-center text-slate-400 text-sm mt-8">
+              Validating your invite...
+            </p>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // Error state
+  if (pageState === 'error') {
     return (
       <>
         <style>{`html, body { background: #ffffff; }`}</style>
@@ -124,17 +227,87 @@ export default function AdminInvitedSetPasswordPage() {
                 priority
               />
             </div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="text-slate-600 font-medium">Validating your invite...</p>
-              <p className="text-slate-400 text-sm mt-1">Please wait a moment</p>
+
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center shadow-lg shadow-red-500/20">
+              <XCircle className="w-8 h-8 text-white" />
             </div>
+
+            <h2 className="text-2xl font-bold text-slate-800 mb-3">
+              Unable to Continue
+            </h2>
+            <p className="text-slate-500 mb-8">
+              {errorMessage}
+            </p>
+
+            <button
+              onClick={() => router.push('/auth/login')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors"
+            >
+              Go to Login
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <p className="text-center text-xs text-slate-300 mt-10">
+              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+            </p>
           </div>
         </div>
       </>
     )
   }
 
+  // Submitting or signing-in state - polished loading
+  if (pageState === 'submitting' || pageState === 'signing-in') {
+    return (
+      <>
+        <style>{`html, body { background: #ffffff; }`}</style>
+        <div className="min-h-screen flex items-center justify-center bg-white p-6">
+          <div className="w-full max-w-md text-center">
+            <div className="flex justify-center mb-10">
+              <Image
+                src="/ImpressLogoNoBackgroundBlue.png"
+                alt="Impress Cleaning Services"
+                width={180}
+                height={60}
+                className="h-12 w-auto"
+                priority
+              />
+            </div>
+
+            {/* Animated icon */}
+            <div className="relative w-20 h-20 mx-auto mb-8">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 animate-pulse" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Shield className="w-10 h-10 text-white" />
+              </div>
+            </div>
+
+            <h2 className="text-2xl font-bold text-slate-800 mb-3">
+              {pageState === 'submitting' ? 'Setting up your account…' : 'Signing you in…'}
+            </h2>
+            <p className="text-slate-400">
+              {pageState === 'submitting' 
+                ? 'Creating your secure password' 
+                : 'Almost there! Preparing your portal'}
+            </p>
+
+            {/* Progress dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+
+            <p className="text-center text-xs text-slate-300 mt-10">
+              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // Ready state - show form
   return (
     <>
       <style>{`html, body { background: #ffffff; }`}</style>
@@ -173,7 +346,7 @@ export default function AdminInvitedSetPasswordPage() {
               Step 1 of 2
             </div>
             <h2 className="text-2xl font-bold text-slate-800 mb-2">
-              {userName ? `Hi ${userName}, create your password` : 'Create your password'}
+              {userInfo?.firstName ? `Hi ${userInfo.firstName}, create your password` : 'Create your password'}
             </h2>
             <p className="text-slate-400">
               Secure your account to access your customer portal
@@ -195,6 +368,7 @@ export default function AdminInvitedSetPasswordPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={8}
+                  autoComplete="new-password"
                   className="w-full px-4 py-3.5 pr-12 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
                 />
                 <button
@@ -240,6 +414,7 @@ export default function AdminInvitedSetPasswordPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   minLength={8}
+                  autoComplete="new-password"
                   className="w-full px-4 py-3.5 pr-12 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
                 />
                 <button
@@ -287,20 +462,11 @@ export default function AdminInvitedSetPasswordPage() {
 
             <button
               type="submit"
-              disabled={!checks.length || (confirmPassword.length > 0 && !checks.match) || loading}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!checks.length || (confirmPassword.length > 0 && !checks.match)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  Creating...
-                </>
-              ) : (
-                <>
-                  Continue
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
+              Continue
+              <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 

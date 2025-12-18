@@ -1,11 +1,15 @@
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
-import { createHash } from 'crypto'
+import { createHash, randomBytes } from 'crypto'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
 
 function hashToken(token: string): string {
   return createHash('sha256').update(token).digest('hex')
+}
+
+function generateHandoffToken(): string {
+  return randomBytes(32).toString('hex')
 }
 
 export async function GET(request: Request) {
@@ -27,7 +31,7 @@ export async function GET(request: Request) {
       { auth: { autoRefreshToken: false, persistSession: false } }
     )
 
-    // Look up the token
+    // Look up the invite token
     const { data: inviteToken, error: lookupError } = await adminClient
       .from('customer_invite_tokens')
       .select('id, user_id, expires_at, used_at')
@@ -49,19 +53,7 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${SITE_URL}/auth/login?error=token_expired`)
     }
 
-    // Get user email for signing in
-    const { data: profile, error: profileError } = await adminClient
-      .from('profiles')
-      .select('email')
-      .eq('id', inviteToken.user_id)
-      .single()
-
-    if (profileError || !profile?.email) {
-      console.error('Profile lookup error:', profileError)
-      return NextResponse.redirect(`${SITE_URL}/auth/login?error=user_not_found`)
-    }
-
-    // Mark token as used BEFORE generating the sign-in link
+    // Mark invite token as used
     const { error: updateError } = await adminClient
       .from('customer_invite_tokens')
       .update({ used_at: new Date().toISOString() })
@@ -69,27 +61,32 @@ export async function GET(request: Request) {
 
     if (updateError) {
       console.error('Token update error:', updateError)
-      // Continue anyway - better UX to let them in
+      // Continue anyway - better UX to let them proceed
     }
 
-    // Generate an immediate magic link for sign-in
-    // This link is used within milliseconds, so expiration isn't an issue
-    const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
-      type: 'magiclink',
-      email: profile.email,
-      options: {
-        redirectTo: `${SITE_URL}/auth/callback?next=/auth/admin-invited-set-password`,
-      },
-    })
+    // Generate a short-lived handoff token (60 seconds)
+    const handoffToken = generateHandoffToken()
+    const handoffHash = hashToken(handoffToken)
+    const handoffExpiry = new Date(Date.now() + 60 * 1000).toISOString() // 60 seconds
 
-    if (linkError || !linkData?.properties?.action_link) {
-      console.error('Magic link generation error:', linkError)
+    // Store handoff token
+    const { error: handoffError } = await adminClient
+      .from('auth_handoff_tokens')
+      .insert({
+        user_id: inviteToken.user_id,
+        token_hash: handoffHash,
+        expires_at: handoffExpiry,
+      })
+
+    if (handoffError) {
+      console.error('Handoff token storage error:', handoffError)
       return NextResponse.redirect(`${SITE_URL}/auth/login?error=auth_failed`)
     }
 
-    // Redirect to the magic link immediately
-    // Since we're redirecting programmatically, there's no delay
-    return NextResponse.redirect(linkData.properties.action_link)
+    // Redirect to set-password page with handoff token
+    return NextResponse.redirect(
+      `${SITE_URL}/auth/admin-invited-set-password?token=${handoffToken}`
+    )
 
   } catch (error) {
     console.error('Validate invite error:', error)
