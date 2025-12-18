@@ -505,7 +505,7 @@ const { error: addressError } = existingAddressId
                       type="text"
                       name="state"
                       value={addressData.state}
-                      placeholder="Auto"
+                      placeholder="Auto-filled"
                       readOnly
                       tabIndex={-1}
                       className="w-full px-3 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 text-sm cursor-not-allowed"
@@ -519,7 +519,7 @@ const { error: addressError } = existingAddressId
                       type="text"
                       name="postal-code"
                       value={addressData.zip_code}
-                      placeholder="Auto"
+                      placeholder="Auto-filled"
                       readOnly
                       tabIndex={-1}
                       className="w-full px-3 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 text-sm cursor-not-allowed"

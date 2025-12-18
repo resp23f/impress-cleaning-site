@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
-import { Eye, EyeOff, KeyRound, CheckCircle, XCircle, ArrowRight, Sparkles, Shield } from 'lucide-react'
+import { Eye, EyeOff, CheckCircle, XCircle, ArrowRight, Shield } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
@@ -198,46 +198,38 @@ function AdminInvitedSetPasswordContent() {
         <div className="min-h-screen flex items-center justify-center bg-white p-6">
           <div className="w-full max-w-md">
             {/* Logo */}
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-center mb-12">
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={180}
-                height={60}
-                className="h-12 w-auto"
+                width={240}
+                height={80}
+                className="h-16 w-auto"
                 priority
               />
             </div>
 
             {/* Skeleton content */}
-            <div className="flex justify-center mb-6">
-              <Skeleton width={180} height={36} borderRadius={20} />
-            </div>
-
-            <div className="flex justify-center mb-6">
-              <Skeleton width={64} height={64} borderRadius={16} />
-            </div>
-
             <div className="text-center mb-8">
-              <Skeleton width={100} height={28} borderRadius={20} className="mx-auto mb-4" />
-              <Skeleton width={280} height={32} className="mx-auto mb-2" />
-              <Skeleton width={240} height={20} className="mx-auto" />
+              <Skeleton width={280} height={36} className="mx-auto mb-3" />
+              <Skeleton width={220} height={20} className="mx-auto" />
             </div>
 
             <div className="space-y-5">
               <div>
-                <Skeleton width={80} height={20} className="mb-1.5" />
-                <Skeleton height={52} borderRadius={12} />
+                <Skeleton width={80} height={20} className="mb-2" />
+                <Skeleton height={56} borderRadius={12} />
               </div>
               <div>
-                <Skeleton width={120} height={20} className="mb-1.5" />
-                <Skeleton height={52} borderRadius={12} />
+                <Skeleton width={130} height={20} className="mb-2" />
+                <Skeleton height={56} borderRadius={12} />
               </div>
-              <Skeleton height={52} borderRadius={12} />
+              <Skeleton height={65} borderRadius={8} className="mt-6" />
+              <Skeleton height={56} borderRadius={12} />
             </div>
 
-            <p className="text-center text-slate-400 text-sm mt-8">
-              Validating your invite...
+            <p className="text-center text-slate-400 text-sm mt-10">
+              Preparing your account...
             </p>
           </div>
         </div>
@@ -252,38 +244,38 @@ function AdminInvitedSetPasswordContent() {
         <style>{`html, body { background: #ffffff; }`}</style>
         <div className="min-h-screen flex items-center justify-center bg-white p-6">
           <div className="w-full max-w-md text-center">
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-center mb-12">
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={180}
-                height={60}
-                className="h-12 w-auto"
+                width={240}
+                height={80}
+                className="h-16 w-auto"
                 priority
               />
             </div>
 
-            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center shadow-lg shadow-red-500/20">
-              <XCircle className="w-8 h-8 text-white" />
+            <div className="w-14 h-14 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center">
+              <XCircle className="w-7 h-7 text-red-500" />
             </div>
 
-            <h2 className="text-2xl font-bold text-slate-800 mb-3">
-              Unable to Continue
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">
+              Something went wrong
             </h2>
-            <p className="text-slate-500 mb-8">
+            <p className="text-slate-500 mb-8 max-w-sm mx-auto">
               {errorMessage}
             </p>
 
             <button
               onClick={() => router.push('/auth/login')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium transition-colors"
             >
               Go to Login
               <ArrowRight className="w-4 h-4" />
             </button>
 
-            <p className="text-center text-xs text-slate-300 mt-10">
-              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+            <p className="text-center text-xs text-slate-300 mt-12">
+              © {new Date().getFullYear()} Impress Cleaning Services LLC
             </p>
           </div>
         </div>
@@ -298,43 +290,38 @@ function AdminInvitedSetPasswordContent() {
         <style>{`html, body { background: #ffffff; }`}</style>
         <div className="min-h-screen flex items-center justify-center bg-white p-6">
           <div className="w-full max-w-md text-center">
-            <div className="flex justify-center mb-10">
+            <div className="flex justify-center mb-12">
               <Image
                 src="/ImpressLogoNoBackgroundBlue.png"
                 alt="Impress Cleaning Services"
-                width={180}
-                height={60}
-                className="h-12 w-auto"
+                width={240}
+                height={80}
+                className="h-16 w-auto"
                 priority
               />
             </div>
 
-            {/* Animated icon */}
-            <div className="relative w-20 h-20 mx-auto mb-8">
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 animate-pulse" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Shield className="w-10 h-10 text-white" />
-              </div>
+            {/* Subtle loading indicator */}
+            <div className="w-14 h-14 mx-auto mb-6 rounded-full bg-emerald-50 flex items-center justify-center">
+              <Shield className="w-7 h-7 text-emerald-600" />
             </div>
 
-            <h2 className="text-2xl font-bold text-slate-800 mb-3">
-              {pageState === 'submitting' ? 'Setting up your account…' : 'Signing you in…'}
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">
+              {pageState === 'submitting' ? 'Creating your account...' : 'Signing you in...'}
             </h2>
             <p className="text-slate-400">
               {pageState === 'submitting' 
-                ? 'Creating your secure password' 
-                : 'Almost there! Preparing your portal'}
+                ? 'This will only take a moment' 
+                : 'Almost there!'}
             </p>
 
-            {/* Progress dots */}
-            <div className="flex justify-center gap-2 mt-8">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+            {/* Simple progress bar */}
+            <div className="mt-8 h-1 w-48 mx-auto bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 rounded-full animate-pulse" style={{ width: '60%' }} />
             </div>
 
-            <p className="text-center text-xs text-slate-300 mt-10">
-              © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+            <p className="text-center text-xs text-slate-300 mt-12">
+              © {new Date().getFullYear()} Impress Cleaning Services LLC
             </p>
           </div>
         </div>
@@ -349,56 +336,38 @@ function AdminInvitedSetPasswordContent() {
       <div className="min-h-screen flex items-center justify-center bg-white p-6">
         <div className="w-full max-w-md">
           {/* Logo */}
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-12">
             <Image
               src="/ImpressLogoNoBackgroundBlue.png"
               alt="Impress Cleaning Services"
-              width={180}
-              height={60}
-              className="h-12 w-auto"
+              width={240}
+              height={80}
+              className="h-16 w-auto"
               priority
             />
           </div>
 
-          {/* Welcome Badge */}
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100">
-              <Sparkles className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm font-medium text-emerald-700">Welcome to Impress</span>
-            </div>
-          </div>
-
-          {/* Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-              <KeyRound className="w-8 h-8 text-white" />
-            </div>
-          </div>
-
+          {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-sm font-medium mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              Step 1 of 2
-            </div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">
-              {userInfo?.firstName ? `Hi ${userInfo.firstName}, create your password` : 'Create your password'}
-            </h2>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+              {userInfo?.firstName ? `Welcome, ${userInfo.firstName}` : 'Welcome'}
+            </h1>
             <p className="text-slate-400">
-              Secure your account to access your customer portal
+              Create a password to get started
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* New Password */}
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Password
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Create a password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -415,8 +384,9 @@ function AdminInvitedSetPasswordContent() {
                 </button>
               </div>
 
+              {/* Password strength */}
               {password && (
-                <div className="mt-2.5">
+                <div className="mt-3">
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
                       <div
@@ -438,8 +408,8 @@ function AdminInvitedSetPasswordContent() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                Confirm password
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Confirm Password
               </label>
               <div className="relative">
                 <input
@@ -462,51 +432,43 @@ function AdminInvitedSetPasswordContent() {
               </div>
             </div>
 
-            {/* Password requirements */}
+            {/* Requirements checklist - only show when typing */}
             {password && (
-              <div className="p-4 rounded-xl bg-slate-50 space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${checks.length ? 'bg-emerald-100' : 'bg-slate-200'}`}>
-                    {checks.length ? (
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                    ) : (
-                      <XCircle className="w-3.5 h-3.5 text-slate-400" />
-                    )}
-                  </div>
-                  <span className={`text-sm ${checks.length ? 'text-emerald-600' : 'text-slate-500'}`}>
-                    At least 8 characters
-                  </span>
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                <div className={`flex items-center gap-1.5 ${checks.length ? 'text-emerald-600' : 'text-slate-400'}`}>
+                  {checks.length ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <div className="w-4 h-4 rounded-full border-2 border-current" />
+                  )}
+                  8+ characters
                 </div>
-
                 {confirmPassword && (
-                  <div className="flex items-center gap-3">
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${checks.match ? 'bg-emerald-100' : 'bg-slate-200'}`}>
-                      {checks.match ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5 text-slate-400" />
-                      )}
-                    </div>
-                    <span className={`text-sm ${checks.match ? 'text-emerald-600' : 'text-slate-500'}`}>
-                      Passwords match
-                    </span>
+                  <div className={`flex items-center gap-1.5 ${checks.match ? 'text-emerald-600' : 'text-slate-400'}`}>
+                    {checks.match ? (
+                      <CheckCircle className="w-4 h-4" />
+                    ) : (
+                      <div className="w-4 h-4 rounded-full border-2 border-current" />
+                    )}
+                    Passwords match
                   </div>
                 )}
               </div>
             )}
 
-            <TurnstileWidget
-              key={turnstileKey}
-              onVerify={(token) => setCaptchaToken(token)}
-              onError={() => setCaptchaToken(null)}
-              onExpire={() => setCaptchaToken(null)}
-              className="mb-4"
-            />
+            <div className="pt-2">
+              <TurnstileWidget
+                key={turnstileKey}
+                onVerify={(token) => setCaptchaToken(token)}
+                onError={() => setCaptchaToken(null)}
+                onExpire={() => setCaptchaToken(null)}
+              />
+            </div>
 
             <button
               type="submit"
               disabled={!checks.length || (confirmPassword.length > 0 && !checks.match) || pageState !== 'ready' || !captchaToken}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue
               <ArrowRight className="w-4 h-4" />
@@ -514,8 +476,8 @@ function AdminInvitedSetPasswordContent() {
           </form>
 
           {/* Footer */}
-          <p className="text-center text-xs text-slate-300 mt-10">
-            © {new Date().getFullYear()} Impress Cleaning Services LLC. All rights reserved.
+          <p className="text-center text-xs text-slate-300 mt-12">
+            © {new Date().getFullYear()} Impress Cleaning Services LLC
           </p>
         </div>
       </div>
@@ -530,41 +492,32 @@ function LoadingFallback() {
       <style>{`html, body { background: #ffffff; }`}</style>
       <div className="min-h-screen flex items-center justify-center bg-white p-6">
         <div className="w-full max-w-md">
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-12">
             <Image
               src="/ImpressLogoNoBackgroundBlue.png"
               alt="Impress Cleaning Services"
-              width={180}
-              height={60}
-              className="h-12 w-auto"
+              width={240}
+              height={80}
+              className="h-16 w-auto"
               priority
             />
           </div>
-          <div className="flex justify-center mb-6">
-            <Skeleton width={180} height={36} borderRadius={20} />
-          </div>
-          <div className="flex justify-center mb-6">
-            <Skeleton width={64} height={64} borderRadius={16} />
-          </div>
           <div className="text-center mb-8">
-            <Skeleton width={100} height={28} borderRadius={20} className="mx-auto mb-4" />
-            <Skeleton width={280} height={32} className="mx-auto mb-2" />
-            <Skeleton width={240} height={20} className="mx-auto" />
+            <Skeleton width={280} height={36} className="mx-auto mb-3" />
+            <Skeleton width={220} height={20} className="mx-auto" />
           </div>
           <div className="space-y-5">
             <div>
-              <Skeleton width={80} height={20} className="mb-1.5" />
-              <Skeleton height={52} borderRadius={12} />
+              <Skeleton width={80} height={20} className="mb-2" />
+              <Skeleton height={56} borderRadius={12} />
             </div>
             <div>
-              <Skeleton width={120} height={20} className="mb-1.5" />
-              <Skeleton height={52} borderRadius={12} />
+              <Skeleton width={130} height={20} className="mb-2" />
+              <Skeleton height={56} borderRadius={12} />
             </div>
-            <Skeleton height={52} borderRadius={12} />
+            <Skeleton height={65} borderRadius={8} className="mt-6" />
+            <Skeleton height={56} borderRadius={12} />
           </div>
-          <p className="text-center text-slate-400 text-sm mt-8">
-            Loading...
-          </p>
         </div>
       </div>
     </>

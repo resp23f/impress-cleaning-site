@@ -48,9 +48,21 @@ export default function AddressAutocomplete({ onSelect, onInputChange, defaultVa
     const handlePlaceChanged = () => {
       const place = autocompleteRef.current.getPlace()
 
+      // If place details aren't loaded yet, retry after short delay
       if (!place.address_components) {
+        setTimeout(() => {
+          const retryPlace = autocompleteRef.current.getPlace()
+          if (retryPlace.address_components) {
+            processPlace(retryPlace)
+          }
+        }, 100)
         return
       }
+
+      processPlace(place)
+    }
+
+    const processPlace = (place) => {
 
       // Parse address components with XSS sanitization
       const addressData = {
