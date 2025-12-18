@@ -123,21 +123,28 @@ function AdminInvitedSetPasswordContent() {
       // Password set successfully - now sign in automatically
       setPageState('signing-in')
 
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: password,
-        options: {
-          captchaToken: captchaToken || undefined,
-        },
-      })
+      try {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: password,
+          options: {
+            captchaToken: captchaToken || undefined,
+          },
+        })
 
-      if (signInError) {
-        throw new Error('Account created but sign-in failed. Please log in manually.')
+        if (signInError) {
+          console.error('Sign-in error:', signInError)
+          throw new Error('Account created but sign-in failed. Please log in manually.')
+        }
+
+        // Success! Redirect to profile setup
+        toast.success('Account created successfully!')
+        router.push('/auth/profile-setup')
+      } catch (signInErr) {
+        console.error('Sign-in catch error:', signInErr)
+        toast.error('Account created! Please log in manually.')
+        router.push('/auth/login')
       }
-
-      // Success! Redirect to profile setup
-      toast.success('Account created successfully!')
-      router.push('/auth/profile-setup')
 
     } catch (error) {
       const err = error as Error

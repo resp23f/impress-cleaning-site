@@ -72,24 +72,41 @@ export default function ProfileSetupPage() {
 
 useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        router.push('/auth/login')
-        return
-      }
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
+        
+        if (userError) {
+          console.error('Auth error:', userError)
+          router.push('/auth/login')
+          return
+        }
+        
+        if (!user) {
+          router.push('/auth/login')
+          return
+        }
 
-      // Check if profile is already complete
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name, first_name, last_name, phone, birth_month, birth_day, account_status')
-        .eq('id', user.id)
-        .single()
+        // Check if profile is already complete
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('full_name, first_name, last_name, phone, birth_month, birth_day, account_status')
+          .eq('id', user.id)
+          .single()
 
-      const { data: addresses } = await supabase
-        .from('service_addresses')
-        .select('id, street_address, unit, city, state, zip_code, place_id')
-        .eq('user_id', user.id)
-        .limit(1)
+        if (profileError && profileError.code !== 'PGRST116') {
+          // PGRST116 = no rows returned, which is okay for new users
+          console.error('Profile fetch error:', profileError)
+        }
+
+        const { data: addresses, error: addressError } = await supabase
+          .from('service_addresses')
+          .select('id, street_address, unit, city, state, zip_code, place_id')
+          .eq('user_id', user.id)
+          .limit(1)
+
+        if (addressError) {
+          console.error('Address fetch error:', addressError)
+        }
 
       // If profile has first_name, last_name, phone, and at least one verified address → go to dashboard
       const hasValidAddress = addresses?.length > 0 && addresses[0]?.place_id
@@ -154,6 +171,10 @@ useEffect(() => {
         if (addr.place_id) {
           setAddressSelected(true)
         }
+      }
+      } catch (error) {
+        console.error('Profile setup error:', error)
+        // Don't redirect on error - let user try to use the page
       }
     }
     getUser()
