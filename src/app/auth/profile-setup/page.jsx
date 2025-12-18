@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { User, Phone, MapPin, MessageSquare, Mail, MessageCircle, ArrowRight, RefreshCw } from 'lucide-react'
+import { User, Phone, MapPin, ArrowRight, RefreshCw } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLoadScript } from '@react-google-maps/api'
 import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
@@ -18,7 +18,6 @@ export default function ProfileSetupPage() {
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
-    communicationPreference: 'both',
   })
 
   const [addressData, setAddressData] = useState({
@@ -112,7 +111,6 @@ useEffect(() => {
         .update({
           full_name: sanitizeText(formData.fullName),
           phone: sanitizePhone(formData.phone),
-          communication_preference: formData.communicationPreference,
           account_status: 'active',
         })
         .eq('id', user.id)
@@ -335,82 +333,6 @@ body: JSON.stringify({
                   <span className="text-emerald-500">Tip:</span>
                   Use Google autocomplete above, or your browser autofill works too!
                 </p>
-              </div>
-            </div>
-
-            {/* Communication Preferences */}
-            <div>
-              <h2 className="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-4 flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-emerald-500" />
-                Communication Preferences
-              </h2>
-              <div className="space-y-3">
-                <label className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-                  formData.communicationPreference === 'text' 
-                    ? 'border-emerald-500 bg-emerald-50/50' 
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}>
-                  <input
-                    type="radio"
-                    name="communication"
-                    value="text"
-                    checked={formData.communicationPreference === 'text'}
-                    onChange={(e) => setFormData({ ...formData, communicationPreference: e.target.value })}
-                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 border-slate-300"
-                  />
-                  <div className="flex-1">
-                    <div className="font-medium text-slate-800 flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 text-emerald-500" />
-                      Text messages
-                      <span className="text-xs bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-medium">Recommended</span>
-                    </div>
-                    <div className="text-sm text-slate-500 mt-0.5">Get updates via SMS</div>
-                  </div>
-                </label>
-
-                <label className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-                  formData.communicationPreference === 'email' 
-                    ? 'border-emerald-500 bg-emerald-50/50' 
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}>
-                  <input
-                    type="radio"
-                    name="communication"
-                    value="email"
-                    checked={formData.communicationPreference === 'email'}
-                    onChange={(e) => setFormData({ ...formData, communicationPreference: e.target.value })}
-                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 border-slate-300"
-                  />
-                  <div className="flex-1">
-                    <div className="font-medium text-slate-800 flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-blue-500" />
-                      Email only
-                    </div>
-                    <div className="text-sm text-slate-500 mt-0.5">Receive updates via email</div>
-                  </div>
-                </label>
-
-                <label className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-                  formData.communicationPreference === 'both' 
-                    ? 'border-emerald-500 bg-emerald-50/50' 
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}>
-                  <input
-                    type="radio"
-                    name="communication"
-                    value="both"
-                    checked={formData.communicationPreference === 'both'}
-                    onChange={(e) => setFormData({ ...formData, communicationPreference: e.target.value })}
-                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 border-slate-300"
-                  />
-                  <div className="flex-1">
-                    <div className="font-medium text-slate-800 flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4 text-purple-500" />
-                      Both
-                    </div>
-                    <div className="text-sm text-slate-500 mt-0.5">Stay informed via text and email</div>
-                  </div>
-                </label>
               </div>
             </div>
 
