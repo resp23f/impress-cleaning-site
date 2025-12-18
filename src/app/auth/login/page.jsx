@@ -36,6 +36,26 @@ function LoginPageContent() {
 
   const supabase = createClient()
 
+  // Handle URL error params (from failed invite token validation, etc.)
+  useEffect(() => {
+    const errorParam = searchParams.get('error')
+    if (errorParam) {
+      const errorMessages = {
+        'missing_token': 'Invalid invite link. Please request a new invitation.',
+        'invalid_token': 'Invalid invite link. Please request a new invitation.',
+        'token_already_used': 'This invite link has already been used. Please log in or request a new invitation.',
+        'token_expired': 'This invite link has expired. Please request a new invitation.',
+        'user_not_found': 'Account not found. Please contact support.',
+        'auth_failed': 'Authentication failed. Please try again or request a new invitation.',
+        'auth_callback_failed': 'Authentication failed. Please try again.',
+        'server_error': 'Something went wrong. Please try again later.',
+      }
+      const message = errorMessages[errorParam] || 'An error occurred. Please try again.'
+      setLoginError(message)
+      toast.error(message)
+    }
+  }, [searchParams])
+
   // Clear any stale session when login page loads
   useEffect(() => {
     const clearStaleSession = async () => {

@@ -138,6 +138,80 @@ export function sanitizeReference(ref) {
     .trim()
 }
 
+/**
+ * Validate a name (first or last)
+ * Rules: 2+ characters, letters/hyphens/apostrophes/spaces only
+ * Returns { valid: boolean, error?: string }
+ */
+export function validateName(name, fieldLabel = 'Name') {
+  if (!name || typeof name !== 'string') {
+    return { valid: false, error: `${fieldLabel} is required` }
+  }
+  
+  const trimmed = name.trim()
+  
+  if (trimmed.length < 2) {
+    return { valid: false, error: `${fieldLabel} must be at least 2 characters` }
+  }
+  
+  if (trimmed.length > 50) {
+    return { valid: false, error: `${fieldLabel} must be less than 50 characters` }
+  }
+  
+  // Allow letters (including accented), hyphens, apostrophes, spaces
+  // This handles names like: Mary-Ann, O'Brien, José, Müller
+  const validPattern = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ'\-\s]*$/
+  if (!validPattern.test(trimmed)) {
+    return { valid: false, error: `${fieldLabel} can only contain letters, hyphens, and apostrophes` }
+  }
+  
+  return { valid: true }
+}
+
+/**
+ * Validate phone number
+ * Rules: Must be 10 digits, cannot be obviously fake
+ * Returns { valid: boolean, error?: string }
+ */
+export function validatePhone(phone) {
+  if (!phone || typeof phone !== 'string') {
+    return { valid: false, error: 'Phone number is required' }
+  }
+  
+  // Extract just the digits
+  const digits = phone.replace(/\D/g, '')
+  
+  if (digits.length !== 10) {
+    return { valid: false, error: 'Please enter a valid 10-digit phone number' }
+  }
+  
+  // Block fake patterns
+  const fakePatterns = [
+    /^555/, // 555 prefix (reserved for fiction)
+    /^(\d)\1{9}$/, // All same digit: 0000000000, 1111111111, etc.
+    /^0123456789$/, // Sequential ascending
+    /^9876543210$/, // Sequential descending
+    /^1234567890$/, // Common fake
+    /^0987654321$/, // Common fake
+    /^(\d{3})\1\1/, // Repeating groups: 123123123x
+  ]
+  
+  for (const pattern of fakePatterns) {
+    if (pattern.test(digits)) {
+      return { valid: false, error: 'Please enter a valid phone number' }
+    }
+  }
+  
+  // Check for obviously fake area codes
+  const areaCode = digits.substring(0, 3)
+  const invalidAreaCodes = ['000', '111', '555', '999', '123']
+  if (invalidAreaCodes.includes(areaCode)) {
+    return { valid: false, error: 'Please enter a valid phone number' }
+  }
+  
+  return { valid: true }
+}
+
 // Export all as a single object for easy importing
 export default {
   sanitizeText,
@@ -147,4 +221,6 @@ export default {
   escapeHtml,
   sanitizeMoney,
   sanitizeReference,
+  validateName,
+  validatePhone,
 }

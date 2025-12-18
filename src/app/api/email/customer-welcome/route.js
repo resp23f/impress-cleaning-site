@@ -2,8 +2,18 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { sanitizeText, sanitizeEmail } from '@/lib/sanitize'
+import { randomBytes, createHash } from 'crypto'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+
+function generateInviteToken() {
+  return randomBytes(32).toString('hex')
+}
+
+function hashToken(token) {
+  return createHash('sha256').update(token).digest('hex')
+}
 
 export async function POST(request) {
   try {
@@ -43,29 +53,48 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid first name' }, { status: 422 })
     }
 
-    // Create admin client for generating magic link
+    // Create admin client
     const adminClient = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY,
       { auth: { autoRefreshToken: false, persistSession: false } }
     )
 
-    // Generate magic link for the customer
-    const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
-      type: 'magiclink',
-      email: email,
-      options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'}/auth/callback?next=/auth/admin-invited-set-password`,
-      },
-    })
+    // Get the user ID for this email
+    const { data: userProfile, error: userError } = await adminClient
+      .from('profiles')
+      .select('id')
+      .eq('email', email)
+      .single()
 
-    if (linkError) {
-      console.error('Magic link generation error:', linkError)
+    if (userError || !userProfile) {
+      console.error('User lookup error:', userError)
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    const magicLink = linkData?.properties?.action_link || 'https://impressyoucleaning.com/auth/login'
+    // Generate custom invite token (valid for 48 hours)
+    const inviteToken = generateInviteToken()
+    const tokenHash = hashToken(inviteToken)
+    const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString()
 
-    const emailHtml = generateWelcomeEmail(firstName, magicLink)
+    // Store token hash in database
+    const { error: tokenError } = await adminClient
+      .from('customer_invite_tokens')
+      .insert({
+        user_id: userProfile.id,
+        token_hash: tokenHash,
+        expires_at: expiresAt,
+      })
+
+    if (tokenError) {
+      console.error('Token storage error:', tokenError)
+      return NextResponse.json({ error: 'Failed to generate invite token' }, { status: 500 })
+    }
+
+    // Build invite link using our custom token
+    const inviteLink = `${SITE_URL}/api/auth/validate-invite?token=${inviteToken}`
+
+    const emailHtml = generateWelcomeEmail(firstName, inviteLink)
 
     const { data, error } = await resend.emails.send({
       from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
@@ -86,7 +115,7 @@ export async function POST(request) {
   }
 }
 
-function generateWelcomeEmail(firstName, magicLink) {
+function generateWelcomeEmail(firstName, inviteLink) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,12 +142,12 @@ function generateWelcomeEmail(firstName, magicLink) {
       </div>
       <!-- BUTTON -->
       <div style="padding:24px 32px 8px;text-align:center;">
-        <a href="${magicLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;box-shadow:0 8px 18px rgba(7,148,71,0.28);">FINISH SETTING UP</a>
-        <p style="margin-top:16px;font-size:12px;color:#6b7280;">This link will sign you in automatically and take you to complete your profile.</p>
+        <a href="${inviteLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;box-shadow:0 8px 18px rgba(7,148,71,0.28);">FINISH SETTING UP</a>
+        <p style="margin-top:16px;font-size:12px;color:#6b7280;">This link expires in 48 hours.</p>
       </div>
       <!-- ALT LINK -->
       <div style="padding:16px 32px 0;text-align:center;font-size:13px;color:#6b7280;">
-        <p style="margin:0 0 8px 0;">If the button above doesn't work, <a href="${magicLink}" style="color:#079447;text-decoration:underline;">click here</a>.</p>
+        <p style="margin:0 0 8px 0;">If the button above doesn't work, <a href="${inviteLink}" style="color:#079447;text-decoration:underline;">click here</a>.</p>
       </div>
       <!-- HELP BOX -->
       <div style="margin:20px auto 36px;padding:18px 20px;max-width:240px;background-color:#f3f4f6;border-radius:10px;font-size:12px;color:#374151;text-align:center;">

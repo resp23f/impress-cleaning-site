@@ -4,9 +4,19 @@ import { NextResponse } from 'next/server'
 import { sanitizeText, sanitizeEmail, sanitizePhone } from '@/lib/sanitize'
 import Stripe from 'stripe'
 import { Resend } from 'resend'
+import { randomBytes, createHash } from 'crypto'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const resend = new Resend(process.env.RESEND_API_KEY)
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'
+
+function generateInviteToken() {
+  return randomBytes(32).toString('hex')
+}
+
+function hashToken(token) {
+  return createHash('sha256').update(token).digest('hex')
+}
 
 export async function POST(request) {
   try {
@@ -40,6 +50,15 @@ export async function POST(request) {
     const sanitizedName = sanitizeText(full_name)?.slice(0, 100) || ''
     const sanitizedEmail = email ? sanitizeEmail(email) : null
     const sanitizedPhone = phone ? sanitizePhone(phone) : null
+
+    // Parse first_name and last_name from full_name for new schema
+    let firstName = ''
+    let lastName = ''
+    if (sanitizedName) {
+      const nameParts = sanitizedName.trim().split(' ')
+      firstName = nameParts[0] || ''
+      lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ''
+    }
 
     // Validate email format if provided (sanitizeEmail returns '' for invalid emails)
     if (email && !sanitizedEmail) {
@@ -101,9 +120,15 @@ export async function POST(request) {
       // Non-fatal - customer was created in Supabase, Stripe can be added later
     }
 
-    // 7. Update profile with phone and stripe_customer_id
+    // 7. Update profile with phone, stripe_customer_id, and parsed name fields
     const profileUpdate = {
       updated_at: new Date().toISOString()
+    }
+    if (firstName) {
+      profileUpdate.first_name = firstName
+    }
+    if (lastName) {
+      profileUpdate.last_name = lastName
     }
     if (sanitizedPhone) {
       profileUpdate.phone = sanitizedPhone
@@ -127,7 +152,7 @@ export async function POST(request) {
     // 8. Fetch the complete customer profile
     const { data: customer, error: fetchError } = await adminClient
       .from('profiles')
-      .select('id, full_name, email, phone, account_status, stripe_customer_id, created_at')
+      .select('id, full_name, first_name, last_name, email, phone, account_status, stripe_customer_id, created_at')
       .eq('id', newUser.user.id)
       .single()
 
@@ -142,26 +167,33 @@ export async function POST(request) {
     
     if (sendWelcomeEmail && isRealEmail && sanitizedName) {
       try {
-        // Generate magic link for admin-invited users
-        const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
-          type: 'magiclink',
-          email: sanitizedEmail,
-          options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'}/auth/callback?next=/auth/admin-invited-set-password`,
-          },
-        })
+        // Generate custom invite token (valid for 48 hours)
+        const inviteToken = generateInviteToken()
+        const tokenHash = hashToken(inviteToken)
+        const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString()
 
-        if (linkError) {
-          console.error('Magic link generation error:', linkError)
+        // Store token hash in database
+        const { error: tokenError } = await adminClient
+          .from('customer_invite_tokens')
+          .insert({
+            user_id: newUser.user.id,
+            token_hash: tokenHash,
+            expires_at: expiresAt,
+          })
+
+        if (tokenError) {
+          console.error('Token storage error:', tokenError)
+          throw new Error('Failed to generate invite token')
         }
 
-        const magicLink = linkData?.properties?.action_link || 'https://impressyoucleaning.com/auth/login'
+        // Build invite link using our custom token
+        const inviteLink = `${SITE_URL}/api/auth/validate-invite?token=${inviteToken}`
 
         const { error: emailError } = await resend.emails.send({
           from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
           to: sanitizedEmail,
           subject: `${sanitizedName}, Finish Setting Up Your Portal`,
-          html: generateWelcomeEmail(sanitizedName, magicLink),
+          html: generateWelcomeEmail(sanitizedName, inviteLink),
         })
         
         if (!emailError) {
@@ -188,7 +220,7 @@ export async function POST(request) {
   }
 }
 
-function generateWelcomeEmail(firstName, magicLink) {
+function generateWelcomeEmail(firstName, inviteLink) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -215,12 +247,12 @@ function generateWelcomeEmail(firstName, magicLink) {
       </div>
       <!-- BUTTON -->
       <div style="padding:24px 32px 8px;text-align:center;">
-        <a href="${magicLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;box-shadow:0 8px 18px rgba(7,148,71,0.28);">FINISH SETTING UP</a>
-        <p style="margin-top:16px;font-size:12px;color:#6b7280;">This link will sign you in automatically and take you to complete your profile.</p>
+        <a href="${inviteLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;box-shadow:0 8px 18px rgba(7,148,71,0.28);">FINISH SETTING UP</a>
+        <p style="margin-top:16px;font-size:12px;color:#6b7280;">This link expires in 48 hours.</p>
       </div>
       <!-- ALT LINK -->
       <div style="padding:16px 32px 0;text-align:center;font-size:13px;color:#6b7280;">
-        <p style="margin:0 0 8px 0;">If the button above doesn't work, <a href="${magicLink}" style="color:#079447;text-decoration:underline;">click here</a>.</p>
+        <p style="margin:0 0 8px 0;">If the button above doesn't work, <a href="${inviteLink}" style="color:#079447;text-decoration:underline;">click here</a>.</p>
       </div>
       <!-- HELP BOX -->
       <div style="margin:20px auto 36px;padding:18px 20px;max-width:240px;background-color:#f3f4f6;border-radius:10px;font-size:12px;color:#374151;text-align:center;">

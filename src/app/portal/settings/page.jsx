@@ -18,6 +18,8 @@ import {
   Lock,
   Loader2,
   AlertTriangle,
+  Gift,
+  Home,
 } from 'lucide-react'
 import { loadStripe } from '@stripe/stripe-js'
 import { createClient } from '@/lib/supabase/client'
@@ -33,7 +35,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
 )
 
-import { sanitizeText, sanitizePhone, sanitizeEmail } from '@/lib/sanitize'
+import { sanitizeText, sanitizePhone, sanitizeEmail, validateName, validatePhone } from '@/lib/sanitize'
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -45,10 +47,13 @@ export default function SettingsPage() {
   const [addresses, setAddresses] = useState([])
   const [payments, setPayments] = useState([])
 
-  // Profile form (name, phone, communication only)
+  // Profile form (name, phone, birthday, communication)
   const [profileForm, setProfileForm] = useState({
-    full_name: '',
+    first_name: '',
+    last_name: '',
     phone: '',
+    birth_month: '',
+    birth_day: '',
     communication_preference: 'both',
   })
   const [savingProfile, setSavingProfile] = useState(false)
@@ -113,8 +118,11 @@ export default function SettingsPage() {
 
         setProfile(profileData || null)
         setProfileForm({
-          full_name: profileData?.full_name || '',
+          first_name: profileData?.first_name || '',
+          last_name: profileData?.last_name || '',
           phone: profileData?.phone || '',
+          birth_month: profileData?.birth_month ? String(profileData.birth_month) : '',
+          birth_day: profileData?.birth_day ? String(profileData.birth_day) : '',
           communication_preference: profileData?.communication_preference || 'both',
         })
         setAddresses(addressData || [])
@@ -213,20 +221,62 @@ export default function SettingsPage() {
   }, [])
 
   // ============================================
-  // PROFILE SAVE (name, phone, communication only)
+  // PROFILE SAVE (name, phone, birthday, communication)
   // ============================================
   const handleProfileSave = async () => {
     if (!user) return
+
+    // Validate first name
+    const firstNameValidation = validateName(profileForm.first_name, 'First name')
+    if (!firstNameValidation.valid) {
+      toast.error(firstNameValidation.error)
+      return
+    }
+
+    // Validate last name
+    const lastNameValidation = validateName(profileForm.last_name, 'Last name')
+    if (!lastNameValidation.valid) {
+      toast.error(lastNameValidation.error)
+      return
+    }
+
+    // Validate phone
+    const phoneValidation = validatePhone(profileForm.phone)
+    if (!phoneValidation.valid) {
+      toast.error(phoneValidation.error)
+      return
+    }
+
+    // Validate birthday if partially filled
+    if ((profileForm.birth_month && !profileForm.birth_day) || (!profileForm.birth_month && profileForm.birth_day)) {
+      toast.error('Please select both month and day for your birthday, or leave both empty')
+      return
+    }
+
     setSavingProfile(true)
     try {
+      const updateData = {
+        first_name: sanitizeText(profileForm.first_name),
+        last_name: sanitizeText(profileForm.last_name),
+        full_name: sanitizeText(`${profileForm.first_name} ${profileForm.last_name}`), // Keep in sync
+        phone: sanitizePhone(profileForm.phone),
+        communication_preference: profileForm.communication_preference,
+        updated_at: new Date().toISOString(),
+      }
+
+      // Add birthday if provided
+      if (profileForm.birth_month && profileForm.birth_day) {
+        updateData.birth_month = parseInt(profileForm.birth_month, 10)
+        updateData.birth_day = parseInt(profileForm.birth_day, 10)
+      } else {
+        // Clear birthday if removed
+        updateData.birth_month = null
+        updateData.birth_day = null
+      }
+
       const { error } = await supabase
         .from('profiles')
-        .update({
-          full_name: sanitizeText(profileForm.full_name),
-          phone: sanitizePhone(profileForm.phone),
-          communication_preference: profileForm.communication_preference,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq('id', user.id)
 
       if (error) throw error
@@ -334,6 +384,16 @@ export default function SettingsPage() {
   const saveAddress = async () => {
     if (!user) return
     try {
+      // Safeguard: prevent editing registration addresses
+      if (addressModal.editing) {
+        const existingAddr = addresses.find(a => a.id === addressModal.editing)
+        if (existingAddr?.is_registration_address) {
+          toast.error('Your primary service address cannot be edited. Contact us if you need to change it.')
+          setAddressModal({ open: false, editing: null })
+          return
+        }
+      }
+
       const sanitizedAddress = {
         street_address: sanitizeText(addressForm.street_address)?.slice(0, 200),
         unit: sanitizeText(addressForm.unit)?.slice(0, 50) || null,
@@ -375,8 +435,12 @@ export default function SettingsPage() {
   const deleteAddress = async (id) => {
     if (!user) return
     try {
-      // Check if we're deleting the primary address
+      // Check if we're trying to delete a registration address (should never happen via UI, but safeguard)
       const addressToDelete = addresses.find(a => a.id === id)
+      if (addressToDelete?.is_registration_address) {
+        toast.error('Your primary service address cannot be deleted. Contact us if you need to change it.')
+        return
+      }
       const wasPrimary = addressToDelete?.is_primary
 
       const { error } = await supabase
@@ -586,10 +650,17 @@ export default function SettingsPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
-                  label="Full Name"
-                  value={profileForm.full_name}
-                  onChange={(e) => setProfileForm((p) => ({ ...p, full_name: e.target.value }))}
-                  placeholder="Your full name"
+                  label="First Name"
+                  value={profileForm.first_name}
+                  onChange={(e) => setProfileForm((p) => ({ ...p, first_name: e.target.value }))}
+                  placeholder="John"
+                  icon={<User className="w-4 h-4" />}
+                />
+                <Input
+                  label="Last Name"
+                  value={profileForm.last_name}
+                  onChange={(e) => setProfileForm((p) => ({ ...p, last_name: e.target.value }))}
+                  placeholder="Smith"
                 />
                 <Input
                   label="Phone Number"
@@ -598,6 +669,43 @@ export default function SettingsPage() {
                   icon={<Phone className="w-4 h-4" />}
                   placeholder="(512) 555-1234"
                 />
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5">
+                    <Gift className="w-4 h-4 text-[#079447]" />
+                    Birthday <span className="text-gray-400 font-normal text-xs">(Optional)</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <select
+                      value={profileForm.birth_month}
+                      onChange={(e) => setProfileForm((p) => ({ ...p, birth_month: e.target.value }))}
+                      className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10 outline-none transition-all duration-200 text-[#1C294E] bg-white text-sm"
+                    >
+                      <option value="">Month</option>
+                      <option value="1">January</option>
+                      <option value="2">February</option>
+                      <option value="3">March</option>
+                      <option value="4">April</option>
+                      <option value="5">May</option>
+                      <option value="6">June</option>
+                      <option value="7">July</option>
+                      <option value="8">August</option>
+                      <option value="9">September</option>
+                      <option value="10">October</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
+                    </select>
+                    <select
+                      value={profileForm.birth_day}
+                      onChange={(e) => setProfileForm((p) => ({ ...p, birth_day: e.target.value }))}
+                      className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10 outline-none transition-all duration-200 text-[#1C294E] bg-white text-sm"
+                    >
+                      <option value="">Day</option>
+                      {[...Array(31)].map((_, i) => (
+                        <option key={i + 1} value={String(i + 1)}>{i + 1}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
                 <div className="md:col-span-2">
                   <label className="text-sm font-medium text-gray-700 mb-2 block">Communication Preference</label>
                   <div className="grid grid-cols-3 gap-2">
@@ -735,39 +843,79 @@ export default function SettingsPage() {
                 {addresses.length === 0 && (
                   <p className="text-gray-600 text-sm">No addresses yet. Add one to get started.</p>
                 )}
-                {addresses.map((addr) => (
-                  <div key={addr.id} className="border border-gray-200 rounded-xl p-5 bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md transition-all duration-200">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="space-y-1.5 text-sm text-gray-700 flex-1 min-w-0">
-                        <p className="font-bold text-[#1C294E] text-base">
-                          {addr.street_address}{addr.unit ? `, ${addr.unit}` : ''}
-                        </p>
-                        <p className="text-gray-600">{addr.city}, {addr.state} {addr.zip_code}</p>
-                        {addr.is_primary && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-200">
-                            <Star className="w-3.5 h-3.5 fill-emerald-600" /> Primary Address
-                          </span>
+                {addresses.map((addr) => {
+                  // Registration address is locked - cannot be edited or deleted
+                  const isLocked = addr.is_registration_address
+                  
+                  return (
+                    <div key={addr.id} className={`border rounded-xl p-5 transition-all duration-200 ${
+                      isLocked 
+                        ? 'border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-green-50/30' 
+                        : 'border-gray-200 bg-gradient-to-br from-white to-gray-50/50 hover:shadow-md'
+                    }`}>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-1.5 text-sm text-gray-700 flex-1 min-w-0">
+                          <p className="font-bold text-[#1C294E] text-base">
+                            {addr.street_address}{addr.unit ? `, ${addr.unit}` : ''}
+                          </p>
+                          <p className="text-gray-600">{addr.city}, {addr.state} {addr.zip_code}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {isLocked && (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-200">
+                                <Home className="w-3.5 h-3.5" /> Primary Service Address
+                              </span>
+                            )}
+                            {!isLocked && addr.is_primary && (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+                                <Star className="w-3.5 h-3.5 fill-blue-600" /> Default for Appointments
+                              </span>
+                            )}
+                            {!isLocked && !addr.is_primary && (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                                Additional Address
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        {/* Only show edit/delete buttons for non-registration addresses */}
+                        {!isLocked && (
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            <Button size="sm" variant="ghost" onClick={() => openAddressModal(addr)} className={`!p-2 ${styles.smoothTransition}`}>
+                              <Edit2 className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="danger" onClick={() => deleteAddress(addr.id)} className={`!p-2 ${styles.smoothTransition}`}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        )}
+                        {isLocked && (
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs text-gray-400">
+                              <Lock className="w-3 h-3" /> Locked
+                            </span>
+                          </div>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 flex-shrink-0">
-                        <Button size="sm" variant="ghost" onClick={() => openAddressModal(addr)} className={`!p-2 ${styles.smoothTransition}`}>
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="danger" onClick={() => deleteAddress(addr.id)} className={`!p-2 ${styles.smoothTransition}`}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
+                      {/* Show "Make Primary" only for non-locked, non-primary addresses */}
+                      {!isLocked && !addr.is_primary && (
+                        <div className="mt-3 pt-3 border-t border-gray-100">
+                          <Button size="sm" variant="ghost" onClick={() => setPrimaryAddress(addr.id)} className={`text-xs ${styles.smoothTransition}`}>
+                            Make Default for Appointments
+                          </Button>
+                        </div>
+                      )}
                     </div>
-                    {!addr.is_primary && (
-                      <div className="mt-3 pt-3 border-t border-gray-100">
-                        <Button size="sm" variant="ghost" onClick={() => setPrimaryAddress(addr.id)} className={`text-xs ${styles.smoothTransition}`}>
-                          Make Primary
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  )
+                })}
               </div>
+              
+              {/* Help text about locked address */}
+              {addresses.some(a => a.is_registration_address) && (
+                <p className="text-xs text-gray-500 mt-3 flex items-start gap-1.5">
+                  <Lock className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                  Your primary service address was set during registration and cannot be changed. Contact us if you need to update it.
+                </p>
+              )}
             </Card>
 
             {/* ============================================ */}

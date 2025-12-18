@@ -57,6 +57,32 @@ export async function updateSession(request) {
       return NextResponse.redirect(url)
     }
   }
+
+  // Customer portal: require complete profile (hard gate)
+  if (request.nextUrl.pathname.startsWith('/portal') && user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('first_name, last_name, phone')
+      .eq('id', user.id)
+      .single()
+
+    const { data: addresses } = await supabase
+      .from('service_addresses')
+      .select('id, place_id')
+      .eq('user_id', user.id)
+      .limit(1)
+
+    // Check if profile is complete: first_name, last_name, phone, and at least one verified address
+    const hasValidAddress = addresses?.length > 0 && addresses[0]?.place_id
+    const hasCompleteName = profile?.first_name && profile?.last_name
+    const isProfileComplete = hasCompleteName && profile?.phone && hasValidAddress
+
+    if (!isProfileComplete) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/auth/profile-setup'
+      return NextResponse.redirect(url)
+    }
+  }
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
