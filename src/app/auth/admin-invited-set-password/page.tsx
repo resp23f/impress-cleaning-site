@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import TurnstileWidget from '@/components/ui/TurnstileWidget'
 
 type PageState = 'validating' | 'ready' | 'submitting' | 'signing-in' | 'error'
 
@@ -30,6 +31,8 @@ function AdminInvitedSetPasswordContent() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [turnstileKey, setTurnstileKey] = useState(0)
 
   const supabase = createClient()
 
@@ -46,6 +49,11 @@ function AdminInvitedSetPasswordContent() {
   const checks = {
     length: password.length >= 8,
     match: password === confirmPassword && password.length > 0,
+  }
+
+  const resetCaptcha = () => {
+    setCaptchaToken(null)
+    setTurnstileKey(prev => prev + 1)
   }
 
   // Validate handoff token on mount
@@ -118,6 +126,9 @@ function AdminInvitedSetPasswordContent() {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: password,
+        options: {
+          captchaToken: captchaToken || undefined,
+        },
       })
 
       if (signInError) {
@@ -138,6 +149,9 @@ function AdminInvitedSetPasswordContent() {
           const { error: signInError } = await supabase.auth.signInWithPassword({
             email: userInfo.email,
             password: password,
+            options: {
+              captchaToken: captchaToken || undefined,
+            },
           })
           
           if (!signInError) {
@@ -151,6 +165,7 @@ function AdminInvitedSetPasswordContent() {
       }
       
       toast.error(err.message || 'Something went wrong')
+      resetCaptcha()
       setPageState('ready')
     }
   }
@@ -480,9 +495,16 @@ function AdminInvitedSetPasswordContent() {
               </div>
             )}
 
+            <TurnstileWidget
+              key={turnstileKey}
+              onVerify={(token) => setCaptchaToken(token)}
+              onExpire={() => setCaptchaToken(null)}
+              className="mb-4"
+            />
+
             <button
               type="submit"
-              disabled={!checks.length || (confirmPassword.length > 0 && !checks.match) || pageState !== 'ready'}
+              disabled={!checks.length || (confirmPassword.length > 0 && !checks.match) || pageState !== 'ready' || !captchaToken}
               className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue
