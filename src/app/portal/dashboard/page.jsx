@@ -295,10 +295,10 @@ export default function DashboardPage() {
                             {/* Action Button */}
                             <div className="lg:ml-auto">
                               <Link href="/portal/appointments">
-                                <Button variant="primary">
+                                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#079447] text-white font-medium text-sm hover:bg-emerald-600 transition-colors duration-200 shadow-sm">
                                   View Details
-                                  <ChevronRight className="w-4 h-4 ml-1" />
-                                </Button>
+                                  <ChevronRight className="w-4 h-4" />
+                                </span>
                               </Link>
                             </div>
                           </div>
