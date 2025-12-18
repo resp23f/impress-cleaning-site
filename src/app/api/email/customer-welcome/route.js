@@ -55,7 +55,7 @@ export async function POST(request) {
       type: 'magiclink',
       email: email,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'}/auth/admin-invited-set-password`,
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'}/auth/callback?next=/auth/admin-invited-set-password`,
       },
     })
 
@@ -118,8 +118,7 @@ function generateWelcomeEmail(firstName, magicLink) {
       </div>
       <!-- ALT LINK -->
       <div style="padding:16px 32px 0;text-align:center;font-size:13px;color:#6b7280;">
-        <p style="margin:0 0 8px 0;">If the button above doesn't work, copy and paste this link into your browser:</p>
-        <p style="margin:0;word-break:break-all;"><a href="${magicLink}" style="color:#079447;text-decoration:underline;font-size:12px;">${magicLink}</a></p>
+        <p style="margin:0 0 8px 0;">If the button above doesn't work, <a href="${magicLink}" style="color:#079447;text-decoration:underline;">click here</a>.</p>
       </div>
       <!-- HELP BOX -->
       <div style="margin:20px auto 36px;padding:18px 20px;max-width:240px;background-color:#f3f4f6;border-radius:10px;font-size:12px;color:#374151;text-align:center;">

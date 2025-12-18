@@ -40,6 +40,11 @@ if (token_hash && type) {
   }
 
   if (!error && data?.user) {
+    // Admin-invited users need to set password first - respect the next param
+    if (safeRedirect === '/auth/admin-invited-set-password') {
+      return NextResponse.redirect(new URL(safeRedirect, request.url))
+    }
+
     // Check if profile is complete
     const { data: profile } = await supabase
       .from('profiles')

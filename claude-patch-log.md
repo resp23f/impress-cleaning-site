@@ -302,3 +302,161 @@ None from this session.
 ================================================================================
 END PATCH LOG
 ================================================================================
+
+
+
+================================================================================
+PATCH LOG ## 2025-12-17 — Admin-Invited Customer Onboarding Flow & Welcome Email
+================================================================================
+
+1. DEEP LEVEL OBJECTIVE
+--------------------------------------------------------------------------------
+Implement a complete admin-invited customer onboarding flow that:
+- Sends a branded welcome email with magic link (via Resend, not Supabase)
+- Auto-signs in the customer and routes them to set a password first
+- Then requires profile completion (name, phone, address) before portal access
+- Removes Communication Preferences from profile setup (moved to Settings)
+- Provides admin UI toggle to skip welcome email on customer creation
+- Provides manual "Send Welcome Email" button in customer details modal
+
+================================================================================
+
+2. FILES TOUCHED
+--------------------------------------------------------------------------------
+| File                                                          | Action   |
+|---------------------------------------------------------------|----------|
+| src/app/api/admin/customers/create/route.js                   | Modified |
+| src/app/api/email/customer-welcome/route.js                   | Modified |
+| src/app/admin/customers/page.jsx                              | Modified |
+| src/app/auth/profile-setup/page.jsx                           | Modified |
+| src/app/auth/admin-invited-set-password/page.tsx              | Created  |
+
+================================================================================
+
+3. WHAT CHANGED IN EACH FILE
+--------------------------------------------------------------------------------
+
+src/app/api/admin/customers/create/route.js
+-------------------------------------------
+- Added Resend import for email sending
+- Added `sendWelcomeEmail` param extraction (default: true)
+- Added magic link generation via `adminClient.auth.admin.generateLink()`
+- Magic link redirects to `/auth/admin-invited-set-password`
+- Added `generateWelcomeEmail(firstName, magicLink)` function
+- Email subject: "Finish Setting Up Your Portal"
+- Email CTA: "FINISH SETTING UP" (was "CREATE MY ACCOUNT")
+- Email copy: "Almost ready" / "one step away" (was "Portal is ready")
+- Returns `welcomeEmailSent` boolean in response
+
+src/app/api/email/customer-welcome/route.js
+-------------------------------------------
+- Added `createAdminClient` import for magic link generation
+- Added magic link generation via `adminClient.auth.admin.generateLink()`
+- Magic link redirects to `/auth/admin-invited-set-password`
+- Updated email subject to match create route
+- Replaced entire `generateWelcomeEmail` function with magic link version
+- Alt link section now shows full magic link URL for copy/paste
+
+src/app/admin/customers/page.jsx
+--------------------------------
+- Added `sendWelcomeEmail: true` to `newCustomer` state
+- Added `sendingWelcome` state for manual send button loading
+- Updated `handleCreateCustomer` to pass `sendWelcomeEmail` flag
+- Updated success toast to show " Welcome email sent!" when applicable
+- Reset state now includes `sendWelcomeEmail: true`
+- Added toggle UI in Create Customer modal (green switch)
+- Added `handleSendWelcomeEmail` async function for manual sends
+- Added "Send Welcome Email" button in Customer Details modal Quick Actions
+- Button only shows for customers with real email (not @placeholder)
+
+src/app/auth/profile-setup/page.jsx
+-----------------------------------
+- Removed MessageSquare, Mail, MessageCircle from lucide imports
+- Removed `communicationPreference` from formData state
+- Removed `communication_preference` from profile update query
+- Removed entire Communication Preferences UI section (~75 lines)
+
+src/app/auth/admin-invited-set-password/page.tsx (NEW)
+------------------------------------------------------
+- TypeScript file with FormEvent typing
+- Validates session on mount (redirects to login if invalid)
+- Fetches user's first name from profile for personalized greeting
+- "Welcome to Impress" badge with Sparkles icon
+- "Step 1 of 2" indicator
+- Password + Confirm Password fields with show/hide toggle
+- Password strength meter (5 bars: Weak/Medium/Strong)
+- Requirements checklist (8+ chars, passwords match)
+- On success: redirects to /auth/profile-setup
+- Loading/validating state with spinner
+
+================================================================================
+
+4. LOGIC DECISIONS
+--------------------------------------------------------------------------------
+
+WHY MAGIC LINK INSTEAD OF STATIC SIGNUP URL:
+- Admin-created users already have auth account (no password)
+- Sending to /auth/signup would fail (user exists) or trigger verify email
+- Magic link auto-signs them in, bypassing that friction
+
+WHY PASSWORD BEFORE PROFILE:
+- Secures account immediately
+- User can log back in even if they abandon profile setup
+- Matches natural "account creation" mental model
+
+WHY RESEND INSTEAD OF SUPABASE EMAIL:
+- Full branding control (matches all other transactional emails)
+- Uses your domain (@impressyoucleaning.com)
+- Template consistency across all customer communications
+- Supabase still handles auth security (token generation/verification)
+
+WHY SEPARATE PAGE FROM /auth/set-password:
+- Clear separation of flows (invite vs recovery)
+- Can customize copy/UX specifically for invited customers
+- No risk of breaking existing set-password flow
+
+WHY REMOVE COMMUNICATION PREFERENCES FROM ONBOARDING:
+- Already exists in Settings
+- Reduces onboarding friction
+- Profile setup now: name, phone, address only
+
+WHY DEFAULT sendWelcomeEmail TO TRUE:
+- Most common use case is sending the email
+- Toggle provides override for exceptions
+
+================================================================================
+
+5. KNOWN ISSUES STILL OPEN
+--------------------------------------------------------------------------------
+| Issue                                              | Status              |
+|----------------------------------------------------|---------------------|
+| Account deletion should block if outstanding balance | Not implemented     |
+| Overdue $0.00 should show green                    | Not implemented     |
+| TypeScript strict typing for new page              | Minimal (works fine)|
+
+================================================================================
+
+6. NEXT STEPS / TODOs
+--------------------------------------------------------------------------------
+1. TEST: Admin creates customer with toggle ON → verify email arrives with magic link
+2. TEST: Click magic link → lands on /auth/admin-invited-set-password
+3. TEST: Set password → redirects to /auth/profile-setup
+4. TEST: Complete profile → lands on portal dashboard
+5. TEST: Admin creates customer with toggle OFF → verify no email sent
+6. TEST: Manual "Send Welcome Email" button from customer details modal
+7. TEST: Abandon at password step → next login works with new password
+8. TEST: Abandon at profile step → next login forces back to profile-setup
+9. OPTIONAL: Add stricter TypeScript typing to admin-invited-set-password page
+10. OPTIONAL: Consider TypeScript conversion for other auth pages
+
+================================================================================
+
+SESSION METADATA
+--------------------------------------------------------------------------------
+Date: 2025-12-17
+Continues from: 2025-12-17 — Fixes & Decisions (Session B)
+New TypeScript file: src/app/auth/admin-invited-set-password/page.tsx
+
+================================================================================
+END PATCH LOG
+================================================================================
