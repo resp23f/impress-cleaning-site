@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, useEffect, FormEvent, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { Eye, EyeOff, KeyRound, CheckCircle, XCircle, ArrowRight, Sparkles, Shield } from 'lucide-react'
@@ -17,7 +17,7 @@ interface UserInfo {
   firstName: string
 }
 
-export default function AdminInvitedSetPasswordPage() {
+function AdminInvitedSetPasswordContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
@@ -477,5 +477,62 @@ export default function AdminInvitedSetPasswordPage() {
         </div>
       </div>
     </>
+  )
+}
+
+// Loading fallback for Suspense
+function LoadingFallback() {
+  return (
+    <>
+      <style>{`html, body { background: #ffffff; }`}</style>
+      <div className="min-h-screen flex items-center justify-center bg-white p-6">
+        <div className="w-full max-w-md">
+          <div className="flex justify-center mb-10">
+            <Image
+              src="/ImpressLogoNoBackgroundBlue.png"
+              alt="Impress Cleaning Services"
+              width={180}
+              height={60}
+              className="h-12 w-auto"
+              priority
+            />
+          </div>
+          <div className="flex justify-center mb-6">
+            <Skeleton width={180} height={36} borderRadius={20} />
+          </div>
+          <div className="flex justify-center mb-6">
+            <Skeleton width={64} height={64} borderRadius={16} />
+          </div>
+          <div className="text-center mb-8">
+            <Skeleton width={100} height={28} borderRadius={20} className="mx-auto mb-4" />
+            <Skeleton width={280} height={32} className="mx-auto mb-2" />
+            <Skeleton width={240} height={20} className="mx-auto" />
+          </div>
+          <div className="space-y-5">
+            <div>
+              <Skeleton width={80} height={20} className="mb-1.5" />
+              <Skeleton height={52} borderRadius={12} />
+            </div>
+            <div>
+              <Skeleton width={120} height={20} className="mb-1.5" />
+              <Skeleton height={52} borderRadius={12} />
+            </div>
+            <Skeleton height={52} borderRadius={12} />
+          </div>
+          <p className="text-center text-slate-400 text-sm mt-8">
+            Loading...
+          </p>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Default export with Suspense boundary
+export default function AdminInvitedSetPasswordPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AdminInvitedSetPasswordContent />
+    </Suspense>
   )
 }
