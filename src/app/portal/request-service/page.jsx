@@ -21,7 +21,6 @@ import {
   ChevronRight
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { useLoadScript } from '@react-google-maps/api'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import SelectableCard from '@/components/ui/SelectableCard'
@@ -30,7 +29,6 @@ import { RequestServiceSkeleton } from '@/components/ui/SkeletonLoader'
 import toast from 'react-hot-toast'
 import { sanitizeText } from '@/lib/sanitize'
 import PageTitle from '@/components/portal/PageTitle'
-const libraries = ['places']
 
 const SERVICE_TYPES = [
   {
@@ -232,10 +230,6 @@ export default function RequestServicePage() {
 
   const supabase = createClient()
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || '',
-    libraries,
-  })
 
   useEffect(() => {
     if (formData.preferredDate) {
@@ -551,23 +545,20 @@ export default function RequestServicePage() {
                     <button
                       key={service.value}
                       onClick={() => setFormData({ ...formData, serviceType: service.value })}
-                      className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all duration-200 ${
-                        formData.serviceType === service.value
+                      className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all duration-200 ${formData.serviceType === service.value
                           ? 'border-[#079447] bg-[#079447]/5'
                           : 'border-gray-200 hover:border-gray-300 bg-white'
-                      }`}
+                        }`}
                     >
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                        formData.serviceType === service.value
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${formData.serviceType === service.value
                           ? 'bg-[#079447] text-white'
                           : 'bg-gray-100 text-[#1C294E]'
-                      }`}>
+                        }`}>
                         {service.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-semibold ${
-                          formData.serviceType === service.value ? 'text-[#079447]' : 'text-[#1C294E]'
-                        }`}>
+                        <p className={`font-semibold ${formData.serviceType === service.value ? 'text-[#079447]' : 'text-[#1C294E]'
+                          }`}>
                           {service.title}
                         </p>
                         <p className="text-sm text-gray-500 line-clamp-1">
