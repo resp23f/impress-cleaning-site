@@ -4,12 +4,10 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { User, Phone, MapPin, ArrowRight, RefreshCw, Gift } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { useLoadScript } from '@react-google-maps/api'
 import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 import toast from 'react-hot-toast'
 import { sanitizeText, sanitizePhone, validateName, validatePhone } from '@/lib/sanitize'
 
-const libraries = ['places']
 
 export default function ProfileSetupPage() {
   const router = useRouter()
@@ -64,23 +62,17 @@ export default function ProfileSetupPage() {
     }
   }
 
-  const supabase = createClient()
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || '',
-    libraries,
-  })
-
-useEffect(() => {
+  useEffect(() => {
     const getUser = async () => {
       try {
         const { data: { user }, error: userError } = await supabase.auth.getUser()
-        
+
         if (userError) {
           console.error('Auth error:', userError)
           router.push('/auth/login')
           return
         }
-        
+
         if (!user) {
           router.push('/auth/login')
           return
@@ -108,70 +100,70 @@ useEffect(() => {
           console.error('Address fetch error:', addressError)
         }
 
-      // If profile has first_name, last_name, phone, and at least one verified address → go to dashboard
-      const hasValidAddress = addresses?.length > 0 && addresses[0]?.place_id
-      const hasCompleteName = profile?.first_name && profile?.last_name
-      if (hasCompleteName && profile?.phone && hasValidAddress) {
-        router.push('/portal/dashboard')
-        return
-      }
-
-      setUser(user)
-
-      // Pre-fill existing data
-      if (profile?.first_name) {
-        setFormData(prev => ({ ...prev, firstName: profile.first_name }))
-      } else if (profile?.full_name) {
-        // Legacy: try to parse full_name
-        const parts = profile.full_name.trim().split(' ')
-        setFormData(prev => ({ ...prev, firstName: parts[0] || '' }))
-      } else if (user.user_metadata?.full_name) {
-        const parts = user.user_metadata.full_name.trim().split(' ')
-        setFormData(prev => ({ ...prev, firstName: parts[0] || '' }))
-      }
-
-      if (profile?.last_name) {
-        setFormData(prev => ({ ...prev, lastName: profile.last_name }))
-      } else if (profile?.full_name) {
-        const parts = profile.full_name.trim().split(' ')
-        if (parts.length > 1) {
-          setFormData(prev => ({ ...prev, lastName: parts.slice(1).join(' ') }))
+        // If profile has first_name, last_name, phone, and at least one verified address → go to dashboard
+        const hasValidAddress = addresses?.length > 0 && addresses[0]?.place_id
+        const hasCompleteName = profile?.first_name && profile?.last_name
+        if (hasCompleteName && profile?.phone && hasValidAddress) {
+          router.push('/portal/dashboard')
+          return
         }
-      } else if (user.user_metadata?.full_name) {
-        const parts = user.user_metadata.full_name.trim().split(' ')
-        if (parts.length > 1) {
-          setFormData(prev => ({ ...prev, lastName: parts.slice(1).join(' ') }))
+
+        setUser(user)
+
+        // Pre-fill existing data
+        if (profile?.first_name) {
+          setFormData(prev => ({ ...prev, firstName: profile.first_name }))
+        } else if (profile?.full_name) {
+          // Legacy: try to parse full_name
+          const parts = profile.full_name.trim().split(' ')
+          setFormData(prev => ({ ...prev, firstName: parts[0] || '' }))
+        } else if (user.user_metadata?.full_name) {
+          const parts = user.user_metadata.full_name.trim().split(' ')
+          setFormData(prev => ({ ...prev, firstName: parts[0] || '' }))
         }
-      }
 
-      if (profile?.phone) {
-        setFormData(prev => ({ ...prev, phone: profile.phone }))
-      }
-
-      if (profile?.birth_month) {
-        setFormData(prev => ({ ...prev, birthMonth: String(profile.birth_month) }))
-      }
-      if (profile?.birth_day) {
-        setFormData(prev => ({ ...prev, birthDay: String(profile.birth_day) }))
-      }
-
-      // Pre-fill existing address (if any) - user may need to re-select to get place_id
-      if (addresses?.length > 0) {
-        const addr = addresses[0]
-        setExistingAddressId(addr.id)
-        setAddressData({
-          street_address: addr.street_address || '',
-          unit: addr.unit || '',
-          city: addr.city || '',
-          state: addr.state || '',
-          zip_code: addr.zip_code || '',
-          place_id: addr.place_id || '',
-        })
-        // Only mark as selected if it has a valid place_id
-        if (addr.place_id) {
-          setAddressSelected(true)
+        if (profile?.last_name) {
+          setFormData(prev => ({ ...prev, lastName: profile.last_name }))
+        } else if (profile?.full_name) {
+          const parts = profile.full_name.trim().split(' ')
+          if (parts.length > 1) {
+            setFormData(prev => ({ ...prev, lastName: parts.slice(1).join(' ') }))
+          }
+        } else if (user.user_metadata?.full_name) {
+          const parts = user.user_metadata.full_name.trim().split(' ')
+          if (parts.length > 1) {
+            setFormData(prev => ({ ...prev, lastName: parts.slice(1).join(' ') }))
+          }
         }
-      }
+
+        if (profile?.phone) {
+          setFormData(prev => ({ ...prev, phone: profile.phone }))
+        }
+
+        if (profile?.birth_month) {
+          setFormData(prev => ({ ...prev, birthMonth: String(profile.birth_month) }))
+        }
+        if (profile?.birth_day) {
+          setFormData(prev => ({ ...prev, birthDay: String(profile.birth_day) }))
+        }
+
+        // Pre-fill existing address (if any) - user may need to re-select to get place_id
+        if (addresses?.length > 0) {
+          const addr = addresses[0]
+          setExistingAddressId(addr.id)
+          setAddressData({
+            street_address: addr.street_address || '',
+            unit: addr.unit || '',
+            city: addr.city || '',
+            state: addr.state || '',
+            zip_code: addr.zip_code || '',
+            place_id: addr.place_id || '',
+          })
+          // Only mark as selected if it has a valid place_id
+          if (addr.place_id) {
+            setAddressSelected(true)
+          }
+        }
       } catch (error) {
         console.error('Profile setup error:', error)
         // Don't redirect on error - let user try to use the page
@@ -179,7 +171,7 @@ useEffect(() => {
     }
     getUser()
   }, [supabase, router])
-    const formatPhoneNumber = (value) => {
+  const formatPhoneNumber = (value) => {
     const phoneNumber = value.replace(/\D/g, '')
     if (phoneNumber.length <= 3) return phoneNumber
     if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`
@@ -268,31 +260,31 @@ useEffect(() => {
 
       if (profileError) throw profileError
 
-const { error: addressError } = existingAddressId
-  ? await supabase
-      .from('service_addresses')
-      .update({
-        street_address: sanitizeText(addressData.street_address)?.slice(0, 200),
-        unit: sanitizeText(addressData.unit)?.slice(0, 50) || null,
-        city: sanitizeText(addressData.city)?.slice(0, 100),
-        state: sanitizeText(addressData.state)?.slice(0, 2),
-        zip_code: sanitizeText(addressData.zip_code)?.slice(0, 10),
-        place_id: addressData.place_id || null,
-      })
-      .eq('id', existingAddressId)
-  : await supabase
-      .from('service_addresses')
-      .insert({
-        user_id: user.id,
-        street_address: sanitizeText(addressData.street_address)?.slice(0, 200),
-        unit: sanitizeText(addressData.unit)?.slice(0, 50) || null,
-        city: sanitizeText(addressData.city)?.slice(0, 100),
-        state: sanitizeText(addressData.state)?.slice(0, 2),
-        zip_code: sanitizeText(addressData.zip_code)?.slice(0, 10),
-        place_id: addressData.place_id || null,
-        is_primary: true,
-        is_registration_address: true, // Lock this address - cannot be edited/deleted by customer
-      })
+      const { error: addressError } = existingAddressId
+        ? await supabase
+          .from('service_addresses')
+          .update({
+            street_address: sanitizeText(addressData.street_address)?.slice(0, 200),
+            unit: sanitizeText(addressData.unit)?.slice(0, 50) || null,
+            city: sanitizeText(addressData.city)?.slice(0, 100),
+            state: sanitizeText(addressData.state)?.slice(0, 2),
+            zip_code: sanitizeText(addressData.zip_code)?.slice(0, 10),
+            place_id: addressData.place_id || null,
+          })
+          .eq('id', existingAddressId)
+        : await supabase
+          .from('service_addresses')
+          .insert({
+            user_id: user.id,
+            street_address: sanitizeText(addressData.street_address)?.slice(0, 200),
+            unit: sanitizeText(addressData.unit)?.slice(0, 50) || null,
+            city: sanitizeText(addressData.city)?.slice(0, 100),
+            state: sanitizeText(addressData.state)?.slice(0, 2),
+            zip_code: sanitizeText(addressData.zip_code)?.slice(0, 10),
+            place_id: addressData.place_id || null,
+            is_primary: true,
+            is_registration_address: true, // Lock this address - cannot be edited/deleted by customer
+          })
       if (addressError) throw addressError
 
       toast.success('Profile setup complete!')
@@ -353,7 +345,7 @@ const { error: addressError } = existingAddressId
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-8">
-            
+
             {/* Your Information */}
             <div>
               <h2 className="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-4 flex items-center gap-2">
@@ -470,7 +462,7 @@ const { error: addressError } = existingAddressId
                 Service Address
               </h2>
               <div className="space-y-4">
-<AddressAutocomplete 
+                <AddressAutocomplete
                   onSelect={handleAddressSelect}
                   onInputChange={handleAddressInputChange}
                   defaultValue={addressData.street_address}
