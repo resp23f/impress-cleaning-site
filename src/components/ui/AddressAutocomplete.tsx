@@ -42,72 +42,96 @@ export default function AddressAutocomplete({
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
-  const [useNewApi, setUseNewApi] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const autocompleteServiceRef = useRef<google.maps.places.AutocompleteService | null>(null)
-  const placesServiceRef = useRef<google.maps.places.PlacesService | null>(null)
   const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Initialize Google Maps
+  // Load Google Maps script
   useEffect(() => {
-    const loadScript = () => {
-      if (window.google?.maps?.places) {
+    let mounted = true
+    let pollInterval: NodeJS.Timeout | null = null
+
+    const initializeToken = () => {
+      if (window.google?.maps?.places?.AutocompleteSessionToken) {
+        sessionTokenRef.current = new window.google.maps.places.AutocompleteSessionToken()
+        return true
+      }
+      return false
+    }
+
+    const checkReady = () => {
+      if (!mounted) return
+      
+      // Check if new Places API is available
+      if (window.google?.maps?.places?.AutocompleteSuggestion) {
+        initializeToken()
         setIsLoading(false)
-        initializeServices()
+        setError(null)
+        if (pollInterval) clearInterval(pollInterval)
+      }
+    }
+
+    const loadScript = () => {
+      // Already loaded
+      if (window.google?.maps?.places?.AutocompleteSuggestion) {
+        initializeToken()
+        setIsLoading(false)
         return
       }
 
+      // Check for existing script
       const existingScript = document.querySelector('script[src*="maps.googleapis.com"]')
+      
       if (existingScript) {
-        // Script tag exists - check if already loaded
-        if (window.google?.maps?.places) {
-          setIsLoading(false)
-          initializeServices()
-        } else {
-          // Still loading, wait for it
-          existingScript.addEventListener('load', () => {
+        pollInterval = setInterval(checkReady, 100)
+        setTimeout(() => {
+          if (pollInterval) clearInterval(pollInterval)
+          if (mounted && isLoading) {
+            setError('Google Places API failed to load')
             setIsLoading(false)
-            initializeServices()
-          })
-        }
+          }
+        }, 10000)
         return
       }
 
+      // Load fresh
       const script = document.createElement('script')
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&v=weekly&loading=async`
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&v=weekly`
       script.async = true
       script.defer = true
 
       script.onload = () => {
-        setIsLoading(false)
-        initializeServices()
+        pollInterval = setInterval(checkReady, 100)
+        setTimeout(() => {
+          if (pollInterval) clearInterval(pollInterval)
+          if (mounted && isLoading) {
+            setError('Google Places API failed to initialize')
+            setIsLoading(false)
+          }
+        }, 10000)
       }
 
-      script.onerror = (e) => {
-        console.error('Google Maps script failed to load:', e)
-        setIsLoading(false)
+      script.onerror = () => {
+        if (mounted) {
+          setError('Failed to load Google Maps script')
+          setIsLoading(false)
+        }
       }
 
       document.head.appendChild(script)
     }
 
-    const initializeServices = () => {
-      if (window.google?.maps?.places) {
-        // Initialize legacy services as fallback
-        autocompleteServiceRef.current = new window.google.maps.places.AutocompleteService()
-        placesServiceRef.current = new window.google.maps.places.PlacesService(
-          document.createElement('div')
-        )
-        sessionTokenRef.current = new window.google.maps.places.AutocompleteSessionToken()
-      }
-    }
-
     loadScript()
-  }, [])
 
-  // Handle click outside to close dropdown
+    return () => {
+      mounted = false
+      if (pollInterval) clearInterval(pollInterval)
+    }
+  }, [isLoading])
+
+  // Handle click outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -120,7 +144,7 @@ export default function AddressAutocomplete({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Cleanup debounce on unmount
+  // Cleanup debounce
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
@@ -129,13 +153,23 @@ export default function AddressAutocomplete({
     }
   }, [])
 
-  // Fetch suggestions using NEW API
-  const fetchSuggestionsNew = async (input: string): Promise<boolean> => {
-    try {
-      if (!window.google?.maps?.places?.AutocompleteSuggestion?.fetchAutocompleteSuggestions) {
-        return false
-      }
+  // Fetch suggestions using NEW Places API only
+  const fetchSuggestions = useCallback(async (input: string) => {
+    if (input.length < 3) {
+      setSuggestions([])
+      setShowDropdown(false)
+      return
+    }
 
+    if (!window.google?.maps?.places?.AutocompleteSuggestion?.fetchAutocompleteSuggestions) {
+      setError('Places API not available')
+      return
+    }
+
+    setIsFetching(true)
+    setError(null)
+
+    try {
       const request = {
         input,
         includedPrimaryTypes: ['street_address', 'subpremise', 'premise'],
@@ -147,199 +181,42 @@ export default function AddressAutocomplete({
 
       if (results && results.length > 0) {
         const formattedSuggestions: Suggestion[] = results
-          .filter((suggestion: any) => suggestion.placePrediction)
-          .map((suggestion: any) => ({
-            placeId: suggestion.placePrediction.placeId,
-            description: suggestion.placePrediction.text.text,
-            mainText: suggestion.placePrediction.mainText?.text || suggestion.placePrediction.text.text,
-            secondaryText: suggestion.placePrediction.secondaryText?.text || ''
+          .filter((s: any) => s.placePrediction)
+          .map((s: any) => ({
+            placeId: s.placePrediction.placeId,
+            description: s.placePrediction.text.text,
+            mainText: s.placePrediction.mainText?.text || s.placePrediction.text.text,
+            secondaryText: s.placePrediction.secondaryText?.text || ''
           }))
 
         setSuggestions(formattedSuggestions)
         setShowDropdown(formattedSuggestions.length > 0)
-        return true
+      } else {
+        setSuggestions([])
+        setShowDropdown(false)
       }
-      return false
-    } catch (error) {
-      console.error('New Places API error, falling back to legacy:', error)
-      return false
-    }
-  }
-
-  // Fetch suggestions using LEGACY API (fallback)
-  const fetchSuggestionsLegacy = (input: string): void => {
-    if (!autocompleteServiceRef.current) {
-      console.error('Legacy AutocompleteService not initialized')
-      setIsFetching(false)
-      return
-    }
-
-    autocompleteServiceRef.current.getPlacePredictions(
-      {
-        input,
-        types: ['address'],
-        componentRestrictions: { country: 'us' },
-        sessionToken: sessionTokenRef.current || undefined,
-      },
-      (predictions, status) => {
-        setIsFetching(false)
-
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
-          const formattedSuggestions: Suggestion[] = predictions.map((prediction) => ({
-            placeId: prediction.place_id,
-            description: prediction.description,
-            mainText: prediction.structured_formatting?.main_text || prediction.description,
-            secondaryText: prediction.structured_formatting?.secondary_text || ''
-          }))
-
-          setSuggestions(formattedSuggestions)
-          setShowDropdown(formattedSuggestions.length > 0)
-        } else {
-          setSuggestions([])
-          setShowDropdown(false)
-        }
-      }
-    )
-  }
-
-  // Main fetch function with fallback
-  const fetchSuggestions = useCallback(async (input: string) => {
-    if (!window.google?.maps?.places || input.length < 3) {
+    } catch (err: any) {
+      console.error('Places API error:', err.message || err)
+      setError('Address lookup failed. Please try again.')
       setSuggestions([])
       setShowDropdown(false)
+    } finally {
+      setIsFetching(false)
+    }
+  }, [])
+
+  // Handle place selection using NEW Places API only
+  const handleSelectPlace = async (suggestion: Suggestion) => {
+    if (!window.google?.maps?.places?.Place) {
+      setError('Places API not available')
       return
     }
 
     setIsFetching(true)
+    setShowDropdown(false)
+    setError(null)
 
-    // Try new API first if enabled
-    if (useNewApi) {
-      const success = await fetchSuggestionsNew(input)
-      if (success) {
-        setIsFetching(false)
-        return
-      }
-      // If new API failed, switch to legacy permanently for this session
-      setUseNewApi(false)
-    }
-
-    // Use legacy API
-    fetchSuggestionsLegacy(input)
-  }, [useNewApi])
-
-  // Process address components from NEW Place API
-  const processAddressComponentsNew = (place: any): AddressData => {
-    const addressData: AddressData = {
-      street_address: '',
-      city: '',
-      state: '',
-      zip_code: '',
-      place_id: sanitizeInput(place.id),
-      formatted_address: sanitizeInput(place.formattedAddress),
-    }
-
-    let streetNumber = ''
-    let route = ''
-
-    if (place.addressComponents) {
-      for (const component of place.addressComponents) {
-        const types = component.types || []
-
-        if (types.includes('street_number')) {
-          streetNumber = sanitizeInput(component.longText)
-        }
-        if (types.includes('route')) {
-          route = sanitizeInput(component.longText)
-        }
-        if (!addressData.city && (
-          types.includes('locality') ||
-          types.includes('sublocality_level_1') ||
-          types.includes('neighborhood')
-        )) {
-          addressData.city = sanitizeInput(component.longText)
-        }
-        if (types.includes('administrative_area_level_1')) {
-          addressData.state = sanitizeInput(component.shortText)
-        }
-        if (types.includes('postal_code')) {
-          addressData.zip_code = sanitizeInput(component.longText)
-        }
-      }
-
-      if (!addressData.city) {
-        const countyComponent = place.addressComponents.find((c: any) =>
-          c.types?.includes('administrative_area_level_2')
-        )
-        if (countyComponent) {
-          addressData.city = sanitizeInput(countyComponent.longText)
-        }
-      }
-    }
-
-    addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false)
-    return addressData
-  }
-
-  // Process address components from LEGACY PlacesService
-  const processAddressComponentsLegacy = (place: google.maps.places.PlaceResult): AddressData => {
-    const addressData: AddressData = {
-      street_address: '',
-      city: '',
-      state: '',
-      zip_code: '',
-      place_id: sanitizeInput(place.place_id),
-      formatted_address: sanitizeInput(place.formatted_address),
-    }
-
-    let streetNumber = ''
-    let route = ''
-
-    if (place.address_components) {
-      for (const component of place.address_components) {
-        const types = component.types || []
-
-        if (types.includes('street_number')) {
-          streetNumber = sanitizeInput(component.long_name)
-        }
-        if (types.includes('route')) {
-          route = sanitizeInput(component.long_name)
-        }
-        if (!addressData.city && (
-          types.includes('locality') ||
-          types.includes('sublocality_level_1') ||
-          types.includes('neighborhood')
-        )) {
-          addressData.city = sanitizeInput(component.long_name)
-        }
-        if (types.includes('administrative_area_level_1')) {
-          addressData.state = sanitizeInput(component.short_name)
-        }
-        if (types.includes('postal_code')) {
-          addressData.zip_code = sanitizeInput(component.long_name)
-        }
-      }
-
-      if (!addressData.city) {
-        const countyComponent = place.address_components.find((c) =>
-          c.types?.includes('administrative_area_level_2')
-        )
-        if (countyComponent) {
-          addressData.city = sanitizeInput(countyComponent.long_name)
-        }
-      }
-    }
-
-    addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false)
-    return addressData
-  }
-
-  // Handle place selection using NEW API
-  const handleSelectPlaceNew = async (suggestion: Suggestion): Promise<boolean> => {
     try {
-      if (!window.google?.maps?.places?.Place) {
-        return false
-      }
-
       const place = new window.google.maps.places.Place({
         id: suggestion.placeId,
       })
@@ -348,113 +225,84 @@ export default function AddressAutocomplete({
         fields: ['addressComponents', 'formattedAddress', 'id'],
       })
 
-      const addressData = processAddressComponentsNew(place)
-      const displayValue = place.formattedAddress || suggestion.description
-      setInputValue(displayValue)
+      const addressData: AddressData = {
+        street_address: '',
+        city: '',
+        state: '',
+        zip_code: '',
+        place_id: sanitizeInput(place.id),
+        formatted_address: sanitizeInput(place.formattedAddress),
+      }
 
+      let streetNumber = ''
+      let route = ''
+
+      if (place.addressComponents) {
+        for (const component of place.addressComponents) {
+          const types = component.types || []
+
+          if (types.includes('street_number')) {
+            streetNumber = sanitizeInput(component.longText)
+          }
+          if (types.includes('route')) {
+            route = sanitizeInput(component.longText)
+          }
+          if (!addressData.city && (
+            types.includes('locality') ||
+            types.includes('sublocality_level_1') ||
+            types.includes('neighborhood')
+          )) {
+            addressData.city = sanitizeInput(component.longText)
+          }
+          if (types.includes('administrative_area_level_1')) {
+            addressData.state = sanitizeInput(component.shortText)
+          }
+          if (types.includes('postal_code')) {
+            addressData.zip_code = sanitizeInput(component.longText)
+          }
+        }
+
+        // Fallback for city from county
+        if (!addressData.city) {
+          const countyComponent = place.addressComponents.find((c: any) =>
+            c.types?.includes('administrative_area_level_2')
+          )
+          if (countyComponent) {
+            addressData.city = sanitizeInput(countyComponent.longText)
+          }
+        }
+      }
+
+      addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false)
+
+      // Update input
+      setInputValue(place.formattedAddress || suggestion.description)
+
+      // Reset session token
       if (window.google.maps.places.AutocompleteSessionToken) {
         sessionTokenRef.current = new window.google.maps.places.AutocompleteSessionToken()
       }
 
       onSelect(addressData)
-      return true
-    } catch (error) {
-      console.error('New Place API getDetails error, falling back to legacy:', error)
-      return false
-    }
-  }
 
-  // Handle place selection using LEGACY API
-  const handleSelectPlaceLegacy = (suggestion: Suggestion): void => {
-    if (!placesServiceRef.current) {
-      console.error('Legacy PlacesService not initialized')
-      handleFallbackSelect(suggestion)
+    } catch (err: any) {
+      console.error('Place details error:', err.message || err)
+      setError('Failed to get address details')
+      
+      // Still set the input value
+      setInputValue(suggestion.description)
+    } finally {
       setIsFetching(false)
-      return
+      setHighlightedIndex(-1)
     }
-
-    placesServiceRef.current.getDetails(
-      {
-        placeId: suggestion.placeId,
-        fields: ['address_components', 'formatted_address', 'place_id'],
-        sessionToken: sessionTokenRef.current || undefined,
-      },
-      (place, status) => {
-        setIsFetching(false)
-        setHighlightedIndex(-1)
-
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && place) {
-          const addressData = processAddressComponentsLegacy(place)
-          const displayValue = place.formatted_address || suggestion.description
-          setInputValue(displayValue)
-
-          if (window.google?.maps?.places?.AutocompleteSessionToken) {
-            sessionTokenRef.current = new window.google.maps.places.AutocompleteSessionToken()
-          }
-
-          onSelect(addressData)
-        } else {
-          // Fallback to suggestion data
-          handleFallbackSelect(suggestion)
-        }
-      }
-    )
   }
 
-  // Fallback when both APIs fail
-  const handleFallbackSelect = (suggestion: Suggestion): void => {
-    setInputValue(suggestion.description)
-
-    const basicAddressData: AddressData = {
-      street_address: suggestion.mainText,
-      city: '',
-      state: '',
-      zip_code: '',
-      place_id: suggestion.placeId,
-      formatted_address: suggestion.description,
-    }
-
-    if (suggestion.secondaryText) {
-      const parts = suggestion.secondaryText.split(', ')
-      if (parts.length >= 2) {
-        basicAddressData.city = sanitizeInput(parts[0])
-        const stateMatch = parts[1].match(/^([A-Z]{2})\b/)
-        if (stateMatch) {
-          basicAddressData.state = stateMatch[1]
-        }
-      }
-    }
-
-    onSelect(basicAddressData)
-  }
-
-  // Main select handler with fallback
-  const handleSelectPlace = async (suggestion: Suggestion) => {
-    if (!window.google?.maps?.places) return
-
-    setIsFetching(true)
-    setShowDropdown(false)
-
-    // Try new API first if enabled
-    if (useNewApi) {
-      const success = await handleSelectPlaceNew(suggestion)
-      if (success) {
-        setIsFetching(false)
-        setHighlightedIndex(-1)
-        return
-      }
-      setUseNewApi(false)
-    }
-
-    // Use legacy API
-    handleSelectPlaceLegacy(suggestion)
-  }
-
-  // Debounced input handler
+  // Input handler with debounce
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setInputValue(value)
     setHighlightedIndex(-1)
+    setError(null)
 
     if (onInputChange) {
       onInputChange(value)
@@ -476,15 +324,11 @@ export default function AddressAutocomplete({
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setHighlightedIndex(prev =>
-          prev < suggestions.length - 1 ? prev + 1 : 0
-        )
+        setHighlightedIndex(prev => prev < suggestions.length - 1 ? prev + 1 : 0)
         break
       case 'ArrowUp':
         e.preventDefault()
-        setHighlightedIndex(prev =>
-          prev > 0 ? prev - 1 : suggestions.length - 1
-        )
+        setHighlightedIndex(prev => prev > 0 ? prev - 1 : suggestions.length - 1)
         break
       case 'Enter':
         e.preventDefault()
@@ -515,12 +359,12 @@ export default function AddressAutocomplete({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => {
-            if (suggestions.length > 0) {
-              setShowDropdown(true)
-            }
+            if (suggestions.length > 0) setShowDropdown(true)
           }}
           placeholder={isLoading ? "Loading..." : "Start typing your address..."}
-          className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
+          className={`w-full pl-12 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent ${
+            error ? 'border-red-300' : 'border-gray-300'
+          }`}
           required
           disabled={isLoading}
           autoComplete="off"
@@ -534,9 +378,14 @@ export default function AddressAutocomplete({
           </div>
         )}
       </div>
-      <p className="text-xs text-gray-500 mt-1">
-        We&apos;ll auto-fill your address details
-      </p>
+      
+      {error ? (
+        <p className="text-xs text-red-500 mt-1">{error}</p>
+      ) : (
+        <p className="text-xs text-gray-500 mt-1">
+          We&apos;ll auto-fill your address details
+        </p>
+      )}
 
       {/* Suggestions Dropdown */}
       {showDropdown && suggestions.length > 0 && (
@@ -550,9 +399,7 @@ export default function AddressAutocomplete({
               role="option"
               aria-selected={index === highlightedIndex}
               className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors ${
-                index === highlightedIndex
-                  ? 'bg-gray-100'
-                  : 'hover:bg-gray-50'
+                index === highlightedIndex ? 'bg-gray-100' : 'hover:bg-gray-50'
               }`}
               onClick={() => handleSelectPlace(suggestion)}
               onMouseEnter={() => setHighlightedIndex(index)}
