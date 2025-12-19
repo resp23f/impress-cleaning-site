@@ -1196,15 +1196,22 @@ export default function SettingsPage() {
                 </div>
                 <h2 className="text-xl font-bold text-red-600">Danger Zone</h2>
               </div>
-              <div className="p-4 bg-red-50 rounded-xl border border-red-200 w-fit">
+              <div className="p-4 bg-red-50 rounded-xl border border-red-200">
                 <p className="text-sm text-gray-700 font-medium mb-1">
-                  <span className="font-bold text-red-700">Warning:</span> This action is permanent
+                  <span className="font-bold text-red-700">Want to delete your account?</span>
                 </p>
                 <p className="text-sm text-gray-600">
-                  Permanently delete your account. This action cannot be undone.
+                  Please contact us via{' '}
+                  <a 
+                    href="mailto:admin@impressyoucleaning.com" 
+                    className="text-[#079447] hover:text-emerald-700 font-semibold underline underline-offset-2"
+                  >
+                    email
+                  </a>
+                  {' '}to request account deletion.
                 </p>
               </div>
-              <Button variant="danger" onClick={handleDeleteAccount} className={styles.smoothTransition}>
+              <Button variant="danger" disabled className="opacity-50 cursor-not-allowed">
                 <Trash2 className="w-4 h-4" />
                 Delete My Account
               </Button>
