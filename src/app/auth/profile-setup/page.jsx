@@ -359,7 +359,7 @@ export default function ProfileSetupPage() {
                 {/* First Name & Last Name - Side by side on desktop */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label htmlFor="first-name" className="block text-sm font-medium text-slate-700 mb-1.5">
                       First Name
                     </label>
                     <div className="relative">
@@ -367,6 +367,7 @@ export default function ProfileSetupPage() {
                         <User className="w-5 h-5" />
                       </div>
                       <input
+                        id="first-name"
                         type="text"
                         name="given-name"
                         placeholder="John"
@@ -379,10 +380,11 @@ export default function ProfileSetupPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label htmlFor="last-name" className="block text-sm font-medium text-slate-700 mb-1.5">
                       Last Name
                     </label>
                     <input
+                      id="last-name"
                       type="text"
                       name="family-name"
                       placeholder="Smith"
@@ -396,7 +398,7 @@ export default function ProfileSetupPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label htmlFor="phone-number" className="block text-sm font-medium text-slate-700 mb-1.5">
                     Phone Number
                   </label>
                   <div className="relative">
@@ -404,6 +406,7 @@ export default function ProfileSetupPage() {
                       <Phone className="w-5 h-5" />
                     </div>
                     <input
+                      id="phone-number"
                       type="tel"
                       name="tel"
                       placeholder="(512) 555-1234"
@@ -418,13 +421,16 @@ export default function ProfileSetupPage() {
                 </div>
 
                 {/* Birthday - Optional */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <fieldset>
+                  <legend className="block text-sm font-medium text-slate-700 mb-1.5 flex items-center gap-1.5">
                     <Gift className="w-4 h-4 text-emerald-500" />
                     Birthday <span className="text-slate-400 font-normal">(Optional — we&apos;ll send you something special!)</span>
-                  </label>
+                  </legend>
                   <div className="grid grid-cols-2 gap-3">
                     <select
+                      id="birth-month"
+                      name="bday-month"
+                      aria-label="Birth month"
                       value={formData.birthMonth}
                       onChange={(e) => setFormData({ ...formData, birthMonth: e.target.value })}
                       className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 bg-white appearance-none cursor-pointer"
@@ -444,6 +450,9 @@ export default function ProfileSetupPage() {
                       <option value="12">December</option>
                     </select>
                     <select
+                      id="birth-day"
+                      name="bday-day"
+                      aria-label="Birth day"
                       value={formData.birthDay}
                       onChange={(e) => setFormData({ ...formData, birthDay: e.target.value })}
                       className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 bg-white appearance-none cursor-pointer"
@@ -454,7 +463,7 @@ export default function ProfileSetupPage() {
                       ))}
                     </select>
                   </div>
-                </div>
+                </fieldset>
               </div>
             </div>
 
@@ -471,10 +480,11 @@ export default function ProfileSetupPage() {
                   defaultValue={addressData.street_address}
                 />
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label htmlFor="apt-unit" className="block text-sm font-medium text-slate-700 mb-1.5">
                     Apt/Unit <span className="text-slate-400 font-normal">(Optional)</span>
                   </label>
                   <input
+                    id="apt-unit"
                     type="text"
                     name="address-line2"
                     placeholder="Apt 123"

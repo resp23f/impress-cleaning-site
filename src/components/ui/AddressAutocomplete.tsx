@@ -345,7 +345,7 @@ export default function AddressAutocomplete({
 
   return (
     <div className="relative" ref={containerRef}>
-      <label className="block text-sm font-semibold text-gray-700 mb-2">
+      <label htmlFor="service-address" className="block text-sm font-semibold text-gray-700 mb-2">
         Service Address *
       </label>
       <div className="relative">
@@ -354,6 +354,8 @@ export default function AddressAutocomplete({
         </div>
         <input
           ref={inputRef}
+          id="service-address"
+          name="street-address"
           type="text"
           value={inputValue}
           onChange={handleInputChange}
@@ -367,7 +369,7 @@ export default function AddressAutocomplete({
           }`}
           required
           disabled={isLoading}
-          autoComplete="off"
+          autoComplete="street-address"
           aria-expanded={showDropdown}
           aria-haspopup="listbox"
           aria-autocomplete="list"
