@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 import toast from 'react-hot-toast'
 import { sanitizeText, sanitizePhone, validateName, validatePhone } from '@/lib/sanitize'
+export const dynamic = 'force-dynamic'
 
 
 export default function ProfileSetupPage() {
