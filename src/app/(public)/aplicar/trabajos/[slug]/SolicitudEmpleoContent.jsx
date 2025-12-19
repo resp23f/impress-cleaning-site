@@ -380,10 +380,11 @@ export default function SolicitudEmpleoContent() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-nombre" className="block text-sm font-medium text-gray-700 mb-2">
                         Nombre <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="es-nombre"
                         type="text"
                         name="nombre"
                         required
@@ -395,10 +396,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-apellido" className="block text-sm font-medium text-gray-700 mb-2">
                         Apellido <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="es-apellido"
                         type="text"
                         name="apellido"
                         required
@@ -410,10 +412,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-telefono" className="block text-sm font-medium text-gray-700 mb-2">
                         Teléfono <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="es-telefono"
                         type="tel"
                         name="telefono"
                         required
@@ -425,10 +428,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-email" className="block text-sm font-medium text-gray-700 mb-2">
                         Correo Electrónico <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="es-email"
                         type="email"
                         name="email"
                         required
@@ -440,10 +444,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-ciudad" className="block text-sm font-medium text-gray-700 mb-2">
                         Ciudad <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="es-ciudad"
                         type="text"
                         name="ciudad"
                         required
@@ -455,10 +460,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-codigo-postal" className="block text-sm font-medium text-gray-700 mb-2">
                         Código Postal <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="es-codigo-postal"
                         type="text"
                         name="codigoPostal"
                         required
@@ -509,10 +515,11 @@ export default function SolicitudEmpleoContent() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-fecha-inicio" className="block text-sm font-medium text-gray-700 mb-2">
                         ¿Cuándo puedes empezar? <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="es-fecha-inicio"
                         name="fechaInicio"
                         required
                         value={formData.fechaInicio}
@@ -527,10 +534,11 @@ export default function SolicitudEmpleoContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-tipo-empleo" className="block text-sm font-medium text-gray-700 mb-2">
                         Tipo de empleo deseado <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="es-tipo-empleo"
                         name="tipoEmpleo"
                         required
                         value={formData.tipoEmpleo}
@@ -555,10 +563,11 @@ export default function SolicitudEmpleoContent() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-transporte" className="block text-sm font-medium text-gray-700 mb-2">
                         ¿Tienes transporte confiable? <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="es-transporte"
                         name="transporte"
                         required
                         value={formData.transporte}
@@ -571,10 +580,11 @@ export default function SolicitudEmpleoContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-autorizado" className="block text-sm font-medium text-gray-700 mb-2">
                         ¿Autorizado para trabajar en EE.UU.? <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="es-autorizado"
                         name="autorizado"
                         required
                         value={formData.autorizado}
@@ -599,10 +609,11 @@ export default function SolicitudEmpleoContent() {
                   </div>
                   <div className="space-y-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-experiencia" className="block text-sm font-medium text-gray-700 mb-2">
                         Experiencia Relevante
                       </label>
                       <textarea
+                        id="es-experiencia"
                         name="experiencia"
                         rows={4}
                         maxLength={2000}
@@ -613,10 +624,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-por-que" className="block text-sm font-medium text-gray-700 mb-2">
                         ¿Por qué quieres trabajar con nosotros?
                       </label>
                       <textarea
+                        id="es-por-que"
                         name="porQue"
                         rows={3}
                         maxLength={1000}
@@ -627,10 +639,11 @@ export default function SolicitudEmpleoContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="es-referencias" className="block text-sm font-medium text-gray-700 mb-2">
                         Referencias (Opcional)
                       </label>
                       <textarea
+                        id="es-referencias"
                         name="referencias"
                         rows={3}
                         maxLength={1000}
@@ -645,10 +658,10 @@ export default function SolicitudEmpleoContent() {
 
                 {/* Resume Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <span className="block text-sm font-medium text-gray-700 mb-2">
                     Currículum / Resume (Opcional)
-                  </label>
-                  <label className="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#079447]/50 hover:bg-[#079447]/5 cursor-pointer transition-all duration-200">
+                  </span>
+                  <label htmlFor="es-cv" className="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#079447]/50 hover:bg-[#079447]/5 cursor-pointer transition-all duration-200">
                     <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
                       <Upload className="w-5 h-5 text-gray-500" />
                     </div>
@@ -659,6 +672,7 @@ export default function SolicitudEmpleoContent() {
                       <p className="text-xs text-gray-500 mt-0.5">PDF o Word, máximo 10MB</p>
                     </div>
                     <input
+                      id="es-cv"
                       name="cv"
                       type="file"
                       accept=".pdf,.doc,.docx"

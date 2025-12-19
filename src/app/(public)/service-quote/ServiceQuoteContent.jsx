@@ -145,10 +145,11 @@ export default function ServiceQuoteContent() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Service Type */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label htmlFor="quote-service-type" className="block text-gray-700 font-semibold mb-2">
                   Service Type <span className="text-red-500">*</span>
                 </label>
                 <select
+                  id="quote-service-type"
                   name="serviceType"
                   value={formData.serviceType}
                   onChange={handleChange}
@@ -163,10 +164,11 @@ export default function ServiceQuoteContent() {
               {/* Name & Email */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label htmlFor="quote-name" className="block text-gray-700 font-semibold mb-2">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="quote-name"
                     type="text"
                     name="name"
                     value={formData.name}
@@ -178,10 +180,11 @@ export default function ServiceQuoteContent() {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label htmlFor="quote-email" className="block text-gray-700 font-semibold mb-2">
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="quote-email"
                     type="email"
                     name="email"
                     value={formData.email}
@@ -197,10 +200,11 @@ export default function ServiceQuoteContent() {
               {/* Phone & Frequency */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label htmlFor="quote-phone" className="block text-gray-700 font-semibold mb-2">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="quote-phone"
                     type="tel"
                     name="phone"
                     value={formData.phone}
@@ -212,10 +216,11 @@ export default function ServiceQuoteContent() {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label htmlFor="quote-frequency" className="block text-gray-700 font-semibold mb-2">
                     Cleaning Frequency <span className="text-red-500">*</span>
                   </label>
                   <select
+                    id="quote-frequency"
                     name="frequency"
                     value={formData.frequency}
                     onChange={handleChange}
@@ -236,10 +241,11 @@ export default function ServiceQuoteContent() {
 
               {/* Address */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label htmlFor="quote-address" className="block text-gray-700 font-semibold mb-2">
                   Service Address <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="quote-address"
                   type="text"
                   name="address"
                   value={formData.address}
@@ -254,10 +260,11 @@ export default function ServiceQuoteContent() {
               {/* Square Footage (Commercial only) */}
               {formData.serviceType === 'commercial' && (
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label htmlFor="quote-square-footage" className="block text-gray-700 font-semibold mb-2">
                     Square Footage <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="quote-square-footage"
                     type="number"
                     name="squareFootage"
                     value={formData.squareFootage}
@@ -273,10 +280,11 @@ export default function ServiceQuoteContent() {
 
               {/* Message */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label htmlFor="quote-message" className="block text-gray-700 font-semibold mb-2">
                   Additional Details or Special Requests
                 </label>
                 <textarea
+                  id="quote-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}

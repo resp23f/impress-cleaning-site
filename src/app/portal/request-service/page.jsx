@@ -708,8 +708,10 @@ export default function RequestServicePage() {
                   </div>
 
                   {/* Flexible Checkbox */}
-                  <label className="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer hover:border-[#079447]/50 transition-colors bg-gray-50">
+                  <label htmlFor="is-flexible" className="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer hover:border-[#079447]/50 transition-colors bg-gray-50">
                     <input
+                      id="is-flexible"
+                      name="is_flexible"
                       type="checkbox"
                       checked={formData.isFlexible}
                       onChange={(e) => setFormData({ ...formData, isFlexible: e.target.checked })}
@@ -898,6 +900,7 @@ export default function RequestServicePage() {
                         return (
                           <label
                             key={option.value}
+                            htmlFor={`planning-option-${option.value}`}
                             className={`
                             group relative flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer 
                             transition-all duration-200 ease-out
@@ -921,6 +924,8 @@ export default function RequestServicePage() {
                               ${isChecked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}
                             `} />
                               <input
+                                id={`planning-option-${option.value}`}
+                                name={`planning_option_${option.value}`}
                                 type="checkbox"
                                 checked={isChecked}
                                 onChange={(e) => {
@@ -965,12 +970,14 @@ export default function RequestServicePage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
                         </div>
-                        <label className="text-sm font-semibold text-[#1C294E]">
+                        <label htmlFor="additional-notes" className="text-sm font-semibold text-[#1C294E]">
                           Additional notes
                         </label>
                         <span className="text-xs text-gray-400 font-normal">(optional)</span>
                       </div>
                       <textarea
+                        id="additional-notes"
+                        name="additional_notes"
                         value={formData.additionalNotes}
                         onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
                         placeholder="Gate code, parking instructions, areas of focus, or anything else we should know..."
@@ -1017,8 +1024,10 @@ export default function RequestServicePage() {
                   Save time by scheduling regular cleanings
                 </p>
 
-                <label className="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer hover:border-[#079447]/50 transition-colors mb-4">
+                <label htmlFor="is-recurring" className="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer hover:border-[#079447]/50 transition-colors mb-4">
                   <input
+                    id="is-recurring"
+                    name="is_recurring"
                     type="checkbox"
                     checked={formData.isRecurring}
                     onChange={(e) => setFormData({ ...formData, isRecurring: e.target.checked })}

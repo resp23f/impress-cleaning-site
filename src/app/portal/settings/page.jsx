@@ -667,12 +667,14 @@ export default function SettingsPage() {
                   placeholder="(512) 555-1234"
                 />
                 <div>
-                  <label className="block text-sm font-medium text-[#1C294E] mb-2 flex items-center gap-1.5">
+                  <label htmlFor="birth-month" className="block text-sm font-medium text-[#1C294E] mb-2 flex items-center gap-1.5">
                     <Gift className="w-4 h-4 text-[#079447]" />
                     Birthday
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <select
+                      id="birth-month"
+                      name="birth_month"
                       value={profileForm.birth_month}
                       onChange={(e) => setProfileForm((p) => ({ ...p, birth_month: e.target.value }))}
                       disabled={profile?.birth_month && profile?.birth_day}
@@ -693,6 +695,9 @@ export default function SettingsPage() {
                       <option value="12">December</option>
                     </select>
                     <select
+                      id="birth-day"
+                      name="birth_day"
+                      aria-label="Birth day"
                       value={profileForm.birth_day}
                       onChange={(e) => setProfileForm((p) => ({ ...p, birth_day: e.target.value }))}
                       disabled={profile?.birth_month && profile?.birth_day}
@@ -706,8 +711,8 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Communication Preference</label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <label id="comm-pref-label" className="text-sm font-medium text-gray-700 mb-2 block">Communication Preference</label>
+                  <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="comm-pref-label">
                     {['text', 'email', 'both'].map((value) => (
                       <button
                         key={value}
@@ -991,9 +996,10 @@ export default function SettingsPage() {
                   
                   {/* Card Number */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Card Number</label>
+                    <label id="card-number-label" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Card Number</label>
                     <div 
-                      ref={cardNumberRef} 
+                      ref={cardNumberRef}
+                      aria-labelledby="card-number-label" 
                       className={`border-2 rounded-xl px-4 py-3.5 bg-white min-h-[48px] transition-all duration-200 ${
                         cardState.numberError 
                           ? 'border-red-300 focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100' 
@@ -1013,9 +1019,10 @@ export default function SettingsPage() {
                   {/* Expiry and CVC Row */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Expiry</label>
+                      <label id="card-expiry-label" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Expiry</label>
                       <div 
-                        ref={cardExpiryRef} 
+                        ref={cardExpiryRef}
+                        aria-labelledby="card-expiry-label" 
                         className={`border-2 rounded-xl px-4 py-3.5 bg-white min-h-[48px] transition-all duration-200 ${
                           cardState.expiryError 
                             ? 'border-red-300 focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100' 
@@ -1032,9 +1039,10 @@ export default function SettingsPage() {
                       )}
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">CVC</label>
+                      <label id="card-cvc-label" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">CVC</label>
                       <div 
-                        ref={cardCvcRef} 
+                        ref={cardCvcRef}
+                        aria-labelledby="card-cvc-label" 
                         className={`border-2 rounded-xl px-4 py-3.5 bg-white min-h-[48px] transition-all duration-200 ${
                           cardState.cvcError 
                             ? 'border-red-300 focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100' 

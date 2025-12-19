@@ -395,10 +395,11 @@ export default function JobApplicationContent() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-first-name" className="block text-sm font-medium text-gray-700 mb-2">
                         First Name <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="job-first-name"
                         type="text"
                         name="firstName"
                         required
@@ -410,10 +411,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-last-name" className="block text-sm font-medium text-gray-700 mb-2">
                         Last Name <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="job-last-name"
                         type="text"
                         name="lastName"
                         required
@@ -425,10 +427,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-phone" className="block text-sm font-medium text-gray-700 mb-2">
                         Phone <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="job-phone"
                         type="tel"
                         name="phone"
                         required
@@ -440,10 +443,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-email" className="block text-sm font-medium text-gray-700 mb-2">
                         Email <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="job-email"
                         type="email"
                         name="email"
                         required
@@ -455,10 +459,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-city" className="block text-sm font-medium text-gray-700 mb-2">
                         City <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="job-city"
                         type="text"
                         name="city"
                         required
@@ -470,10 +475,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-zip-code" className="block text-sm font-medium text-gray-700 mb-2">
                         ZIP Code <span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="job-zip-code"
                         type="text"
                         name="zipCode"
                         required
@@ -526,10 +532,11 @@ export default function JobApplicationContent() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-start-date" className="block text-sm font-medium text-gray-700 mb-2">
                         When can you start? <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="job-start-date"
                         name="startDate"
                         required
                         value={formData.startDate}
@@ -544,10 +551,11 @@ export default function JobApplicationContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-employment-type" className="block text-sm font-medium text-gray-700 mb-2">
                         Desired employment type <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="job-employment-type"
                         name="employmentType"
                         required
                         value={formData.employmentType}
@@ -572,10 +580,11 @@ export default function JobApplicationContent() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-has-transport" className="block text-sm font-medium text-gray-700 mb-2">
                         Do you have reliable transportation? <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="job-has-transport"
                         name="hasTransport"
                         required
                         value={formData.hasTransport}
@@ -588,10 +597,11 @@ export default function JobApplicationContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-authorized-to-work" className="block text-sm font-medium text-gray-700 mb-2">
                         Authorized to work in the US? <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="job-authorized-to-work"
                         name="authorizedToWork"
                         required
                         value={formData.authorizedToWork}
@@ -616,10 +626,11 @@ export default function JobApplicationContent() {
                   </div>
                   <div className="space-y-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-experience" className="block text-sm font-medium text-gray-700 mb-2">
                         Relevant Experience
                       </label>
                       <textarea
+                        id="job-experience"
                         name="experience"
                         rows={4}
                         maxLength={2000}
@@ -630,10 +641,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-why-join" className="block text-sm font-medium text-gray-700 mb-2">
                         Why do you want to work with us?
                       </label>
                       <textarea
+                        id="job-why-join"
                         name="whyJoin"
                         rows={3}
                         maxLength={1000}
@@ -644,10 +656,11 @@ export default function JobApplicationContent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="job-references" className="block text-sm font-medium text-gray-700 mb-2">
                         References (Optional)
                       </label>
                       <textarea
+                        id="job-references"
                         name="references"
                         rows={3}
                         maxLength={1000}
@@ -662,10 +675,10 @@ export default function JobApplicationContent() {
 
                 {/* Resume Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <span className="block text-sm font-medium text-gray-700 mb-2">
                     Resume / CV (Optional)
-                  </label>
-                  <label className="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#079447]/50 hover:bg-[#079447]/5 cursor-pointer transition-all duration-200">
+                  </span>
+                  <label htmlFor="job-resume" className="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#079447]/50 hover:bg-[#079447]/5 cursor-pointer transition-all duration-200">
                     <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
                       <Upload className="w-5 h-5 text-gray-500" />
                     </div>
@@ -676,6 +689,7 @@ export default function JobApplicationContent() {
                       <p className="text-xs text-gray-500 mt-0.5">PDF or Word, max 10MB</p>
                     </div>
                     <input
+                      id="job-resume"
                       name="resume"
                       type="file"
                       accept=".pdf,.doc,.docx"

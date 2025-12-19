@@ -343,10 +343,12 @@ export default function ServiceHistoryPage() {
                 <DatePicker label="From Date" field="startDate" />
                 <DatePicker label="To Date" field="endDate" />
                 <div className="min-w-0">
-                  <label className="text-sm font-semibold text-gray-700 mb-2 block">
+                  <label htmlFor="service-type-filter" className="text-sm font-semibold text-gray-700 mb-2 block">
                     Service Type
                   </label>
                   <select
+                    id="service-type-filter"
+                    name="service_type"
                     value={filters.serviceType}
                     onChange={(e) =>
                       setFilters((prev) => ({ ...prev, serviceType: e.target.value }))

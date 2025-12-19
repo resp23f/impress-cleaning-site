@@ -98,10 +98,10 @@ export default function CustomerFeedbackPage() {
 
               {/* Rating */}
               <div>
-                <label className="block text-sm font-semibold text-[#1C294E] mb-3">
+                <label id="rating-label" className="block text-sm font-semibold text-[#1C294E] mb-3">
                   How would you rate your experience?
                 </label>
-                <div className="flex gap-2 justify-center py-4">
+                <div className="flex gap-2 justify-center py-4" role="radiogroup" aria-labelledby="rating-label">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
@@ -133,10 +133,12 @@ export default function CustomerFeedbackPage() {
 
               {/* Feedback Text */}
               <div>
-                <label className="block text-sm font-semibold text-[#1C294E] mb-2">
+                <label htmlFor="feedback-text" className="block text-sm font-semibold text-[#1C294E] mb-2">
                   Tell us more (optional)
                 </label>
                 <textarea
+                  id="feedback-text"
+                  name="feedback"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   rows={6}

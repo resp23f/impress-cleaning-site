@@ -142,23 +142,27 @@ Create a strong, secure password
 <form onSubmit={handleSubmit} className="space-y-5">
 {/* New Password */}
 <div>
-<label className="block text-sm font-medium text-slate-700 mb-1.5">
+<label htmlFor="reset-password" className="block text-sm font-medium text-slate-700 mb-1.5">
 New password
 </label>
 <div className="relative">
 <input
+id="reset-password"
+name="password"
 type={showPassword ? 'text' : 'password'}
 placeholder="Enter new password"
 value={password}
 onChange={(e) => setPassword(e.target.value)}
 required
 minLength={8}
+autoComplete="new-password"
 className="w-full px-4 py-3.5 pr-12 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
 />
 <button
 type="button"
 onClick={() => setShowPassword(!showPassword)}
 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+aria-label={showPassword ? 'Hide password' : 'Show password'}
 >
 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
 </button>
@@ -185,23 +189,27 @@ i < passwordStrength ? getStrengthColor() : 'bg-slate-100'
 </div>
 {/* Confirm Password */}
 <div>
-<label className="block text-sm font-medium text-slate-700 mb-1.5">
+<label htmlFor="reset-confirm-password" className="block text-sm font-medium text-slate-700 mb-1.5">
 Confirm password
 </label>
 <div className="relative">
 <input
+id="reset-confirm-password"
+name="confirm_password"
 type={showConfirmPassword ? 'text' : 'password'}
 placeholder="Confirm new password"
 value={confirmPassword}
 onChange={(e) => setConfirmPassword(e.target.value)}
 required
 minLength={8}
+autoComplete="new-password"
 className="w-full px-4 py-3.5 pr-12 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400"
 />
 <button
 type="button"
 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
 >
 {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
 </button>

@@ -628,7 +628,7 @@ export default function AppointmentsPage() {
             <div className="space-y-6">
               {/* Date picker */}
               <div>
-                <label className="block text-sm font-medium text-[#1C294E] mb-2">
+                <label id="reschedule-date-label" className="block text-sm font-medium text-[#1C294E] mb-2">
                   New date <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -637,6 +637,7 @@ export default function AppointmentsPage() {
                   </div>
                   <button
                     type="button"
+                    aria-labelledby="reschedule-date-label"
                     onClick={() => setIsCalendarOpen((prev) => !prev)}
                     className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 transition-all duration-200 text-left bg-white"
                   >
@@ -742,10 +743,10 @@ export default function AppointmentsPage() {
 
               {/* Time window selector */}
               <div>
-                <label className="block text-sm font-medium text-[#1C294E] mb-3">
+                <label id="time-window-label" className="block text-sm font-medium text-[#1C294E] mb-3">
                   Time window <span className="text-red-500">*</span>
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" role="radiogroup" aria-labelledby="time-window-label">
                   {TIME_RANGES.map((time) => {
                     const IconComponent = time.icon
                     const isSelected = rescheduleTimeRange === time.value
@@ -831,10 +832,10 @@ export default function AppointmentsPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#1C294E] mb-3">
+                  <label id="cancel-reason-label" className="block text-sm font-medium text-[#1C294E] mb-3">
                     Cancellation reason <span className="text-red-500">*</span>
                   </label>
-                  <div className="space-y-2">
+                  <div className="space-y-2" role="radiogroup" aria-labelledby="cancel-reason-label">
                     {[
                       { value: 'Schedule conflict', label: 'Schedule conflict' },
                       { value: 'Plans changed', label: 'Plans changed' },
@@ -878,10 +879,12 @@ export default function AppointmentsPage() {
 
                 {cancelReason === 'Other' && (
                   <div className="animate-fadeIn">
-                    <label className="block text-sm font-medium text-[#1C294E] mb-2">
+                    <label htmlFor="cancel-reason-other" className="block text-sm font-medium text-[#1C294E] mb-2">
                       Please specify your reason <span className="text-red-500">*</span>
                     </label>
                     <textarea
+                      id="cancel-reason-other"
+                      name="cancel_reason_other"
                       className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-100 transition-all duration-200 text-sm resize-none"
                       rows="3"
                       placeholder="Tell us why you're cancelling..."

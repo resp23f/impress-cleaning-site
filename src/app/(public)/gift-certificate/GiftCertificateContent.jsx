@@ -151,10 +151,11 @@ export default function GiftCertificateContent() {
   </div>
   {/* Custom Amount */}
   <div className="relative">
-  <label className="block text-sm font-semibold text-gray-700 mb-2">Or enter a custom amount</label>
+  <label htmlFor="gift-custom-amount" className="block text-sm font-semibold text-gray-700 mb-2">Or enter a custom amount</label>
   <div className="relative">
   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg font-medium">$</span>
   <input
+  id="gift-custom-amount"
   type="number"
   min="75"
   max="1000"
@@ -183,10 +184,11 @@ export default function GiftCertificateContent() {
   <h3 className="text-lg font-bold text-gray-900">Recipient Details</h3>
   </div>
   <div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
+  <label htmlFor="gift-recipient-name" className="block text-sm font-medium text-gray-700 mb-2">
   Recipient&apos;s Name <span className="text-red-500">*</span>
   </label>
   <input
+  id="gift-recipient-name"
   type="text"
   placeholder="Who is this gift for?"
   value={recipientName}
@@ -196,10 +198,11 @@ export default function GiftCertificateContent() {
   />
   </div>
   <div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
+  <label htmlFor="gift-recipient-email" className="block text-sm font-medium text-gray-700 mb-2">
   Recipient&apos;s Email <span className="text-red-500">*</span>
   </label>
   <input
+  id="gift-recipient-email"
   type="email"
   placeholder="their.email@example.com"
   value={recipientEmail}
@@ -221,10 +224,11 @@ export default function GiftCertificateContent() {
   <h3 className="text-lg font-bold text-gray-900">Your Information</h3>
   </div>
   <div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
+  <label htmlFor="gift-sender-name" className="block text-sm font-medium text-gray-700 mb-2">
   Your Name <span className="text-red-500">*</span>
   </label>
   <input
+  id="gift-sender-name"
   type="text"
   placeholder="How should the certificate be signed?"
   value={senderName}
@@ -234,10 +238,11 @@ export default function GiftCertificateContent() {
   />
   </div>
   <div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
+  <label htmlFor="gift-sender-email" className="block text-sm font-medium text-gray-700 mb-2">
   Your Email <span className="text-red-500">*</span>
   </label>
   <input
+  id="gift-sender-email"
   type="email"
   placeholder="your.email@example.com"
   value={senderEmail}
@@ -256,10 +261,12 @@ export default function GiftCertificateContent() {
   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
   </svg>
   </div>
-  <h3 className="text-lg font-bold text-gray-900">Personal Message</h3>
+  <label htmlFor="gift-personal-message" className="text-lg font-bold text-gray-900">Personal Message</label>
   <span className="text-xs text-gray-400 font-normal">(Optional)</span>
   </div>
   <textarea
+  id="gift-personal-message"
+  name="personalMessage"
   placeholder="Add a heartfelt message to make this gift even more special..."
   value={personalMessage}
   onChange={(e) => setPersonalMessage(e.target.value)}

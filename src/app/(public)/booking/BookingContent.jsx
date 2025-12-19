@@ -102,10 +102,11 @@ export default function BookingContent() {
                 </h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block font-display text-gray-700 font-semibold mb-2">
+                    <label htmlFor="booking-name" className="block font-display text-gray-700 font-semibold mb-2">
                       Full Name <span className="text-red-500">*</span>
                     </label>
                     <input
+                      id="booking-name"
                       type="text"
                       name="name"
                       value={formData.name}
@@ -117,10 +118,11 @@ export default function BookingContent() {
                     />
                   </div>
                   <div>
-                    <label className="block font-display text-gray-700 font-semibold mb-2">
+                    <label htmlFor="booking-email" className="block font-display text-gray-700 font-semibold mb-2">
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
+                      id="booking-email"
                       type="email"
                       name="email"
                       value={formData.email}
@@ -133,10 +135,11 @@ export default function BookingContent() {
                   </div>
                 </div>
                 <div>
-                  <label className="block font-display text-gray-700 font-semibold mb-2">
+                  <label htmlFor="booking-phone" className="block font-display text-gray-700 font-semibold mb-2">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="booking-phone"
                     type="tel"
                     name="phone"
                     value={formData.phone}
@@ -148,10 +151,11 @@ export default function BookingContent() {
                   />
                 </div>
                 <div>
-                  <label className="block font-display text-gray-700 font-semibold mb-2">
+                  <label htmlFor="booking-address" className="block font-display text-gray-700 font-semibold mb-2">
                     Service Address <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="booking-address"
                     type="text"
                     name="address"
                     value={formData.address}
@@ -171,10 +175,11 @@ export default function BookingContent() {
                 </h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block font-display text-gray-700 font-semibold mb-2">
+                    <label htmlFor="booking-service-type" className="block font-display text-gray-700 font-semibold mb-2">
                       Service Type <span className="text-red-500">*</span>
                     </label>
                     <select
+                      id="booking-service-type"
                       name="serviceType"
                       value={formData.serviceType}
                       onChange={handleChange}
@@ -186,12 +191,13 @@ export default function BookingContent() {
                     </select>
                   </div>
                   <div>
-                    <label className="block font-display text-gray-700 font-semibold mb-2">
+                    <label htmlFor="booking-space-size" className="block font-display text-gray-700 font-semibold mb-2">
                       {formData.serviceType === 'residential' ? 'Home Size' : 'Square Footage'}{' '}
                       <span className="text-red-500">*</span>
                     </label>
                     {formData.serviceType === 'residential' ? (
                       <select
+                        id="booking-space-size"
                         name="spaceSize"
                         value={formData.spaceSize}
                         onChange={handleChange}
@@ -207,6 +213,7 @@ export default function BookingContent() {
                       </select>
                     ) : (
                       <input
+                        id="booking-space-size"
                         type="number"
                         name="spaceSize"
                         value={formData.spaceSize}
@@ -221,10 +228,11 @@ export default function BookingContent() {
                   </div>
                 </div>
                 <div>
-                  <label className="block font-display text-gray-700 font-semibold mb-2">
+                  <label htmlFor="booking-service-level" className="block font-display text-gray-700 font-semibold mb-2">
                     Service Level <span className="text-red-500">*</span>
                   </label>
                   <select
+                    id="booking-service-level"
                     name="serviceLevel"
                     value={formData.serviceLevel}
                     onChange={handleChange}
@@ -238,10 +246,11 @@ export default function BookingContent() {
                 </div>
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block font-display text-gray-700 font-semibold mb-2">
+                    <label htmlFor="booking-preferred-date" className="block font-display text-gray-700 font-semibold mb-2">
                       Preferred Date <span className="text-red-500">*</span>
                     </label>
                     <input
+                      id="booking-preferred-date"
                       type="date"
                       name="preferredDate"
                       value={formData.preferredDate}
@@ -252,10 +261,11 @@ export default function BookingContent() {
                     />
                   </div>
                   <div>
-                    <label className="block font-display text-gray-700 font-semibold mb-2">
+                    <label htmlFor="booking-preferred-time" className="block font-display text-gray-700 font-semibold mb-2">
                       Preferred Time <span className="text-red-500">*</span>
                     </label>
                     <select
+                      id="booking-preferred-time"
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleChange}
@@ -277,10 +287,11 @@ export default function BookingContent() {
                   Optional Information
                 </h2>
                 <div>
-                  <label className="block font-display text-gray-700 font-semibold mb-2">
+                  <label htmlFor="booking-gift-certificate" className="block font-display text-gray-700 font-semibold mb-2">
                     Gift Certificate Code
                   </label>
                   <input
+                    id="booking-gift-certificate"
                     type="text"
                     name="giftCertificate"
                     value={formData.giftCertificate}
@@ -294,10 +305,11 @@ export default function BookingContent() {
                   </p>
                 </div>
                 <div>
-                  <label className="block font-display text-gray-700 font-semibold mb-2">
+                  <label htmlFor="booking-special-requests" className="block font-display text-gray-700 font-semibold mb-2">
                     Special Requests or Notes
                   </label>
                   <textarea
+                    id="booking-special-requests"
                     name="specialRequests"
                     value={formData.specialRequests}
                     onChange={handleChange}
