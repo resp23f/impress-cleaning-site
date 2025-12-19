@@ -63,17 +63,14 @@ export default function TurnstileWidget({ onVerify, onError, onExpire, className
   return (
     <div className={`flex justify-center ${className}`}>
       <div 
-        className="rounded-xl border border-gray-200 bg-gray-50/50 p-3 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
-        style={{ minWidth: '300px', maxWidth: '100%' }}
-      >
-        <div 
-          ref={containerRef}
-          style={{
-            minHeight: '65px',
-            width: '100%',
-          }}
-        />
-      </div>
+        ref={containerRef}
+        className="[&>iframe]:rounded-lg [&>iframe]:shadow-sm"
+        style={{
+          minHeight: '65px',
+          width: '100%',
+          maxWidth: '300px',
+        }}
+      />
     </div>
   )
 }
