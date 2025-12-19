@@ -368,11 +368,13 @@ function AdminInvitedSetPasswordContent() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
                 Password
               </label>
               <div className="relative">
                 <input
+                  id="password"
+                  name="new-password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   value={password}
@@ -415,11 +417,13 @@ function AdminInvitedSetPasswordContent() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="confirm-password" className="block text-sm font-medium text-slate-700 mb-2">
                 Confirm Password
               </label>
               <div className="relative">
                 <input
+                  id="confirm-password"
+                  name="confirm-password"
                   type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Confirm your password"
                   value={confirmPassword}
