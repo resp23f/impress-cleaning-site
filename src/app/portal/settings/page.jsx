@@ -670,15 +670,16 @@ export default function SettingsPage() {
                   placeholder="(512) 555-1234"
                 />
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5">
+                  <label className="block text-sm font-medium text-[#1C294E] mb-2 flex items-center gap-1.5">
                     <Gift className="w-4 h-4 text-[#079447]" />
-                    Birthday <span className="text-gray-400 font-normal text-xs">(Optional)</span>
+                    Birthday
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <select
                       value={profileForm.birth_month}
                       onChange={(e) => setProfileForm((p) => ({ ...p, birth_month: e.target.value }))}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10 outline-none transition-all duration-200 text-[#1C294E] bg-white text-sm"
+                      disabled={profile?.birth_month && profile?.birth_day}
+                      className={`w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20 transition-colors duration-200 text-[#1C294E] bg-white ${profile?.birth_month && profile?.birth_day ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                     >
                       <option value="">Month</option>
                       <option value="1">January</option>
@@ -697,7 +698,8 @@ export default function SettingsPage() {
                     <select
                       value={profileForm.birth_day}
                       onChange={(e) => setProfileForm((p) => ({ ...p, birth_day: e.target.value }))}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10 outline-none transition-all duration-200 text-[#1C294E] bg-white text-sm"
+                      disabled={profile?.birth_month && profile?.birth_day}
+                      className={`w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20 transition-colors duration-200 text-[#1C294E] bg-white ${profile?.birth_month && profile?.birth_day ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                     >
                       <option value="">Day</option>
                       {[...Array(31)].map((_, i) => (
