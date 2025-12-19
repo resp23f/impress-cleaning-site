@@ -199,9 +199,12 @@ export async function POST(request) {
     // Check if webhook already updated it (race condition)
     const { data: currentInvoice } = await supabaseAdmin
       .from('invoices')
-      .select('stripe_invoice_id, status')
+      .select('stripe_invoice_id, status, due_date')
       .eq('id', invoice.id)
       .single()
+
+    // Calculate the actual due date that was set in Stripe
+    const actualDueDate = invoice.due_date || new Date(Date.now() + daysUntilDue * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
     // Only update if webhook hasn't already done it
     if (!currentInvoice?.stripe_invoice_id) {
@@ -210,6 +213,7 @@ export async function POST(request) {
         .update({
           stripe_invoice_id: sentInvoice.id,
           status: 'sent',
+          due_date: actualDueDate,
           updated_at: new Date().toISOString()
         })
         .eq('id', invoice.id)
@@ -219,7 +223,13 @@ export async function POST(request) {
         // Don't fail - invoice was sent successfully
       }
     } else {
-      console.log('Webhook already updated invoice, skipping duplicate update')
+      // Still update due_date if it wasn't set
+      if (!currentInvoice.due_date) {
+        await supabaseAdmin
+          .from('invoices')
+          .update({ due_date: actualDueDate, updated_at: new Date().toISOString() })
+          .eq('id', invoice.id)
+      }
     }
     
     // 8. Create customer notification

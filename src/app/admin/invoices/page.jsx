@@ -187,9 +187,11 @@ export default function InvoicesPage() {
 
   const openCreateModal = () => {
     setEditingInvoice(null)
+    // Default due date to today
+    const today = new Date().toISOString().split('T')[0]
     setNewInvoice({
       customer_id: '',
-      due_date: '',
+      due_date: today,
       notes: '',
       tax_rate: '8.25',
       line_items: [{ description: '', quantity: 1, rate: '', amount: 0 }],
@@ -1376,10 +1378,9 @@ export default function InvoicesPage() {
           {/* Due Date */}
           <Input
             type="date"
-            label="Due Date (Optional)"
+            label="Due Date"
             value={newInvoice.due_date}
             onChange={(e) => setNewInvoice({ ...newInvoice, due_date: e.target.value })}
-            min={new Date().toISOString().split('T')[0]}
           />
 
           {/* Notes */}
