@@ -485,58 +485,13 @@ export default function ProfileSetupPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={addressData.city}
-                      placeholder="Auto-filled"
-                      readOnly
-                      tabIndex={-1}
-                      className="w-full px-3 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 text-sm cursor-not-allowed"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={addressData.state}
-                      placeholder="Auto-filled"
-                      readOnly
-                      tabIndex={-1}
-                      className="w-full px-3 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 text-sm cursor-not-allowed"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                      ZIP
-                    </label>
-                    <input
-                      type="text"
-                      name="postal-code"
-                      value={addressData.zip_code}
-                      placeholder="Auto-filled"
-                      readOnly
-                      tabIndex={-1}
-                      className="w-full px-3 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 text-sm cursor-not-allowed"
-                    />
-                  </div>
-                </div>
-
                 {/* Address validation indicator */}
                 {addressData.street_address && (
                   <div className={`flex items-center gap-2 text-sm ${addressSelected ? 'text-emerald-600' : 'text-amber-600'}`}>
                     {addressSelected ? (
                       <>
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        Address verified
+                        Address verified • {addressData.city}, {addressData.state} {addressData.zip_code}
                       </>
                     ) : (
                       <>
@@ -553,7 +508,6 @@ export default function ProfileSetupPage() {
                 </p>
               </div>
             </div>
-
             {/* Submit Button */}
             <button
               type="submit"
