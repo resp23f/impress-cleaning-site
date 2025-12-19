@@ -207,7 +207,6 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                       <tr className="border-b border-gray-200">
                         <th className="text-left py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Description</th>
                         <th className="text-center py-3 text-xs font-medium text-gray-400 uppercase tracking-wider w-16">Qty</th>
-                        <th className="text-right py-3 text-xs font-medium text-gray-400 uppercase tracking-wider w-24">Price</th>
                         <th className="text-right py-3 text-xs font-medium text-gray-400 uppercase tracking-wider w-24">Amount</th>
                       </tr>
                     </thead>
@@ -221,7 +220,6 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                           <tr key={idx} className="border-b border-gray-50">
                             <td className="py-3 text-gray-900">{item.description || 'Service'}</td>
                             <td className="py-3 text-center text-gray-600">{item.quantity ?? 1}</td>
-                            <td className="py-3 text-right text-gray-600">{formatMoney(item.rate)}</td>
                             <td className="py-3 text-right font-medium text-gray-900">{formatMoney(item.amount)}</td>
                           </tr>
                         ))}
@@ -240,7 +238,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                           <div className="flex-1 min-w-0 pr-3">
                             <p className="text-sm font-medium text-gray-900 truncate">{item.description || 'Service'}</p>
                             <p className="text-xs text-gray-500">
-                              {item.quantity ?? 1} × {formatMoney(item.rate)}
+                              Qty: {item.quantity ?? 1}
                             </p>
                           </div>
                           <span className="text-sm font-semibold text-gray-900">{formatMoney(item.amount)}</span>

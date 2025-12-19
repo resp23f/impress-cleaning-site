@@ -558,10 +558,11 @@ export default function InvoicesPage() {
         if (error) throw error
         toast.success('Invoice marked as overdue')
       } else {
-        // Calculate 5% late fee on current total
-        const currentTotal = parseFloat(selectedInvoice.total) || parseFloat(selectedInvoice.amount) || 0
-        const lateFee = Math.round(currentTotal * 0.05 * 100) / 100
-        const newTotal = currentTotal + lateFee
+        // Calculate 5% late fee on SUBTOTAL (amount), not total
+        const subtotal = parseFloat(selectedInvoice.amount) || 0
+        const currentTotal = parseFloat(selectedInvoice.total) || subtotal
+        const lateFee = Math.round(subtotal * 0.05 * 100) / 100
+        const newTotal = Math.round((currentTotal + lateFee) * 100) / 100
 
         // Add late fee as a line item
         const updatedLineItems = [
