@@ -61,10 +61,17 @@ export default function AddressAutocomplete({
 
       const existingScript = document.querySelector('script[src*="maps.googleapis.com"]')
       if (existingScript) {
-        existingScript.addEventListener('load', () => {
+        // Script tag exists - check if already loaded
+        if (window.google?.maps?.places) {
           setIsLoading(false)
           initializeServices()
-        })
+        } else {
+          // Still loading, wait for it
+          existingScript.addEventListener('load', () => {
+            setIsLoading(false)
+            initializeServices()
+          })
+        }
         return
       }
 
@@ -161,7 +168,11 @@ export default function AddressAutocomplete({
 
   // Fetch suggestions using LEGACY API (fallback)
   const fetchSuggestionsLegacy = (input: string): void => {
-    if (!autocompleteServiceRef.current) return
+    if (!autocompleteServiceRef.current) {
+      console.error('Legacy AutocompleteService not initialized')
+      setIsFetching(false)
+      return
+    }
 
     autocompleteServiceRef.current.getPlacePredictions(
       {
@@ -355,7 +366,12 @@ export default function AddressAutocomplete({
 
   // Handle place selection using LEGACY API
   const handleSelectPlaceLegacy = (suggestion: Suggestion): void => {
-    if (!placesServiceRef.current) return
+    if (!placesServiceRef.current) {
+      console.error('Legacy PlacesService not initialized')
+      handleFallbackSelect(suggestion)
+      setIsFetching(false)
+      return
+    }
 
     placesServiceRef.current.getDetails(
       {
