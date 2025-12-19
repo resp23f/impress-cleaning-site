@@ -430,6 +430,7 @@ export default function ProfileSetupPage() {
                     <select
                       id="birth-month"
                       name="bday-month"
+                      autoComplete="bday-month"
                       aria-label="Birth month"
                       value={formData.birthMonth}
                       onChange={(e) => setFormData({ ...formData, birthMonth: e.target.value })}
@@ -452,6 +453,7 @@ export default function ProfileSetupPage() {
                     <select
                       id="birth-day"
                       name="bday-day"
+                      autoComplete="bday-day"
                       aria-label="Birth day"
                       value={formData.birthDay}
                       onChange={(e) => setFormData({ ...formData, birthDay: e.target.value })}
