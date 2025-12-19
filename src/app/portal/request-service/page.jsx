@@ -1,6 +1,4 @@
 'use client'
-import Script from 'next/script'
-import AddressAutocomplete from '@/components/ui/AddressAutocomplete'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from '../shared-animations.module.css'
@@ -214,20 +212,6 @@ export default function RequestServicePage() {
     return base
   })
 
-  const handleAddressSelect = (data) => {
-    setFormData({
-      ...formData,
-      newAddress: {
-        streetAddress: data.street_address,
-        unit: data.unit || '',
-        city: data.city,
-        state: data.state,
-        zipCode: data.zip_code,
-        placeId: data.place_id,
-      }
-    })
-  }
-
   const supabase = createClient()
 
 
@@ -263,48 +247,6 @@ export default function RequestServicePage() {
     getUser()
   }, [supabase, router])
 
-  useEffect(() => {
-    if (isLoaded && formData.useNewAddress) {
-      const input = document.getElementById('new-address-autocomplete')
-      if (!input) return
-
-      const autocomplete = new window.google.maps.places.Autocomplete(input, {
-        types: ['address'],
-        componentRestrictions: { country: 'us' },
-      })
-
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace()
-        if (!place.address_components) return
-
-        let street = ''
-        let city = ''
-        let state = ''
-        let zip = ''
-
-        place.address_components.forEach(component => {
-          const types = component.types
-          if (types.includes('street_number')) street = component.long_name + ' '
-          if (types.includes('route')) street += component.long_name
-          if (types.includes('locality')) city = component.long_name
-          if (types.includes('administrative_area_level_1')) state = component.short_name
-          if (types.includes('postal_code')) zip = component.long_name
-        })
-
-        setFormData(prev => ({
-          ...prev,
-          newAddress: {
-            streetAddress: street,
-            city,
-            state,
-            zipCode: zip,
-            placeId: place.place_id || '',
-            unit: prev.newAddress.unit,
-          },
-        }))
-      })
-    }
-  }, [isLoaded, formData.useNewAddress])
 
   const handleNext = () => {
     if (step === 1 && !formData.serviceType) {
@@ -508,11 +450,6 @@ export default function RequestServicePage() {
 
   return (
     <>
-      <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places`}
-        strategy="beforeInteractive"
-      />
-
       <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 ${styles.contentReveal}`}>
         <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
           <PageTitle title="Request Service" />
@@ -846,18 +783,25 @@ export default function RequestServicePage() {
 
                   {formData.useNewAddress && (
                     <div className="space-y-4 mt-4 p-4 bg-gray-50 rounded-lg">
-                      <AddressAutocomplete
-                        onSelect={handleAddressSelect}
-                        defaultValue={formData.newAddress.streetAddress}
+                      <Input
+                        label="Street Address *"
+                        placeholder="123 Main St"
+                        value={formData.newAddress.streetAddress}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          newAddress: { ...formData.newAddress, streetAddress: e.target.value }
+                        })}
+                        autoComplete="street-address"
                       />
                       <Input
-                        label="Apt/Unit (Optional)"
-                        placeholder="Apt 123"
+                        label="Apt/Unit/Suite"
+                        placeholder="Suite 101"
                         value={formData.newAddress.unit}
                         onChange={(e) => setFormData({
                           ...formData,
                           newAddress: { ...formData.newAddress, unit: e.target.value }
                         })}
+                        autoComplete="address-line2"
                       />
 
                       {/* City, State, Zip - auto-filled but editable */}
