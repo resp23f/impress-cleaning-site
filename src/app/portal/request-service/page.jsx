@@ -281,6 +281,12 @@ export default function RequestServicePage() {
 
       // If using new address, create it first
       if (formData.useNewAddress) {
+        // Check address limit (max 3)
+        if (addresses.length >= 3) {
+          toast.error('You can only have up to 3 saved addresses')
+          return
+        }
+        
         const { data: newAddr, error: addrError } = await supabase
           .from('service_addresses')
           .insert({
@@ -773,13 +779,16 @@ export default function RequestServicePage() {
                     </SelectableCard>
                   ))}
 
-                  <SelectableCard
-                    selected={formData.useNewAddress}
-                    onClick={() => setFormData({ ...formData, useNewAddress: true })}
-                    title="Use a different address"
-                    description="Enter a new service address"
-                    icon={<MapPin className="w-6 h-6" />}
-                  />
+                  {/* Only show "add new address" option if under the limit */}
+                  {addresses.length < 3 && (
+                    <SelectableCard
+                      selected={formData.useNewAddress}
+                      onClick={() => setFormData({ ...formData, useNewAddress: true })}
+                      title="Use a different address"
+                      description="Enter a new service address"
+                      icon={<MapPin className="w-6 h-6" />}
+                    />
+                  )}
 
                   {formData.useNewAddress && (
                     <div className="space-y-4 mt-4 p-4 bg-gray-50 rounded-lg">

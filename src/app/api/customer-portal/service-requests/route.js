@@ -87,6 +87,15 @@ function getOrigin(request) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
+    // Service type labels for notifications
+    const serviceTypeLabels = {
+      standard: 'Standard Cleaning',
+      deep: 'Deep Cleaning',
+      move_in_out: 'Move In/Out Cleaning',
+      post_construction: 'Post-Construction Cleaning',
+      office: 'Office Cleaning',
+    }
+
     // Create admin notification in database
     try {
       await supabaseAdmin.from('admin_notifications').insert({
@@ -99,20 +108,32 @@ function getOrigin(request) {
       console.error('Failed to create admin notification', notifyError)
     }
 
+    // Create customer notification
+    try {
+      const formattedDate = new Date(preferred_date + 'T00:00:00').toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      })
+      await supabaseAdmin.from('customer_notifications').insert({
+        user_id: user.id,
+        type: 'service_request_submitted',
+        title: 'Service Request Submitted',
+        message: `Your ${serviceTypeLabels[service_type] || service_type} request for ${formattedDate} has been submitted. We'll review it and get back to you shortly!`,
+        link: '/portal/appointments',
+        reference_id: serviceRequest.id,
+        reference_type: 'service_request',
+      })
+    } catch (notifyError) {
+      console.error('Failed to create customer notification', notifyError)
+    }
+
     // Send email notification to admin
     try {
       const timeRangeLabels = {
         morning: 'Morning (8:00 AM - 12:00 PM)',
         afternoon: 'Afternoon (12:00 PM - 3:00 PM)',
         evening: 'Evening (3:00 PM - 5:45 PM)',
-      }
-
-      const serviceTypeLabels = {
-        standard: 'Standard Cleaning',
-        deep: 'Deep Cleaning',
-        move_in_out: 'Move In/Out Cleaning',
-        post_construction: 'Post-Construction Cleaning',
-        office: 'Office Cleaning',
       }
 
       await resend.emails.send({

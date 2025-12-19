@@ -18,7 +18,9 @@ import {
   ChevronRight,
   Check,
   MailOpen,
-  Mail
+  Mail,
+  Sparkles,
+  Calendar
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Skeleton from 'react-loading-skeleton'

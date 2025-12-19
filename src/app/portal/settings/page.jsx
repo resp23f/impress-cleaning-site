@@ -392,6 +392,13 @@ export default function SettingsPage() {
           setAddressModal({ open: false, editing: null })
           return
         }
+      } else {
+        // Adding new address - check limit (max 3 total)
+        if (addresses.length >= 3) {
+          toast.error('You can only have up to 3 saved addresses')
+          setAddressModal({ open: false, editing: null })
+          return
+        }
       }
 
       const sanitizedAddress = {
@@ -486,6 +493,12 @@ export default function SettingsPage() {
   // PAYMENT METHODS
   // ============================================
   const handleAddCard = async () => {
+    // Check payment method limit (max 3)
+    if (payments.length >= 3) {
+      toast.error('Maximum 3 payment methods allowed. Please remove a payment method to add a new one.')
+      return
+    }
+    
     if (!stripeElementsRef.current?.stripe || !stripeElementsRef.current?.cardNumber) {
       toast.error('Payment form not ready')
       return
@@ -817,12 +830,19 @@ export default function SettingsPage() {
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center">
                     <MapPin className="w-5 h-5 text-emerald-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-[#1C294E]">Service Addresses</h2>
+                  <div>
+                    <h2 className="text-xl font-bold text-[#1C294E]">Service Addresses</h2>
+                    <p className="text-sm text-gray-500">{addresses.length} of 3 addresses used</p>
+                  </div>
                 </div>
-                <Button variant="secondary" size="sm" onClick={() => openAddressModal(null)} className={styles.smoothTransition}>
-                  <Plus className="w-4 h-4" />
-                  Add Address
-                </Button>
+                {addresses.length < 3 ? (
+                  <Button variant="secondary" size="sm" onClick={() => openAddressModal(null)} className={styles.smoothTransition}>
+                    <Plus className="w-4 h-4" />
+                    Add Address
+                  </Button>
+                ) : (
+                  <span className="text-xs text-gray-400 px-3 py-1.5 bg-gray-100 rounded-full">Maximum reached</span>
+                )}
               </div>
 
               <div className="space-y-3">
@@ -892,7 +912,7 @@ export default function SettingsPage() {
               {/* Help text about addresses */}
               <p className="text-xs text-gray-500 mt-3 flex items-start gap-1.5">
                 <Lock className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                Your primary service address is set during registration and is used by default for all appointments. Contact us if you need to change it.
+                Your primary service address is set during registration and cannot be changed. You can add up to 2 additional addresses for different service locations.
               </p>
             </Card>
 
