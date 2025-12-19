@@ -18,21 +18,10 @@ interface AddressAutocompleteProps {
   defaultValue?: string
 }
 
-declare global {
-  interface Window {
-    google: any
-  }
-}
-
 function sanitizeInput(input: string | undefined, preserveSpaces = true): string {
   if (!input) return ''
   let sanitized = String(input).replace(/[<>]/g, '')
   return preserveSpaces ? sanitized : sanitized.trim()
-}
-
-// Create a custom element type for the PlaceAutocompleteElement
-interface PlaceAutocompleteElement extends HTMLElement {
-  value?: string
 }
 
 export default function AddressAutocomplete({
@@ -40,101 +29,175 @@ export default function AddressAutocomplete({
   onInputChange,
   defaultValue = ''
 }: AddressAutocompleteProps) {
-  const [scriptLoaded, setScriptLoaded] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const autocompleteRef = useRef<PlaceAutocompleteElement | null>(null)
+  const [inputValue, setInputValue] = useState(defaultValue)
+  const [isLoading, setIsLoading] = useState(true)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const autocompleteRef = useRef<any>(null)
+  const sessionTokenRef = useRef<any>(null)
 
-  // Load the NEW Google Maps API with the right libraries
   useEffect(() => {
-    if (window.google?.maps?.places?.PlaceAutocompleteElement) {
-      setScriptLoaded(true)
-      return
-    }
-
-    const script = document.createElement('script')
-    // This loads the NEW API with PlaceAutocompleteElement support
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places,marker&v=beta&loading=async`
-    script.async = true
-
-    script.onload = () => {
-      setScriptLoaded(true)
-    }
-
-    document.head.appendChild(script)
-  }, [])
-
-  // Initialize the NEW PlaceAutocompleteElement when script loads
-  useEffect(() => {
-    if (!scriptLoaded || !containerRef.current) return
-    if (!window.google?.maps?.places?.PlaceAutocompleteElement) return
-
-    // Create the NEW PlaceAutocompleteElement
-    const PlaceAutocompleteElement = window.google.maps.places.PlaceAutocompleteElement
-    const autocomplete = new PlaceAutocompleteElement({
-      componentRestrictions: { country: 'us' },
-      types: ['address']
-    })
-
-    autocompleteRef.current = autocomplete
-
-    // Add to DOM
-    containerRef.current.innerHTML = ''
-    containerRef.current.appendChild(autocomplete)
-
-    // Set default value if provided
-    if (defaultValue && autocomplete.value !== undefined) {
-      autocomplete.value = defaultValue
-    }
-
-    // Listen for place selection using the NEW event
-    autocomplete.addEventListener('gmp-placeselect', async (event: any) => {
-      const place = event.place
-
-      if (!place?.location) return
-
-      // Fetch place details
-      await place.fetchFields({
-        fields: ['addressComponents', 'formattedAddress', 'location']
-      })
-
-      const addressData: AddressData = {
-        street_address: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        place_id: place.id || '',
-        formatted_address: place.formattedAddress || '',
+    // Load Google Maps script if not loaded
+    const loadScript = () => {
+      if (window.google?.maps?.places) {
+        setIsLoading(false)
+        initAutocomplete()
+        return
       }
 
-      let streetNumber = ''
-      let route = ''
+      const script = document.createElement('script')
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&v=weekly`
+      script.async = true
+      script.defer = true
 
-      if (place.addressComponents) {
-        for (const component of place.addressComponents) {
-          const type = component.types[0]
+      script.onload = () => {
+        setIsLoading(false)
+        initAutocomplete()
+      }
 
-          if (type === 'street_number') {
-            streetNumber = component.longText
+      document.head.appendChild(script)
+    }
+
+    const initAutocomplete = () => {
+      if (!inputRef.current || !window.google?.maps?.places) return
+
+      // Create session token for billing optimization
+      const AutocompleteSessionToken = window.google.maps.places.AutocompleteSessionToken
+      sessionTokenRef.current = new AutocompleteSessionToken()
+
+      // Use AutocompleteService + PlacesService for full control
+      const autocompleteService = new window.google.maps.places.AutocompleteService()
+      const placesService = new window.google.maps.places.PlacesService(
+        document.createElement('div')
+      )
+
+      // Create predictions container
+      const predictionsContainer = document.createElement('div')
+      predictionsContainer.className = 'predictions-dropdown'
+      predictionsContainer.style.display = 'none'
+      inputRef.current.parentElement?.appendChild(predictionsContainer)
+
+      // Handle input changes
+      const handleInput = () => {
+        const value = inputRef.current?.value || ''
+
+        if (value.length < 3) {
+          predictionsContainer.style.display = 'none'
+          return
+        }
+
+        autocompleteService.getPlacePredictions(
+          {
+            input: value,
+            types: ['address'],
+            componentRestrictions: { country: 'us' },
+            sessionToken: sessionTokenRef.current
+          },
+          (predictions, status) => {
+            if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+              predictionsContainer.innerHTML = ''
+              predictionsContainer.style.display = 'block'
+
+              predictions.forEach(prediction => {
+                const item = document.createElement('div')
+                item.className = 'prediction-item'
+                item.textContent = prediction.description
+                item.onclick = () => {
+                  // Get place details
+                  placesService.getDetails(
+                    {
+                      placeId: prediction.place_id,
+                      fields: ['address_components', 'formatted_address', 'place_id'],
+                      sessionToken: sessionTokenRef.current
+                    },
+                    (place, status) => {
+                      if (status === window.google.maps.places.PlacesServiceStatus.OK && place) {
+                        processPlace(place)
+                        predictionsContainer.style.display = 'none'
+                        // Reset session token after selection
+                        sessionTokenRef.current = new AutocompleteSessionToken()
+                      }
+                    }
+                  )
+                }
+                predictionsContainer.appendChild(item)
+              })
+            }
           }
-          if (type === 'route') {
-            route = component.longText
+        )
+      }
+
+      const processPlace = (place: any) => {
+        const addressData: AddressData = {
+          street_address: '',
+          city: '',
+          state: '',
+          zip_code: '',
+          place_id: sanitizeInput(place.place_id),
+          formatted_address: sanitizeInput(place.formatted_address),
+        }
+
+        let streetNumber = ''
+        let route = ''
+
+        place.address_components?.forEach((component: any) => {
+          const types = component.types
+
+          if (types.includes('street_number')) {
+            streetNumber = sanitizeInput(component.long_name)
           }
-          if (type === 'locality') {
-            addressData.city = component.longText
+          if (types.includes('route')) {
+            route = sanitizeInput(component.long_name)
           }
-          if (type === 'administrative_area_level_1') {
-            addressData.state = component.shortText
+          if (!addressData.city && (types.includes('locality') ||
+            types.includes('sublocality_level_1') ||
+            types.includes('neighborhood'))) {
+            addressData.city = sanitizeInput(component.long_name)
           }
-          if (type === 'postal_code') {
-            addressData.zip_code = component.longText
+          if (types.includes('administrative_area_level_1')) {
+            addressData.state = sanitizeInput(component.short_name)
+          }
+          if (types.includes('postal_code')) {
+            addressData.zip_code = sanitizeInput(component.long_name)
+          }
+        })
+
+        if (!addressData.city && place.address_components) {
+          const countyComponent = place.address_components.find((c: any) =>
+            c.types.includes('administrative_area_level_2'))
+          if (countyComponent) {
+            addressData.city = sanitizeInput(countyComponent.long_name)
           }
         }
+
+        addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false)
+        setInputValue(place.formatted_address || '')
+        if (inputRef.current) {
+          inputRef.current.value = place.formatted_address || ''
+        }
+        onSelect(addressData)
       }
 
-      addressData.street_address = sanitizeInput(`${streetNumber} ${route}`, false)
-      onSelect(addressData)
-    })
-  }, [scriptLoaded, onSelect, defaultValue])
+      // Add event listeners
+      inputRef.current.addEventListener('input', handleInput)
+
+      // Hide predictions on click outside
+      document.addEventListener('click', (e) => {
+        if (!inputRef.current?.parentElement?.contains(e.target as Node)) {
+          predictionsContainer.style.display = 'none'
+        }
+      })
+    }
+
+    loadScript()
+  }, [onSelect])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setInputValue(value)
+    if (onInputChange) {
+      onInputChange(value)
+    }
+  }
 
   return (
     <div className="relative">
@@ -142,46 +205,54 @@ export default function AddressAutocomplete({
         Service Address *
       </label>
       <div className="relative">
-        {!scriptLoaded ? (
-          <input
-            type="text"
-            placeholder="Loading address search..."
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg bg-gray-50"
-            disabled
-          />
-        ) : (
-          <div ref={containerRef} className="gmp-autocomplete-container" />
-        )}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">
           <MapPin className="w-5 h-5" />
         </div>
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder={isLoading ? "Loading..." : "Start typing your address..."}
+          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
+          required
+          disabled={isLoading}
+          autoComplete="off"
+        />
       </div>
       <p className="text-xs text-gray-500 mt-1">
         We&apos;ll auto-fill your address details
       </p>
 
       <style jsx global>{`
-        .gmp-autocomplete-container {
-          position: relative;
+        .predictions-dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: white;
+          border: 1px solid #d1d5db;
+          border-top: none;
+          border-radius: 0 0 8px 8px;
+          max-height: 200px;
+          overflow-y: auto;
+          z-index: 1000;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
-        .gmp-autocomplete-container gmp-place-autocomplete {
-          width: 100%;
-          height: 48px;
+        .prediction-item {
+          padding: 12px 16px;
+          cursor: pointer;
+          font-size: 14px;
+          border-bottom: 1px solid #f3f4f6;
         }
         
-        .gmp-autocomplete-container input {
-          width: 100%;
-          padding: 12px 16px 12px 48px !important;
-          border: 1px solid #d1d5db !important;
-          border-radius: 8px !important;
-          font-size: 14px !important;
+        .prediction-item:hover {
+          background: #f9fafb;
         }
         
-        .gmp-autocomplete-container input:focus {
-          outline: none !important;
-          border-color: #1C294E !important;
-          ring: 2px solid rgba(28, 41, 78, 0.2) !important;
+        .prediction-item:last-child {
+          border-bottom: none;
         }
       `}</style>
     </div>
