@@ -167,13 +167,23 @@ export async function POST(request) {
     }
 
 // 5. Create Stripe Invoice (includes pending invoice items automatically)
+    // Calculate days until due with timezone-safe date handling
+    let daysUntilDue = 7 // default
+    if (invoice.due_date) {
+      // Parse due_date as local date (YYYY-MM-DD -> local midnight)
+      const dueDate = new Date(invoice.due_date + 'T00:00:00')
+      const today = new Date()
+      today.setHours(0, 0, 0, 0) // Reset to local midnight for accurate day diff
+      const diffTime = dueDate.getTime() - today.getTime()
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      daysUntilDue = Math.max(1, diffDays) // Stripe requires at least 1 day
+    }
+    
     const stripeInvoice = await stripe.invoices.create({
       customer: stripeCustomerId,
       number: invoice.invoice_number,
       collection_method: 'send_invoice',
-      days_until_due: invoice.due_date
-        ? Math.max(1, Math.ceil((new Date(invoice.due_date) - new Date()) / (1000 * 60 * 60 * 24)))
-        : 7,
+      days_until_due: daysUntilDue,
       pending_invoice_items_behavior: 'include',
       metadata: {
         supabase_invoice_id: invoice.id,
@@ -181,8 +191,9 @@ export async function POST(request) {
       }
     })
     
-// 6. Finalize the Stripe Invoice (don't call sendInvoice - we send our own email)
-    const sentInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
+// 6. Finalize and send the Stripe Invoice (triggers Stripe email)
+    const finalizedInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
+    const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id)
     
 // 7. Update Supabase invoice with Stripe details
     // Check if webhook already updated it (race condition)

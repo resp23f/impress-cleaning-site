@@ -595,7 +595,7 @@ export default function PayInvoicePage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-slate-500">
                       <Calendar className="w-4 h-4" />
-                      <span>Date</span>
+                      <span>Issued</span>
                     </div>
                     <span className="font-medium text-slate-800">
                       {format(new Date(invoice.created_at), 'MMM d, yyyy')}
@@ -608,7 +608,7 @@ export default function PayInvoicePage() {
                         <span>Due Date</span>
                       </div>
                       <span className="font-medium text-slate-800">
-                        {format(new Date(invoice.due_date), 'MMM d, yyyy')}
+                        {format(new Date(invoice.due_date + 'T00:00:00'), 'MMM d, yyyy')}
                       </span>
                     </div>
                   )}
@@ -620,34 +620,62 @@ export default function PayInvoicePage() {
                       Services
                     </h3>
                     <div className="space-y-2">
-                      {invoice.line_items.filter(item => !item.description?.toLowerCase().includes('tax')).map((item, index) => (
-                        <div key={index} className="flex justify-between text-sm">
-                          <span className="text-slate-600">{item.description}</span>
-                          <span className="font-medium text-slate-800">
-                            {formatMoney(item.amount)}
-                          </span>
-                        </div>
-                      ))}
+                      {invoice.line_items
+                        .filter(item => 
+                          !item.description?.toLowerCase().includes('tax') &&
+                          !item.description?.toLowerCase().includes('late fee')
+                        )
+                        .map((item, index) => (
+                          <div key={index} className="flex justify-between text-sm">
+                            <span className="text-slate-600">{item.description}</span>
+                            <span className="font-medium text-slate-800">
+                              {formatMoney(item.amount)}
+                            </span>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 )}
                 {(() => {
                   const taxItem = invoice.line_items?.find(item => item.description?.toLowerCase().includes('tax'))
+                  const lateFeeItem = invoice.line_items?.find(item => item.description?.toLowerCase().includes('late fee'))
                   const subtotal = invoice.line_items
-                    ?.filter(item => !item.description?.toLowerCase().includes('tax'))
+                    ?.filter(item => 
+                      !item.description?.toLowerCase().includes('tax') &&
+                      !item.description?.toLowerCase().includes('late fee')
+                    )
                     .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice.amount
 
-                  if (taxItem || invoice?.tax_rate > 0) {
+                  const taxAmount = taxItem?.amount || (invoice?.tax_rate > 0 ? invoice.tax_amount : 0)
+                  const hasTax = taxItem || invoice?.tax_rate > 0
+                  const hasLateFee = !!lateFeeItem
+
+                  if (hasTax || hasLateFee) {
                     return (
                       <div className="space-y-2 mb-4 pb-4 border-b border-slate-100">
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-500">Subtotal</span>
                           <span className="font-medium text-slate-700">{formatMoney(subtotal)}</span>
                         </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-500">{taxItem?.description || `Tax (${invoice.tax_rate}%)`}</span>
-                          <span className="font-medium text-slate-700">{formatMoney(taxItem?.amount || invoice.tax_amount)}</span>
-                        </div>
+                        {hasTax && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-500">{taxItem?.description || `Tax (${invoice.tax_rate}%)`}</span>
+                            <span className="font-medium text-slate-700">{formatMoney(taxAmount)}</span>
+                          </div>
+                        )}
+                        {/* Original Total - only show if there's a late fee */}
+                        {hasLateFee && (
+                          <>
+                            <div className="flex justify-between text-sm pt-1 border-t border-slate-100">
+                              <span className="text-slate-500">Original Total</span>
+                              <span className="font-medium text-slate-700">{formatMoney(subtotal + taxAmount)}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-red-600 font-medium">Late Fee (5%)</span>
+                              <span className="text-red-600 font-medium">{formatMoney(lateFeeItem.amount)}</span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     )
                   }

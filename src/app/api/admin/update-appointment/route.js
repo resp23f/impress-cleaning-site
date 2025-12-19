@@ -94,6 +94,32 @@ export async function POST(request) {
 
     if (error) throw error
 
+    // If status changed to 'completed', create service_history entry
+    if (sanitizedUpdates.status === 'completed' && oldAppointment.status !== 'completed') {
+      // Check if service_history entry already exists for this appointment
+      const { data: existingHistory } = await supabaseAdmin
+        .from('service_history')
+        .select('id')
+        .eq('appointment_id', appointmentId)
+        .single()
+
+      if (!existingHistory) {
+        const { error: historyError } = await supabaseAdmin
+          .from('service_history')
+          .insert({
+            appointment_id: appointmentId,
+            customer_id: oldAppointment.customer_id,
+            service_type: oldAppointment.service_type,
+            completed_date: new Date().toISOString().split('T')[0],
+            team_members: oldAppointment.team_members || [],
+          })
+
+        if (historyError) {
+          console.error('Failed to create service history:', historyError)
+        }
+      }
+    }
+
     // Get NEW appointment data after update
     const { data: newAppointment } = await supabaseAdmin
       .from('appointments')

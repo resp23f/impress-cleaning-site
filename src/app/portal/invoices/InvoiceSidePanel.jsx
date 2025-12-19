@@ -73,7 +73,9 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
 
   const formatDate = (dateStr) => {
     if (!dateStr) return '—'
-    return new Date(dateStr).toLocaleDateString('en-US', {
+    // Add T00:00:00 to treat as local date, not UTC
+    const date = dateStr.includes('T') ? new Date(dateStr) : new Date(dateStr + 'T00:00:00')
+    return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
@@ -250,56 +252,48 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                 {/* Totals */}
                 <div className="bg-gray-50 sm:bg-transparent rounded-xl p-4 sm:p-0 sm:flex sm:justify-end mb-6">
                   <div className="sm:w-64">
-                    <div className="space-y-2 pb-3 border-b border-gray-200 sm:border-gray-100">
-                      {/* Subtotal - exclude tax and late fee */}
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Subtotal</span>
-                        <span className="text-gray-900">
-                          {formatMoney(
-                            lineItems
-                              ?.filter(item => 
-                                !item.description?.toLowerCase().includes('tax') &&
-                                !item.description?.toLowerCase().includes('late fee')
-                              )
-                              .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice?.amount
+                    {(() => {
+                      const taxItem = lineItems.find(item => item.description?.toLowerCase().includes('tax'))
+                      const lateFeeItem = lineItems.find(item => item.description?.toLowerCase().includes('late fee'))
+                      const subtotal = lineItems
+                        ?.filter(item => 
+                          !item.description?.toLowerCase().includes('tax') &&
+                          !item.description?.toLowerCase().includes('late fee')
+                        )
+                        .reduce((sum, item) => sum + (item.amount || 0), 0) || invoice?.amount
+                      const taxAmount = taxItem?.amount || (invoice?.tax_rate > 0 ? invoice.tax_amount : 0)
+                      const hasLateFee = !!lateFeeItem
+                      
+                      return (
+                        <div className="space-y-2 pb-3 border-b border-gray-200 sm:border-gray-100">
+                          {/* Subtotal */}
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Subtotal</span>
+                            <span className="text-gray-900">{formatMoney(subtotal)}</span>
+                          </div>
+                          {/* Tax */}
+                          {(taxItem || invoice?.tax_rate > 0) && (
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">{taxItem?.description || `Tax (${invoice.tax_rate}%)`}</span>
+                              <span className="text-gray-900">{formatMoney(taxAmount)}</span>
+                            </div>
                           )}
-                        </span>
-                      </div>
-                      {/* Tax */}
-                      {(() => {
-                        const taxItem = lineItems.find(item => item.description?.toLowerCase().includes('tax'))
-                        if (taxItem) {
-                          return (
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">{taxItem.description}</span>
-                              <span className="text-gray-900">{formatMoney(taxItem.amount)}</span>
-                            </div>
-                          )
-                        }
-                        if (invoice?.tax_rate > 0) {
-                          return (
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Tax ({invoice.tax_rate}%)</span>
-                              <span className="text-gray-900">{formatMoney(invoice.tax_amount)}</span>
-                            </div>
-                          )
-                        }
-                        return null
-                      })()}
-                      {/* Late Fee - show as separate line if exists */}
-                      {(() => {
-                        const lateFeeItem = lineItems.find(item => item.description?.toLowerCase().includes('late fee'))
-                        if (lateFeeItem) {
-                          return (
-                            <div className="flex justify-between text-sm">
-                              <span className="text-red-600 font-medium">Late Fee (5%)</span>
-                              <span className="text-red-600 font-medium">{formatMoney(lateFeeItem.amount)}</span>
-                            </div>
-                          )
-                        }
-                        return null
-                      })()}
-                    </div>
+                          {/* Original Total - only show if there's a late fee */}
+                          {hasLateFee && (
+                            <>
+                              <div className="flex justify-between text-sm pt-1 border-t border-gray-100">
+                                <span className="text-gray-500">Original Total</span>
+                                <span className="text-gray-900">{formatMoney(subtotal + taxAmount)}</span>
+                              </div>
+                              <div className="flex justify-between text-sm">
+                                <span className="text-red-600 font-medium">Late Fee (5%)</span>
+                                <span className="text-red-600 font-medium">{formatMoney(lateFeeItem.amount)}</span>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )
+                    })()}
                     <div className="flex justify-between pt-3 mb-4">
                       <span className="font-medium text-gray-900">Amount Due</span>
                       <span className={`text-xl font-bold ${invoice?.status === 'paid' ? 'text-emerald-600' : 'text-[#079447]'}`}>
