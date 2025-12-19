@@ -63,6 +63,8 @@ export default function ProfileSetupPage() {
     }
   }
 
+  const supabase = createClient()
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -171,7 +173,7 @@ export default function ProfileSetupPage() {
       }
     }
     getUser()
-  }, [supabase, router])
+  }, [router])
   const formatPhoneNumber = (value) => {
     const phoneNumber = value.replace(/\D/g, '')
     if (phoneNumber.length <= 3) return phoneNumber
