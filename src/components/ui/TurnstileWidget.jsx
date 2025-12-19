@@ -28,14 +28,13 @@ export default function TurnstileWidget({ onVerify, onError, onExpire, className
             callbacksRef.current.onExpire?.()
           },
           'error-callback': (error) => {
-            console.error('Turnstile error:', error)
             callbacksRef.current.onError?.(error)
           },
           theme: 'light',
-          size: 'normal',
+          size: 'flexible',
         })
       } catch (e) {
-        console.error('Turnstile render error:', e)
+        // Silent fail - widget will retry
       }
     }
 
@@ -62,24 +61,19 @@ export default function TurnstileWidget({ onVerify, onError, onExpire, className
   }, [])
 
   return (
-    <div 
-      className={className}
-      style={{
-        width: '100%',
-        height: '65px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
-      }}
-    >
+    <div className={`flex justify-center ${className}`}>
       <div 
-        ref={containerRef}
-        style={{ 
-          height: '65px',
-          width: '300px',
-        }}
-      />
+        className="rounded-xl border border-gray-200 bg-gray-50/50 p-3 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+        style={{ minWidth: '300px', maxWidth: '100%' }}
+      >
+        <div 
+          ref={containerRef}
+          style={{
+            minHeight: '65px',
+            width: '100%',
+          }}
+        />
+      </div>
     </div>
   )
 }

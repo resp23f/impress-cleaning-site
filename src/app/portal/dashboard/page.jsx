@@ -702,11 +702,11 @@ border border-gray-100/80
                         <h2 className="text-lg font-bold text-[#1C294E]">
                           Your Account
                         </h2>
-                        <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center">
+                        <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
                           <Users className="w-4 h-4 text-blue-500" />
                         </div>
                       </div>
-                      <div className="flex-1 grid grid-cols-2 gap-4">
+                      <div className="flex-1 flex flex-col gap-4">
                         <div className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50">
                           <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">
                             Member Since
@@ -778,7 +778,7 @@ border border-gray-100/80
                               <div>
                                 <div className="flex items-center gap-2 mb-2">
                                   <div
-                                    className={`w-6 h-6 rounded-full ${freshness.color} flex items-center justify-center`}
+                                    className={`w-6 h-6 rounded-full ${freshness.color} flex items-center justify-center flex-shrink-0`}
                                   >
                                     <Sparkles
                                       className={`w-3.5 h-3.5 ${freshness.iconColor}`}
