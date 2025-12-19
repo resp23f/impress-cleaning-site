@@ -98,7 +98,7 @@ export default function AddressAutocomplete({
 
       // Load fresh
       const script = document.createElement('script')
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&v=weekly`
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&v=weekly&loading=async`
       script.async = true
       script.defer = true
 
@@ -196,7 +196,7 @@ export default function AddressAutocomplete({
         setShowDropdown(false)
       }
     } catch (err: any) {
-      console.error('Places API error:', err.message || err)
+      // Show user-friendly error instead of console spam
       setError('Address lookup failed. Please try again.')
       setSuggestions([])
       setShowDropdown(false)
@@ -286,7 +286,7 @@ export default function AddressAutocomplete({
       onSelect(addressData)
 
     } catch (err: any) {
-      console.error('Place details error:', err.message || err)
+      // Show user-friendly error instead of console spam
       setError('Failed to get address details')
       
       // Still set the input value
