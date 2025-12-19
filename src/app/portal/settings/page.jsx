@@ -480,23 +480,7 @@ export default function SettingsPage() {
       toast.error(err.message || 'Could not delete address')
     }
   }
-  const setPrimaryAddress = async (id) => {
-    if (!user) return
-    try {
-      await supabase.from('service_addresses').update({ is_primary: false }).eq('user_id', user.id)
-      await supabase.from('service_addresses').update({ is_primary: true }).eq('id', id).eq('user_id', user.id)
-      const { data: addressData } = await supabase
-        .from('service_addresses')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('is_primary', { ascending: false })
-      setAddresses(addressData || [])
-      toast.success('Primary address updated')
-    } catch (err) {
-      console.error('Primary address error', err)
-      toast.error(err.message || 'Could not set primary address')
-    }
-  }
+    // setPrimaryAddress removed - customers must contact support to change default address
 
   // ============================================
   // PAYMENT METHODS
@@ -679,7 +663,7 @@ export default function SettingsPage() {
                       value={profileForm.birth_month}
                       onChange={(e) => setProfileForm((p) => ({ ...p, birth_month: e.target.value }))}
                       disabled={profile?.birth_month && profile?.birth_day}
-                      className={`w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20 transition-colors duration-200 text-[#1C294E] bg-white ${profile?.birth_month && profile?.birth_day ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                      className={`w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20 transition-colors duration-200 text-[#1C294E] bg-white ${profile?.birth_month && profile?.birth_day ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''}`}
                     >
                       <option value="">Month</option>
                       <option value="1">January</option>
@@ -699,7 +683,7 @@ export default function SettingsPage() {
                       value={profileForm.birth_day}
                       onChange={(e) => setProfileForm((p) => ({ ...p, birth_day: e.target.value }))}
                       disabled={profile?.birth_month && profile?.birth_day}
-                      className={`w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20 transition-colors duration-200 text-[#1C294E] bg-white ${profile?.birth_month && profile?.birth_day ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                      className={`w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#079447]/20 transition-colors duration-200 text-[#1C294E] bg-white ${profile?.birth_month && profile?.birth_day ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''}`}
                     >
                       <option value="">Day</option>
                       {[...Array(31)].map((_, i) => (
@@ -868,8 +852,8 @@ export default function SettingsPage() {
                               </span>
                             )}
                             {!isLocked && addr.is_primary && (
-                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
-                                <Star className="w-3.5 h-3.5 fill-blue-600" /> Default for Appointments
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-200">
+                                <Star className="w-3.5 h-3.5 fill-emerald-600" /> Default for Appointments
                               </span>
                             )}
                             {!isLocked && !addr.is_primary && (
@@ -899,25 +883,17 @@ export default function SettingsPage() {
                         )}
                       </div>
                       {/* Show "Make Primary" only for non-locked, non-primary addresses */}
-                      {!isLocked && !addr.is_primary && (
-                        <div className="mt-3 pt-3 border-t border-gray-100">
-                          <Button size="sm" variant="ghost" onClick={() => setPrimaryAddress(addr.id)} className={`text-xs ${styles.smoothTransition}`}>
-                            Make Default for Appointments
-                          </Button>
-                        </div>
-                      )}
+                      {/* REMOVED: Users cannot change default address - must contact support */}
                     </div>
                   )
                 })}
               </div>
               
-              {/* Help text about locked address */}
-              {addresses.some(a => a.is_registration_address) && (
-                <p className="text-xs text-gray-500 mt-3 flex items-start gap-1.5">
-                  <Lock className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                  Your primary service address was set during registration and cannot be changed. Contact us if you need to update it.
-                </p>
-              )}
+              {/* Help text about addresses */}
+              <p className="text-xs text-gray-500 mt-3 flex items-start gap-1.5">
+                <Lock className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                Your primary service address is set during registration and is used by default for all appointments. Contact us if you need to change it.
+              </p>
             </Card>
 
             {/* ============================================ */}
@@ -961,7 +937,7 @@ export default function SettingsPage() {
                                 Expires {pm.card_exp_month}/{pm.card_exp_year}
                               </p>
                               {showDefaultBadge && (
-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
                                   <CreditCard className="w-3.5 h-3.5" /> Default Payment
                                 </span>
                               )}

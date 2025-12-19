@@ -948,29 +948,27 @@ export default function RequestServicePage() {
                       })}
                     </div>
 
-                    {/* Additional notes - only shown if at least one option selected */}
-                    {formData.planningOptions.length > 0 && (
-                      <div className="mt-6 pt-6 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center">
-                            <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                          </div>
-                          <label className="text-sm font-semibold text-[#1C294E]">
-                            Additional notes
-                          </label>
-                          <span className="text-xs text-gray-400 font-normal">(optional)</span>
+                    {/* Additional notes - always visible */}
+                    <div className="mt-6 pt-6 border-t border-gray-100">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center">
+                          <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
                         </div>
-                        <textarea
-                          value={formData.additionalNotes}
-                          onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
-                          placeholder="Gate code, parking instructions, areas of focus, or anything else we should know..."
-                          rows={3}
-                          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 transition-all duration-200 resize-none text-sm placeholder:text-gray-400"
-                        />
+                        <label className="text-sm font-semibold text-[#1C294E]">
+                          Additional notes
+                        </label>
+                        <span className="text-xs text-gray-400 font-normal">(optional)</span>
                       </div>
-                    )}
+                      <textarea
+                        value={formData.additionalNotes}
+                        onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
+                        placeholder="Gate code, parking instructions, areas of focus, or anything else we should know..."
+                        rows={3}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 transition-all duration-200 resize-none text-sm placeholder:text-gray-400"
+                      />
+                    </div>
 
                     {/* Selection summary */}
                     {formData.planningOptions.length > 0 && (
