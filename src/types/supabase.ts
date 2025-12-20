@@ -208,6 +208,33 @@ export type Database = {
           },
         ]
       }
+      auth_handoff_tokens: {
+        Row: {
+          created_at: string | null
+          expires_at: string
+          id: string
+          token_hash: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          token_hash: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          token_hash?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       booking_requests: {
         Row: {
           address: string | null
@@ -307,6 +334,41 @@ export type Database = {
             columns: ["invoice_id"]
             isOneToOne: false
             referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_invite_tokens: {
+        Row: {
+          created_at: string | null
+          expires_at: string
+          id: string
+          token_hash: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          token_hash: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          token_hash?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_invite_tokens_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -522,14 +584,18 @@ export type Database = {
           account_status: Database["public"]["Enums"]["account_status"]
           admin_notes: string | null
           avatar_url: string | null
+          birth_day: number | null
+          birth_month: number | null
           communication_preference:
             | Database["public"]["Enums"]["communication_preference"]
             | null
           created_at: string
           deleted_at: string | null
           email: string
+          first_name: string | null
           full_name: string | null
           id: string
+          last_name: string | null
           phone: string | null
           role: Database["public"]["Enums"]["user_role"]
           stripe_customer_id: string | null
@@ -539,14 +605,18 @@ export type Database = {
           account_status: Database["public"]["Enums"]["account_status"]
           admin_notes?: string | null
           avatar_url?: string | null
+          birth_day?: number | null
+          birth_month?: number | null
           communication_preference?:
             | Database["public"]["Enums"]["communication_preference"]
             | null
           created_at?: string
           deleted_at?: string | null
           email: string
+          first_name?: string | null
           full_name?: string | null
           id: string
+          last_name?: string | null
           phone?: string | null
           role: Database["public"]["Enums"]["user_role"]
           stripe_customer_id?: string | null
@@ -556,14 +626,18 @@ export type Database = {
           account_status?: Database["public"]["Enums"]["account_status"]
           admin_notes?: string | null
           avatar_url?: string | null
+          birth_day?: number | null
+          birth_month?: number | null
           communication_preference?:
             | Database["public"]["Enums"]["communication_preference"]
             | null
           created_at?: string
           deleted_at?: string | null
           email?: string
+          first_name?: string | null
           full_name?: string | null
           id?: string
+          last_name?: string | null
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           stripe_customer_id?: string | null
@@ -604,6 +678,7 @@ export type Database = {
           created_at: string
           id: string
           is_primary: boolean | null
+          is_registration_address: boolean | null
           place_id: string | null
           state: string
           street_address: string
@@ -617,6 +692,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_primary?: boolean | null
+          is_registration_address?: boolean | null
           place_id?: string | null
           state: string
           street_address: string
@@ -630,6 +706,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_primary?: boolean | null
+          is_registration_address?: boolean | null
           place_id?: string | null
           state?: string
           street_address?: string

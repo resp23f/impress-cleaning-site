@@ -1485,7 +1485,7 @@ CREATE POLICY "Service role can read bookings" ON "public"."booking_requests" FO
 
 
 
-CREATE POLICY "Service role full access" ON "public"."customer_invite_tokens" USING (("auth"."role"() = 'service_role'::"text")) WITH CHECK (("auth"."role"() = 'service_role'::"text"));
+CREATE POLICY "Service role full access" ON "public"."customer_invite_tokens" USING ((( SELECT "auth"."role"() AS "role") = 'service_role'::"text")) WITH CHECK ((( SELECT "auth"."role"() AS "role") = 'service_role'::"text"));
 
 
 
@@ -2033,21 +2033,8 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "authenticated";
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "service_role";
 
--- ============================================
--- PG_CRON JOBS (from cron.job table)
--- ============================================
-[
-  {
-    "jobname": "auto-complete-appointments",
-    "schedule": "*/15 * * * *",
-    "command": "SELECT public.auto_complete_appointments()"
-  },
-  {
-    "jobname": "update_overdue_invoices",
-    "schedule": "0 2 * * *",
-    "command": "SELECT public.mark_overdue_invoices()"
-  }
-]
+
+
 
 
 
