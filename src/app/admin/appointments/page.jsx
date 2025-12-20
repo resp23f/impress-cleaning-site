@@ -621,15 +621,20 @@ export default function AppointmentsPage() {
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
+                    id="appointment-search"
+                    name="appointment-search"
                     placeholder="Search by customer name, email, or phone..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    autoComplete="off"
                     className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
                   />
                 </div>
               </div>
               <div className="flex gap-3">
                 <select
+                  id="appointment-status-filter"
+                  name="appointment-status-filter"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all bg-white min-w-[160px]"
@@ -787,6 +792,8 @@ export default function AppointmentsPage() {
               Customer <span className="text-red-500">*</span>
             </label>
             <select
+              id="create-appointment-customer"
+              name="create-appointment-customer"
               value={createForm.customer_id}
               onChange={(e) => setCreateForm(prev => ({ ...prev, customer_id: e.target.value }))}
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
@@ -807,6 +814,8 @@ export default function AppointmentsPage() {
                 Service Address
               </label>
               <select
+                id="create-appointment-address"
+                name="create-appointment-address"
                 value={createForm.address_id}
                 onChange={(e) => setCreateForm(prev => ({ ...prev, address_id: e.target.value }))}
                 className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
@@ -967,6 +976,8 @@ export default function AppointmentsPage() {
               Special Instructions (optional)
             </label>
             <textarea
+              id="create-appointment-instructions"
+              name="create-appointment-instructions"
               value={createForm.special_instructions}
               onChange={(e) => setCreateForm(prev => ({ ...prev, special_instructions: e.target.value }))}
               rows={3}
@@ -1111,6 +1122,8 @@ export default function AppointmentsPage() {
               <label className="flex items-center gap-2 mb-3">
                 <input
                   type="checkbox"
+                  id="notify-customer"
+                  name="notify-customer"
                   checked={notifyCustomer}
                   onChange={(e) => setNotifyCustomer(e.target.checked)}
                   className="w-4 h-4 text-[#079447] rounded"

@@ -354,6 +354,8 @@ export default function CustomersPage() {
             {/* Mobile: Dropdown filter */}
             <div className="md:hidden">
               <select
+                id="customer-status-filter-mobile"
+                name="customer-status-filter-mobile"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"
@@ -533,6 +535,8 @@ export default function CustomersPage() {
                       Communication Preference
                     </label>
                     <select
+                      id="customer-communication-preference"
+                      name="customer-communication-preference"
                       value={editForm.communication_preference}
                       onChange={(e) => setEditForm({ ...editForm, communication_preference: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"

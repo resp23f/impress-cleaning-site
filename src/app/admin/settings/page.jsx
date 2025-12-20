@@ -382,11 +382,14 @@ export default function SettingsPage() {
                   <div className="relative">
                     <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      id="business-name"
+                      name="business-name"
                       type="text"
                       value={businessInfo.name}
                       onChange={(e) => setBusinessInfo({ ...businessInfo, name: e.target.value })}
                       className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                       placeholder="Impress Cleaning Services"
+                      autoComplete="organization"
                     />
                   </div>
                 </div>
@@ -397,11 +400,14 @@ export default function SettingsPage() {
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
+                        id="business-email"
+                        name="business-email"
                         type="email"
                         value={businessInfo.email}
                         onChange={(e) => setBusinessInfo({ ...businessInfo, email: e.target.value })}
                         className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                         placeholder="hello@impressyoucleaning.com"
+                        autoComplete="email"
                       />
                     </div>
                   </div>
@@ -410,11 +416,14 @@ export default function SettingsPage() {
                     <div className="relative">
                       <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
+                        id="business-phone"
+                        name="business-phone"
                         type="tel"
                         value={businessInfo.phone}
                         onChange={(e) => setBusinessInfo({ ...businessInfo, phone: e.target.value })}
                         className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                         placeholder="(512) 277-5364"
+                        autoComplete="tel"
                       />
                     </div>
                   </div>
@@ -425,11 +434,14 @@ export default function SettingsPage() {
                   <div className="relative">
                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      id="business-address"
+                      name="business-address"
                       type="text"
                       value={businessInfo.address}
                       onChange={(e) => setBusinessInfo({ ...businessInfo, address: e.target.value })}
                       className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                       placeholder="123 Main St, Fort Worth, TX 76104"
+                      autoComplete="street-address"
                     />
                   </div>
                 </div>
@@ -439,11 +451,14 @@ export default function SettingsPage() {
                   <div className="relative">
                     <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      id="business-website"
+                      name="business-website"
                       type="url"
                       value={businessInfo.website}
                       onChange={(e) => setBusinessInfo({ ...businessInfo, website: e.target.value })}
                       className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                       placeholder="https://impressyoucleaning.com"
+                      autoComplete="url"
                     />
                   </div>
                 </div>
@@ -501,12 +516,15 @@ export default function SettingsPage() {
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
                           <input
+                            id={`price-${service.key}`}
+                            name={`price-${service.key}`}
                             type="number"
                             min="0"
                             value={pricing[service.key]}
                             onChange={(e) => setPricing({ ...pricing, [service.key]: e.target.value })}
                             className="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all text-lg font-semibold"
                             placeholder="0"
+                            autoComplete="off"
                           />
                         </div>
                       </div>
@@ -564,6 +582,8 @@ export default function SettingsPage() {
                     <label className="flex items-center gap-2 cursor-pointer">
                       <div className="relative">
                         <input
+                          id={`hours-closed-${day}`}
+                          name={`hours-closed-${day}`}
                           type="checkbox"
                           checked={hours.closed}
                           onChange={(e) => setBusinessHours({ ...businessHours, [day]: { ...hours, closed: e.target.checked } })}
@@ -581,6 +601,8 @@ export default function SettingsPage() {
                     {!hours.closed && (
                       <div className="flex items-center gap-2 flex-1 sm:justify-end">
                         <input
+                          id={`hours-open-${day}`}
+                          name={`hours-open-${day}`}
                           type="time"
                           value={hours.open}
                           onChange={(e) => setBusinessHours({ ...businessHours, [day]: { ...hours, open: e.target.value } })}
@@ -588,6 +610,8 @@ export default function SettingsPage() {
                         />
                         <span className="text-gray-400">to</span>
                         <input
+                          id={`hours-close-${day}`}
+                          name={`hours-close-${day}`}
                           type="time"
                           value={hours.close}
                           onChange={(e) => setBusinessHours({ ...businessHours, [day]: { ...hours, close: e.target.value } })}
@@ -658,6 +682,8 @@ export default function SettingsPage() {
                       </div>
                       <div className="relative flex-shrink-0">
                         <input
+                          id={`notification-${notification.key}`}
+                          name={`notification-${notification.key}`}
                           type="checkbox"
                           checked={notifications[notification.key]}
                           onChange={(e) => setNotifications({ ...notifications, [notification.key]: e.target.checked })}
@@ -706,11 +732,14 @@ export default function SettingsPage() {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      id="admin-new-password"
+                      name="admin-new-password"
                       type={showPasswords.new ? 'text' : 'password'}
                       value={passwords.new}
                       onChange={(e) => setPasswords({ ...passwords, new: e.target.value })}
                       className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                       placeholder="Enter new password (min 8 characters)"
+                      autoComplete="new-password"
                     />
                     <button
                       type="button"
@@ -727,11 +756,14 @@ export default function SettingsPage() {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      id="admin-confirm-password"
+                      name="admin-confirm-password"
                       type={showPasswords.confirm ? 'text' : 'password'}
                       value={passwords.confirm}
                       onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
                       className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-all"
                       placeholder="Confirm new password"
+                      autoComplete="new-password"
                     />
                     <button
                       type="button"

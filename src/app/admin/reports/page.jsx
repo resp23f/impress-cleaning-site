@@ -166,6 +166,8 @@ export default function ReportsPage() {
             {/* Date Range Filter */}
             <div>
               <select
+                id="reports-date-range"
+                name="reports-date-range"
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
                 className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1C294E] focus:border-transparent"

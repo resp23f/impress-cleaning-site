@@ -817,14 +817,19 @@ export default function InvoicesPage() {
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
+                    id="invoice-search"
+                    name="invoice-search"
                     placeholder="Search by invoice number or customer..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    autoComplete="off"
                     className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
                   />
                 </div>
               </div>
               <select
+                id="invoice-status-filter"
+                name="invoice-status-filter"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all bg-white min-w-[160px]"
@@ -1226,6 +1231,8 @@ export default function InvoicesPage() {
               </Button>
             </div>
             <select
+              id="create-invoice-customer"
+              name="create-invoice-customer"
               value={newInvoice.customer_id}
               onChange={(e) => setNewInvoice({ ...newInvoice, customer_id: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
@@ -1259,10 +1266,13 @@ export default function InvoicesPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                       )}
                       <input
+                        id={`line-item-description-${index}`}
+                        name={`line-item-description-${index}`}
                         list={`descriptions-${index}`}
                         placeholder="Service description"
                         value={item.description}
                         onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
+                        autoComplete="off"
                         className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all"
                       />
                       <datalist id={`descriptions-${index}`}>
@@ -1388,6 +1398,8 @@ export default function InvoicesPage() {
           <div>
             <label className="block text-sm font-semibold text-[#1C294E] mb-2">Notes (Optional)</label>
             <textarea
+              id="create-invoice-notes"
+              name="create-invoice-notes"
               value={newInvoice.notes}
               onChange={(e) => setNewInvoice({ ...newInvoice, notes: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all resize-none"
