@@ -1,6 +1,7 @@
 # Impress Cleaning Services - Project Baseline
 
-**Last Generated:** 2025-12-19
+**Last Generated:** 2025-12-19  
+**Last Updated:** 2025-12-19 (auth flow clarifications, address/phone handling details, business policies, pg_cron schedules)
 
 ---
 
@@ -22,8 +23,8 @@ Georgetown, Round Rock, Cedar Park, Leander, Pflugerville, Hutto, Austin, Lakewa
 |----------|------------|---------|
 | Framework | Next.js | 16.0.10 |
 | UI Library | React | 19.1.0 |
-| Language | TypeScript/JavaScript | 5.9.3 |
-| Styling | Tailwind CSS | 4.0 |
+| Language | TypeScript/JavaScript | Mixed (.js/.jsx + .ts/.tsx) |
+| Styling | Tailwind CSS | 4.x |
 | Database | Supabase (PostgreSQL) | Latest |
 | Auth | Supabase Auth | SSR 0.7.0 |
 | Payments | Stripe | 20.0.0 |
@@ -138,6 +139,7 @@ Payment invoices.
 | line_items | jsonb | Array of items |
 | refund_amount | numeric(10,2) | Default: 0 |
 | disputed | boolean | Dispute flag |
+| customer_email | text | For orphan invoices (linked by email when customer signs up) |
 
 #### service_requests
 Customer service requests from portal.
@@ -189,6 +191,25 @@ Stored Stripe payment methods.
 | card_brand, card_last4 | text | Card info |
 | is_default | boolean | Default method |
 
+#### booking_requests
+Public booking form submissions (unauthenticated).
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | uuid | PK |
+| name | text | Customer name |
+| email | text | Customer email |
+| phone | text | Customer phone |
+| address | text | Service address (free-form text) |
+| service_type | text | residential or commercial |
+| service_level | text | basic, deep, move |
+| space_size | text | Home size or sq ft |
+| preferred_date | date | Requested date |
+| preferred_time | text | morning, afternoon, evening |
+| special_requests | text | Additional notes |
+| gift_certificate | text | Optional gift code |
+| status | text | Default: pending |
+
 #### customer_invite_tokens / auth_handoff_tokens
 Authentication tokens for invite flows.
 
@@ -209,6 +230,13 @@ Authentication tokens for invite flows.
 | handle_new_user() | Creates profile on auth.users signup |
 | link_orphan_invoices() | Links orphan invoices by email on profile creation |
 
+### pg_cron Scheduled Jobs
+
+| Job Name | Schedule | Function | Purpose |
+|----------|----------|----------|--------|
+| auto-complete-appointments | `*/15 * * * *` (every 15 min) | `auto_complete_appointments()` | Auto-completes past appointments |
+| update_overdue_invoices | `0 2 * * *` (daily 2 AM) | `mark_overdue_invoices()` | Marks invoices overdue, applies late fees |
+
 ### RLS Policies Summary
 
 - **Admin**: Full access to all tables
@@ -216,31 +244,48 @@ Authentication tokens for invite flows.
 - **Public**: Can insert booking_requests only
 - **Service Role**: Bypasses RLS for admin operations
 
+### Business Policies (from Terms of Service)
+
+| Policy | Details |
+|--------|--------|
+| Cancellation 48+ hrs | Free cancellation |
+| Cancellation 24-48 hrs | $50 fee |
+| Cancellation <24 hrs | Full service fee |
+| No-show | 15 min grace, then full fee |
+| Late payment | 5% fee after 7-day grace (applied to **pre-tax subtotal**) |
+| Governing law | Texas (Williamson County) |
+
 ---
 
 ## 3. Authentication Flow
 
-### Self-Registration Flow
+### Self-Registration Flow (Uses Supabase Built-in Auth)
 1. User visits `/auth/signup`
-2. Enters email/password (or Google OAuth)
-3. Email verification sent
-4. User verifies at `/auth/verify-email`
-5. Profile created via `handle_new_user()` trigger
-6. Redirect to `/auth/profile-setup`
-7. Complete profile (name, phone, address with Google Places verification)
-8. Access granted to `/portal/dashboard`
+2. Enters email + password (password set at signup, NOT after verification)
+3. **Supabase sends confirm signup email automatically**
+4. User redirected to `/auth/verify-email` (informational page - "check your inbox")
+5. User clicks link in email → **Supabase confirms email**
+6. Supabase redirects to `/auth/callback` → `/auth/profile-setup`
+7. Profile created via `handle_new_user()` trigger
+8. Complete profile (name, phone, address with **Google Places API validation**)
+9. Access granted to `/portal/dashboard`
 
-### Admin Invite Flow
+**Key distinction:** Self-registration uses Supabase's built-in confirm signup email - no custom token APIs needed. Password is set during initial signup, NOT after email verification.
+
+### Admin Invite Flow (Uses Custom Token System)
 1. Admin creates customer at `/admin/customers`
 2. System creates auth user with auto-confirmed email
 3. Creates Stripe customer
-4. Generates 48-hour invite token (SHA-256 hashed)
-5. Sends welcome email with invite link
-6. User clicks link → `/api/auth/validate-invite`
-7. Generates 30-minute handoff token
-8. Redirects to `/auth/set-password`
-9. User sets password via `/api/auth/complete-invite`
+4. **Generates custom 48-hour invite token (SHA-256 hashed)** → stored in `customer_invite_tokens` table
+5. Sends welcome email via Resend with invite link
+6. User clicks link → **`/api/auth/validate-invite`** (custom API validates token)
+7. API generates 30-minute handoff token → stored in `auth_handoff_tokens` table
+8. Redirects to `/auth/activate`
+9. User sets password → **`/api/auth/complete-invite`** (custom API sets password)
 10. Redirects to `/auth/profile-setup` to complete profile
+11. Access granted to `/portal/dashboard`
+
+**Key distinction:** Admin invites use a fully custom token system because we're NOT using Supabase magic links - we control the entire flow.
 
 ### Session Management
 - **Middleware**: `src/lib/supabase/middleware.js`
@@ -254,6 +299,8 @@ Authentication tokens for invite flows.
 |------|--------|
 | customer | Portal pages, own data only |
 | admin | Admin dashboard, all data, customer management |
+
+**Admin Login:** Uses private alias `portal@impressyoucleaning.com` (not a public-facing email)
 
 ### Middleware Protection Flow
 1. Check user authentication via `supabase.auth.getUser()`
@@ -376,18 +423,19 @@ Authentication tokens for invite flows.
 | `/privacy` | Privacy policy |
 | `/terms` | Terms of service |
 
-### Auth Pages (8 total)
+### Auth Pages (9 total)
 
 | Route | Description |
 |-------|-------------|
 | `/auth/login` | Customer login |
 | `/auth/signup` | Customer registration |
-| `/auth/verify-email` | Email verification |
+| `/auth/verify-email` | Waiting screen after signup (instructs user to check email) |
+| `/auth/callback` | Handles Supabase auth redirects |
 | `/auth/forgot-password` | Password reset request |
-| `/auth/reset-password` | Set new password |
-| `/auth/set-password` | Initial password (invites) |
-| `/auth/profile-setup` | Complete profile |
-| `/auth/admin-invited-set-password` | Admin staff invite |
+| `/auth/reset-password` | Set new password (forgot password flow) |
+| `/auth/set-password` | Set initial password (self-registered users) |
+| `/auth/activate` | Set password + activate account (admin-invited customers) |
+| `/auth/profile-setup` | Complete profile (name, phone, address) |
 
 ### Portal Pages (9 total)
 
@@ -478,6 +526,8 @@ Customer: Clicks link → Set password → Profile setup → Portal
 ### Google Places API
 - **Purpose**: Address autocomplete and validation
 - **Component**: `AddressAutocomplete.tsx`
+- **Used ONLY on**: `/auth/profile-setup` (initial registration address)
+- **NOT used on**: Portal settings (additional addresses use manual input to save API costs)
 - **Restrictions**: US addresses only
 
 ### Cloudflare Turnstile
@@ -586,14 +636,33 @@ Customer: Clicks link → Set password → Profile setup → Portal
 | sanitizeReference | Alphanumeric and hyphens, uppercase |
 | escapeHtml | Entity encoding (&, <, >, ", ') |
 
-### Phone Validation Rules
-- Exactly 10 digits after stripping
-- Blocks 555 prefix (reserved)
-- Blocks all same digits (0000000000)
-- Blocks sequential patterns (1234567890)
-- Blocks invalid area codes (000, 111, 555, 999, 123)
+### Phone Number Handling
 
-### Address Validation Rules
+**Two separate functions - don't confuse them:**
+
+| Function | Purpose | Used Where |
+|----------|---------|------------|
+| `formatPhoneNumber()` | Real-time formatting as user types: `(512) 555-1234` | Profile setup, portal settings, public booking |
+| `validatePhone()` | Blocks fake/invalid numbers | Profile setup, portal settings (NOT public booking - too strict for leads) |
+
+**validatePhone() Blocks:**
+- Exactly 10 digits required
+- 555 prefix (reserved for fiction)
+- All same digits (0000000000)
+- Sequential patterns (1234567890)
+- Invalid area codes (000, 111, 555, 999, 123)
+
+### Address Handling
+
+**Different validation per page - intentionally varied:**
+
+| Page | Validation Method | Why |
+|------|-------------------|-----|
+| `/auth/profile-setup` | **Google Places API** autocomplete + component extraction | Critical first address - must be real, properly formatted for invoicing |
+| `/portal/settings` (add address) | **Manual input** (street, city, state, zip fields) | No API cost, user can type freely |
+| `/booking` (public) | **Free validation rules** (no API) | Filter spam without losing leads |
+
+**Free Address Validation Rules (booking page only):**
 - Minimum 15 characters
 - Must contain street number
 - Must match valid street suffix (st, ave, rd, dr, etc.)

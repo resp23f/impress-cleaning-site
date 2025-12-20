@@ -575,6 +575,14 @@ export default function CustomersPage() {
                       {selectedCustomer.communication_preference || 'Not set'}
                     </span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Birthday:</span>
+                    <span className="text-sm font-medium text-[#1C294E]">
+                      {selectedCustomer.birth_month && selectedCustomer.birth_day
+                        ? `${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][selectedCustomer.birth_month - 1]} ${selectedCustomer.birth_day}`
+                        : 'Not provided'}
+                    </span>
+                  </div>
                 </div>
               )}
             </div>

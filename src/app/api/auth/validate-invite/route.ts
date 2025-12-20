@@ -85,7 +85,7 @@ export async function GET(request: Request) {
 
     // Redirect to set-password page with handoff token
     return NextResponse.redirect(
-      `${SITE_URL}/auth/admin-invited-set-password?token=${handoffToken}`
+      `${SITE_URL}/auth/activate?token=${handoffToken}`
     )
 
   } catch (error) {
