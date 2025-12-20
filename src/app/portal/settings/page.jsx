@@ -667,12 +667,14 @@ export default function SettingsPage() {
                   onChange={(e) => setProfileForm((p) => ({ ...p, first_name: e.target.value }))}
                   placeholder="John"
                   icon={<User className="w-4 h-4" />}
+                  autoComplete="given-name"
                 />
                 <Input
                   label="Last Name"
                   value={profileForm.last_name}
                   onChange={(e) => setProfileForm((p) => ({ ...p, last_name: e.target.value }))}
                   placeholder="Smith"
+                  autoComplete="family-name"
                 />
                 <Input
                   label="Phone Number"
@@ -681,6 +683,7 @@ export default function SettingsPage() {
                   icon={<Phone className="w-4 h-4" />}
                   placeholder="(512) 555-1234"
                   maxLength={14}
+                  autoComplete="tel"
                 />
                 <div>
                   <label htmlFor="birth-month" className="block text-sm font-medium text-[#1C294E] mb-2 flex items-center gap-1.5">
@@ -772,6 +775,7 @@ export default function SettingsPage() {
                   onChange={(e) => setPasswordForm((p) => ({ ...p, newPassword: e.target.value }))}
                   placeholder="Min 8 characters"
                   icon={<Lock className="w-4 h-4" />}
+                  autoComplete="new-password"
                 />
                 <Input
                   type="password"
@@ -779,6 +783,7 @@ export default function SettingsPage() {
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm((p) => ({ ...p, confirmPassword: e.target.value }))}
                   placeholder="Confirm new password"
+                  autoComplete="new-password"
                 />
               </div>
               <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-amber-50 to-orange-50/50 rounded-xl border border-amber-200">
@@ -821,6 +826,7 @@ export default function SettingsPage() {
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="Enter new email address"
                   icon={<Mail className="w-4 h-4" />}
+                  autoComplete="email"
                 />
                 <Button variant="secondary" onClick={handleEmailChange} loading={sendingEmailLink} className={styles.smoothTransition}>
                   <Mail className="w-4 h-4" />
@@ -1254,28 +1260,33 @@ export default function SettingsPage() {
               label="Street Address"
               value={addressForm.street_address}
               onChange={(e) => setAddressForm((p) => ({ ...p, street_address: e.target.value }))}
+              autoComplete="street-address"
             />
             <Input
               label="Unit / Apt (optional)"
               value={addressForm.unit}
               onChange={(e) => setAddressForm((p) => ({ ...p, unit: e.target.value }))}
+              autoComplete="address-line2"
             />
             <div className="grid grid-cols-3 gap-3">
               <Input
                 label="City"
                 value={addressForm.city}
                 onChange={(e) => setAddressForm((p) => ({ ...p, city: e.target.value }))}
+                autoComplete="address-level2"
               />
               <Input
                 label="State"
                 value={addressForm.state}
                 onChange={(e) => setAddressForm((p) => ({ ...p, state: e.target.value }))}
                 maxLength={2}
+                autoComplete="address-level1"
               />
               <Input
                 label="ZIP"
                 value={addressForm.zip_code}
                 onChange={(e) => setAddressForm((p) => ({ ...p, zip_code: e.target.value }))}
+                autoComplete="postal-code"
               />
             </div>
             <div className="flex justify-end gap-3 mt-4">

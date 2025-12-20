@@ -194,6 +194,7 @@ export default function GiftCertificateContent() {
   value={recipientName}
   onChange={(e) => setRecipientName(e.target.value)}
   maxLength={100}
+  autoComplete="off"
   className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none"
   />
   </div>
@@ -208,6 +209,7 @@ export default function GiftCertificateContent() {
   value={recipientEmail}
   onChange={(e) => setRecipientEmail(e.target.value)}
   maxLength={254}
+  autoComplete="off"
   className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none"
   />
   <p className="mt-1.5 text-xs text-gray-500">The gift certificate will be sent to this email</p>
@@ -234,6 +236,7 @@ export default function GiftCertificateContent() {
   value={senderName}
   onChange={(e) => setSenderName(e.target.value)}
   maxLength={100}
+  autoComplete="name"
   className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none"
   />
   </div>
@@ -248,6 +251,7 @@ export default function GiftCertificateContent() {
   value={senderEmail}
   onChange={(e) => setSenderEmail(e.target.value)}
   maxLength={254}
+  autoComplete="email"
   className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none"
   />
   <p className="mt-1.5 text-xs text-gray-500">For your purchase receipt and confirmation</p>

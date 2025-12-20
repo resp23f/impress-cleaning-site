@@ -161,6 +161,7 @@ label="Email address"
 placeholder="your@email.com"
 value={email}
 onChange={(e) => setEmail(e.target.value)}
+autoComplete="email"
 required
 icon={<Mail className="w-5 h-5" />}
 />

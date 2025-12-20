@@ -391,6 +391,7 @@ export default function SolicitudEmpleoContent() {
                         maxLength={50}
                         value={formData.nombre}
                         onChange={handleInputChange}
+                        autoComplete="given-name"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
                         placeholder="Juan"
                       />
@@ -407,6 +408,7 @@ export default function SolicitudEmpleoContent() {
                         maxLength={50}
                         value={formData.apellido}
                         onChange={handleInputChange}
+                        autoComplete="family-name"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
                         placeholder="García"
                       />
@@ -423,6 +425,7 @@ export default function SolicitudEmpleoContent() {
                         maxLength={20}
                         value={formData.telefono}
                         onChange={handleInputChange}
+                        autoComplete="tel"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
                         placeholder="(512) 555-1234"
                       />
@@ -439,6 +442,7 @@ export default function SolicitudEmpleoContent() {
                         maxLength={254}
                         value={formData.email}
                         onChange={handleInputChange}
+                        autoComplete="email"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
                         placeholder="tu@correo.com"
                       />
@@ -455,6 +459,7 @@ export default function SolicitudEmpleoContent() {
                         maxLength={100}
                         value={formData.ciudad}
                         onChange={handleInputChange}
+                        autoComplete="address-level2"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
                         placeholder="Georgetown"
                       />
@@ -472,6 +477,7 @@ export default function SolicitudEmpleoContent() {
                         maxLength={5}
                         value={formData.codigoPostal}
                         onChange={handleInputChange}
+                        autoComplete="postal-code"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#079447]/20 focus:border-[#079447] transition-all duration-200 outline-none"
                         placeholder="78626"
                       />

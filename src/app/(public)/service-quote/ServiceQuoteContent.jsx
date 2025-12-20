@@ -175,6 +175,7 @@ export default function ServiceQuoteContent() {
                     onChange={handleChange}
                     required
                     maxLength={100}
+                    autoComplete="name"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-shadow"
                     placeholder="John Doe"
                   />
@@ -191,6 +192,7 @@ export default function ServiceQuoteContent() {
                     onChange={handleChange}
                     required
                     maxLength={254}
+                    autoComplete="email"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-shadow"
                     placeholder="john@example.com"
                   />
@@ -211,6 +213,7 @@ export default function ServiceQuoteContent() {
                     onChange={handleChange}
                     required
                     maxLength={20}
+                    autoComplete="tel"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-shadow"
                     placeholder="(512) 555-0123"
                   />
@@ -252,6 +255,7 @@ export default function ServiceQuoteContent() {
                   onChange={handleChange}
                   required
                   maxLength={200}
+                  autoComplete="street-address"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#079447] focus:border-transparent transition-shadow"
                   placeholder="123 Main St, Georgetown, TX 78626"
                 />

@@ -179,6 +179,7 @@ export default function BookingContent() {
                       onChange={handleChange}
                       required
                       maxLength={100}
+                      autoComplete="name"
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#079447] focus:ring-4 focus:ring-green-100 transition-all outline-none font-manrope"
                       placeholder="John Doe"
                     />
@@ -195,6 +196,7 @@ export default function BookingContent() {
                       onChange={handleChange}
                       required
                       maxLength={254}
+                      autoComplete="email"
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#079447] focus:ring-4 focus:ring-green-100 transition-all outline-none font-manrope"
                       placeholder="john@example.com"
                     />
@@ -212,6 +214,7 @@ export default function BookingContent() {
                     onChange={handleChange}
                     required
                     maxLength={14}
+                    autoComplete="tel"
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#079447] focus:ring-4 focus:ring-green-100 transition-all outline-none font-manrope"
                     placeholder="(512) 555-0123"
                   />
@@ -229,6 +232,7 @@ export default function BookingContent() {
                     onBlur={handleAddressBlur}
                     required
                     maxLength={300}
+                    autoComplete="street-address"
                     className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 transition-all outline-none font-manrope ${
                       addressError 
                         ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 

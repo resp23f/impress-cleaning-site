@@ -319,6 +319,7 @@ function LoginPageContent() {
                   placeholder="your@email.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
+                  autoComplete="username"
                   required
                   icon={<Mail className="w-5 h-5" />}
                 />
