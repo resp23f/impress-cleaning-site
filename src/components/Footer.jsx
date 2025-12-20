@@ -134,12 +134,13 @@ export default function Footer() {
   </Link>
   </li>
   <li>
-  <Link
+  {/* Hard navigation to prevent Tawk.to from persisting into portal */}
+  <a
   href="/auth/login"
   className="hover:text-[#079447] transition-colors duration-200 block"
   >
   Customer Portal
-  </Link>
+  </a>
   </li>
   </ul>
   </div>

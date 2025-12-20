@@ -283,7 +283,8 @@ function SiteHeader() {
   </Link>
   
   {/* Customer Portal – OUTLINED BUTTON */}
-  <Link
+  {/* Hard navigation to prevent Tawk.to from persisting into portal */}
+  <a
   href="/auth/login"
   className="inline-flex items-center justify-center gap-1 px-2.5 lg:px-3 xl:px-5 py-2 lg:py-2.5 xl:py-3 rounded-xl border border-slate-300 text-slate-700 text-[13px] lg:text-[14px] xl:text-[15px] font-semibold hover:border-[#079447] hover:text-[#079447] hover:bg-white transition-all duration-300 font-manrope whitespace-nowrap"
   >
@@ -301,7 +302,7 @@ function SiteHeader() {
   />
   </svg>
   <span className="hidden xl:inline">Portal</span>
-  </Link>
+  </a>
   
   {/* Hamburger Menu – DESKTOP DROPDOWN TRIGGER */}
   <div className="relative">
@@ -527,10 +528,10 @@ className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl shadow-xl bo
   
   {/* Primary CTAs */}
   <div className="px-5 py-4 space-y-3">
-  <Link
+  {/* Hard navigation to prevent Tawk.to from persisting into portal */}
+  <a
   href="/auth/login"
   className="flex items-center justify-center gap-2 w-full rounded-xl bg-white text-[#1e3a5f] px-6 py-3.5 font-bold text-base transition-all duration-300 hover:bg-slate-100"
-  onClick={() => setMobileMenuOpen(false)}
   >
   <svg
   className="w-5 h-5"
@@ -546,7 +547,7 @@ className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl shadow-xl bo
   />
   </svg>
   Customer Portal
-  </Link>
+  </a>
   <Link
   href="/booking"
   className="flex items-center justify-center w-full rounded-xl bg-gradient-to-r from-[#079447] to-[#08A855] text-white px-6 py-3.5 font-bold text-base transition-all duration-300 hover:shadow-lg"
