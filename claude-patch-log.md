@@ -134,7 +134,6 @@ WHY SEPARATE formatPhoneNumber vs validatePhone:
 7. NEXT STEPS / TODOs
 --------------------------------------------------------------------------------
 - Admin portal styling improvements (next session)
-- Consider adding validatePhone to booking page in future if spam persists
 - Monitor address validation effectiveness in production
 
 ================================================================================
@@ -221,7 +220,7 @@ PATCH LOG #5 2025-12-18 — Dashboard Row 1 Premium Redesign & Admin Invite Erro
 - Profile setup errors don't redirect - lets user attempt to use page anyway
 - No emojis used - only Lucide React SVG icons throughout
 
-5. KNOWN ISSUES STILL OPEN
+6. KNOWN ISSUES RESOLVED
 --------------------------------------------------------------------------------
 - Admin invite flow needs real-world testing to confirm error handling works
 - Browser console errors not captured yet for admin invite crash
@@ -359,7 +358,7 @@ Why keep full_name in sync?
   - Backward compatibility with existing code that queries full_name
   - Admin portal customer list, emails, etc. may still use it
 
-5. KNOWN ISSUES STILL OPEN
+6. KNOWN ISSUES RESOLVED
 --------------------------------------------------------------------------------
 - Admin portal customer creation still uses single full_name field
   (works fine — middleware will redirect invited users to profile-setup)
@@ -503,8 +502,7 @@ WHY DEFAULT sendWelcomeEmail TO TRUE:
 - Toggle provides override for exceptions
 
 ================================================================================
-5. KNOWN ISSUES STILL OPEN
---------------------------------------------------------------------------------
+6. KNOWN ISSUES RESOLVED
 | Issue                                              | Status              |
 |----------------------------------------------------|---------------------|
 | Account deletion should block if outstanding balance | Not implemented     |
@@ -613,8 +611,7 @@ WHY BUTTON DISABLED UNTIL COMPLETE:
   - Clear visual feedback that more input is needed
 
 ================================================================================
-5. KNOWN ISSUES STILL OPEN
---------------------------------------------------------------------------------
+6. KNOWN ISSUES
 None from this session.
 ================================================================================
 
@@ -691,8 +688,7 @@ Fix three mobile UI issues in the customer portal:
 | Pay button inside totals on desktop | User requirement — button directly under Amount Due |
 | Pay button in flex container on mobile | Avoids z-index conflicts with fixed positioning |
 
-## 5. Known Issues Still Open
-
+6. KNOWN ISSUES RESOLVED
 | Issue | Status |
 |-------|--------|
 | Account deletion should block if outstanding balance | Not implemented |
