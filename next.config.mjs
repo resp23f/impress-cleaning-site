@@ -57,11 +57,11 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' https://js.stripe.com https://maps.googleapis.com https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://embed.tawk.to",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.tawk.to",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https: http:",
               "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://maps.googleapis.com https://places.googleapis.com https://challenges.cloudflare.com https://cloudflareinsights.com https://*.google-analytics.com https://*.tawk.to wss://*.tawk.to",
-              "frame-src 'self' https://js.stripe.com https://challenges.cloudflare.com https://www.google.com https://tawk.to",
+              "frame-src 'self' https://js.stripe.com https://challenges.cloudflare.com https://www.google.com https://*.tawk.to",
               "frame-ancestors 'self'",
               "worker-src 'self' blob:",
             ].join('; '),
