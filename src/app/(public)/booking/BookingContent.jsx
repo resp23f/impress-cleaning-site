@@ -7,6 +7,55 @@ export default function BookingContent() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState(null)
+  const [addressError, setAddressError] = useState('')
+
+  // Validate address without Google API
+  const validateAddress = (address) => {
+    const trimmed = address.trim().toLowerCase()
+    
+    // Minimum length check
+    if (trimmed.length < 15) {
+      return 'Please enter a complete address including street, city, state, and ZIP code'
+    }
+    
+    // Must contain a number (street number)
+    if (!/\d/.test(trimmed)) {
+      return 'Please include a street number in your address'
+    }
+    
+    // Must contain a street suffix
+    const streetSuffixes = /\b(st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|way|ct|court|cir|circle|pl|place|ter|terrace|pkwy|parkway|hwy|highway|trl|trail|loop|run|pass|xing|crossing)\b/i
+    if (!streetSuffixes.test(trimmed)) {
+      return 'Please include a valid street name (e.g., St, Ave, Rd, Dr, Ln)'
+    }
+    
+    // Must contain a 5-digit ZIP code
+    if (!/\b\d{5}\b/.test(address)) {
+      return 'Please include a 5-digit ZIP code'
+    }
+    
+    // Blocklist for obvious fake/test entries
+    const blocklist = ['test', 'asdf', 'fake', 'xxxx', 'sample', 'example', 'n/a', 'none', 'null']
+    if (blocklist.some(blocked => trimmed.includes(blocked))) {
+      return 'Please enter a valid service address'
+    }
+    
+    // Check for repeated characters (e.g., "aaaaaaa")
+    if (/(.)(\1{4,})/.test(trimmed.replace(/\s/g, ''))) {
+      return 'Please enter a valid service address'
+    }
+    
+    return '' // Valid
+  }
+
+  // Format phone number as user types: (512) 555-1234
+  const formatPhoneNumber = (value) => {
+    const phoneNumber = value.replace(/\D/g, '')
+    if (phoneNumber.length <= 3) return phoneNumber
+    if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`
+  }
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,14 +74,31 @@ export default function BookingContent() {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'phone' ? formatPhoneNumber(value) : value,
     }))
-    // Clear error when user starts typing
+    // Clear errors when user starts typing
     if (error) setError(null)
+    if (name === 'address' && addressError) setAddressError('')
+  }
+
+  // Validate address on blur
+  const handleAddressBlur = () => {
+    if (formData.address.trim()) {
+      const error = validateAddress(formData.address)
+      setAddressError(error)
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Validate address before submission
+    const addressValidation = validateAddress(formData.address)
+    if (addressValidation) {
+      setAddressError(addressValidation)
+      return
+    }
+    
     setIsSubmitting(true)
     setError(null)
 
@@ -145,7 +211,7 @@ export default function BookingContent() {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    maxLength={20}
+                    maxLength={14}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#079447] focus:ring-4 focus:ring-green-100 transition-all outline-none font-manrope"
                     placeholder="(512) 555-0123"
                   />
@@ -160,11 +226,24 @@ export default function BookingContent() {
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
+                    onBlur={handleAddressBlur}
                     required
                     maxLength={300}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#079447] focus:ring-4 focus:ring-green-100 transition-all outline-none font-manrope"
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 transition-all outline-none font-manrope ${
+                      addressError 
+                        ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 
+                        : 'border-gray-200 focus:border-[#079447] focus:ring-green-100'
+                    }`}
                     placeholder="123 Main St, Georgetown, TX 78626"
                   />
+                  {addressError && (
+                    <p className="mt-2 text-sm text-red-600 flex items-start gap-2">
+                      <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {addressError}
+                    </p>
+                  )}
                 </div>
               </div>
 

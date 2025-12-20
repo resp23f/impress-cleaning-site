@@ -3,6 +3,14 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 import { sanitizeText, sanitizeEmail, sanitizePhone } from '@/lib/sanitize'
 import Stripe from 'stripe'
+
+// Format phone to (XXX) XXX-XXXX
+function formatPhoneNumber(phone) {
+  if (!phone) return null
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length !== 10) return phone // Return as-is if not 10 digits
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
+}
 import { Resend } from 'resend'
 import { randomBytes, createHash } from 'crypto'
 
@@ -49,7 +57,7 @@ export async function POST(request) {
 
     const sanitizedName = sanitizeText(full_name)?.slice(0, 100) || ''
     const sanitizedEmail = email ? sanitizeEmail(email) : null
-    const sanitizedPhone = phone ? sanitizePhone(phone) : null
+    const sanitizedPhone = phone ? formatPhoneNumber(sanitizePhone(phone)) : null
 
     // Parse first_name and last_name from full_name for new schema
     let firstName = ''

@@ -37,6 +37,14 @@ const stripePromise = loadStripe(
 
 import { sanitizeText, sanitizePhone, sanitizeEmail, validateName, validatePhone } from '@/lib/sanitize'
 
+// Format phone number as user types: (512) 555-1234
+const formatPhoneNumber = (value) => {
+  const phoneNumber = value.replace(/\D/g, '')
+  if (phoneNumber.length <= 3) return phoneNumber
+  if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`
+  return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`
+}
+
 export default function SettingsPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -280,6 +288,13 @@ export default function SettingsPage() {
         .eq('id', user.id)
 
       if (error) throw error
+      
+      // Update local profile state so UI reflects changes (e.g., birthday lock)
+      setProfile(prev => ({
+        ...prev,
+        ...updateData,
+      }))
+      
       toast.success('Profile updated successfully')
     } catch (err) {
       console.error('Profile update error', err)
@@ -662,9 +677,10 @@ export default function SettingsPage() {
                 <Input
                   label="Phone Number"
                   value={profileForm.phone}
-                  onChange={(e) => setProfileForm((p) => ({ ...p, phone: e.target.value }))}
+                  onChange={(e) => setProfileForm((p) => ({ ...p, phone: formatPhoneNumber(e.target.value) }))}
                   icon={<Phone className="w-4 h-4" />}
                   placeholder="(512) 555-1234"
+                  maxLength={14}
                 />
                 <div>
                   <label htmlFor="birth-month" className="block text-sm font-medium text-[#1C294E] mb-2 flex items-center gap-1.5">

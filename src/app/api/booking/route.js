@@ -5,6 +5,45 @@ import { sanitizeText, sanitizeEmail, sanitizePhone } from '@/lib/sanitize'
 
 const resend = new Resend(process.env.RESEND_API_KEY_STAGING)
 
+// Validate address without Google API
+function validateAddress(address) {
+  const trimmed = address.trim().toLowerCase()
+  
+  // Minimum length check
+  if (trimmed.length < 15) {
+    return 'Please enter a complete address including street, city, state, and ZIP code'
+  }
+  
+  // Must contain a number (street number)
+  if (!/\d/.test(trimmed)) {
+    return 'Please include a street number in your address'
+  }
+  
+  // Must contain a street suffix
+  const streetSuffixes = /\b(st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|way|ct|court|cir|circle|pl|place|ter|terrace|pkwy|parkway|hwy|highway|trl|trail|loop|run|pass|xing|crossing)\b/i
+  if (!streetSuffixes.test(trimmed)) {
+    return 'Please include a valid street name'
+  }
+  
+  // Must contain a 5-digit ZIP code
+  if (!/\b\d{5}\b/.test(address)) {
+    return 'Please include a 5-digit ZIP code'
+  }
+  
+  // Blocklist for obvious fake/test entries
+  const blocklist = ['test', 'asdf', 'fake', 'xxxx', 'sample', 'example', 'n/a', 'none', 'null']
+  if (blocklist.some(blocked => trimmed.includes(blocked))) {
+    return 'Please enter a valid service address'
+  }
+  
+  // Check for repeated characters (e.g., "aaaaaaa")
+  if (/(.)\1{4,}/.test(trimmed.replace(/\s/g, ''))) {
+    return 'Please enter a valid service address'
+  }
+  
+  return null // Valid
+}
+
 // Create Supabase admin client for database operations
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -202,6 +241,15 @@ export async function POST(request) {
     if (!sanitized.name || !sanitized.email || !sanitized.address) {
       return NextResponse.json(
         { error: 'Name, email, and address are required' },
+        { status: 400 }
+      )
+    }
+
+    // Validate address format
+    const addressValidationError = validateAddress(sanitized.address)
+    if (addressValidationError) {
+      return NextResponse.json(
+        { error: addressValidationError },
         { status: 400 }
       )
     }
