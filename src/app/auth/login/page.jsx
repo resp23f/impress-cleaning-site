@@ -329,6 +329,7 @@ function LoginPageContent() {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
+                    autoComplete="current-password"
                     required
                   />
                   <div className="text-right mt-2">

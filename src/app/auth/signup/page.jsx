@@ -220,6 +220,7 @@ label="Create password"
 placeholder="Minimum 8 characters"
 value={formData.password}
 onChange={handlePasswordChange}
+autoComplete="new-password"
 required
 />
 {formData.password && (
