@@ -592,15 +592,17 @@ export default function PayInvoicePage() {
               <div className="p-6">
                 {/* Details */}
                 <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-slate-500">
-                      <Calendar className="w-4 h-4" />
-                      <span>Issued</span>
+                  {invoice.service_date && (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-slate-500">
+                        <Calendar className="w-4 h-4" />
+                        <span>Service Date</span>
+                      </div>
+                      <span className="font-medium text-slate-800">
+                        {format(new Date(invoice.service_date + 'T00:00:00'), 'MMM d, yyyy')}
+                      </span>
                     </div>
-                    <span className="font-medium text-slate-800">
-                      {format(new Date(invoice.created_at), 'MMM d, yyyy')}
-                    </span>
-                  </div>
+                  )}
                   {invoice.due_date && (
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-slate-500">

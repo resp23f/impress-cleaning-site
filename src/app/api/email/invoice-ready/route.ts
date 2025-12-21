@@ -55,13 +55,9 @@ function generateInvoiceReadyEmail(firstName: string): string {
   <div style="width:100%;padding:24px 0;">
     <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.05);">
       <!-- LOGO HEADER -->
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-        <tr>
-          <td align="center" style="padding:0;">
-            <div style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);background-image:url('https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png'),linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);background-repeat:no-repeat,no-repeat;background-position:center,center;background-size:200px auto,cover;width:100%;height:180px;text-align:center;">&nbsp;</div>
-          </td>
-        </tr>
-      </table>
+      <div style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);width:100%;height:180px;display:flex;align-items:center;justify-content:center;">
+        <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png" alt="Impress Cleaning Services" style="width:200px;height:auto;" />
+      </div>
       <!-- TITLE / COPY -->
       <div style="padding:32px 32px 8px;">
         <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">NEW INVOICE</p>
@@ -75,7 +71,7 @@ function generateInvoiceReadyEmail(firstName: string): string {
       <!-- HELP BOX -->
       <div style="margin:32px auto 36px;padding:18px 20px;max-width:240px;background-color:#f3f4f6;border-radius:10px;font-size:12px;color:#374151;text-align:center;">
         <p style="margin:0 0 4px 0;font-weight:600;">Have a question?</p>
-        <p style="margin:4px 0 0;"><a href="mailto:billing@impressyoucleaning.com" style="color:#079447;text-decoration:underline;">Reach out to our team</a></p>
+        <p style="margin:4px 0 0;"><a href="mailto:billing@impressyoucleaning.com" style="color:#079447;text-decoration:underline;text-decoration-skip-ink:none;">Reach out to our team</a></p>
       </div>
       <!-- FOOTER -->
       <div style="padding:28px 32px;border-top:1px solid #e5e7eb;">
