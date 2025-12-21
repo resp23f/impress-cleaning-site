@@ -324,7 +324,7 @@ function generateInvoiceReadyEmail(firstName) {
           <tr>
             <td style="padding:32px 32px 8px;">
               <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">NEW INVOICE</p>
-              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Your Invoice is Ready to View</h1>
+              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Your Invoice Is Ready to View</h1>
               <p style="font-size:15px;line-height:1.6;color:#4b5563;margin:0;">A new invoice has been added to your account. Sign in to your customer portal to view the details and make a payment.</p>
             </td>
           </tr>
