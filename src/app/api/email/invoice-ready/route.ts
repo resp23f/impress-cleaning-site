@@ -93,7 +93,7 @@ function generateInvoiceReadyEmail(firstName: string): string {
           <tr>
             <td style="padding:28px 32px;border-top:1px solid #e5e7eb;">
               <p style="font-size:11px;font-weight:600;color:#6b7280;margin:2px 0;">Impress Cleaning Services, LLC</p>
-              <p style="font-size:10px;color:#6b7280;margin:2px 0;">1530 Sun City Blvd, Suite 120&#8209;403, Georgetown,&nbsp;TX&nbsp;78633</p>
+              <p style="font-size:10px;color:#6b7280;margin:2px 0;"><a style="color:#6b7280;text-decoration:none;pointer-events:none;">1530 Sun City Blvd, Suite 120-403, Georgetown, TX 78633</a></p>
               <p style="font-size:10px;color:#6b7280;margin:2px 0;">&copy; 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
             </td>
           </tr>
