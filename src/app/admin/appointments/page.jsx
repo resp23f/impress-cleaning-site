@@ -334,6 +334,7 @@ export default function AppointmentsPage() {
       if (error) throw error
 
       if (status === 'cancelled' && notifyCustomer) {
+        // Send cancellation email
         try {
           await fetch('/api/email/appointment-cancelled', {
             method: 'POST',
@@ -348,6 +349,24 @@ export default function AppointmentsPage() {
           })
         } catch (e) {
           // Email send failed silently - appointment still updated
+        }
+
+        // Create portal notification for cancellation
+        if (selectedAppointment.customer_id) {
+          try {
+            const formattedDate = new Date(selectedAppointment.scheduled_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+            await supabase.from('customer_notifications').insert({
+              user_id: selectedAppointment.customer_id,
+              type: 'appointment_cancelled',
+              title: 'Appointment Cancelled',
+              message: `Your ${formatServiceType(selectedAppointment.service_type)} scheduled for ${formattedDate} has been cancelled`,
+              link: '/portal/appointments',
+              reference_id: selectedAppointment.id,
+              reference_type: 'appointment',
+            })
+          } catch (notifError) {
+            console.error('Failed to create cancellation notification:', notifError)
+          }
         }
       }
 
@@ -413,6 +432,24 @@ export default function AppointmentsPage() {
       toast.success('Appointment rescheduled!')
       setShowManageModal(false)
       loadAppointments()
+
+      // Create portal notification for reschedule
+      if (selectedAppointment.customer_id) {
+        try {
+          const formattedNewDate = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+          await supabase.from('customer_notifications').insert({
+            user_id: selectedAppointment.customer_id,
+            type: 'appointment_rescheduled',
+            title: 'Appointment Rescheduled',
+            message: `Your appointment has been rescheduled to ${formattedNewDate} at ${formatTime(timeStart)}`,
+            link: '/portal/appointments',
+            reference_id: selectedAppointment.id,
+            reference_type: 'appointment',
+          })
+        } catch (notifError) {
+          console.error('Failed to create reschedule notification:', notifError)
+        }
+      }
     } catch (error) {
       toast.error('Failed to reschedule')
     } finally {
@@ -726,6 +763,11 @@ export default function AppointmentsPage() {
                                   <span className="truncate">
                                     {apt.service_addresses.street_address}
                                     {apt.service_addresses.unit && `, ${apt.service_addresses.unit}`}, {apt.service_addresses.city}
+                                    {!apt.service_addresses.is_primary && (
+                                      <Badge variant="warning" size="sm" className="ml-2">
+                                        Secondary
+                                      </Badge>
+                                    )}
                                   </span>
                                 </div>
                               )}
@@ -1060,8 +1102,20 @@ export default function AppointmentsPage() {
               </div>
 
               {selectedAppointment.service_addresses && (
-                <div className="bg-gray-50 rounded-xl p-4 mt-4">
-                  <p className="text-xs text-gray-500 mb-1">Address</p>
+                <div className={`rounded-xl p-4 mt-4 ${!selectedAppointment.service_addresses.is_primary ? 'bg-amber-50 border border-amber-200' : 'bg-gray-50'}`}>
+                  <p className="text-xs text-gray-500 mb-1 flex items-center gap-2">
+                    Address
+                    {!selectedAppointment.service_addresses.is_primary && (
+                      <Badge variant="warning" size="sm">
+                        Secondary Address
+                      </Badge>
+                    )}
+                  </p>
+                  {!selectedAppointment.service_addresses.is_primary && (
+                    <p className="text-xs text-amber-700 mb-2">
+                      ⚠️ This is not the customer&apos;s primary address
+                    </p>
+                  )}
                   <p className="font-semibold text-[#1C294E]">
                     {selectedAppointment.service_addresses.street_address}
                     {selectedAppointment.service_addresses.unit && `, ${selectedAppointment.service_addresses.unit}`}

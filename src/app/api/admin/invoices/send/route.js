@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export async function POST(request) {
   try {
-    const { invoiceId } = await request.json()
+    const { invoiceId, sendNotificationEmail = true } = await request.json()
 
     if (!invoiceId) {
       return NextResponse.json(
@@ -20,7 +20,7 @@ export async function POST(request) {
     // 1. Get invoice details
     const { data: invoice, error: invoiceError } = await supabaseAdmin
       .from('invoices')
-      .select('*')
+      .select('*, profiles!customer_id(first_name, email)')
       .eq('id', invoiceId)
       .single()
 
@@ -275,10 +275,31 @@ await supabaseAdmin
             }
 
     
+    // 9. Send notification email (if enabled)
+    let emailSent = false
+    if (sendNotificationEmail && invoice.profiles?.email && invoice.profiles?.first_name) {
+      try {
+        const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://impressyoucleaning.com'}/api/email/invoice-ready`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customerId: customerId,
+            customerEmail: invoice.profiles.email,
+            firstName: invoice.profiles.first_name,
+          }),
+        })
+        emailSent = emailResponse.ok
+      } catch (emailError) {
+        console.error('Failed to send notification email:', emailError)
+        // Don't fail the whole request if email fails
+      }
+    }
+
     return NextResponse.json({
       success: true,
       stripeInvoiceId: sentInvoice.id,
-      hostedInvoiceUrl: sentInvoice.hosted_invoice_url
+      hostedInvoiceUrl: sentInvoice.hosted_invoice_url,
+      notificationEmailSent: emailSent
     })
   } catch (error) {
     console.error('Error sending invoice:', error)

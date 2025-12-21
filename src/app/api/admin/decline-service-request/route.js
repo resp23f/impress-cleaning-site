@@ -162,6 +162,19 @@ export async function POST(request) {
             </html>
           `,
         })
+
+        // Create portal notification
+        await supabaseAdmin
+          .from('customer_notifications')
+          .insert({
+            user_id: serviceRequest.customer_id,
+            type: 'request_declined',
+            title: 'Service Request Update',
+            message: `Your ${serviceLabel} request for ${formattedDate} could not be accommodated. ${declineReason}`,
+            link: '/portal/request-service',
+            reference_id: requestId,
+            reference_type: 'service_request',
+          })
       } catch (emailError) {
         console.error('Failed to send decline email', emailError)
       }

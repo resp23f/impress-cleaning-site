@@ -67,7 +67,9 @@ export default function DashboardPage() {
         profileData?.service_addresses?.[0]
       setPrimaryAddress(primary)
       // Get upcoming *active* appointments (limit to 5 for the list)
-      const today = new Date().toISOString().split('T')[0]
+      // Use local date to avoid timezone issues
+      const now = new Date()
+      const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
       const { data: upcomingData } = await supabase
         .from('appointments')
         .select('*')
@@ -237,8 +239,10 @@ export default function DashboardPage() {
                               </div>
                             </div>
                             {(() => {
-                              const today = new Date().toISOString().split('T')[0]
-                              const isToday = nextAppointment.scheduled_date === today
+                              // Use local date to avoid timezone issues
+                              const now = new Date()
+                              const todayLocal = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+                              const isToday = nextAppointment.scheduled_date === todayLocal
                               const isConfirmed = nextAppointment.status === 'confirmed'
                               if (isToday && isConfirmed) {
                                 return <Badge variant="success" className="bg-emerald-500 text-white">Arriving Today</Badge>
@@ -247,55 +251,70 @@ export default function DashboardPage() {
                             })()}
                           </div>
 
-                          {/* Main Content */}
-                          <div className="flex flex-col lg:flex-row lg:items-center gap-6">
-                            {/* Date Block - Hero Element */}
-                            <div className="flex items-center gap-4">
-                              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#079447] to-emerald-600 flex flex-col items-center justify-center text-white shadow-lg shadow-emerald-200">
-                                <span className="text-2xl font-bold leading-none">
-                                  {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'd')}
-                                </span>
-                                <span className="text-xs font-medium uppercase tracking-wide opacity-90">
-                                  {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'MMM')}
-                                </span>
-                              </div>
-                              <div>
-                                <p className="text-xl font-bold text-[#1C294E]">
-                                  {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'EEEE')}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                  {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'MMMM d, yyyy')}
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="hidden lg:block w-px h-14 bg-gray-200" />
-
-                            {/* Details */}
-                            <div className="flex flex-wrap gap-x-8 gap-y-3">
-                              <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-gray-400" />
-                                <div>
-                                  <p className="text-xs text-gray-400 uppercase font-medium">Window</p>
-                                  <p className="text-sm font-semibold text-[#1C294E]">
-                                    {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
+                          {/* Main Content - Stacked on mobile, horizontal on desktop */}
+                          <div className="flex flex-col gap-5">
+                            {/* Date & Details Row */}
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-6">
+                              {/* Date Section - Centered stack on mobile, horizontal on lg+ */}
+                              <div className="flex flex-col items-center lg:flex-row lg:items-center gap-3 lg:gap-4">
+                                {/* Date Block - Hero Element */}
+                                <div className="w-20 h-20 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-[#079447] to-emerald-600 flex flex-col items-center justify-center text-white shadow-lg shadow-emerald-200">
+                                  <span className="text-3xl lg:text-2xl font-bold leading-none">
+                                    {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'd')}
+                                  </span>
+                                  <span className="text-sm lg:text-xs font-medium uppercase tracking-wide opacity-90">
+                                    {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'MMM')}
+                                  </span>
+                                </div>
+                                {/* Day & Full Date */}
+                                <div className="text-center lg:text-left">
+                                  <p className="text-2xl lg:text-xl font-bold text-[#1C294E]">
+                                    {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'EEEE')}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    {format(new Date(nextAppointment.scheduled_date + 'T00:00:00'), 'MMMM d, yyyy')}
                                   </p>
                                 </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-gray-400" />
-                                <div>
-                                  <p className="text-xs text-gray-400 uppercase font-medium">Service</p>
-                                  <p className="text-sm font-semibold text-[#1C294E]">{formatServiceType(nextAppointment.service_type)}</p>
+
+                              {/* Divider - only on desktop */}
+                              <div className="hidden lg:block w-px h-14 bg-gray-200" />
+
+                              {/* Details - 2-column grid on mobile, inline on desktop */}
+                              <div className="grid grid-cols-2 lg:flex lg:gap-8 gap-3 w-full lg:w-auto">
+                                <div className="flex items-center gap-3 p-3 lg:p-0 bg-gray-50 lg:bg-transparent rounded-xl">
+                                  <Clock className="w-5 h-5 lg:w-4 lg:h-4 text-[#079447] lg:text-gray-400" />
+                                  <div>
+                                    <p className="text-xs text-gray-400 uppercase font-medium">Window</p>
+                                    <p className="text-sm font-semibold text-[#1C294E]">
+                                      {formatTime(nextAppointment.scheduled_time_start)} - {formatTime(nextAppointment.scheduled_time_end)}
+                                    </p>
+                                  </div>
                                 </div>
+                                <div className="flex items-center gap-3 p-3 lg:p-0 bg-gray-50 lg:bg-transparent rounded-xl">
+                                  <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-[#079447] lg:text-gray-400" />
+                                  <div>
+                                    <p className="text-xs text-gray-400 uppercase font-medium">Service</p>
+                                    <p className="text-sm font-semibold text-[#1C294E]">{formatServiceType(nextAppointment.service_type)}</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Action Button - Desktop only (inline) */}
+                              <div className="hidden lg:block lg:ml-auto">
+                                <Link href="/portal/appointments">
+                                  <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#079447] text-white font-medium text-sm hover:bg-emerald-600 transition-colors duration-200 shadow-sm">
+                                    View Details
+                                    <ChevronRight className="w-4 h-4" />
+                                  </span>
+                                </Link>
                               </div>
                             </div>
 
-                            {/* Action Button */}
-                            <div className="lg:ml-auto">
+                            {/* Action Button - Mobile only (full width) */}
+                            <div className="lg:hidden">
                               <Link href="/portal/appointments">
-                                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#079447] text-white font-medium text-sm hover:bg-emerald-600 transition-colors duration-200 shadow-sm">
+                                <span className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#079447] text-white font-medium text-sm hover:bg-emerald-600 transition-colors duration-200 shadow-sm">
                                   View Details
                                   <ChevronRight className="w-4 h-4" />
                                 </span>

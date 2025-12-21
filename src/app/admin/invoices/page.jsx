@@ -79,6 +79,9 @@ export default function InvoicesPage() {
 
   // Edit draft mode
   const [editingInvoice, setEditingInvoice] = useState(null)
+  
+  // Email notification toggle
+  const [sendNotificationEmail, setSendNotificationEmail] = useState(true)
   // Load data
   useEffect(() => {
     loadInvoices()
@@ -183,6 +186,7 @@ export default function InvoicesPage() {
 
   const openViewModal = (invoice) => {
     setSelectedInvoice(invoice)
+    setSendNotificationEmail(true) // Reset to default ON
     setShowViewModal(true)
   }
 
@@ -413,15 +417,16 @@ export default function InvoicesPage() {
       const response = await fetch('/api/admin/invoices/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invoiceId: selectedInvoice.id }),
+        body: JSON.stringify({ invoiceId: selectedInvoice.id, sendNotificationEmail }),
       })
 
+      const result = await response.json()
+
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Failed to send invoice')
+        throw new Error(result.error || 'Failed to send invoice')
       }
 
-      toast.success('Invoice sent successfully!')
+      toast.success(result.notificationEmailSent ? 'Invoice sent! Customer notified.' : 'Invoice sent!')
       setShowViewModal(false)
       loadInvoices()
     } catch (error) {
@@ -907,7 +912,7 @@ export default function InvoicesPage() {
                               {invoice.service_date && (
                                 <div>
                                   <p className="text-gray-400 text-xs mb-0.5">Service Date</p>
-                                  <p className="font-semibold text-[#079447]">
+                                  <p className="font-semibold text-gray-700">
                                     {format(parseISO(invoice.service_date), 'MMM d, yyyy')}
                                   </p>
                                 </div>
@@ -943,13 +948,13 @@ export default function InvoicesPage() {
                                   const response = await fetch('/api/admin/invoices/send', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ invoiceId: invoice.id }),
+                                    body: JSON.stringify({ invoiceId: invoice.id, sendNotificationEmail: true }),
                                   })
+                                  const result = await response.json()
                                   if (!response.ok) {
-                                    const data = await response.json()
-                                    throw new Error(data.error || 'Failed to send invoice')
+                                    throw new Error(result.error || 'Failed to send invoice')
                                   }
-                                  toast.success('Invoice sent!')
+                                  toast.success(result.notificationEmailSent ? 'Invoice sent! Customer notified.' : 'Invoice sent!')
                                   loadInvoices()
                                 } catch (error) {
                                   toast.error(error.message || 'Failed to send invoice')
@@ -1088,8 +1093,8 @@ export default function InvoicesPage() {
             {/* Service & Due Dates */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {selectedInvoice.service_date && (
-                <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl">
-                  <CheckCircle className="w-5 h-5 text-[#079447]" />
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                  <Clock className="w-5 h-5 text-gray-400" />
                   <div>
                     <p className="text-xs text-gray-500">Service Date</p>
                     <p className="font-semibold text-[#1C294E]">
@@ -1173,6 +1178,20 @@ export default function InvoicesPage() {
             <div className="space-y-3 pt-4 border-t border-gray-200">
               {selectedInvoice.status === 'draft' && (
                 <>
+                  {/* Email Notification Toggle */}
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Send notification email</p>
+                      <p className="text-xs text-gray-500">Email customer when invoice is sent</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSendNotificationEmail(!sendNotificationEmail)}
+                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#079447] focus:ring-offset-2 ${sendNotificationEmail ? 'bg-[#079447]' : 'bg-gray-200'}`}
+                    >
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${sendNotificationEmail ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </button>
+                  </div>
                   <div className="grid grid-cols-2 gap-3">
                     <Button variant="secondary" fullWidth onClick={() => openEditModal(selectedInvoice)}>
                       <FileText className="w-5 h-5" />
@@ -1531,6 +1550,7 @@ export default function InvoicesPage() {
               >
                 <input
                   type="radio"
+                  id={`payment-method-${method}`}
                   name="paymentMethod"
                   value={method}
                   checked={paymentMethod === method}

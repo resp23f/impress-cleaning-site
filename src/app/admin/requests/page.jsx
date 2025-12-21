@@ -161,26 +161,25 @@ service_addresses!address_id(*)
     const sanitizedReason = reason ? sanitizeText(reason)?.slice(0, 500) : null
     setProcessing(true)
     try {
-      const { error } = await supabase
-        .from('service_requests')
-        .update({
-          status: 'declined',
-          admin_notes: sanitizedReason,
-          reviewed_at: new Date().toISOString(),
-        })
-        .eq('id', selectedRequest.id)
-      if (error) throw error
-      // TODO: Send email to customer
-      // await fetch('/api/send-email/request-declined', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ requestId: selectedRequest.id, reason })
-      // })
-      toast.success('Service request declined')
+      const response = await fetch('/api/admin/decline-service-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requestId: selectedRequest.id,
+          reason: sanitizedReason,
+        }),
+      })
+      
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to decline request')
+      }
+      toast.success('Service request declined - customer notified')
       setShowModal(false)
       loadRequests()
     } catch (error) {
       console.error('Error declining request:', error)
-      toast.error('Failed to decline request')
+      toast.error(error.message || 'Failed to decline request')
     } finally {
       setProcessing(false)
     }
@@ -276,6 +275,11 @@ service_addresses!address_id(*)
                               {req.service_addresses.unit && `, ${req.service_addresses.unit}`}
                               {', '}
                               {req.service_addresses.city}, {req.service_addresses.state}
+                              {!req.service_addresses.is_primary && (
+                                <Badge variant="warning" size="sm" className="ml-2">
+                                  Secondary Address
+                                </Badge>
+                              )}
                             </span>
                           </div>
                         )}
@@ -396,6 +400,37 @@ service_addresses!address_id(*)
                 </div>
               )}
             </div>
+
+            {/* Service Address */}
+            {selectedRequest.service_addresses && (
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                  Service Address
+                  {!selectedRequest.service_addresses.is_primary && (
+                    <Badge variant="warning" size="sm" className="ml-2">
+                      Secondary Address
+                    </Badge>
+                  )}
+                </h3>
+                {!selectedRequest.service_addresses.is_primary && (
+                  <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p className="text-sm text-amber-800 font-medium">
+                      ⚠️ Customer requested service at a secondary location, not their primary address.
+                    </p>
+                  </div>
+                )}
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <p className="text-sm font-medium text-[#1C294E]">
+                    {selectedRequest.service_addresses.street_address}
+                    {selectedRequest.service_addresses.unit && `, ${selectedRequest.service_addresses.unit}`}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {selectedRequest.service_addresses.city}, {selectedRequest.service_addresses.state} {selectedRequest.service_addresses.zip_code}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Schedule Appointment */}
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3">

@@ -178,7 +178,7 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                       {invoice?.service_date && (
                         <div className="flex justify-between">
                           <span className="text-gray-500">Service Date</span>
-                          <span className="font-medium text-[#079447]">{formatDate(invoice.service_date)}</span>
+                          <span className="font-medium text-gray-900">{formatDate(invoice.service_date)}</span>
                         </div>
                       )}
                       <div className="flex justify-between">

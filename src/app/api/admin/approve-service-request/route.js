@@ -120,6 +120,35 @@ export async function POST(request) {
 
       if (appointmentError) throw appointmentError
       createdAppointment = newAppointment
+
+      // Create portal notification for confirmed appointment
+      if (newAppointment?.id) {
+        try {
+          const serviceLabelMap = {
+            standard: 'Standard Cleaning',
+            deep: 'Deep Cleaning',
+            move_in_out: 'Move In/Out Cleaning',
+            post_construction: 'Post-Construction Cleaning',
+            office: 'Office Cleaning',
+          }
+          const serviceLabel = serviceLabelMap[sanitizedAppointment.service_type] || sanitizedAppointment.service_type
+          const formattedDate = sanitizedAppointment.scheduled_date
+            ? new Date(sanitizedAppointment.scheduled_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+            : 'your requested date'
+
+          await supabaseAdmin.from('customer_notifications').insert({
+            user_id: sanitizedAppointment.customer_id,
+            type: 'appointment_confirmed',
+            title: 'Service Request Approved!',
+            message: `Your ${serviceLabel} has been scheduled for ${formattedDate}`,
+            link: '/portal/appointments',
+            reference_id: newAppointment.id,
+            reference_type: 'appointment',
+          })
+        } catch (notifError) {
+          console.error('Failed to create appointment notification:', notifError)
+        }
+      }
     }
 
     // Get appointment details for email

@@ -314,7 +314,7 @@ export default function InvoicesPage() {
                                 Issued: {formatDateLocal(invoice.issue_date || invoice.created_at)}
                               </p>
                               {invoice.service_date && (
-                                <p className="text-sm text-[#079447] font-medium">
+                                <p className="text-sm text-gray-600">
                                   Service: {formatDateLocal(invoice.service_date)}
                                 </p>
                               )}

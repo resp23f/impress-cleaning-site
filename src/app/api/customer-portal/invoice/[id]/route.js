@@ -54,9 +54,9 @@ const { id: invoiceId } = await params
     ? invoiceRow.service_date.slice(0, 10)
     : null,
     
-    // Use created_at as issue date, normalized to YYYY-MM-DD
+    // Use created_at as issue date, converted to Central Time
     issue_date: invoiceRow.created_at
-    ? invoiceRow.created_at.slice(0, 10)
+    ? new Date(invoiceRow.created_at).toLocaleDateString('en-CA', { timeZone: 'America/Chicago' })
     : null,
     
     // Always pass due_date directly from DB, also normalized to YYYY-MM-DD
