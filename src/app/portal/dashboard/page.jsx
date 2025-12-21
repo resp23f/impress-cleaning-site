@@ -492,7 +492,7 @@ hover:text-emerald-600 ${styles.smoothTransition}
                                       </div>
                                       <div className="flex items-center justify-between mt-1">
                                         <p className="text-sm text-gray-500">
-                                          {format(new Date(invoice.created_at), 'MMM d, yyyy')}
+                                          {invoice.due_date ? `Due ${format(new Date(invoice.due_date + 'T00:00:00'), 'MMM d, yyyy')}` : ''}
                                         </p>
                                         <span className={`
                       text-xs font-semibold px-2 py-0.5 rounded-full
