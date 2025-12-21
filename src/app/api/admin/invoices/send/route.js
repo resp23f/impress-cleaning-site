@@ -213,9 +213,10 @@ export async function POST(request) {
       }
     })
     
-// 6. Finalize and send the Stripe Invoice (triggers Stripe email)
-    const finalizedInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id)
-    const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id)
+// 6. Finalize the Stripe Invoice (do NOT call sendInvoice - we use our own email)
+    const finalizedInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id, {
+      auto_advance: false  // Prevent Stripe from auto-sending emails
+    })
     
 // 7. Update Supabase invoice with Stripe details
     // Check if webhook already updated it (race condition)
@@ -233,7 +234,7 @@ export async function POST(request) {
       const { error: updateError } = await supabaseAdmin
         .from('invoices')
         .update({
-          stripe_invoice_id: sentInvoice.id,
+          stripe_invoice_id: finalizedInvoice.id,
           status: 'sent',
           due_date: actualDueDate,
           updated_at: new Date().toISOString()
@@ -297,8 +298,8 @@ await supabaseAdmin
 
     return NextResponse.json({
       success: true,
-      stripeInvoiceId: sentInvoice.id,
-      hostedInvoiceUrl: sentInvoice.hosted_invoice_url,
+      stripeInvoiceId: finalizedInvoice.id,
+      hostedInvoiceUrl: finalizedInvoice.hosted_invoice_url,
       notificationEmailSent: emailSent
     })
   } catch (error) {
