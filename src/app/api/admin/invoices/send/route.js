@@ -85,7 +85,7 @@ export async function POST(request) {
       )
     }
 
-// 3. Create or retrieve Stripe customer
+    // 3. Create or retrieve Stripe customer
     // First, verify existing stripe_customer_id is still valid
     if (stripeCustomerId) {
       try {
@@ -136,46 +136,26 @@ export async function POST(request) {
           .eq('id', customerId)
       }
     }
-    
+
     // 4. Create invoice items FIRST (as pending items for the customer)
     const lineItems = invoice.line_items || []
 
-    // Format service date for display (e.g., "December 15, 2024")
-    let serviceDateStr = ''
-    if (invoice.service_date) {
-      const serviceDate = new Date(invoice.service_date + 'T00:00:00')
-      serviceDateStr = serviceDate.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-      })
-    }
-
     if (lineItems.length > 0) {
       for (const item of lineItems) {
-        // Append service date to description if present
-        let description = sanitizeText(item.description)?.slice(0, 200) || 'Service'
-        if (serviceDateStr) {
-          description = `${description} - ${serviceDateStr}`
-        }
-        
+        const description = sanitizeText(item.description)?.slice(0, 250) || 'Service'
+
         await stripe.invoiceItems.create({
           customer: stripeCustomerId,
-          description: description.slice(0, 250), // Stripe limit
+          description: description,
           amount: Math.round(parseFloat(item.rate) * (item.quantity || 1) * 100),
           currency: 'usd'
         })
       }
     } else {
       // Fallback: create single line item from invoice amount
-      let description = `Invoice ${invoice.invoice_number}`
-      if (serviceDateStr) {
-        description = `${description} - ${serviceDateStr}`
-      }
-      
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
-        description: description,
+        description: `Invoice ${invoice.invoice_number}`,
         amount: Math.round(parseFloat(invoice.amount) * 100),
         currency: 'usd'
       })
@@ -191,7 +171,7 @@ export async function POST(request) {
       })
     }
 
-// 5. Create Stripe Invoice (includes pending invoice items automatically)
+    // 5. Create Stripe Invoice (includes pending invoice items automatically)
     // Calculate days until due with timezone-safe date handling
     let daysUntilDue = 7 // default
     if (invoice.due_date) {
@@ -203,7 +183,7 @@ export async function POST(request) {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
       daysUntilDue = Math.max(1, diffDays) // Stripe requires at least 1 day
     }
-    
+
     const stripeInvoice = await stripe.invoices.create({
       customer: stripeCustomerId,
       number: invoice.invoice_number,
@@ -215,13 +195,13 @@ export async function POST(request) {
         invoice_number: invoice.invoice_number
       }
     })
-    
-// 6. Finalize the Stripe Invoice (do NOT call sendInvoice - we use our own email)
+
+    // 6. Finalize the Stripe Invoice (do NOT call sendInvoice - we use our own email)
     const finalizedInvoice = await stripe.invoices.finalizeInvoice(stripeInvoice.id, {
       auto_advance: false  // Prevent Stripe from auto-sending emails
     })
-    
-// 7. Update Supabase invoice with Stripe details
+
+    // 7. Update Supabase invoice with Stripe details
     // Check if webhook already updated it (race condition)
     const { data: currentInvoice } = await supabaseAdmin
       .from('invoices')
@@ -257,7 +237,7 @@ export async function POST(request) {
           .eq('id', invoice.id)
       }
     }
-    
+
     // 8. Create customer notification
     if (customerId) {
       const formattedAmount = new Intl.NumberFormat('en-US', {
@@ -265,7 +245,7 @@ export async function POST(request) {
         currency: 'USD'
       }).format(invoice.total || invoice.amount)
 
-await supabaseAdmin
+      await supabaseAdmin
         .from('customer_notifications')
         .insert({
           user_id: customerId,
@@ -276,23 +256,23 @@ await supabaseAdmin
           reference_id: invoice.id,
           reference_type: 'invoice'
         })
-            }
+    }
 
-    
+
     // 9. Send notification email (if enabled)
     let emailSent = false
     if (sendNotificationEmail && invoice.profiles?.email && invoice.profiles?.first_name) {
       try {
         const firstName = invoice.profiles.first_name
         const emailHtml = generateInvoiceReadyEmail(firstName)
-        
+
         const { error: emailError } = await resend.emails.send({
           from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
           to: invoice.profiles.email,
-          subject: `${firstName}, You Have a New Invoice`,
+          subject: `${firstName}, You have a new invoice`,
           html: emailHtml,
         })
-        
+
         emailSent = !emailError
         if (emailError) {
           console.error('Failed to send notification email:', emailError)
@@ -321,7 +301,7 @@ await supabaseAdmin
 // Email template for invoice notification
 function generateInvoiceReadyEmail(firstName) {
   const loginLink = `${SITE_URL}/auth/login`
-  
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>

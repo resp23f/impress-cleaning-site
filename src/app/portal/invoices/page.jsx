@@ -310,19 +310,14 @@ export default function InvoicesPage() {
                                   </Badge>
                                 )}
                               </div>
-                              <p className="text-sm text-gray-600">
-                                Issued: {formatDateLocal(invoice.issue_date || invoice.created_at)}
-                              </p>
-                              {invoice.service_date && (
-                                <p className="text-sm text-gray-600">
-                                  Service: {formatDateLocal(invoice.service_date)}
-                                </p>
-                              )}
-                              {invoice.due_date && (
-                                <p className="text-sm text-gray-600">
-                                  Due: {formatDateLocal(invoice.due_date)}
-                                </p>
-                              )}
+                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
+                                {invoice.service_date && (
+                                  <span>Service: {formatDateLocal(invoice.service_date)}</span>
+                                )}
+                                {invoice.due_date && (
+                                  <span>Due: {formatDateLocal(invoice.due_date)}</span>
+                                )}
+                              </div>
                             </div>
                           </div>
 
