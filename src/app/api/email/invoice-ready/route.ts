@@ -58,7 +58,7 @@ function generateInvoiceReadyEmail(firstName: string): string {
         <table role="presentation" width="600" cellspacing="0" cellpadding="0" align="center" style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
           <!-- LOGO HEADER -->
           <tr>
-            <td align="center" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);padding:50px 0;">
+            <td align="center" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);padding:35px 0;">
               <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png" alt="Impress Cleaning Services" width="200" style="display:block;width:200px;height:auto;" />
             </td>
           </tr>
@@ -79,9 +79,9 @@ function generateInvoiceReadyEmail(firstName: string): string {
           <!-- HELP BOX -->
           <tr>
             <td style="padding:32px;">
-              <table role="presentation" width="240" cellspacing="0" cellpadding="0" align="center" style="background-color:#f3f4f6;border-radius:10px;">
+              <table role="presentation" width="320" cellspacing="0" cellpadding="0" align="center" style="background-color:#f3f4f6;border-radius:10px;">
                 <tr>
-                  <td style="padding:18px 20px;text-align:center;">
+                  <td style="padding:18px 24px;text-align:center;">
                     <p style="margin:0 0 4px 0;font-weight:600;font-size:12px;color:#374151;">Have a question?</p>
                     <p style="margin:4px 0 0;font-size:12px;"><a href="mailto:billing@impressyoucleaning.com" style="color:#079447;text-decoration:none;border-bottom:1px solid #079447;">Reach out to our team</a></p>
                   </td>
