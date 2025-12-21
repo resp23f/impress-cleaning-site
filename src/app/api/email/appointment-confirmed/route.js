@@ -18,31 +18,13 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const emailHtml = generateAppointmentConfirmedEmail(firstName)
+    const loginLink = `${SITE_URL}/auth/login`
 
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: customerEmail,
       subject: `${firstName}, Your Appointment Is Confirmed`,
-      html: emailHtml,
-    })
-
-    if (error) {
-      console.error('Resend error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error sending appointment confirmation email:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
-}
-
-function generateAppointmentConfirmedEmail(firstName) {
-  const loginLink = `${SITE_URL}/auth/login`
-
-  return `<!DOCTYPE html>
+      html: `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -64,14 +46,14 @@ function generateAppointmentConfirmedEmail(firstName) {
           <tr>
             <td style="padding:32px 32px 8px;">
               <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">APPOINTMENT CONFIRMED</p>
-              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, You're All Set</h1>
+              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Your Appointment Is Confirmed</h1>
               <p style="font-size:15px;line-height:1.6;color:#4b5563;margin:0;">Your cleaning appointment has been confirmed. Sign in to your customer portal to view the details including date, time, and location.</p>
             </td>
           </tr>
           <!-- BUTTON -->
           <tr>
             <td style="padding:24px 32px 8px;text-align:center;">
-              <a href="${loginLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">VIEW APPOINTMENT</a>
+              <a href="${loginLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">LOG IN NOW</a>
             </td>
           </tr>
           <!-- HELP BOX -->
@@ -80,8 +62,8 @@ function generateAppointmentConfirmedEmail(firstName) {
               <table role="presentation" width="320" cellspacing="0" cellpadding="0" align="center" style="background-color:#f3f4f6;border-radius:10px;">
                 <tr>
                   <td style="padding:18px 24px;text-align:center;">
-                    <p style="margin:0 0 4px 0;font-weight:600;font-size:12px;color:#374151;">Need to reschedule?</p>
-                    <p style="margin:4px 0 0;font-size:12px;"><a href="mailto:support@impressyoucleaning.com" style="color:#079447;text-decoration:none;border-bottom:1px solid #079447;">Contact our team</a></p>
+                    <p style="margin:0 0 4px 0;font-weight:600;font-size:12px;color:#374151;">Have a question?</p>
+                    <p style="margin:4px 0 0;font-size:12px;"><a href="mailto:support@impressyoucleaning.com" style="color:#079447;text-decoration:none;border-bottom:1px solid #079447;">Reach out to our team</a></p>
                   </td>
                 </tr>
               </table>
@@ -100,5 +82,17 @@ function generateAppointmentConfirmedEmail(firstName) {
     </tr>
   </table>
 </body>
-</html>`
+</html>`,
+    })
+
+    if (error) {
+      console.error('Resend error:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error sending appointment confirmation email:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 }
