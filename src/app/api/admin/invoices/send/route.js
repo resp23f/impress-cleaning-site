@@ -269,7 +269,7 @@ export async function POST(request) {
         const { error: emailError } = await resend.emails.send({
           from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
           to: invoice.profiles.email,
-          subject: `${firstName}, You have a new invoice`,
+          subject: `${firstName}, You Have a New Invoice`,
           html: emailHtml,
         })
 
@@ -324,7 +324,7 @@ function generateInvoiceReadyEmail(firstName) {
           <tr>
             <td style="padding:32px 32px 8px;">
               <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">NEW INVOICE</p>
-              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, You Have a New Invoice</h1>
+              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Your Invoice is Ready to View</h1>
               <p style="font-size:15px;line-height:1.6;color:#4b5563;margin:0;">A new invoice has been added to your account. Sign in to your customer portal to view the details and make a payment.</p>
             </td>
           </tr>
@@ -351,8 +351,8 @@ function generateInvoiceReadyEmail(firstName) {
           <tr>
             <td style="padding:28px 32px;border-top:1px solid #e5e7eb;">
               <p style="font-size:11px;font-weight:600;color:#6b7280;margin:2px 0;">Impress Cleaning Services, LLC</p>
-              <p style="font-size:10px;color:#6b7280;margin:2px 0;">1530 Sun City Blvd, Suite 120-403, Georgetown, TX 78633</p>
-              <p style="font-size:10px;color:#6b7280;margin:2px 0;">© 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
+              <p style="font-size:10px;color:#6b7280;margin:2px 0;">1530 Sun City Blvd, Suite 120&#8209;403, Georgetown,&nbsp;TX&nbsp;78633</p>
+              <p style="font-size:10px;color:#6b7280;margin:2px 0;">&copy; 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
             </td>
           </tr>
         </table>
