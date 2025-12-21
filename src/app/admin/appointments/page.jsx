@@ -92,6 +92,7 @@ export default function AppointmentsPage() {
   })
   const [selectedCustomerAddresses, setSelectedCustomerAddresses] = useState([])
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
+  const [sendNotificationEmail, setSendNotificationEmail] = useState(true)
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const d = new Date()
     d.setDate(1)
@@ -266,6 +267,7 @@ export default function AppointmentsPage() {
       special_instructions: '',
     })
     setIsCalendarOpen(false)
+    setSendNotificationEmail(true) // Reset to default ON
     setShowCreateModal(true)
   }
 
@@ -297,13 +299,14 @@ export default function AppointmentsPage() {
           scheduled_time_end: timeConfig.end,
           special_instructions: special_instructions ? sanitizeText(special_instructions.trim()) : null,
           status: 'confirmed',
+          sendNotificationEmail,
         }),
       })
 
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to create appointment')
 
-      toast.success('Appointment created successfully!')
+      toast.success(data.notificationEmailSent ? 'Appointment created! Customer notified.' : 'Appointment created successfully!')
       setShowCreateModal(false)
       loadAppointments()
     } catch (error) {
@@ -1026,6 +1029,21 @@ export default function AppointmentsPage() {
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/20 transition-all resize-none"
               placeholder="Any special notes or instructions..."
             />
+          </div>
+
+          {/* Email Notification Toggle */}
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+            <div>
+              <p className="text-sm font-medium text-gray-900">Send notification email</p>
+              <p className="text-xs text-gray-500">Email customer when appointment is created</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSendNotificationEmail(!sendNotificationEmail)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#079447] focus:ring-offset-2 ${sendNotificationEmail ? 'bg-[#079447]' : 'bg-gray-200'}`}
+            >
+              <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${sendNotificationEmail ? 'translate-x-5' : 'translate-x-0'}`} />
+            </button>
           </div>
 
           {/* Actions */}
