@@ -309,7 +309,8 @@ CREATE TABLE IF NOT EXISTS "public"."invoices" (
     "stripe_invoice_id" "text",
     "disputed" boolean DEFAULT false,
     "refund_amount" numeric(10,2) DEFAULT 0,
-    "refund_reason" "text"
+    "refund_reason" "text",
+    "service_date" "date"
 );
 
 

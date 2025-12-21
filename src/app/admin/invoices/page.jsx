@@ -58,6 +58,7 @@ export default function InvoicesPage() {
   // Create invoice form
   const [newInvoice, setNewInvoice] = useState({
     customer_id: '',
+    service_date: '',
     due_date: '',
     notes: '',
     tax_rate: '8.25',
@@ -191,6 +192,7 @@ export default function InvoicesPage() {
     const today = new Date().toISOString().split('T')[0]
     setNewInvoice({
       customer_id: '',
+      service_date: '',
       due_date: today,
       notes: '',
       tax_rate: '8.25',
@@ -204,6 +206,7 @@ export default function InvoicesPage() {
     setEditingInvoice(invoice)
     setNewInvoice({
       customer_id: invoice.customer_id || '',
+      service_date: invoice.service_date || '',
       due_date: invoice.due_date || '',
       notes: invoice.notes || '',
       tax_rate: invoice.tax_rate?.toString() || '0',
@@ -285,6 +288,7 @@ export default function InvoicesPage() {
         tax_rate: taxRate,
         tax_amount: taxAmount,
         total,
+        service_date: newInvoice.service_date || null,
         due_date: newInvoice.due_date || null,
         notes: newInvoice.notes ? sanitizeText(newInvoice.notes.trim()) : null,
         line_items: newInvoice.line_items.map((item) => ({
@@ -335,6 +339,7 @@ export default function InvoicesPage() {
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total,
+          service_date: newInvoice.service_date || null,
           due_date: newInvoice.due_date || null,
           notes: newInvoice.notes ? sanitizeText(newInvoice.notes.trim()) : null,
           line_items: newInvoice.line_items.map((item) => ({
@@ -892,13 +897,21 @@ export default function InvoicesPage() {
                               {invoice.profiles?.full_name || invoice.profiles?.email || 'Unknown Customer'}
                             </p>
 
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
                               <div>
                                 <p className="text-gray-400 text-xs mb-0.5">Amount</p>
                                 <p className="font-bold text-[#1C294E]">
                                   ${parseFloat(invoice.total ?? invoice.amount ?? 0).toFixed(2)}
                                 </p>
                               </div>
+                              {invoice.service_date && (
+                                <div>
+                                  <p className="text-gray-400 text-xs mb-0.5">Service Date</p>
+                                  <p className="font-semibold text-[#079447]">
+                                    {format(parseISO(invoice.service_date), 'MMM d, yyyy')}
+                                  </p>
+                                </div>
+                              )}
                               <div>
                                 <p className="text-gray-400 text-xs mb-0.5">Created</p>
                                 <p className="font-semibold text-gray-700">
@@ -1072,18 +1085,31 @@ export default function InvoicesPage() {
               </div>
             )}
 
-            {/* Due Date */}
-            {selectedInvoice.due_date && (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                <Clock className="w-5 h-5 text-gray-400" />
-                <div>
-                  <p className="text-xs text-gray-500">Due Date</p>
-                  <p className="font-semibold text-[#1C294E]">
-                    {format(parseISO(selectedInvoice.due_date), 'MMMM d, yyyy')}
-                  </p>
+            {/* Service & Due Dates */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {selectedInvoice.service_date && (
+                <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl">
+                  <CheckCircle className="w-5 h-5 text-[#079447]" />
+                  <div>
+                    <p className="text-xs text-gray-500">Service Date</p>
+                    <p className="font-semibold text-[#1C294E]">
+                      {format(parseISO(selectedInvoice.service_date), 'MMMM d, yyyy')}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              {selectedInvoice.due_date && (
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                  <Clock className="w-5 h-5 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Due Date</p>
+                    <p className="font-semibold text-[#1C294E]">
+                      {format(parseISO(selectedInvoice.due_date), 'MMMM d, yyyy')}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Notes */}
             {selectedInvoice.notes && (
@@ -1385,6 +1411,14 @@ export default function InvoicesPage() {
               </div>
             )}
           </div>
+
+          {/* Service Date */}
+          <Input
+            type="date"
+            label="Service Date"
+            value={newInvoice.service_date}
+            onChange={(e) => setNewInvoice({ ...newInvoice, service_date: e.target.value })}
+          />
 
           {/* Due Date */}
           <Input

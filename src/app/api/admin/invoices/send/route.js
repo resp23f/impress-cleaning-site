@@ -137,20 +137,42 @@ export async function POST(request) {
     // 4. Create invoice items FIRST (as pending items for the customer)
     const lineItems = invoice.line_items || []
 
+    // Format service date for display (e.g., "December 15, 2024")
+    let serviceDateStr = ''
+    if (invoice.service_date) {
+      const serviceDate = new Date(invoice.service_date + 'T00:00:00')
+      serviceDateStr = serviceDate.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      })
+    }
+
     if (lineItems.length > 0) {
       for (const item of lineItems) {
+        // Append service date to description if present
+        let description = sanitizeText(item.description)?.slice(0, 200) || 'Service'
+        if (serviceDateStr) {
+          description = `${description} - ${serviceDateStr}`
+        }
+        
         await stripe.invoiceItems.create({
           customer: stripeCustomerId,
-          description: sanitizeText(item.description)?.slice(0, 200) || 'Service',
+          description: description.slice(0, 250), // Stripe limit
           amount: Math.round(parseFloat(item.rate) * (item.quantity || 1) * 100),
           currency: 'usd'
         })
       }
     } else {
       // Fallback: create single line item from invoice amount
+      let description = `Invoice ${invoice.invoice_number}`
+      if (serviceDateStr) {
+        description = `${description} - ${serviceDateStr}`
+      }
+      
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
-        description: `Invoice ${invoice.invoice_number}`,
+        description: description,
         amount: Math.round(parseFloat(invoice.amount) * 100),
         currency: 'usd'
       })

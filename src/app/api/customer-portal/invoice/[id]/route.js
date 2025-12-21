@@ -49,6 +49,11 @@ const { id: invoiceId } = await params
     invoice_number: invoiceRow.invoice_number,
     status: invoiceRow.status || 'draft',
     
+    // Service date - when the cleaning was performed
+    service_date: invoiceRow.service_date
+    ? invoiceRow.service_date.slice(0, 10)
+    : null,
+    
     // Use created_at as issue date, normalized to YYYY-MM-DD
     issue_date: invoiceRow.created_at
     ? invoiceRow.created_at.slice(0, 10)

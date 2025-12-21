@@ -312,7 +312,13 @@ export default function InvoicesPage() {
                               </div>
                               <p className="text-sm text-gray-600">
                                 Issued: {formatDateLocal(invoice.issue_date || invoice.created_at)}
-                              </p>                          {invoice.due_date && (
+                              </p>
+                              {invoice.service_date && (
+                                <p className="text-sm text-[#079447] font-medium">
+                                  Service: {formatDateLocal(invoice.service_date)}
+                                </p>
+                              )}
+                              {invoice.due_date && (
                                 <p className="text-sm text-gray-600">
                                   Due: {formatDateLocal(invoice.due_date)}
                                 </p>

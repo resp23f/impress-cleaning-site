@@ -460,6 +460,7 @@ export type Database = {
           payment_method: Database["public"]["Enums"]["payment_method"] | null
           refund_amount: number | null
           refund_reason: string | null
+          service_date: string | null
           status: Database["public"]["Enums"]["invoice_status"]
           stripe_invoice_id: string | null
           stripe_payment_intent_id: string | null
@@ -485,6 +486,7 @@ export type Database = {
           payment_method?: Database["public"]["Enums"]["payment_method"] | null
           refund_amount?: number | null
           refund_reason?: string | null
+          service_date?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           stripe_invoice_id?: string | null
           stripe_payment_intent_id?: string | null
@@ -510,6 +512,7 @@ export type Database = {
           payment_method?: Database["public"]["Enums"]["payment_method"] | null
           refund_amount?: number | null
           refund_reason?: string | null
+          service_date?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           stripe_invoice_id?: string | null
           stripe_payment_intent_id?: string | null
@@ -903,6 +906,7 @@ export type Database = {
           payment_method: Database["public"]["Enums"]["payment_method"] | null
           refund_amount: number | null
           refund_reason: string | null
+          service_date: string | null
           status: Database["public"]["Enums"]["invoice_status"]
           stripe_invoice_id: string | null
           stripe_payment_intent_id: string | null
@@ -937,6 +941,7 @@ export type Database = {
           payment_method: Database["public"]["Enums"]["payment_method"] | null
           refund_amount: number | null
           refund_reason: string | null
+          service_date: string | null
           status: Database["public"]["Enums"]["invoice_status"]
           stripe_invoice_id: string | null
           stripe_payment_intent_id: string | null

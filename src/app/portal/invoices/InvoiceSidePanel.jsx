@@ -175,6 +175,12 @@ export default function InvoiceSidePanel({ invoiceId, isOpen, onClose }) {
                   <div className="p-3 sm:p-0 bg-gray-50 sm:bg-transparent rounded-lg">
                     <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1.5 sm:mb-2">Details</div>
                     <div className="text-sm space-y-1">
+                      {invoice?.service_date && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-500">Service Date</span>
+                          <span className="font-medium text-[#079447]">{formatDate(invoice.service_date)}</span>
+                        </div>
+                      )}
                       <div className="flex justify-between">
                         <span className="text-gray-500">Issue Date</span>
                         <span className="font-medium text-gray-900">{formatDate(invoice?.issue_date)}</span>
