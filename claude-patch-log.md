@@ -1,4 +1,220 @@
 ================================================================================
+PATCH LOG #7 — 2025-12-22 — Security Hardening, Form Field Fixes & Invoice Email System
+================================================================================
+1. OBJECTIVE
+--------------------------------------------------------------------------------
+Critical security improvements and code quality fixes:
+  - Fix payment integrity vulnerability (client-controlled amount parameter)
+  - Complete key rotation after .env.local git exposure discovery
+  - Add id/name attributes to 40+ form inputs for accessibility
+  - Create custom invoice notification email (replacing Stripe's)
+  - Fix email template body text and contact addresses
+  - CSP updates for Tawk.to compatibility
+  - Storage bucket RLS policies
+
+2. FILES TOUCHED
+--------------------------------------------------------------------------------
+| File | Action |
+|------|--------|
+| src/app/api/stripe/create-payment-intent/route.js | Modified (CRITICAL) |
+| src/app/portal/invoices/[id]/pay/page.jsx | Modified |
+| src/app/api/email/invoice-ready/route.ts | Created (TypeScript) |
+| src/app/api/admin/invoices/send/route.js | Modified |
+| src/app/admin/invoices/page.jsx | Modified |
+| src/app/admin/settings/page.jsx | Modified |
+| src/app/admin/appointments/page.jsx | Modified |
+| src/app/admin/reports/page.jsx | Modified |
+| src/app/portal/settings/page.jsx | Modified |
+| src/app/api/email/appointment-confirmed/route.js | Modified |
+| src/app/api/email/appointment-rescheduled/route.js | Modified |
+| src/app/api/email/appointment-cancelled/route.js | Modified |
+| src/app/api/email/service-request-declined/route.js | Modified |
+| src/app/api/admin/create-appointment/route.js | Modified |
+| next.config.mjs | Modified |
+| Supabase storage policies | SQL executed |
+| Vercel environment variables | Updated |
+
+3. CHANGES BY FILE
+--------------------------------------------------------------------------------
+
+### src/app/api/stripe/create-payment-intent/route.js (CRITICAL SECURITY FIX)
+- REMOVED client-controlled `amount` parameter from request body
+- Now fetches invoice.total directly from database
+- Added validation: rejects if `!invoice.total || invoice.total <= 0`
+- Prevents attacker from sending `amount: 0.01` to pay $500 invoice
+
+BEFORE (VULNERABLE):
+```javascript
+const { invoice_id, amount } = await request.json()
+// amount came from client - attacker could manipulate
+```
+
+AFTER (SECURE):
+```javascript
+const { invoice_id } = await request.json()
+const { data: invoice } = await supabase.from('invoices').select('total, customer_id')...
+const amount = Math.round(invoice.total * 100) // from DB only
+```
+
+### src/app/portal/invoices/[id]/pay/page.jsx
+- Removed `amount` parameter from 4 fetch calls to create-payment-intent
+- API now uses server-side invoice.total
+
+### src/app/api/email/invoice-ready/route.ts (NEW - TypeScript)
+- Custom invoice notification email replacing Stripe's default
+- Uses same template dimensions as other emails (35px logo padding, 28px H1, 15px body)
+- Button text: "LOG IN NOW" → links to /auth/login
+- Contact: billing@impressyoucleaning.com
+- TypeScript with proper types: NextRequest, InvoiceReadyRequest interface
+
+### src/app/api/admin/invoices/send/route.js
+- Added `sendNotificationEmail` boolean parameter (default: true)
+- Fetches customer first_name and email from profiles
+- Calls /api/email/invoice-ready when toggle is ON
+- Returns `notificationEmailSent` in response
+
+### src/app/admin/invoices/page.jsx
+- Added `sendNotificationEmail` state (default: true)
+- Added toggle UI in View Invoice modal for draft invoices
+- Toast shows "Invoice sent! Customer notified." when email sent
+- Radio inputs now have `id={`payment-method-${method}`}` for accessibility
+
+### src/app/admin/settings/page.jsx
+- Added id/name to 30+ form inputs across all tabs:
+  - Business Info: name, phone, email, address fields
+  - Business Hours: all day checkboxes
+  - Service areas, notification preferences
+
+### src/app/admin/appointments/page.jsx
+- Added id/name to 6 inputs:
+  - appointment-search, appointment-status-filter
+  - create-appointment-customer, create-appointment-address
+  - create-appointment-notes, notify-customer checkbox
+
+### src/app/admin/reports/page.jsx
+- Added id/name to date-range-filter select
+
+### src/app/portal/settings/page.jsx
+- Added id/name to mobile status filter and communication preference selects
+
+### Email Template Fixes (5 files)
+All appointment emails updated:
+- Body text: Removed "make a payment" (incorrect for appointments)
+- Contact: Changed to scheduling@impressyoucleaning.com
+
+| File | Body Text | Contact |
+|------|-----------|---------|
+| appointment-confirmed/route.js | "...view the details." | scheduling@ |
+| appointment-rescheduled/route.js | "...view the updated details." | scheduling@ |
+| appointment-cancelled/route.js | "...view the details." | scheduling@ |
+| service-request-declined/route.js | "...view the details or submit a new request." | scheduling@ |
+| admin/create-appointment/route.js | "...view the details." | scheduling@ |
+
+Invoice email (unchanged, correct):
+| invoice-ready/route.ts | "...view the details and make a payment." | billing@ |
+
+### next.config.mjs (CSP Updates)
+- style-src: Added `https://*.tawk.to`
+- font-src: Added `https://*.tawk.to`
+- frame-src: Changed `https://tawk.to` → `https://*.tawk.to`
+(Tawk.to uses subdomains like embed.tawk.to, va.tawk.to)
+
+4. SECURITY CHANGES
+--------------------------------------------------------------------------------
+
+### Key Rotation (All keys rotated 2025-12-22)
+REASON: .env.local committed to git on Nov 17 & 19, 2025 (commits 8e655fc, e00c6cf)
+Keys remain in git history forever - rotation required.
+
+| Key | Action |
+|-----|--------|
+| STRIPE_SECRET_KEY | Rolled in Stripe dashboard |
+| STRIPE_WEBHOOK_SECRET | Rolled in Stripe dashboard |
+| SUPABASE_SERVICE_ROLE_KEY | Regenerated |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY | Regenerated (paired with above) |
+| RESEND_API_KEY | Rotated |
+| TURNSTILE_SECRET_KEY | Rotated (was MISSING from Vercel production) |
+| GOOGLE_PLACES_API_KEY | Rotated |
+| RECAPTCHA_SITE_KEY | Recreated |
+| RECAPTCHA_SECRET_KEY | Recreated |
+| CRON_SECRET | REMOVED (unused - pg_cron handles jobs) |
+
+### Storage Bucket Policies (SQL executed in Supabase)
+Created RLS policies for `public-assets` bucket:
+- Public read access (for logo in auth emails)
+- Admin-only INSERT/UPDATE/DELETE
+
+### GitHub Email Privacy
+- Changed commit email to noreply address
+
+5. LOGIC DECISIONS
+--------------------------------------------------------------------------------
+
+WHY REMOVE CLIENT AMOUNT PARAMETER:
+- Client sends invoice_id only, server fetches amount from DB
+- Eliminates entire class of payment manipulation attacks
+- No legitimate reason for client to specify amount
+
+WHY ROTATE ALL KEYS:
+- .env.local in git history = keys compromised forever
+- Even if file deleted, history contains keys
+- No way to know if keys were extracted
+- Rotation is only safe option
+
+WHY TURNSTILE WAS FAILING:
+- TURNSTILE_SECRET_KEY missing from Vercel production environment
+- Server-side verification was silently failing
+- Added to Vercel env vars during rotation
+
+WHY SEPARATE EMAIL CONTACTS:
+- billing@impressyoucleaning.com for invoice emails
+- scheduling@impressyoucleaning.com for appointment emails
+- Matches business workflow and customer expectations
+
+WHY TYPESCRIPT FOR NEW EMAIL ROUTE:
+- Project convention: new files use .ts/.tsx
+- Existing files stay as .js/.jsx
+- Proper typing: NextRequest, interface for request body
+
+6. KNOWN ISSUES RESOLVED
+--------------------------------------------------------------------------------
+- Payment integrity vulnerability: FIXED
+- .env.local git exposure: ROTATED all keys
+- Missing TURNSTILE_SECRET_KEY in production: ADDED
+- Form inputs missing id/name: FIXED (40+ inputs)
+- Appointment emails mentioning payment: FIXED
+- Tawk.to fonts/frames blocked by CSP: FIXED
+- Radio inputs in Mark Paid modal missing id: FIXED
+
+7. CONSOLE ERRORS INVESTIGATED
+--------------------------------------------------------------------------------
+Chrome DevTools showed 4 issues - ALL from Cloudflare (unfixable):
+
+| Issue | Source | Fixable? |
+|-------|--------|----------|
+| Form field missing id/name | Cloudflare challenge iframe | ❌ |
+| CSP blocks eval() | Cloudflare challenge uses eval | ❌ |
+| Deprecated StorageType | Cloudflare internal code | ❌ |
+| Quirks Mode | Cloudflare challenge iframe | ❌ |
+
+These are safe to ignore - Cloudflare's bot protection layer.
+
+8. NEXT STEPS / TODOs
+--------------------------------------------------------------------------------
+- User to enable MFA on: Supabase, Vercel, GitHub, Cloudflare, Porkbun, Email
+- User to verify storage policies: `SELECT * FROM pg_policies WHERE tablename = 'objects';`
+- Phase 2: RLS isolation tests (prove User A can't access User B's data)
+- Phase 2: Database constraints (max 3 cards, foreign keys, amount > 0)
+- Phase 3: Cloudflare WAF configuration
+- Phase 3: Rate limiting on auth endpoints
+- Phase 4: Admin audit log table
+- Phase 4: Monitoring/alerting (Sentry)
+
+================================================================================
+END PATCH LOG #7
+================================================================================
+
+================================================================================
 PATCH LOG #6 — 2025-12-19 — Booking Validation, Auth Path Rename & Baseline Clarifications
 ================================================================================
 1. OBJECTIVE
