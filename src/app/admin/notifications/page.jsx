@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Sparkles,
   Trash2,
+  Archive,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import AdminNav from '@/components/admin/AdminNav'
@@ -160,13 +161,35 @@ useEffect(() => {
     }
   }
 
+  async function archiveNotification(notificationId, currentArchived) {
+    try {
+      const { error } = await supabase
+        .from('admin_notifications')
+        .update({ archived: !currentArchived })
+        .eq('id', notificationId)
+
+      if (!error) {
+        setNotifications(prev =>
+          prev.map(n => n.id === notificationId ? { ...n, archived: !currentArchived } : n)
+        )
+        toast.success(currentArchived ? 'Notification unarchived' : 'Notification archived')
+      }
+    } catch (error) {
+      toast.error('Failed to update notification')
+    }
+  }
+
   const filteredNotifications = notifications.filter(n => {
+    if (filter === 'archived') return n.archived
+    if (n.archived) return false // Exclude archived from other views
     if (filter === 'unread') return !n.is_read
     if (filter === 'read') return n.is_read
     return true
   })
 
-  const unreadCount = notifications.filter(n => !n.is_read).length
+  const activeNotifications = notifications.filter(n => !n.archived)
+  const unreadCount = activeNotifications.filter(n => !n.is_read).length
+  const archivedCount = notifications.filter(n => n.archived).length
 
   if (loading) {
     return (
@@ -219,9 +242,10 @@ useEffect(() => {
           {/* Filter Tabs */}
           <div className="flex gap-2 mb-6 p-1 bg-white rounded-xl shadow-sm border border-gray-100 w-fit">
             {[
-              { key: 'all', label: 'All', count: notifications.length },
+              { key: 'all', label: 'All', count: activeNotifications.length },
               { key: 'unread', label: 'Unread', count: unreadCount },
-              { key: 'read', label: 'Read', count: notifications.length - unreadCount },
+              { key: 'read', label: 'Read', count: activeNotifications.length - unreadCount },
+              { key: 'archived', label: 'Archived', count: archivedCount },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -296,6 +320,13 @@ useEffect(() => {
                             Mark Read
                           </button>
                         )}
+                        <button
+                          onClick={() => archiveNotification(notification.id, notification.archived)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          <Archive className="w-4 h-4" />
+                          {notification.archived ? 'Unarchive' : 'Archive'}
+                        </button>
                         <button
                           onClick={() => deleteNotification(notification.id)}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors"

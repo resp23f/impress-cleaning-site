@@ -9,6 +9,7 @@ import {
   CheckCircle,
   XCircle,
   Trash2,
+  Archive,
   Search,
   Users,
   Navigation,
@@ -150,6 +151,23 @@ export default function AppointmentsPage() {
   const filteredAppointments = useMemo(() => {
     let filtered = [...appointments]
 
+    // Handle archived filter
+    if (statusFilter === 'archived') {
+      filtered = filtered.filter(apt => apt.archived)
+    } else {
+      // Exclude archived from all other views
+      filtered = filtered.filter(apt => !apt.archived)
+
+      if (statusFilter !== 'all') {
+        if (statusFilter === 'today') {
+          const today = format(new Date(), 'yyyy-MM-dd')
+          filtered = filtered.filter(apt => apt.scheduled_date === today)
+        } else {
+          filtered = filtered.filter(apt => apt.status === statusFilter)
+        }
+      }
+    }
+
     if (searchQuery) {
       const q = sanitizeText(searchQuery)?.toLowerCase() || ''
       filtered = filtered.filter(apt =>
@@ -157,15 +175,6 @@ export default function AppointmentsPage() {
         apt.profiles?.email?.toLowerCase().includes(q) ||
         apt.profiles?.phone?.toLowerCase().includes(q)
       )
-    }
-
-    if (statusFilter !== 'all') {
-      if (statusFilter === 'today') {
-        const today = format(new Date(), 'yyyy-MM-dd')
-        filtered = filtered.filter(apt => apt.scheduled_date === today)
-      } else {
-        filtered = filtered.filter(apt => apt.status === statusFilter)
-      }
     }
 
     if (dateFilter) {
@@ -182,15 +191,16 @@ export default function AppointmentsPage() {
     return filtered
   }, [appointments, searchQuery, statusFilter, dateFilter])
 
-  // Stats
+  // Stats (exclude archived)
   const stats = useMemo(() => {
+    const activeAppointments = appointments.filter(a => !a.archived)
     const today = format(new Date(), 'yyyy-MM-dd')
     return {
-      total: appointments.length,
-      today: appointments.filter(a => a.scheduled_date === today).length,
-      confirmed: appointments.filter(a => a.status === 'confirmed').length,
-      pending: appointments.filter(a => a.status === 'pending').length,
-      enRoute: appointments.filter(a => a.status === 'en_route').length,
+      total: activeAppointments.length,
+      today: activeAppointments.filter(a => a.scheduled_date === today).length,
+      confirmed: activeAppointments.filter(a => a.status === 'confirmed').length,
+      pending: activeAppointments.filter(a => a.status === 'pending').length,
+      enRoute: activeAppointments.filter(a => a.status === 'en_route').length,
     }
   }, [appointments])
 
@@ -549,6 +559,28 @@ export default function AppointmentsPage() {
     }
   }
 
+  const handleArchiveAppointment = async () => {
+    if (!selectedAppointment) return
+
+    setProcessing(true)
+    try {
+      const { error } = await supabase
+        .from('appointments')
+        .update({ archived: !selectedAppointment.archived, updated_at: new Date().toISOString() })
+        .eq('id', selectedAppointment.id)
+
+      if (error) throw error
+
+      toast.success(selectedAppointment.archived ? 'Appointment unarchived' : 'Appointment archived')
+      setShowManageModal(false)
+      loadAppointments()
+    } catch (error) {
+      toast.error('Failed to update appointment')
+    } finally {
+      setProcessing(false)
+    }
+  }
+
   const clearFilters = () => {
     setSearchQuery('')
     setStatusFilter('all')
@@ -687,6 +719,7 @@ export default function AppointmentsPage() {
                   <option value="completed">Completed</option>
                   <option value="not_completed">Not Completed</option>
                   <option value="cancelled">Cancelled</option>
+                  <option value="archived">Archived</option>
                 </select>
                 <Input
                   type="date"
@@ -1302,6 +1335,17 @@ export default function AppointmentsPage() {
                   Cancel Appointment
                 </Button>
               )}
+
+              <Button
+                variant="outline"
+                fullWidth
+                className="mt-3"
+                onClick={handleArchiveAppointment}
+                loading={processing}
+              >
+                <Archive className="w-4 h-4" />
+                {selectedAppointment.archived ? 'Unarchive' : 'Archive'}
+              </Button>
 
               <Button
                 variant="outline"
