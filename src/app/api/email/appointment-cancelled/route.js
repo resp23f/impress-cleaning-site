@@ -22,8 +22,8 @@ export async function POST(request) {
     const loginLink = `${SITE_URL}/auth/login`
     
     const bodyText = cancelledBy === 'customer'
-      ? 'Your cancellation request has been processed. We hope to serve you again soon. Sign in to your customer portal to book a new appointment.'
-      : 'Your cleaning appointment has been cancelled. We apologize for any inconvenience. Sign in to your customer portal to view details or book a new appointment.'
+      ? 'Your cancellation request has been processed. Sign in to your customer portal to view the details.'
+      : 'Your cleaning appointment has been cancelled. Sign in to your customer portal to view the details.'
 
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
@@ -68,7 +68,7 @@ export async function POST(request) {
                 <tr>
                   <td style="padding:18px 24px;text-align:center;">
                     <p style="margin:0 0 4px 0;font-weight:600;font-size:12px;color:#374151;">Have a question?</p>
-                    <p style="margin:4px 0 0;font-size:12px;"><a href="mailto:support@impressyoucleaning.com" style="color:#079447;text-decoration:none;border-bottom:1px solid #079447;">Reach out to our team</a></p>
+                    <p style="margin:4px 0 0;font-size:12px;"><a href="mailto:scheduling@impressyoucleaning.com" style="color:#079447;text-decoration:none;border-bottom:1px solid #079447;">Reach out to our team</a></p>
                   </td>
                 </tr>
               </table>
