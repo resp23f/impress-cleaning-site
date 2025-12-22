@@ -418,79 +418,49 @@ ALTER FUNCTION "public"."link_orphan_invoices"() OWNER TO "postgres";
 
 CREATE OR REPLACE FUNCTION "public"."mark_overdue_invoices"() RETURNS "void"
     LANGUAGE "plpgsql" SECURITY DEFINER
-    SET "search_path" TO ''
-    AS $$
+    SET "search_path" TO 'public'
+    AS $_$
 DECLARE
   invoice_record RECORD;
   late_fee NUMERIC;
   new_total NUMERIC;
-  updated_line_items JSONB;
-  has_late_fee BOOLEAN;
 BEGIN
-  -- Loop through invoices that are past the 7-day grace period
   FOR invoice_record IN
-    SELECT id, amount, tax_amount, total, line_items
+    SELECT id, invoice_number, customer_id, amount, total, line_items
     FROM public.invoices
-    WHERE status IN ('sent', 'pending')
+    WHERE status = 'sent'
       AND due_date < (CURRENT_DATE - interval '7 days')
   LOOP
-    -- Check if late fee already applied (prevent double-charging)
-    has_late_fee := FALSE;
-    IF invoice_record.line_items IS NOT NULL THEN
-      SELECT EXISTS (
-        SELECT 1 FROM jsonb_array_elements(invoice_record.line_items) AS item
-        WHERE item->>'description' ILIKE '%late fee%'
-      ) INTO has_late_fee;
-    END IF;
+    late_fee := ROUND(invoice_record.amount * 0.05, 2);
+    new_total := COALESCE(invoice_record.total, invoice_record.amount) + late_fee;
     
-    IF has_late_fee THEN
-      -- Just update status if late fee already exists
-      UPDATE public.invoices
-      SET 
-        status = 'overdue',
-        updated_at = NOW()
-      WHERE id = invoice_record.id;
-      CONTINUE;
-    END IF;
-    
-    -- FIX: Calculate 5% late fee on subtotal (amount), NOT total (which includes tax)
-    late_fee := ROUND((COALESCE(invoice_record.amount, 0) * 0.05)::numeric, 2);
-    
-    -- Calculate new total (original total + late fee)
-    new_total := COALESCE(invoice_record.total, invoice_record.amount, 0) + late_fee;
-    
-    -- Add late fee as a line item
-    IF invoice_record.line_items IS NULL THEN
-      updated_line_items := jsonb_build_array(
-        jsonb_build_object(
-          'description', 'Late Fee (5%)',
-          'quantity', 1,
-          'rate', late_fee,
-          'amount', late_fee
-        )
-      );
-    ELSE
-      updated_line_items := invoice_record.line_items || jsonb_build_array(
-        jsonb_build_object(
-          'description', 'Late Fee (5%)',
-          'quantity', 1,
-          'rate', late_fee,
-          'amount', late_fee
-        )
-      );
-    END IF;
-    
-    -- Update the invoice
     UPDATE public.invoices
     SET 
       status = 'overdue',
-      line_items = updated_line_items,
       total = new_total,
+      line_items = COALESCE(line_items, '[]'::jsonb) || jsonb_build_object(
+        'description', 'Late Fee (5%)',
+        'amount', late_fee
+      ),
       updated_at = NOW()
     WHERE id = invoice_record.id;
+    
+    IF invoice_record.customer_id IS NOT NULL THEN
+      INSERT INTO public.customer_notifications (
+        user_id, type, title, message, link, reference_id, reference_type
+      ) VALUES (
+        invoice_record.customer_id,
+        'invoice_overdue',
+        'Invoice Past Due',
+        'Invoice ' || invoice_record.invoice_number || ' is now overdue. A 5% late fee ($' || TO_CHAR(late_fee, 'FM990.00') || ') has been applied.',
+        '/portal/invoices',
+        invoice_record.id,
+        'invoice'
+      );
+    END IF;
   END LOOP;
 END;
-$$;
+$_$;
 
 
 ALTER FUNCTION "public"."mark_overdue_invoices"() OWNER TO "postgres";
@@ -644,7 +614,8 @@ CREATE TABLE IF NOT EXISTS "public"."admin_notifications" (
     "message" "text",
     "link" "text",
     "is_read" boolean DEFAULT false,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "archived" boolean DEFAULT false
 );
 
 
@@ -692,7 +663,8 @@ CREATE TABLE IF NOT EXISTS "public"."appointments" (
     "cancellation_reason" "text",
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "is_running_late" boolean DEFAULT false
+    "is_running_late" boolean DEFAULT false,
+    "archived" boolean DEFAULT false
 );
 
 

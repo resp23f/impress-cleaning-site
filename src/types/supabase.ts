@@ -41,6 +41,7 @@ export type Database = {
     Tables: {
       admin_notifications: {
         Row: {
+          archived: boolean | null
           created_at: string
           id: string
           is_read: boolean | null
@@ -50,6 +51,7 @@ export type Database = {
           type: string
         }
         Insert: {
+          archived?: boolean | null
           created_at?: string
           id?: string
           is_read?: boolean | null
@@ -59,6 +61,7 @@ export type Database = {
           type: string
         }
         Update: {
+          archived?: boolean | null
           created_at?: string
           id?: string
           is_read?: boolean | null
@@ -123,6 +126,7 @@ export type Database = {
       appointments: {
         Row: {
           address_id: string | null
+          archived: boolean | null
           cancellation_reason: string | null
           cancelled_at: string | null
           completed_at: string | null
@@ -144,6 +148,7 @@ export type Database = {
         }
         Insert: {
           address_id?: string | null
+          archived?: boolean | null
           cancellation_reason?: string | null
           cancelled_at?: string | null
           completed_at?: string | null
@@ -165,6 +170,7 @@ export type Database = {
         }
         Update: {
           address_id?: string | null
+          archived?: boolean | null
           cancellation_reason?: string | null
           cancelled_at?: string | null
           completed_at?: string | null
