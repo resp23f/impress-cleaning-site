@@ -234,7 +234,7 @@ function generateWelcomeEmail(firstName, inviteLink) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Finish Setting Up Your Portal</title>
+  <title>Your Portal Awaits</title>
 </head>
 <body style="margin:0;padding:0;background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#ffffff;">
@@ -251,7 +251,7 @@ function generateWelcomeEmail(firstName, inviteLink) {
           <tr>
             <td style="padding:32px 32px 8px;">
               <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">WELCOME</p>
-              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Finish Setting Up Your Portal</h1>
+              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Your Portal Awaits!</h1>
               <p style="font-size:15px;line-height:1.6;color:#4b5563;margin:0;">You're just one step away from accessing your customer portal. Complete your profile to view upcoming appointments, pay invoices online, and manage your cleaning services—all in one place.</p>
             </td>
           </tr>
