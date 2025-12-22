@@ -86,7 +86,6 @@ function CardPaymentForm({
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 invoiceId: invoice.id,
-                amount: parseFloat(invoice.total ?? invoice.amount),
                 paymentMethodId: card.stripe_payment_method_id,
               }),
             })
@@ -120,7 +119,6 @@ function CardPaymentForm({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               invoiceId: invoice.id,
-              amount: parseFloat(invoice.total ?? invoice.amount),
               paymentMethodId: card.stripe_payment_method_id,
             }),
           })
@@ -175,7 +173,6 @@ function CardPaymentForm({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               invoiceId: invoice.id,
-              amount: parseFloat(invoice.total ?? invoice.amount),
               paymentMethodId: paymentMethod.id,
               saveCard: saveCard,
             }),
@@ -210,7 +207,6 @@ function CardPaymentForm({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             invoiceId: invoice.id,
-            amount: parseFloat(invoice.total ?? invoice.amount),
             paymentMethodId: paymentMethod.id,
             saveCard: saveCard,
           }),

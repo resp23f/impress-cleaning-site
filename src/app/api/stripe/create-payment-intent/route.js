@@ -7,10 +7,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export async function POST(request) {
   try {
-    const { invoiceId, amount, paymentMethodId } = await request.json()
-    if (!invoiceId || !amount) {
+    const { invoiceId, paymentMethodId } = await request.json()
+    if (!invoiceId) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing invoice ID' },
         { status: 400 }
       )
     }
@@ -41,6 +41,14 @@ export async function POST(request) {
     if (invoice.status === 'paid') {
       return NextResponse.json(
         { error: 'Invoice already paid' },
+        { status: 400 }
+      )
+    }
+
+    // Validate invoice has a valid amount
+    if (!invoice.total || invoice.total <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid invoice amount' },
         { status: 400 }
       )
     }
@@ -107,9 +115,9 @@ export async function POST(request) {
         .eq('id', invoiceId)
     }
     
-    // Create payment intent
+    // Create payment intent using invoice total from database (NEVER trust client amount)
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
+      amount: Math.round(invoice.total * 100), // Convert to cents - uses DB amount, not client
       currency: 'usd',
       customer: stripeCustomerId,
       payment_method: paymentMethodId || undefined,
