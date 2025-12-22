@@ -173,10 +173,6 @@ export async function POST(request) {
     // Send confirmation email to customer
     if (customer?.email && appointment) {
       try {
-        const addressLine = appointment.service_addresses
-          ? `${appointment.service_addresses.street_address}${appointment.service_addresses.unit ? ', ' + appointment.service_addresses.unit : ''}, ${appointment.service_addresses.city}, ${appointment.service_addresses.state} ${appointment.service_addresses.zip_code}`
-          : 'N/A'
-
         const serviceLabelMap = {
           standard: 'Standard Cleaning',
           deep: 'Deep Cleaning',
@@ -187,102 +183,72 @@ export async function POST(request) {
 
         const serviceLabel = serviceLabelMap[appointment.service_type] || appointment.service_type || 'Cleaning Service'
         const customerName = customer.full_name || customer.email.split('@')[0]
-        const formattedDate = appointment.scheduled_date 
-          ? new Date(appointment.scheduled_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
-          : 'TBD'
-        const timeRange = appointment.scheduled_time_start && appointment.scheduled_time_end 
-          ? `${appointment.scheduled_time_start} - ${appointment.scheduled_time_end}` 
-          : 'TBD'
+        const firstName = customerName.split(' ')[0]
+        const loginLink = 'https://impressyoucleaning.com/auth/login'
 
         await resend.emails.send({
           from: 'Impress Cleaning Services <notifications@impressyoucleaning.com>',
           to: customer.email,
-          subject: `Your ${serviceLabel} is Confirmed!`,
-          html: `
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              </head>
-              <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-                <div style="text-align: center; margin-bottom: 30px;">
-                  <h1 style="color: #1C294E; margin: 0;">Impress Cleaning Services</h1>
-                </div>
-                
-                <div style="background: linear-gradient(135deg, #10b981 0%, #079447 100%); border-radius: 10px; padding: 30px; margin-bottom: 30px; text-align: center;">
-                  <h2 style="color: white; margin: 0; font-size: 28px;">✓ Appointment Confirmed!</h2>
-                </div>
-
-                <div style="background: #f8f9fa; border-radius: 10px; padding: 30px; margin-bottom: 30px;">
-                  <p style="font-size: 16px; margin-top: 0;">Hi ${customerName},</p>
-                  <p style="font-size: 16px;">Great news! Your cleaning appointment has been scheduled and confirmed.</p>
-                  
-                  <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                    <h3 style="color: #1C294E; margin-top: 0; font-size: 18px;">Appointment Details</h3>
-                    <table style="width: 100%; border-collapse: collapse;">
-                      <tr>
-                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                          <strong>Service:</strong>
-                        </td>
-                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
-                          ${serviceLabel}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                          <strong>Date:</strong>
-                        </td>
-                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
-                          ${formattedDate}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
-                          <strong>Time:</strong>
-                        </td>
-                        <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
-                          ${timeRange}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0;">
-                          <strong>Location:</strong>
-                        </td>
-                        <td style="padding: 10px 0; text-align: right;">
-                          ${addressLine}
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-
-                  <div style="background: #e0f2fe; border-left: 4px solid #0284c7; padding: 15px; border-radius: 4px; margin: 20px 0;">
-                    <p style="margin: 0; color: #0c4a6e; font-size: 14px;">
-                      <strong>What to expect:</strong> Our professional cleaning team will arrive on time with all necessary supplies. We'll text you when we're on our way!
-                    </p>
-                  </div>
-
-                  <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://impressyoucleaning.com/portal/appointments" style="display: inline-block; background: #079447; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
-                      View in Portal
-                    </a>
-                  </div>
-
-                  <p style="color: #6b7280; font-size: 14px; margin-bottom: 0;">
-                    Need to make changes? Visit your customer portal or reply to this email.
-                  </p>
-                </div>
-
-                <div style="text-align: center; color: #6b7280; font-size: 14px;">
-                  <p>We look forward to serving you!</p>
-                  <p style="margin: 10px 0;">Impress Cleaning Services</p>
-                  <p style="margin: 10px 0;">
-                    Questions? Reply to this email or contact us at notifications@impressyoucleaning.com
-                  </p>
-                </div>
-              </body>
-            </html>
-          `,
+          subject: `${firstName}, Your Appointment Is Confirmed`,
+          html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Appointment Confirmed</title>
+</head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#ffffff;">
+    <tr>
+      <td style="padding:24px 0 0 0;">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" align="center" style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
+          <!-- LOGO HEADER -->
+          <tr>
+            <td align="center" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);padding:35px 0;">
+              <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png" alt="Impress Cleaning Services" width="200" style="display:block;width:200px;height:auto;" />
+            </td>
+          </tr>
+          <!-- TITLE / COPY -->
+          <tr>
+            <td style="padding:32px 32px 8px;">
+              <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">APPOINTMENT CONFIRMED</p>
+              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, You're All Set!</h1>
+              <p style="font-size:15px;line-height:1.6;color:#4b5563;margin:0;">Your cleaning appointment has been confirmed. Sign in to your customer portal to view the details.</p>
+            </td>
+          </tr>
+          <!-- BUTTON -->
+          <tr>
+            <td style="padding:24px 32px 8px;text-align:center;">
+              <a href="${loginLink}" style="display:inline-block;background-color:#079447;color:#ffffff !important;text-decoration:none;padding:18px 48px;border-radius:999px;font-size:16px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">LOG IN NOW</a>
+            </td>
+          </tr>
+          <!-- HELP BOX -->
+          <tr>
+            <td style="padding:32px;">
+              <table role="presentation" width="320" cellspacing="0" cellpadding="0" align="center" style="background-color:#f3f4f6;border-radius:10px;">
+                <tr>
+                  <td style="padding:18px 24px;text-align:center;">
+                    <p style="margin:0 0 4px 0;font-weight:600;font-size:12px;color:#374151;">Have a question?</p>
+                    <p style="margin:4px 0 0;font-size:12px;"><a href="mailto:scheduling@impressyoucleaning.com" style="color:#079447;text-decoration:none;border-bottom:1px solid #079447;">Reach out to our team</a></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- FOOTER -->
+          <tr>
+            <td style="padding:28px 32px;border-top:1px solid #e5e7eb;">
+              <p style="font-size:11px;font-weight:600;color:#6b7280;margin:2px 0;">Impress Cleaning Services, LLC</p>
+              <p style="font-size:10px;color:#6b7280;margin:2px 0;"><a style="color:#6b7280;text-decoration:none;pointer-events:none;">1530 Sun City Blvd, Suite 120-403, Georgetown, TX 78633</a></p>
+              <p style="font-size:10px;color:#6b7280;margin:2px 0;">&copy; 2025 Impress Cleaning Services, LLC. All rights reserved.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`,
         })
       } catch (emailError) {
         console.error('Failed to send appointment confirmation email', emailError)

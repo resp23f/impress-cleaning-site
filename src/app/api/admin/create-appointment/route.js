@@ -153,7 +153,7 @@ export async function POST(request) {
           <tr>
             <td style="padding:32px 32px 8px;">
               <p style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin:0 0 8px;">APPOINTMENT CONFIRMED</p>
-              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, Your Appointment Is Confirmed</h1>
+              <h1 style="font-size:28px;line-height:1.2;font-weight:700;color:#111827;margin:0 0 12px;">Hi ${firstName}, You're All Set!</h1>
               <p style="font-size:15px;line-height:1.6;color:#4b5563;margin:0;">Your cleaning appointment has been confirmed. Sign in to your customer portal to view the details.</p>
             </td>
           </tr>
