@@ -290,6 +290,22 @@ export default function ProfileSetupPage() {
           })
       if (addressError) throw addressError
 
+      // Notify admin if this is an admin-invited customer
+      if (user.user_metadata?.admin_invited) {
+        try {
+          await fetch('/api/email/profile-complete-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              customerName: `${formData.firstName} ${formData.lastName}` 
+            }),
+          })
+        } catch (notifyError) {
+          // Don't block signup if notification fails
+          console.error('Failed to notify admin:', notifyError)
+        }
+      }
+
       toast.success('Profile setup complete!')
       router.push('/portal/dashboard')
     } catch (error) {
