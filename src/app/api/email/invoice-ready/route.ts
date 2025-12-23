@@ -60,7 +60,7 @@ function generateInvoiceReadyEmail(firstName: string): string {
           <tr>
 <td align="center" bgcolor="#d2d5d9" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);background-color:#d2d5d9;padding:35px 0;">
   <img
-    src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/impress-logo-header.png?v=20251222"
+    src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png"
     alt="Impress Cleaning Services"
     width="200"
     style="display:block;width:200px;height:auto;background-color:#d2d5d9;"
