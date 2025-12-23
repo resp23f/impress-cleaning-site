@@ -124,6 +124,9 @@ function AdminInvitedSetPasswordContent() {
       setPageState('signing-in')
 
       try {
+        // Clear any stale session first
+        await supabase.auth.signOut()
+        
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email: data.email,
           password: password,
