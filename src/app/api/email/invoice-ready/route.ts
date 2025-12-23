@@ -58,9 +58,14 @@ function generateInvoiceReadyEmail(firstName: string): string {
         <table role="presentation" width="600" cellspacing="0" cellpadding="0" align="center" style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
           <!-- LOGO HEADER -->
           <tr>
-            <td align="center" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);padding:35px 0;">
-              <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/impress-logo-header.png" alt="Impress Cleaning Services" width="200" style="display:block;width:200px;height:auto;" />
-            </td>
+<td align="center" bgcolor="#d2d5d9" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);background-color:#d2d5d9;padding:35px 0;">
+  <img
+    src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/impress-logo-header.png?v=20251222"
+    alt="Impress Cleaning Services"
+    width="200"
+    style="display:block;width:200px;height:auto;background-color:#d2d5d9;"
+  />
+</td>
           </tr>
           <!-- TITLE / COPY -->
           <tr>
