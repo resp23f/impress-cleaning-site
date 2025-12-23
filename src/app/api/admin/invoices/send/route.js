@@ -317,7 +317,7 @@ function generateInvoiceReadyEmail(firstName) {
           <!-- LOGO HEADER -->
           <tr>
             <td align="center" style="background:linear-gradient(180deg,#d5d8dc 0%,#cdd0d4 50%,#d5d8dc 100%);padding:35px 0;">
-              <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/logo_impress_white.png" alt="Impress Cleaning Services" width="200" style="display:block;width:200px;height:auto;" />
+              <img src="https://bzcdasbrdaonxpomzakh.supabase.co/storage/v1/object/public/public-assets/impress-logo-header.png" alt="Impress Cleaning Services" width="200" style="display:block;width:200px;height:auto;" />
             </td>
           </tr>
           <!-- TITLE / COPY -->
