@@ -1,4 +1,199 @@
 ================================================================================
+PATCH LOG #8 — 2025-12-23 — Email Template Fixes, Auth Flow Debugging & Admin Notification System
+================================================================================
+
+1. OBJECTIVE
+--------------------------------------------------------------------------------
+Multiple improvements across email templates, authentication flow, and admin workflow:
+  - Standardize welcome email heading and title for existing customers
+  - Fix admin-invited customer authentication failing on Safari (stale session issue)
+  - Implement admin notification when customers complete portal signup
+  - Add RLS deny-all policy on auth_handoff_tokens table for security
+
+2. FILES TOUCHED
+--------------------------------------------------------------------------------
+| File | Action |
+|------|--------|
+| src/app/api/email/customer-welcome/route.js | Modified |
+| src/app/api/admin/customers/create/route.js | Modified |
+| src/app/auth/activate/page.tsx | Modified |
+| src/app/api/email/profile-complete-notify/route.ts | Created |
+| src/app/auth/profile-setup/page.jsx | Modified |
+| Supabase: public.auth_handoff_tokens | RLS policy added |
+
+3. CHANGES BY FILE
+--------------------------------------------------------------------------------
+
+### src/app/api/email/customer-welcome/route.js
+- Updated `<title>` tag: "Finish Setting Up Your Portal" → "Your Portal Awaits"
+- Updated `<h1>` heading: "Hi ${firstName}, Finish Setting Up Your Portal" → "Hi ${firstName}, Your Portal Awaits!"
+- Label kept as "WELCOME"
+- Subject line unchanged: "${firstName}, Finish Setting Up Your Portal"
+
+### src/app/api/admin/customers/create/route.js
+- Updated `<title>` tag: "Finish Setting Up Your Portal" → "Your Portal Awaits"
+- Updated `<h1>` heading: "Hi ${firstName}, Finish Setting Up Your Portal" → "Hi ${firstName}, Your Portal Awaits!"
+- Both templates now match exactly (manual send button = initial invite)
+
+### src/app/auth/activate/page.tsx
+- Added `supabase.auth.signOut()` before `signInWithPassword()` call
+- Clears stale browser session/cookies before attempting fresh login
+- Prevents "Invalid Refresh Token: Refresh Token Not Found" error
+
+BEFORE:
+```typescript
+setPageState('signing-in')
+
+try {
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+```
+
+AFTER:
+```typescript
+setPageState('signing-in')
+
+try {
+  // Clear any stale session first
+  await supabase.auth.signOut()
+  
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+```
+
+### src/app/api/email/profile-complete-notify/route.ts (NEW)
+- TypeScript API route for admin notification emails
+- Verifies user is authenticated via `supabase.auth.getUser()`
+- Accepts `customerName` in request body
+- Sanitizes input with `sanitizeText()`
+- Hardcoded recipient: admin@impressyoucleaning.com (cannot be changed via request)
+- Simple text email format (no HTML template needed)
+
+Email format:
+- From: notifications@impressyoucleaning.com
+- To: admin@impressyoucleaning.com
+- Subject: "${customerName} Has Completed Portal Setup"
+- Body: "Alex, customer ${customerName} has completed their full portal sign up and is ready for you to send invoices, reminders, etc."
+
+### src/app/auth/profile-setup/page.jsx
+- Added admin notification call after successful profile + address save
+- Only triggers for admin-invited customers (checks `user.user_metadata.admin_invited`)
+- Fire-and-forget pattern: wrapped in try/catch, doesn't block customer redirect
+- Placed after address save, before success toast and router.push
+
+```javascript
+// Notify admin if this is an admin-invited customer
+if (user.user_metadata?.admin_invited) {
+  try {
+    await fetch('/api/email/profile-complete-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        customerName: `${formData.firstName} ${formData.lastName}` 
+      }),
+    })
+  } catch (notifyError) {
+    // Don't block signup if notification fails
+    console.error('Failed to notify admin:', notifyError)
+  }
+}
+```
+
+### Supabase RLS Policy (SQL executed)
+- Added deny-all policy on `auth_handoff_tokens` table
+- Silences Supabase security advisor warning
+- Service role (used by API routes) bypasses RLS anyway
+
+```sql
+CREATE POLICY "Deny all access" ON public.auth_handoff_tokens
+  FOR ALL
+  USING (false);
+```
+
+4. LOGIC DECISIONS
+--------------------------------------------------------------------------------
+
+WHY CHANGE HEADING TO "YOUR PORTAL AWAITS":
+- These are existing customers being onboarded to portal (not new to business)
+- "Finish Setting Up" as heading was redundant with subject line
+- "Awaits" implies something good is waiting to be unlocked
+- Subject handles the action, heading provides warmth
+
+WHY KEEP "HI" IN THE HEADING:
+- Alex prefers the personal touch
+- Matches friendly tone of the business
+
+WHY ADD signOut() BEFORE signInWithPassword():
+- Safari users experiencing "Invalid Refresh Token" errors
+- Stale cookies from previous attempts caused Supabase auth to choke
+- signOut() clears any existing session state before fresh login
+- No impact on users without stale sessions
+
+WHY FIRE-AND-FORGET FOR ADMIN NOTIFICATION:
+- Customer experience is priority — don't block their portal access
+- If email fails, Alex can still see customer in admin portal
+- Console.error logs failure for debugging if needed
+
+WHY CHECK user.user_metadata.admin_invited:
+- Self-registered customers don't need admin notification
+- They go through different flow (Supabase confirm email)
+- Admin already knows about customers they invited
+- Notification signals "ready to send invoice" for admin-invited only
+
+WHY HARDCODE RECIPIENT EMAIL:
+- Prevents API abuse (can't redirect emails to arbitrary addresses)
+- This is internal notification, recipient never changes
+- Security best practice for admin-only endpoints
+
+WHY DENY-ALL RLS POLICY:
+- Table had RLS enabled but no policies (security advisor warning)
+- Only accessed via supabaseAdmin (service role) which bypasses RLS
+- Explicit deny-all is cleaner than leaving implicit "no access"
+- Documents intent: this table is admin-only
+
+5. ISSUES INVESTIGATED BUT NOT FIXED
+--------------------------------------------------------------------------------
+
+### iOS Gmail Dark Mode Logo Issue
+- Problem: Light gray box appearing behind logo in dark mode
+- Attempted: Created logo with baked-in background, cache busters, fallback colors
+- Outcome: Reverted after 2+ hours — diminishing returns for edge case
+- Status: Accepted as-is, affects small % of users
+
+### Safari Turnstile Communication Issues
+- Problem: Cloudflare iframe blocked from communicating with main frame
+- Console: "Blocked a frame with origin challenges.cloudflare.com"
+- Workaround: Admin holds invoices until customer completes registration
+- Status: Deferred — workflow change is simpler than technical fix
+
+6. VERIFICATION COMPLETED
+--------------------------------------------------------------------------------
+- ✅ Both welcome email routes send identical emails
+- ✅ `admin_invited: true` flag exists in user_metadata for admin-created customers
+- ✅ Ken Haulotte's account shows `last_sign_in_at` — login succeeded
+- ✅ Profile-complete-notify API requires authentication
+- ✅ Customer name is sanitized before email
+
+7. KNOWN ISSUES STILL OPEN
+--------------------------------------------------------------------------------
+| Issue | Status |
+|-------|--------|
+| Safari Turnstile first-load failures | Workaround in place (workflow change) |
+| iOS Gmail dark mode logo box | Accepted as-is |
+| Account deletion should block if outstanding balance | Not implemented |
+| Resend invoice email button for sent invoices | Not implemented |
+
+8. NEXT STEPS / TODOs
+--------------------------------------------------------------------------------
+- Monitor admin notification emails in production
+- Test full admin-invite flow: create customer → customer completes signup → admin receives email
+- Consider removing Turnstile from /auth/activate (token already validates user)
+- If Safari issues persist, investigate explicit Turnstile rendering mode
+
+================================================================================
+END PATCH LOG #8
+================================================================================
+
+
+================================================================================
 PATCH LOG #7 — 2025-12-22 — Security Hardening, Form Field Fixes & Invoice Email System
 ================================================================================
 1. OBJECTIVE
